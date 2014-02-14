@@ -25,13 +25,12 @@ class Roboraj:
 		thread.start_new_thread(cron.cron(irc).run, ())
 
 		while True:
-			data = sock.recv(2048).rstrip()
+			data = sock.recv(1024).rstrip()
 
 			irc.check_for_ping(data)
 
 			if irc.check_for_connected(data):
 				pp('Connected to %s on TMI.' % self.config['channel'])
-
 
 			if irc.check_for_message(data):
 				message_dict = irc.get_message(data)
@@ -51,7 +50,9 @@ class Roboraj:
 						pbot('Command is valid and not on cooldown. (%s) (%s)' % (command, username))
 						commands.update_last_used(command)
 
-						irc.send_message('(%s) > (%s)' % (username, commands.get_return(command)))
+						resp = '(%s) > (%s)' % (username, commands.get_return(command))
+						pbot(resp)
+						irc.send_message(resp)
 
 				# check if message is a command with arguments
 				if commands.is_valid_command(message.split(' ')[0]):
@@ -68,7 +69,9 @@ class Roboraj:
 							result = commands.pass_to_function(command, args)
 							
 							if result:
-								irc.send_message('(%s) > %s' % (username, result))
+								resp = '(%s) > %s' % (username, result)
+								pbot(resp)
+								irc.send_message(resp)
 
 						
 

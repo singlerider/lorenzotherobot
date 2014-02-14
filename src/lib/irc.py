@@ -20,16 +20,16 @@ class irc:
 
 	def check_for_ping(self, data):
 		if data[:4] == "PING":
-			self.sock.send(data.replace('PING', 'PONG'))
+			self.sock.send('PONG')
 
 	def get_message(self, data):
 		return {
 			'username': re.findall(r'^:([a-zA-Z0-9_]+)\!', data)[0],
-			'message': re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', data)[0]
+			'message': re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', data)[0].decode('utf8')
 		}
 
 	def send_message(self, message):
-		self.sock.send('PRIVMSG %s :%s\n' % (self.channel, message))
+		self.sock.send('PRIVMSG %s :%s\n' % (self.channel, message.encode('utf-8')))
 		time.sleep(0.25)
 
 	def get_irc_socket_object(self, config):

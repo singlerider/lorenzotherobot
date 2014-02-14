@@ -9,7 +9,7 @@ class cron:
 			'This is the second cron message.'
 		]
 
-		self.runtime = 5
+		self.runtime = 0 # set to 0 to disable cron messages
 		self.last_index = 0
 		self.last_ran = time.time()
 		self.irc = irc
@@ -24,6 +24,9 @@ class cron:
 		return next_index
 
 	def run(self):
+		if self.runtime == 0:
+			pbot('Cronjob runtime set to 0, exiting thread.')
+			exit()
 		while True:
 			if time.time() - self.last_ran > self.runtime:
 				index = self.get_next_message()
