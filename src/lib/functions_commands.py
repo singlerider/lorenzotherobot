@@ -1,4 +1,6 @@
-import time, requests
+# coding: utf-8
+
+import time, requests, random
 
 global_cooldown = 0
 
@@ -19,12 +21,19 @@ valid_commands = {
 	# 	'return': 'command'
 	# },
 
+	'!emote': {
+		'limit': 10,
+		'argc': 0,
+		'return': 'command'
+	},
+
 	'!wow': {
-		'limit': 0,
+		'limit': 10,
 		'argc': 3,
 		'return': 'command'
 	}
 }
+
 
 
 
@@ -35,6 +44,24 @@ def command_add(args):
 		return resp
 	except ValueError:
 		return 'I can only add numbers, fool. DansGame'
+
+
+
+
+def command_emote():
+	try:
+		resp = requests.get('http://twitchemotes.com/global.json').json()
+	except:
+		return 'Error contacting API.'
+
+	emote = random.choice(resp.keys())
+
+	return '%s = %s' % (
+		emote,
+		emote[:1] + '​'.decode('utf8') + emote[1:]
+	)
+
+
 
 
 
@@ -112,6 +139,32 @@ def command_wow(args):
 		return 'Error connecting to the Battle.net API.'
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 for command in valid_commands:
 	valid_commands[command]['last_used'] = 0
 
@@ -150,5 +203,8 @@ def check_has_correct_args(message, command):
 def pass_to_function(command, args):
 	command = 'command_' + command.replace('!', '')
 
-	return globals()[command](args)
+	if args:
+		return globals()[command](args)
+	else:
+		return globals()[command]()
 
