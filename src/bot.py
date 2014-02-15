@@ -25,7 +25,7 @@ class Roboraj:
 			data = sock.recv(config['socket_buffer_size']).rstrip()
 
 			if len(data) == 0:
-				po('Connection was lost, reconnecting.')
+				pp('Connection was lost, reconnecting.')
 				sock = self.irc.get_irc_socket_object()
 
 			if config['debug']:
