@@ -1,5 +1,5 @@
 import time
-from src.imports import *
+from src.imports import config
 
 class cron:
 

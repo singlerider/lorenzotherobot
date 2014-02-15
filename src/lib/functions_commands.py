@@ -1,8 +1,7 @@
 # coding: utf-8
 
 import time, requests, random
-
-global_cooldown = 0
+from src.imports import config
 
 valid_commands = {
 	'!test': {
@@ -10,25 +9,14 @@ valid_commands = {
 		'return': 'This is a test!'
 	},
 
-	# '!roboraj_test': {
-	# 	'limit': 10,
-	# 	'return': 'This is a second test!'
-	# },
-
-	# '!add': {
-	# 	'limit': 0,
-	# 	'argc': 2,
-	# 	'return': 'command'
-	# },
-
 	'!randomemote': {
-		'limit': 10,
+		'limit': 180,
 		'argc': 0,
 		'return': 'command'
 	},
 
 	'!wow': {
-		'limit': 10,
+		'limit': 30,
 		'argc': 3,
 		'return': 'command'
 	}
@@ -52,7 +40,7 @@ def command_randomemote():
 	try:
 		resp = requests.get('http://twitchemotes.com/global.json').json()
 	except:
-		return 'Error contacting API.'
+		return 'Error connecting to API.'
 
 	emote = random.choice(resp.keys())
 
@@ -164,23 +152,28 @@ def command_wow(args):
 
 
 
+for channel in config['channels']:
+	for command in valid_commands:
+		valid_commands[command][channel] = {}
+		valid_commands[command][channel]['last_used'] = 0
 
-for command in valid_commands:
-	valid_commands[command]['last_used'] = 0
 
 def is_valid_command(command):
 	if command in valid_commands:
 		return True
 
-def update_last_used(command):
-	valid_commands[command]['last_used'] = time.time()
+def update_last_used(command, channel):
+	valid_commands[command][channel]['last_used'] = time.time()
 
 def get_command_limit(command):
 	return valid_commands[command]['limit']
 
-def is_on_cooldown(command):
-	if time.time() - valid_commands[command]['last_used'] < valid_commands[command]['limit']:
+def is_on_cooldown(command, channel):
+	if time.time() - valid_commands[command][channel]['last_used'] < valid_commands[command]['limit']:
 		return True
+
+def get_cooldown_remaining(command, channel):
+	return round(valid_commands[command]['limit'] - (time.time() - valid_commands[command][channel]['last_used']))
 
 def check_has_return(command):
 	if valid_commands[command]['return'] and valid_commands[command]['return'] != 'command':

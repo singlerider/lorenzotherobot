@@ -56,25 +56,40 @@ class Roboraj:
 
 							command = command.split(' ')[0]
 
-							if commands.is_on_cooldown(command):
-								pbot('Command is on cooldown. (%s) (%s)' % (command, username), channel)
+							if commands.is_on_cooldown(command, channel):
+								pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
+									command, username, commands.get_cooldown_remaining(command, channel)), 
+									channel
+								)
 							else:
-								pbot('Command is valid an not on cooldown. (%s) (%s)' % (command, username), channel)
+								pbot('Command is valid an not on cooldown. (%s) (%s)' % (
+									command, username), 
+									channel
+								)
 								
 								result = commands.pass_to_function(command, args)
-								
+								commands.update_last_used(command, channel)
+
 								if result:
 									resp = '(%s) > %s' % (username, result)
 									pbot(resp, channel)
 									irc.send_message(channel, resp)
 
 					else:
-						if commands.is_on_cooldown(command):
-							pbot('Command is on cooldown. (%s) (%s)' % (command, username), channel)
+						if commands.is_on_cooldown(command, channel):
+							pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
+									command, username, commands.get_cooldown_remaining(command, channel)), 
+									channel
+							)
 						elif commands.check_has_return(command):
-							pbot('Command is valid and not on cooldown. (%s) (%s)' % (command, username), channel)
+							pbot('Command is valid and not on cooldown. (%s) (%s)' % (
+								command, username), 
+								channel
+							)
 							commands.update_last_used(command)
 
 							resp = '(%s) > %s' % (username, commands.get_return(command))
+							commands.update_last_used(command, channel)
+
 							pbot(resp, channel)
 							irc.send_message(channel, resp)

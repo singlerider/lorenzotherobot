@@ -42,6 +42,6 @@ config = {
 	'log_messages': True,
 
 	# maximum amount of bytes to receive from socket - 1024-4096 recommended
-	'socket_buffer_size': 4096
+	'socket_buffer_size': 2048
 }
 
