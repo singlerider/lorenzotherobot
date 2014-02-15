@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Twitch-bot by aidraj</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/aidraj/twitch-bot">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Twitch-bot</h1>
+            <h2>Twitch Chat bot written in Python</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/aidraj/twitch-bot/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/aidraj/twitch-bot/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a name="roboraj" class="anchor" href="#roboraj"><span class="octicon octicon-link"></span></a>Roboraj</h1>
+
+<p>This is a simple Twitch chat/irc bot written in python.</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<ul>
+<li>Open up your terminal/shell of choice.</li>
+<li>Install the <a href="Requests%20library">http://docs.python-requests.org/en/latest/</a> if you haven't already using <code>pip install requests</code>. I tested this application on Python 2.7.5.</li>
+<li>
+<li>Clone the Git repository.</li>
+<li>Move config/config_example.py to config/config.py. Replace all of the placeholders there with your own username/oauth token/channels to join etc (tips are given in the file).</li>
+<li>Type <code>chmod +x /serve.py</code>. To run, you simply need to execute the file by typing <code>./serve.py</code>.</li>
+</ul><h1>
+<a name="adding-your-own-commands" class="anchor" href="#adding-your-own-commands"><span class="octicon octicon-link"></span></a>Adding your own commands</h1>
+
+<p>You're going to need to know basic Python if you want to add your own commands. Open up <code>lib/functions_commands.py</code>. There are examples of pre-made functions in there as examples. The limit parameter is the amount of times a command can be used in seconds, if you don't want a limit to be enforced put in 0.</p>
+
+<p>If your command is only going to return a string, ex - <code>!hello</code> returns <code>Welcome!</code>, don't include the <code>argc</code> parameter. Place the string you wish to be returned to the user in the <code>return</code> parameter. For example, if you wanted to create a command such as this and limit it to being used ever 30 seconds, you would add in:</p>
+
+<div class="highlight highlight-python"><pre><span class="s">'!hello'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'limit'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s">'return'</span><span class="p">:</span> <span class="s">'Welcome!'</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>However, if your command has to have some logic implemented - if the command is just going to return whatever a function returns, set the <code>return</code> parameter on the command to <code>command</code>, and set <code>argc</code> to <code>0</code>. If your command is going to take arguments, ex <code>!hello &lt;name&gt;</code>, set argc to <code>1</code> or however many arguments the command is going to take in.</p>
+
+<p>Below the <code>valid_commands</code> dictionary, add a function that's name follows the syntax of <code>command_&lt;command name&gt;</code>. If your <code>argc</code> was set to <code>0</code>, don't include <code>args</code> in the functions parameters, else set the only parameter to <code>args</code>. Args will contain a list of whatever arguments were passed to the command.</p>
+
+<p>This command will contain whatever logic needs to be carried out. You should validate the arguments in there. After you have the response that you want a user to see, just <code>return</code> it.</p>
+
+<p>Let's say we want to add a command which will take two arguments, we will call it <code>!random</code> and it will take a <code>minimum</code> and <code>maximum</code> argument. We will limit this command to be allowed to be called every 20 seconds.</p>
+
+<p>Import the <code>random</code> library, and add the following to the <code>valid_commands</code> dictionary:</p>
+
+<div class="highlight highlight-python"><pre><span class="s">'!random'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'limit'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="s">'argc'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s">'return'</span><span class="p">:</span> <span class="s">'command'</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>And then below that, add the following: </p>
+
+<div class="highlight highlight-python"><pre><span class="k">def</span> <span class="nf">command_random</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+  <span class="nb">min</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="nb">max</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+  <span class="n">usage</span> <span class="o">=</span> <span class="s">'!random &lt;min&gt; &lt;max&gt;'</span>
+
+  <span class="c"># carry out validation</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ranrange</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
+  <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">'!random &lt;min&gt; &lt;max&gt; (use full integers)'</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">usage</span>
+</pre></div>
+
+<p>And now if somebody types <code>!random 5 10</code> into the chat, the bot will respond with a pseudo-random number between 5 and 10.</p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/aidraj">aidraj</a> can be found on <a href="https://github.com/aidraj/twitch-bot">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
