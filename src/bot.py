@@ -28,7 +28,7 @@ class Roboraj:
 		irc.join_channels(irc.channels_to_string(config['channels']))
 
 		while True:
-			data = sock.recv(1024).rstrip()
+			data = sock.recv(config['socket_buffer_size']).rstrip()
 
 			if config['debug']:
 				print data
@@ -39,11 +39,11 @@ class Roboraj:
 			if irc.check_for_message(data):
 				message_dict = irc.get_message(data)
 
-				ppi(message_dict['channel'], message_dict['message'], message_dict['username'])
-
 				channel = message_dict['channel']
 				message = message_dict['message']
 				username = message_dict['username']
+
+				ppi(channel, message, username)
 
 				# check if message is a command with no arguments
 				if commands.is_valid_command(message) or commands.is_valid_command(message.split(' ')[0]):

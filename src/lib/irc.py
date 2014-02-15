@@ -37,7 +37,7 @@ class irc:
 		self.sock.send('PRIVMSG %s :%s\n' % (channel, message.encode('utf-8')))
 
 	def get_irc_socket_object(self, config):
-		sock = socket.socket()
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		sock.connect((config['server'], config['port']))
 
 		sock.send('USER %s\r\n' % config['username'])
