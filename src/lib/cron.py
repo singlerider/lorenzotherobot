@@ -3,20 +3,18 @@ from src.imports import *
 
 class cron:
 
-	def __init__(self, irc):
-		self.messages = [
-			'This is cron message one.',
-			'This is the second cron message.'
-		]
-
-		self.runtime = 0 # set to 0 to disable cron messages
+	def __init__(self, irc, channel):
+		self.messages = config['cron'][channel]['cron_messages']
+		self.run_time = config['cron'][channel]['run_time']
 		self.last_index = 0
-		self.last_ran = time.time()
 		self.irc = irc
+		self.channel = channel
 
 	def get_next_message(self):
 		next_index = self.last_index + 1
-		if next_index > 1:
+
+
+		if next_index > len(self.messages) - 1:
 			next_index = 0
 
 		self.last_index = next_index
@@ -24,15 +22,14 @@ class cron:
 		return next_index
 
 	def run(self):
-		if self.runtime == 0:
-			pbot('Cronjob runtime set to 0, exiting thread.')
-			exit()
+		time.sleep(self.run_time)
 		while True:
-			if time.time() - self.last_ran > self.runtime:
-				index = self.get_next_message()
+			index = self.get_next_message()
 
-				pbot('Sending cron message.')
+			pbot('[CRON] %s' % self.messages[index], self.channel)
 
-				self.irc.send_message(self.messages[index])
+			self.irc.send_message(self.channel, self.messages[index])
 
-				self.last_ran = time.time()
+			self.last_ran = time.time()
+
+			time.sleep(self.run_time)

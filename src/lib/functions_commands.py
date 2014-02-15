@@ -21,7 +21,7 @@ valid_commands = {
 	# 	'return': 'command'
 	# },
 
-	'!emote': {
+	'!randomemote': {
 		'limit': 10,
 		'argc': 0,
 		'return': 'command'
@@ -48,7 +48,7 @@ def command_add(args):
 
 
 
-def command_emote():
+def command_randomemote():
 	try:
 		resp = requests.get('http://twitchemotes.com/global.json').json()
 	except:
@@ -191,7 +191,7 @@ def get_return(command):
 
 
 def check_has_args(command):
-	if valid_commands[commmand]['has_args']:
+	if 'argc' in valid_commands[command]:
 		return True
 
 def check_has_correct_args(message, command):
@@ -199,6 +199,9 @@ def check_has_correct_args(message, command):
 	if len(message) - 1 == valid_commands[command]['argc']:
 		return True
 
+def check_returns_function(command):
+	if valid_commands[command]['return'] == 'command': 
+		return True
 
 def pass_to_function(command, args):
 	command = 'command_' + command.replace('!', '')
