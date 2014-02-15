@@ -32,6 +32,16 @@ config = {
 				'This is channel_two cron message one.'
 			]
 		}
-	}
+	},
+
+	# if set to true will display any data received
+	'debug': False,
+
+	# if set to true will log all messages from all channels
+	# todo
+	'log_messages': True,
+
+	# maximum amount of bytes to receive from socket - 1024-4096 recommended
+	'socket_buffer_size': 4096
 }
 
