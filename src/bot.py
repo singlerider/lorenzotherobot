@@ -4,31 +4,29 @@ Simple IRC Bot for Twitch.tv
 Developed by Aidan Thomson <aidraj0@gmail.com>
 """
 
-
-from imports import *
+import lib.irc as irc_
+from lib.functions_general import *
+import lib.functions_commands as commands
 
 class Roboraj:
 
 	def __init__(self, config):
-		self.irc = irc_.irc()
 		self.config = config
-		self.socket = self.irc.get_irc_socket_object(config)
+		self.irc = irc_.irc(config)
+		self.socket = self.irc.get_irc_socket_object()
 
 
 	def run(self):
 		irc = self.irc
 		sock = self.socket
-		
-		# start threads for channels that have cron messages to run
-		for channel in config['channels']:
-			if channel in config['cron']:
-				if config['cron'][channel]['run_cron']:
-					thread.start_new_thread(cron.cron(irc, channel).run, ())
-
-		irc.join_channels(irc.channels_to_string(config['channels']))
+		config = self.config
 
 		while True:
 			data = sock.recv(config['socket_buffer_size']).rstrip()
+
+			if len(data) == 0:
+				po('Connection was lost, reconnecting.')
+				sock = self.irc.get_irc_socket_object()
 
 			if config['debug']:
 				print data
@@ -86,7 +84,7 @@ class Roboraj:
 								command, username), 
 								channel
 							)
-							commands.update_last_used(command)
+							commands.update_last_used(command, channel)
 
 							resp = '(%s) > %s' % (username, commands.get_return(command))
 							commands.update_last_used(command, channel)

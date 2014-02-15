@@ -17,7 +17,7 @@ Installation
 Adding your own commands
 ========================
 
-You're going to need to know basic Python if you want to add your own commands. Open up `lib/functions_commands.py`. There are examples of pre-made functions in there as examples. The limit parameter is the amount of times a command can be used in seconds, if you don't want a limit to be enforced put in 0.
+You're going to need to know basic Python if you want to add your own commands. Open up `lib/command_headers.py`. There are examples of pre-made commands in there as examples. The limit parameter is the amount of times a command can be used in seconds, if you don't want a limit to be enforced put in 0.
 
 If your command is only going to return a string, ex - `!hello` returns `Welcome!`, don't include the `argc` parameter. Place the string you wish to be returned to the user in the `return` parameter. For example, if you wanted to create a command such as this and limit it to being used ever 30 seconds, you would add in:
 
@@ -28,15 +28,15 @@ If your command is only going to return a string, ex - `!hello` returns `Welcome
 }
 ```
 
-However, if your command has to have some logic implemented - if the command is just going to return whatever a function returns, set the `return` parameter on the command to `command`, and set `argc` to `0`. If your command is going to take arguments, ex `!hello <name>`, set argc to `1` or however many arguments the command is going to take in.
+However, if your command has to have some logic implemented and if the command is just going to return whatever a function returns, set the `return` parameter on the command to `command`, and set `argc` to `0`. If your command is going to take arguments, ex `!hello <name>`, set argc to `1` or however many arguments the command is going to take in.
 
-Below the `valid_commands` dictionary, add a function that's name follows the syntax of `command_<command name>`. If your `argc` was set to `0`, don't include `args` in the functions parameters, else set the only parameter to `args`. Args will contain a list of whatever arguments were passed to the command.
+Make a new file in `lib/commands/` and give the filename `command.py` where command is the command name. If your `argc` was set to `0`, don't include `args` in the functions parameters, else set the only parameter to `args`. Args will contain a list of whatever arguments were passed to the command.
 
 This command will contain whatever logic needs to be carried out. You should validate the arguments in there. After you have the response that you want a user to see, just `return` it.
 
 Let's say we want to add a command which will take two arguments, we will call it `!random` and it will take a `minimum` and `maximum` argument. We will limit this command to be allowed to be called every 20 seconds.
 
-Import the `random` library, and add the following to the `valid_commands` dictionary:
+Add the following to the `commands` dictionary:
 
 ```python
 '!random': {
@@ -46,10 +46,12 @@ Import the `random` library, and add the following to the `valid_commands` dicti
 }
 ```
 
-And then below that, add the following: 
+And then in `lib/commands/random.py` , write the following: 
 
 ```python
-def command_random(args):
+import random
+
+def random(args):
   min = args[0]
   max = args[1]
     

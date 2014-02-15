@@ -1,5 +1,6 @@
 import time
-from src.imports import config
+from src.config.config import *
+from functions_general import *
 
 class cron:
 
