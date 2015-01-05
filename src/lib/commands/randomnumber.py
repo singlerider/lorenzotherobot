@@ -1,0 +1,15 @@
+import random
+import time
+
+random.seed(time.time())
+
+def randomnumber():
+    usage = '!randomnumber'
+      # carry out validation
+    try:
+        num = range(10,50)
+        return num[random.randint(0,len(num) - 1)]
+    except ValueError:
+        return '!randomnumber'
+    except:
+        return usage

@@ -45,14 +45,16 @@ def check_returns_function(command):
 		return True
 
 def pass_to_function(command, args):
-	command = command.replace('!', '')
-
-	module = importlib.import_module('src.lib.commands.%s' % command)
-	function = getattr(module, command)
-
-	if args:
-		# need to reference to src.lib.commands.<command
-		return function(args)
-	else:
-		# need to reference to src.lib.commands.<command
-		return function()
+	try:
+		command = command.replace('!', '')	
+		module = importlib.import_module('src.lib.commands.%s' % command)
+		reload(module)
+		function = getattr(module, command)
+		if args:
+			# need to reference to src.lib.commands.<command
+			return function(args)
+		else:
+			# need to reference to src.lib.commands.<command
+			return function()
+	except:
+		return 'Command Unavailable'
