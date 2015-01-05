@@ -17,6 +17,10 @@ class Roboraj:
 
 
 	def run(self):
+		"""
+
+		:rtype : object
+		"""
 		irc = self.irc
 		sock = self.socket
 		config = self.config

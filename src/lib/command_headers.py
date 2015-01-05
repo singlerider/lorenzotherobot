@@ -1,21 +1,31 @@
 from src.config.config import *
 
 commands = {
-	'!test': {
-		'limit': 30,
-		'return': 'This is a test!'
+
+	'!addlorenzo': {
+		'limit': 5,
+		'return': 'working on it'
+		
 	},
 
-	'!randomemote': {
+	'!dellorenzo': {
+		'limit': 5,
+		'return': 'Dude, one step at a time.'
+	},
+
+	'!chair': {
+		'limit': 30,
+		'return': "There's a chair over there!"
+	},
+
+	'!rails': {
 		'limit': 180,
-		'argc': 0,
-		'return': 'command'
+		'return': "RUST, GIVE ME THE FUNKIN' RAILS"
 	},
 
-	'!wow': {
-		'limit': 30,
-		'argc': 3,
-		'return': 'command'
+	'!boom': {
+		'limit': 0,
+		'return': 'boom! headshot!'
 	}
 }
 
