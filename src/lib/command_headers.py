@@ -66,7 +66,36 @@ commands = {
 	'!rules': {
 		'limit': 20,
 		'return': "1. No sexual harassment 2.Be respectful in the chat 3. No asking for mod, it will be earned 4. No advertising channels 5. Don't be annoying with spam in the chat. Lastly, have fun!"		
-	}
+	},
+		
+	'!welcome': {
+		'limit': 20,
+		'return': "Welcome to the stream. You are now a Llama! If you'd like to know how we do things, type !rules."
+	},
+		
+	'!pwv': {
+		'limit': 5,
+		'return': 'If you would like to play with Amanda send the message INV to curvy8ubbles.'	
+			
+	},
+		
+	'!links': {
+		'limit': 5,
+		'return': 'DO NOT POST LINKS unless its approved by mods or curvy!'
+			
+	},
+		
+	'!daddy': {
+		'limit': 0,
+		'return': 'DADDYS BACK YOU BITCHES!!!!!!!!'	
+			
+	},
+    '!kavinsky': {
+        'limit': 5,
+        'return': 'And it will forever be known as... the ghost car.'
+                  
+    }
+            
 }
 
 
