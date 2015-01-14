@@ -1,9 +1,17 @@
 from src.config.config import *
 
 def addcom():
-    pass
+    return "hey dude"
+
 
 commands = {
+            
+    '!commands': {
+        'limit': 10,
+        'argc': 0,
+        'return': 'command'
+                  
+    },       
 
 	'!addlorenzo': {
 		'limit': 5,
@@ -41,6 +49,13 @@ commands = {
 		'argc': 0,
 		'return': 'command'
 	},
+            
+    '!mball': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+               
+    },
 		
 	'!q': {
 		'limit': 0,
@@ -97,11 +112,6 @@ commands = {
     }
             
 }
-
-
-
-
-
 
 
 
