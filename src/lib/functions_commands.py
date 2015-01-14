@@ -4,12 +4,10 @@ from src.config.config import *
 from commands import *
 from command_headers import *
 
-
 import importlib
 
 def is_valid_command(command):
 	if command in commands:
-		time.sleep(1)
 		return True
 
 def update_last_used(command, channel):
