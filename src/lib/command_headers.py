@@ -11,7 +11,27 @@ commands = {
         'argc': 0,
         'return': 'command'
                   
-    },       
+    },
+            
+    '!addcom': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                
+    },
+    
+    '!weather': {
+        'limit': 10,
+        'argc': 2,
+        'return': 'command'
+                 
+    },
+            
+    '!wow': {
+        'limit': 0,
+        'argc': 3,
+        'return': 'command'     
+    },
 
 	'!addlorenzo': {
 		'limit': 5,
@@ -77,7 +97,55 @@ commands = {
 		'return': 'https://www.facebook.com/AmandaDefrance http://instagram.com/amanda_defrance https://twitter.com/Amanda_Defrance https://vine.co/AmandaDefrance https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
 	
 	},
-	
+            
+    '!facebook': {
+        'limit': 10,
+        'return': "https://www.facebook.com/AmandaDefrance"
+                  
+    },
+            
+     '!fb': {
+        'limit': 10,
+        'return': "https://www.facebook.com/AmandaDefrance"
+                  
+    },
+            
+     '!instagram': {
+        'limit': 10,
+        'return': "http://instagram.com/amanda_defrance"
+                  
+    },
+            
+     '!ig': {
+        'limit': 10,
+        'return': "http://instagram.com/amanda_defrance"
+                  
+    },
+            
+    '!twitter': {
+        'limit': 10,
+        'return': "https://twitter.com/Amanda_Defrance"
+                 
+    },
+            
+    '!vine': {
+        'limit': 10,
+        'return': "https://vine.co/AmandaDefrance"
+                 
+    },
+            
+	'!youtube': {
+        'limit': 10,
+        'return': 'https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
+                 
+    },
+    
+    '!yt': {
+        'limit': 10,
+        'return': 'https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
+                 
+    },
+    
 	'!rules': {
 		'limit': 20,
 		'return': "1. No sexual harassment 2.Be respectful in the chat 3. No asking for mod, it will be earned 4. No advertising channels 5. Don't be annoying with spam in the chat. Lastly, have fun!"		
@@ -105,10 +173,80 @@ commands = {
 		'return': 'DADDYS BACK YOU BITCHES!!!!!!!!'	
 			
 	},
+            
     '!kavinsky': {
         'limit': 5,
         'return': 'And it will forever be known as... the ghost car.'
                   
+    },
+            
+    '!sunday': {
+        'limit': 0,
+        'return': '(Metal Gear) Solid Sundays with Amanda and Shane!'
+    }, 
+    
+    '!monday': {
+        'limit': 0,
+        'return': 'Minecraft Mondays with JoeCow and Phin!'
+    },
+    
+    '!shane':  {
+        'limit': 10,
+        'return': "Shane's the robot dude that helps Amanda stream sometimes. He has a chip implanted in his left hand and a magnet implanted in each ring finger and nanomachines Kappa. His username is 'singlerider'."
+                
+    },
+            
+    '!james': {
+        'limit': 10,
+        'return': "James is the guy the you guys commonly hear in the background while Amanda streams. He does IT work as his job and is really good with computers. His username is 'peligrosocortez'."               
+    },
+            
+    '!cry': {
+        'limit': 0,
+        'return': 'BibleThump BibleThump BibleThump'
+             
+    },
+    
+    '!duck': {
+        'limit': 0,
+        'return': 'FUCK DUCK! FUCK DUCK!'
+              
+    },
+            
+    '!saturday': {
+        'limit': 0,
+        'return': 'Saturdays are #shityourpantssaturday (#syps). Amanda plays scary games all night.'
+    },
+            
+    '!rustemperor': {
+        'limit': 100000,
+        'return': "Rust is Curvyllama's most famous troll. If only he'd remember that she's going for a subscribe button..."
+     #   'return': 'FUCK RUST! FUCK RUST!'
+          
+    },
+    
+    '!ny': {
+        'limit': 10,
+        'return': "NewYork_Triforce is here to RKO trolls outta nowhere!!!"
+    
+    },
+            
+    '!rebecca': {
+        'limit': 0,
+        'return': 'dat fat bitch and her baby needs 2 die.'
+                 
+    },
+    
+    '!clementine': {
+        'limit': 0,       
+        'return': 'Leave little Carl alone! BibleThump!'
+    
+    },
+            
+    '!lee': {
+        'limit': 0,
+        'return': '"Clem, keep that hair short."'
+             
     }
             
 }
