@@ -1,7 +1,7 @@
 import random
 
-def mball():
-    usage = '!mball'
+def opinion():
+    usage = '!opinion'
     '''Return a random entry from the shuffled list'''
 
     answers = ['It is certain', 'It is decidedly so', 'Without a doubt', \
@@ -12,7 +12,7 @@ def mball():
         'My reply is no', 'My sources say no', 'Outlook not so good', \
         'Very doubtful'
     ]
-    response = 'Magic Ball says: ' + random.choice(answers)
+    response = 'Lorenzo says: ' + random.choice(answers) + ", dude"
 
     random.shuffle(answers)
 

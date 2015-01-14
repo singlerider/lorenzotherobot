@@ -13,6 +13,13 @@ commands = {
                   
     },
             
+    '!opinion': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                 
+    },
+            
     '!addcom': {
         'limit': 0,
         'argc': 0,
