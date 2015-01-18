@@ -3,6 +3,9 @@ from functions_general import *
 import cron
 import thread
 
+
+threshold = 5 * 60 # five minutes, make this whatever you want
+
 class irc:
 	
 	def __init__(self, config):
@@ -22,8 +25,14 @@ class irc:
 			return True
 
 	def check_for_ping(self, data):
-		if data[:4] == "PING": 
-			self.sock.send('PONG')
+		
+		last_ping = time.time()
+		#if data[0:4] == "PING":
+		if data.find ( 'PING' ) != -1:
+			self.sock.send( 'PONG ' + data.split() [ 1 ] + '\r\n' )
+			last_ping = time.time()
+		if (time.time() - last_ping) > threshold:
+			sys.exit()
 
 	def get_message(self, data):
 		return {
