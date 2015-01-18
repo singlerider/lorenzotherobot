@@ -254,7 +254,21 @@ commands = {
         'limit': 0,
         'return': '"Clem, keep that hair short."'
              
-    }
+    },
+            
+    '!pokemon' : {
+        'limit': 15,
+        'argc': 0,
+        'return': 'command'
+                  
+    },
+            
+    #'!pokemon2' : {
+    #    'limit': 0,
+    #    'argc': 0,
+    #    'return': 'command'
+                   
+    #}
             
 }
 
