@@ -244,7 +244,7 @@ commands = {
                  
     },
     
-    '!clementine': {
+    '!clem': {
         'limit': 0,       
         'return': 'Leave little Carl alone! BibleThump!'
     
