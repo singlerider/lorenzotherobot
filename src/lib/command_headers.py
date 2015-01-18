@@ -260,7 +260,7 @@ commands = {
 		'limit': 0,
 		'return': "Friendly!! Don't shoot! \Kappa/"
 
-    }
+    },
 
             
     '!pokemon' : {
