@@ -77,10 +77,10 @@ commands = {
 		'return': 'command'
 	},
             
-    '!mball': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
+	'!mball': {
+        	'limit': 0,
+        	'argc': 0,
+        	'return': 'command'
                
     },
 		
@@ -254,6 +254,12 @@ commands = {
         'limit': 0,
         'return': '"Clem, keep that hair short."'
              
+    },
+
+	'!friendly': {
+		'limit': 0,
+		'return': "Friendly!! Don't shoot! \Kappa/"
+
     }
             
 }

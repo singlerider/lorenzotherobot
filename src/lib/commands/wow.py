@@ -62,12 +62,14 @@ def wow(args):
 				else:
 					guild = ''
 
-				resp = '%s of <%s> is a level %s %s %s from %s. They have %s achievement points and %s honorable kills.' % (
+				resp = '%s of %s is a level %s %s %s from %s. They have %s achievement points and %s honorable kills.' % (
 					name, guild, level, race, class_, realm, achievp, totalhks
 				)
 
-				resp = resp.replace(' of <>', '')
+				resp = resp.replace(' of >', '')
+				resp = resp.replace(' of <', '')
 
+				return resp
 				return resp
 			except:
 				return 'Error parsing data from API.'
