@@ -255,12 +255,29 @@ commands = {
         'return': '"Clem, keep that hair short."'
              
     },
+<<<<<<< HEAD
 
 	'!friendly': {
 		'limit': 0,
 		'return': "Friendly!! Don't shoot! \Kappa/"
 
     }
+=======
+            
+    '!pokemon' : {
+        'limit': 15,
+        'argc': 0,
+        'return': 'command'
+                  
+    },
+            
+    #'!pokemon2' : {
+    #    'limit': 0,
+    #    'argc': 0,
+    #    'return': 'command'
+                   
+    #}
+>>>>>>> fc468b80d6d4c0332513490dad4352e124cbd6dc
             
 }
 
