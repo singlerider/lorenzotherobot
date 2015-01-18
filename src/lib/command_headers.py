@@ -268,7 +268,7 @@ commands = {
         'argc': 0,
         'return': 'command'
                   
-    },
+    }
             
     #'!pokemon2' : {
     #    'limit': 0,
