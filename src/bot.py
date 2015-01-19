@@ -7,10 +7,10 @@ Developed by Aidan Thomson <aidraj0@gmail.com>
 import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
+import sys
 
 
-
-class Roboraj:
+class Roboraj(object):
 
 	def __init__(self, config):
 		self.config = config
@@ -97,3 +97,18 @@ class Roboraj:
 
 							pbot(resp, channel)
 							irc.send_message(channel, resp)
+
+
+class Logger(Roboraj):
+	def __init__(self, config, filename="Default.log"):
+		super(Logger, self).__init__(config)
+		self.terminal = sys.stdout
+		sys.stdout = self
+		self.log = open(filename, "a")
+	def write(self, message):
+		self.terminal.write(message)
+		self.log.write(message)
+		self.log.flush()
+
+#sys.stdout = Logger("yourlogfilename.txt")
+print "Lorenzo's Log!" # this is should be saved in yourlogfilename.txt
