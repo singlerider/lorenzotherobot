@@ -320,7 +320,8 @@ def pokemon():
             [ 'Dragonair ', ('Dragon', ) , '' ],
             [ 'Dragonite ', ('Dragon' , 'Flying') , '' ],
             [ 'Mewtwo ', ('Psychic', ) , '' ],
-            [ 'Mew ', ('Psychic', ) , '' ]
+            [ 'Mew ', ('Psychic', ) , '' ],
+            [ 'Missingno', ('Normal', 'Flying') , '' ]
             ]
     
     #One-line for loop that runs through pokemondetaillist, searching only the first column    
