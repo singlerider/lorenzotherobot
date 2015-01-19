@@ -264,11 +264,24 @@ commands = {
 
             
     '!pokemon' : {
-        'limit': 15,
+        'limit': 0,
         'argc': 0,
         'return': 'command'
                   
-    }
+    },
+
+	'!ben': {
+		'limit': 0,
+		'return': 'fuck ben! fuck ben!'
+
+
+	},
+
+	'!zombie': {
+
+		'limit': 15,
+		'return': 'the_polite_zombie is the original quicker picker upper'
+	}
             
     #'!pokemon2' : {
     #    'limit': 0,
