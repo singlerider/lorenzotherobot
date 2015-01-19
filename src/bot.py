@@ -106,8 +106,8 @@ class Logger(Roboraj):
 		sys.stdout = self
 		self.log = open(filename, "a")
 	def write(self, message):
-		self.terminal.write(message)
-		self.log.write(message)
+		self.terminal.write(message.encode('utf8'))
+		self.log.write(message.encode('utf8'))
 		self.log.flush()
 
 #sys.stdout = Logger("yourlogfilename.txt")
