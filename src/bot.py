@@ -106,9 +106,16 @@ class Logger(Roboraj):
 		sys.stdout = self
 		self.log = open(filename, "a")
 	def write(self, message):
-		self.terminal.write(message.encode('utf8'))
-		self.log.write(message.encode('utf8'))
-		self.log.flush()
+		try:
+			safe_message = unicode(message).encode('utf8', 'ignore')
+			self.terminal.write(safe_message)
+			self.log.write(safe_message)
+		except Exception as err:
+			self.log.write("Unhandled error:\n" + str(err))
+			import traceback
+			traceback.print_exc(file=self.log)
+		finally:
+			self.log.flush()
 
 #sys.stdout = Logger("yourlogfilename.txt")
 print "Lorenzo's Log!" # this is should be saved in yourlogfilename.txt
