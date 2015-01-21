@@ -4,13 +4,15 @@ import time
 def pokemon():
     
     usage = '!pokemon'
-
-    types = [ 'Normal', 'Fire', 'Fighting', 'Water', 'Flying', 'Grass', 'Poison', 'Electric', 'Ground', \
-             'Psychic', 'Rock', 'Ice', 'Bug', 'Dragon', 'Ghost', 'Dark', 'Steel', 'Fairy']
     
     
-    #Nested dictionary with different pokemon types with defensive damage modifiers (higher number means 'more vulnerable to')
-    multipliers = { 'Normal': {
+    #Early prototype of a types list
+    #types = [ 'Normal', 'Fire', 'Fighting', 'Water', 'Flying', 'Grass', 'Poison', 'Electric', 'Ground', \
+    #        'Psychic', 'Rock', 'Ice', 'Bug', 'Dragon', 'Ghost', 'Dark', 'Steel', 'Fairy']
+    
+    
+    # Nested dictionary with different pokemon types with defensive damage modifiers (higher number means 'more vulnerable to')
+    multipliers = {'Normal': {
                            'Fighting': 2.0,
                            'Ghost': 0.0,
                            },
@@ -90,7 +92,7 @@ def pokemon():
                              'Ice': 0.5,
                              'Dragon': 0.5,
                              'Fairy': 0.5
-                             }, 
+                             },
                    'Fire': {
                             'Ground': 2.0,
                             'Rock': 2.0,
@@ -169,18 +171,18 @@ def pokemon():
                     }
     
     
-    #Pokemon and their type(s), in the form of a list
-    pokemondetaillist = [[ 'Bulbasaur ', ('Grass' , 'Poison') , '' ],
+    # Pokemon and their type(s), in the form of a list
+    pokemon_list = [[ 'Bulbasaur ', ('Grass' , 'Poison') , '' ],
             [ 'Ivysaur ', ('Grass' , 'Poison') , '' ],
             [ 'Venusaur ', ('Grass' , 'Poison') , '' ],
-            [ 'Charmander ', ('Fire', ) , '' ],
-            [ 'Charmeleon ', ('Fire', ) , '' ],
+            [ 'Charmander ', ('Fire',) , '' ],
+            [ 'Charmeleon ', ('Fire',) , '' ],
             [ 'Charizard ', ('Fire' , 'Flying') , '' ],
-            [ 'Squirtle ', ('Water', ) , '' ],
-            [ 'Wartortle ', ('Water', ) , '' ],
-            [ 'Blastoise ', ('Water', ) , '' ],
-            [ 'Caterpie ', ('Bug', ) , '' ],
-            [ 'Metapod ', ('Bug', ) , '' ],
+            [ 'Squirtle ', ('Water',) , '' ],
+            [ 'Wartortle ', ('Water',) , '' ],
+            [ 'Blastoise ', ('Water',) , '' ],
+            [ 'Caterpie ', ('Bug',) , '' ],
+            [ 'Metapod ', ('Bug',) , '' ],
             [ 'Butterfree ', ('Bug' , 'Flying') , '' ],
             [ 'Weedle ', ('Bug' , 'Poison') , '' ],
             [ 'Kakuna ', ('Bug' , 'Poison') , '' ],
@@ -188,26 +190,26 @@ def pokemon():
             [ 'Pidgey ', ('Normal' , 'Flying') , '' ],
             [ 'Pidgeotto ', ('Normal' , 'Flying') , '' ],
             [ 'Pidgeot ', ('Normal' , 'Flying') , '' ],
-            [ 'Rattata ', ('Normal', ) , '' ],
-            [ 'Raticate ', ('Normal', ) , '' ],
+            [ 'Rattata ', ('Normal',) , '' ],
+            [ 'Raticate ', ('Normal',) , '' ],
             [ 'Spearow ', ('Normal' , 'Flying') , '' ],
             [ 'Fearow ', ('Normal' , 'Flying') , '' ],
-            [ 'Ekans ', ('Poison', ) , '' ],
-            [ 'Arbok ', ('Poison', ) , '' ],
-            [ 'Pikachu ', ('Electric', ) , '' ],
-            [ 'Raichu ', ('Electric', ) , '' ],
-            [ 'Sandshrew ', ('Ground', ) , '' ],
-            [ 'Sandslash ', ('Ground', ) , '' ],
-            [ 'Nidoran Female ', ('Poison', ) , '' ],
-            [ 'Nidorina ', ('Poison', ) , '' ],
+            [ 'Ekans ', ('Poison',) , '' ],
+            [ 'Arbok ', ('Poison',) , '' ],
+            [ 'Pikachu ', ('Electric',) , '' ],
+            [ 'Raichu ', ('Electric',) , '' ],
+            [ 'Sandshrew ', ('Ground',) , '' ],
+            [ 'Sandslash ', ('Ground',) , '' ],
+            [ 'Nidoran Female ', ('Poison',) , '' ],
+            [ 'Nidorina ', ('Poison',) , '' ],
             [ 'Nidoqueen ', ('Poison' , 'Ground') , '' ],
-            [ 'Nidoran Male ', ('Poison', ) , '' ],
-            [ 'Nidorino ', ('Poison', ) , '' ],
+            [ 'Nidoran Male ', ('Poison',) , '' ],
+            [ 'Nidorino ', ('Poison',) , '' ],
             [ 'Nidoking ', ('Poison' , 'Ground') , '' ],
-            [ 'Clefairy ', ('Fairy', ) , '' ],
-            [ 'Clefable ', ('Fairy', ) , '' ],
-            [ 'Vulpix ', ('Fire', ) , '' ],
-            [ 'Ninetales ', ('Fire', ) , '' ],
+            [ 'Clefairy ', ('Fairy',) , '' ],
+            [ 'Clefable ', ('Fairy',) , '' ],
+            [ 'Vulpix ', ('Fire',) , '' ],
+            [ 'Ninetales ', ('Fire',) , '' ],
             [ 'Jigglypuff ', ('Normal' , 'Fairy') , '' ],
             [ 'Wigglytuff ', ('Normal' , 'Fairy') , '' ],
             [ 'Zubat ', ('Poison' , 'Flying') , '' ],
@@ -219,25 +221,25 @@ def pokemon():
             [ 'Parasect ', ('Bug' , 'Grass') , '' ],
             [ 'Venonat ', ('Bug' , 'Poison') , '' ],
             [ 'Venomoth ', ('Bug' , 'Poison') , '' ],
-            [ 'Diglett ', ('Ground', ) , '' ],
-            [ 'Dugtrio ', ('Ground', ) , '' ],
-            [ 'Meowth ', ('Normal', ) , '' ],
-            [ 'Persian ', ('Normal', ) , '' ],
-            [ 'Psyduck ', ('Water', ) , '' ],
-            [ 'Golduck ', ('Water', ) , '' ],
-            [ 'Mankey ', ('Fighting', ) , '' ],
-            [ 'Primeape ', ('Fighting', ) , '' ],
-            [ 'Growlithe ', ('Fire', ) , '' ],
-            [ 'Arcanine ', ('Fire', ) , '' ],
-            [ 'Poliwag ', ('Water', ) , '' ],
-            [ 'Poliwhirl ', ('Water', ) , '' ],
+            [ 'Diglett ', ('Ground',) , '' ],
+            [ 'Dugtrio ', ('Ground',) , '' ],
+            [ 'Meowth ', ('Normal',) , '' ],
+            [ 'Persian ', ('Normal',) , '' ],
+            [ 'Psyduck ', ('Water',) , '' ],
+            [ 'Golduck ', ('Water',) , '' ],
+            [ 'Mankey ', ('Fighting',) , '' ],
+            [ 'Primeape ', ('Fighting',) , '' ],
+            [ 'Growlithe ', ('Fire',) , '' ],
+            [ 'Arcanine ', ('Fire',) , '' ],
+            [ 'Poliwag ', ('Water',) , '' ],
+            [ 'Poliwhirl ', ('Water',) , '' ],
             [ 'Poliwrath ', ('Water' , 'Fighting') , '' ],
-            [ 'Abra ', ('Psychic', ) , '' ],
-            [ 'Kadabra ', ('Psychic', ) , '' ],
-            [ 'Alakazam ', ('Psychic', ) , '' ],
-            [ 'Machop ', ('Fighting', ) , '' ],
-            [ 'Machoke ', ('Fighting', ) , '' ],
-            [ 'Machamp ', ('Fighting', ) , '' ],
+            [ 'Abra ', ('Psychic',) , '' ],
+            [ 'Kadabra ', ('Psychic',) , '' ],
+            [ 'Alakazam ', ('Psychic',) , '' ],
+            [ 'Machop ', ('Fighting',) , '' ],
+            [ 'Machoke ', ('Fighting',) , '' ],
+            [ 'Machamp ', ('Fighting',) , '' ],
             [ 'Bellsprout ', ('Grass' , 'Poison') , '' ],
             [ 'Weepinbell ', ('Grass' , 'Poison') , '' ],
             [ 'Victreebel ', ('Grass' , 'Poison') , '' ],
@@ -246,8 +248,8 @@ def pokemon():
             [ 'Geodude ', ('Rock' , 'Ground') , '' ],
             [ 'Graveler ', ('Rock' , 'Ground') , '' ],
             [ 'Golem ', ('Rock' , 'Ground') , '' ],
-            [ 'Ponyta ', ('Fire', ) , '' ],
-            [ 'Rapidash ', ('Fire', ) , '' ],
+            [ 'Ponyta ', ('Fire',) , '' ],
+            [ 'Rapidash ', ('Fire',) , '' ],
             [ 'Slowpoke ', ('Water' , 'Psychic') , '' ],
             [ 'Slowbro ', ('Water' , 'Psychic') , '' ],
             [ 'Magnemite ', ('Electric' , 'Steel') , '' ],
@@ -255,112 +257,112 @@ def pokemon():
             [ "Farfetch'd ", ('Normal' , 'Flying') , '' ],
             [ 'Doduo ', ('Normal' , 'Flying') , '' ],
             [ 'Dodrio ', ('Normal' , 'Flying') , '' ],
-            [ 'Seel ', ('Water', ) , '' ],
+            [ 'Seel ', ('Water',) , '' ],
             [ 'Dewgong ', ('Water' , 'Ice') , '' ],
-            [ 'Grimer ', ('Poison', ) , '' ],
-            [ 'Muk ', ('Poison', ) , '' ],
-            [ 'Shellder ', ('Water', ) , '' ],
+            [ 'Grimer ', ('Poison',) , '' ],
+            [ 'Muk ', ('Poison',) , '' ],
+            [ 'Shellder ', ('Water',) , '' ],
             [ 'Cloyster ', ('Water' , 'Ice') , '' ],
             [ 'Gastly ', ('Ghost' , 'Poison') , '' ],
             [ 'Haunter ', ('Ghost' , 'Poison') , '' ],
             [ 'Gengar ', ('Ghost' , 'Poison') , '' ],
             [ 'Onix ', ('Rock' , 'Ground') , '' ],
-            [ 'Drowzee ', ('Psychic', ) , '' ],
-            [ 'Hypno ', ('Psychic', ) , '' ],
-            [ 'Krabby ', ('Water', ) , '' ],
-            [ 'Kingler ', ('Water', ) , '' ],
-            [ 'Voltorb ', ('Electric', ) , '' ],
-            [ 'Electrode ', ('Electric', ) , '' ],
+            [ 'Drowzee ', ('Psychic',) , '' ],
+            [ 'Hypno ', ('Psychic',) , '' ],
+            [ 'Krabby ', ('Water',) , '' ],
+            [ 'Kingler ', ('Water',) , '' ],
+            [ 'Voltorb ', ('Electric',) , '' ],
+            [ 'Electrode ', ('Electric',) , '' ],
             [ 'Exeggcute ', ('Grass' , 'Psychic') , '' ],
             [ 'Exeggutor ', ('Grass' , 'Psychic') , '' ],
-            [ 'Cubone ', ('Ground', ) , '' ],
-            [ 'Marowak ', ('Ground', ) , '' ],
-            [ 'Hitmonlee ', ('Fighting', ) , '' ],
-            [ 'Hitmonchan ', ('Fighting', ) , '' ],
-            [ 'Lickitung ', ('Normal', ) , '' ],
-            [ 'Koffing ', ('Poison', ) , '' ],
-            [ 'Weezing ', ('Poison', ) , '' ],
+            [ 'Cubone ', ('Ground',) , '' ],
+            [ 'Marowak ', ('Ground',) , '' ],
+            [ 'Hitmonlee ', ('Fighting',) , '' ],
+            [ 'Hitmonchan ', ('Fighting',) , '' ],
+            [ 'Lickitung ', ('Normal',) , '' ],
+            [ 'Koffing ', ('Poison',) , '' ],
+            [ 'Weezing ', ('Poison',) , '' ],
             [ 'Rhyhorn ', ('Ground' , 'Rock') , '' ],
             [ 'Rhydon ', ('Ground' , 'Rock') , '' ],
-            [ 'Chansey ', ('Normal', ) , '' ],
-            [ 'Tangela ', ('Grass', ) , '' ],
-            [ 'Kangaskhan ', ('Normal', ) , '' ],
-            [ 'Horsea ', ('Water', ) , '' ],
-            [ 'Seadra ', ('Water', ) , '' ],
-            [ 'Goldeen ', ('Water', ) , '' ],
-            [ 'Seaking ', ('Water', ) , '' ],
-            [ 'Staryu ', ('Water', ) , '' ],
+            [ 'Chansey ', ('Normal',) , '' ],
+            [ 'Tangela ', ('Grass',) , '' ],
+            [ 'Kangaskhan ', ('Normal',) , '' ],
+            [ 'Horsea ', ('Water',) , '' ],
+            [ 'Seadra ', ('Water',) , '' ],
+            [ 'Goldeen ', ('Water',) , '' ],
+            [ 'Seaking ', ('Water',) , '' ],
+            [ 'Staryu ', ('Water',) , '' ],
             [ 'Starmie ', ('Water' , 'Psychic') , '' ],
             [ 'Mime ', ('Mr.' , 'Mime') , '' ],
             [ 'Scyther ', ('Bug' , 'Flying') , '' ],
             [ 'Jynx ', ('Ice' , 'Psychic') , '' ],
-            [ 'Electabuzz ', ('Electric', ) , '' ],
-            [ 'Magmar ', ('Fire', ) , '' ],
-            [ 'Pinsir ', ('Bug', ) , '' ],
-            [ 'Tauros ', ('Normal', ) , '' ],
-            [ 'Magikarp ', ('Water', ) , '' ],
+            [ 'Electabuzz ', ('Electric',) , '' ],
+            [ 'Magmar ', ('Fire',) , '' ],
+            [ 'Pinsir ', ('Bug',) , '' ],
+            [ 'Tauros ', ('Normal',) , '' ],
+            [ 'Magikarp ', ('Water',) , '' ],
             [ 'Gyarados ', ('Water' , 'Flying') , '' ],
             [ 'Lapras ', ('Water' , 'Ice') , '' ],
-            [ 'Ditto ', ('Normal', ) , '' ],
-            [ 'Eevee ', ('Normal', ) , '' ],
-            [ 'Vaporeon ', ('Water', ) , '' ],
-            [ 'Jolteon ', ('Electric', ) , '' ],
-            [ 'Flareon ', ('Fire', ) , '' ],
-            [ 'Porygon ', ('Normal', ) , '' ],
+            [ 'Ditto ', ('Normal',) , '' ],
+            [ 'Eevee ', ('Normal',) , '' ],
+            [ 'Vaporeon ', ('Water',) , '' ],
+            [ 'Jolteon ', ('Electric',) , '' ],
+            [ 'Flareon ', ('Fire',) , '' ],
+            [ 'Porygon ', ('Normal',) , '' ],
             [ 'Omanyte ', ('Rock' , 'Water') , '' ],
             [ 'Omastar ', ('Rock' , 'Water') , '' ],
             [ 'Kabuto ', ('Rock' , 'Water') , '' ],
             [ 'Kabutops ', ('Rock' , 'Water') , '' ],
             [ 'Aerodactyl ', ('Rock' , 'Flying') , '' ],
-            [ 'Snorlax ', ('Normal', ) , '' ],
+            [ 'Snorlax ', ('Normal',) , '' ],
             [ 'Articuno ', ('Ice' , 'Flying') , '' ],
             [ 'Zapdos ', ('Electric' , 'Flying') , '' ],
             [ 'Moltres ', ('Fire' , 'Flying') , '' ],
-            [ 'Dratini ', ('Dragon', ) , '' ],
-            [ 'Dragonair ', ('Dragon', ) , '' ],
+            [ 'Dratini ', ('Dragon',) , '' ],
+            [ 'Dragonair ', ('Dragon',) , '' ],
             [ 'Dragonite ', ('Dragon' , 'Flying') , '' ],
-            [ 'Mewtwo ', ('Psychic', ) , '' ],
-            [ 'Mew ', ('Psychic', ) , '' ],
+            [ 'Mewtwo ', ('Psychic',) , '' ],
+            [ 'Mew ', ('Psychic',) , '' ],
             [ 'Missingno', ('Normal', 'Flying') , '' ]
             ]
     
-    #One-line for loop that runs through pokemondetaillist, searching only the first column    
-    pocketmonster = [x[0] for x in pokemondetaillist]
+    # One-line for loop that runs through pokemondetaillist, searching only the first column    
+    pocket_monster = [x[0] for x in pokemon_list]
     
-    #Grabs multiplier of pokemon based on name[type]
-    def getmultiplier(pokemon1type, pokemon2type):
-        p1 = 1.0
-        try:
-            print "dict['Name']: ", multipliers['Name'];
-            print "dict['Age']: ", multipliers['Age'];
-        except:
-            print "Whoops"            
-                        
-        
+    # Grabs multiplier of pokemon based on name[type]
     
-    #Script that handles battle    
+    def get_multiplier(pokemon_1_type, pokemon_2_type):
+        default = 1.0
+        for i in multiplier:
+            for j in multiplier:
+                try:
+                    print "dict['Name']: ", multipliers[0];
+                    print "dict['Age']: ", multipliers[1];
+                except:
+                    print "Whoops"            
+     
+    # Script that handles battle    
     def battle():
-        #Establishes two randomly selected pokemon as independent variables
-        pokemon1 = random.choice (pocketmonster)
-        pokemon2 = random.choice (pocketmonster)
+        # Establishes two randomly selected pokemon as independent variables
+        pokemon_1 = random.choice (pocket_monster)
+        pokemon_2 = random.choice (pocket_monster)
         
-        #Establishes the two selected pokemon as a concatenation 
-        versus = "It's: " + pokemon1 + " versus " + pokemon2 + ", dude!"
+        # Establishes the two selected pokemon as a concatenation 
+        versus = "It's: " + pokemon_1 + " versus " + pokemon_2 + ", dude!"
         
-        #Establishes the two selected pokemon to battle
-        versuslist = [pokemon1, pokemon2]
+        # Establishes the two selected pokemon to battle
+        versus_list = [pokemon_1, pokemon_2]
         
-        #Sets variable for winner between pokemon1 and pokemon2
-        winner = random.choice(versuslist) + " Wins!"
+        # Sets variable for winner between pokemon1 and pokemon2
+        winner = random.choice(versus_list) + " Wins!"
         
-        #Allows for random selection from each list
-        random.shuffle(pokemondetaillist)
-        random.shuffle(versuslist)
+        # Allows for random selection from each list
+        random.shuffle(pokemon_list)
+        random.shuffle(versus_list)
         
-        #Concatenates results of versus and winner, separated by a space
+        # Concatenates results of versus and winner, separated by a space
         return " ".join([versus, winner])
-
-    
-    #return getmultiplier()    
+  
+    # return getmultiplier()    
     return battle()
         

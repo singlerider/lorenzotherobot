@@ -1,5 +1,4 @@
 # coding: utf8
-
 import requests
 
 def wow(args):

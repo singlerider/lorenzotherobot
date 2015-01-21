@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
+# coding: utf8
 from BeautifulSoup import BeautifulStoneSoup
 import urllib
 
-def weather(args): # !weather <city> or !weather <city>, <state or country>
+def weather(args):  # !weather <city> or !weather <city>, <state or country>
     '''Returns a string containing the weather conditions from a location'''
-    usage = '!weather <city> <state>'
-    
-    
-    
+    usage = 'Usage: !weather <city> <state>'
+
     response = ''
     conditions = ''
 
@@ -22,7 +20,7 @@ def weather(args): # !weather <city> or !weather <city>, <state or country>
         if len(location) < 1:
             raise Exception('Empty location!')
     except:
-        response = 'Usage: !weather <city>, <state>'
+        response = 'Usage: !weather city, state'
     else:
         location = location.replace(' ', '')
         conditions = get_weather(location)
@@ -36,7 +34,7 @@ def weather(args): # !weather <city> or !weather <city>, <state or country>
     return response.encode('utf8')
 
 def get_weather(location):
-    '''Return a dictionary with the <weather>, <full>, <temperature_string> tags
+    '''Return a dictionary with the weather, full, temperature_string tags
     from the XML provided by http://api.wunderground.com
 
     The dictionary 'conditions' will hold 3 values:

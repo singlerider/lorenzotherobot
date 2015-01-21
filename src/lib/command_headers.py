@@ -80,8 +80,7 @@ commands = {
 	'!mball': {
         	'limit': 0,
         	'argc': 0,
-        	'return': 'command'
-               
+        	'return': 'command'           
     },
 		
 	'!q': {
