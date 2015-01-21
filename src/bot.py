@@ -1,14 +1,16 @@
 """
 Simple IRC Bot for Twitch.tv
 
-Developed by Aidan Thomson <aidraj0@gmail.com>
+Originally developed by Aidan Thomson <aidraj0@gmail.com>
+
+Forked and tweaked by Shane Engelman <me@5h4n3.com>
 """
 
 import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
 import sys
-
+import datetime
 
 class Roboraj(object):
 
@@ -98,7 +100,7 @@ class Roboraj(object):
 							pbot(resp, channel)
 							irc.send_message(channel, resp)
 
-
+#Logged in UTF-8
 class Logger(Roboraj):
 	def __init__(self, config, filename="Default.log"):
 		super(Logger, self).__init__(config)
@@ -106,16 +108,19 @@ class Logger(Roboraj):
 		sys.stdout = self
 		self.log = open(filename, "a")
 	def write(self, message):
+		#In the event of an error, "try", to prevent bot crash. If there is an error, print it
 		try:
 			safe_message = unicode(message).encode('utf8', 'ignore')
 			self.terminal.write(safe_message)
 			self.log.write(safe_message)
 		except Exception as err:
-			self.log.write("Unhandled error:\n" + str(err))
+			#Uncomment line below the print error to console when it occurs
+			#self.log.write("Unhandled error:\n" + str(err))
 			import traceback
 			traceback.print_exc(file=self.log)
+		#Log the console output to file as it comes in
 		finally:
 			self.log.flush()
 
-#sys.stdout = Logger("yourlogfilename.txt")
-print "Lorenzo's Log!" # this is should be saved in yourlogfilename.txt
+# this should be saved in yourlogfilename.txt
+print "The following log is for " + str(datetime.date.today()) + ". "
