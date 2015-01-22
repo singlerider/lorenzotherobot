@@ -103,6 +103,8 @@ class Roboraj(object):
 #Logged in UTF-8
 class Logger(Roboraj):
 	def __init__(self, config, filename="Default.log"):
+		# this should be saved in yourlogfilename.txt
+		print "The following log is for " + str(datetime.date.today()) + ". "
 		super(Logger, self).__init__(config)
 		self.terminal = sys.stdout
 		sys.stdout = self
