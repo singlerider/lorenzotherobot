@@ -244,6 +244,12 @@ commands = {
               
     },
             
+    '!aj': {
+        'limit': 10,
+        'return': 'Aj used ban on troll, it was super effective!!!'
+            
+    },
+            
     '!rebecca': {
         'limit': 0,
         'return': 'dat fat bitch and her baby needs 2 die.'
@@ -271,7 +277,7 @@ commands = {
             
     '!pokemon' : {
         'limit': 0,
-        'argc': 1,
+        'argc': 0,
         'return': 'command'
                   
     },
