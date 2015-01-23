@@ -318,6 +318,12 @@ commands = {
         'limit': 15,
         'return': 'Information on buying a print from Amanda is coming soon!'
                    
+    },
+            
+    '!playlist': {
+        'limit': 15,
+        'return': 'Song request is not used on this channel. Please feel free to add songs to this community playlist on Spotify. http://open.spotify.com/user/jamesypaulmichael/playlist/2HejukmtRzlcan06cXMkGG'
+                  
     }
             
     #'!pokemon2' : {
