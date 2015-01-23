@@ -152,6 +152,18 @@ commands = {
         'return': 'https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
                  
     },
+            
+    '!gt': {
+        'limit': 10,
+        'return': "curvy8ubbles"
+            
+    },
+            
+    '!gamertag': {
+        'limit': 10,
+        'return': "curvy8ubbles"
+                  
+    },
     
 	'!rules': {
 		'limit': 20,
