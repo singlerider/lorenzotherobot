@@ -4,6 +4,7 @@ def addcom():
     return "hey dude"
 
 
+
 commands = {
             
     '!commands': {
@@ -237,6 +238,12 @@ commands = {
     
     },
             
+    '!emmo': {
+        'limit': 10,
+        'return': 'Would you like a brew, momma? <3'
+              
+    },
+            
     '!rebecca': {
         'limit': 0,
         'return': 'dat fat bitch and her baby needs 2 die.'
@@ -264,7 +271,7 @@ commands = {
             
     '!pokemon' : {
         'limit': 0,
-        'argc': 0,
+        'argc': 1,
         'return': 'command'
                   
     },
@@ -280,7 +287,20 @@ commands = {
 
 		'limit': 15,
 		'return': 'the_polite_zombie is the original quicker picker upper'
-	}
+	},
+            
+    '!data': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+               
+    },
+            
+    '!buyprints': {
+        'limit': 15,
+        'return': 'Information on buying a print from Amanda is coming soon!'
+                   
+    }
             
     #'!pokemon2' : {
     #    'limit': 0,
