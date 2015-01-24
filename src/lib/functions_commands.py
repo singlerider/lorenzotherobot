@@ -3,6 +3,8 @@ import time
 from src.config.config import *
 from commands import *
 from command_headers import *
+import sys
+import traceback
 
 import importlib
 
@@ -23,6 +25,15 @@ def is_on_cooldown(command, channel):
 def get_cooldown_remaining(command, channel):
 	return round(commands[command]['limit'] - (time.time() - commands[command][channel]['last_used']))
 
+def command_user_level(command):
+	if commands[command]['ul']:
+		return True
+	
+
+#def get_user_level(username, channel):
+#	if '+o' is in data.stream:
+#		return True 
+
 def check_has_return(command):
 	if commands[command]['return'] and commands[command]['return'] != 'command':
 		return True
@@ -40,6 +51,7 @@ def check_has_correct_args(message, command):
 	if len(message) - 1 == commands[command]['argc']:
 		return True
 
+
 def check_returns_function(command):
 	if commands[command]['return'] == 'command': 
 		return True
@@ -56,5 +68,7 @@ def pass_to_function(command, args):
 		else:
 			# need to reference to src.lib.commands.<command
 			return function()
-	except:
+	except Exception as error:
+		print >> sys.stdout, str (error)
+		traceback.print_exc(file=sys.stdout)
 		return 'Command Unavailable'

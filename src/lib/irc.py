@@ -14,7 +14,15 @@ class irc:
 	def check_for_message(self, data):
 		if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
 			return True
-
+		
+	def check_for_join(self, data):
+		if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
+			return True
+		
+	def check_for_part(self, data):
+		if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
+			return True
+		
 	def check_is_command(self, message, valid_commands):
 		for command in valid_commands:
 			if command == message:
@@ -39,6 +47,12 @@ class irc:
 			'channel': re.findall(r'^:.+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+.+ PRIVMSG (.*?) :', data)[0],
 			'username': re.findall(r'^:([a-zA-Z0-9_]+)\!', data)[0],
 			'message': re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', data)[0].decode('utf8')
+		}
+
+	def get_user(self, data):
+		return {
+			'username': re.findall(r'^:([a-zA-Z0-9_]+)\!', data)[0]
+			
 		}
 
 	def check_login_status(self, data):
@@ -94,6 +108,6 @@ class irc:
 		pp('Joined channels.')
 
 	def leave_channels(self, channels):
-		pp('Leaving chanels %s,' % channels)
+		pp('Leaving channels %s,' % channels)
 		self.sock.send('PART %s\r\n' % channels)
 		pp('Left channels.')

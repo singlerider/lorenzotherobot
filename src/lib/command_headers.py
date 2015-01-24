@@ -10,20 +10,22 @@ commands = {
     '!commands': {
         'limit': 10,
         'argc': 0,
-        'return': 'command'
+        'return': 'command',
+        'ul': 'mod'
                   
     },
             
     '!opinion': {
         'limit': 0,
         'argc': 0,
-        'return': 'command'
+        'return': 'command',
+        'ul': 'reg'
                  
     },
             
     '!addcom': {
         'limit': 0,
-        'argc': 0,
+        'argc': 3,
         'return': 'command'
                 
     },
@@ -324,7 +326,14 @@ commands = {
         'limit': 15,
         'return': 'Song request is not used on this channel. Please feel free to add songs to this community playlist on Spotify. http://open.spotify.com/user/jamesypaulmichael/playlist/2HejukmtRzlcan06cXMkGG'
                   
-    }
+    },
+            
+    '!songrequest': {
+        'limit': 0,
+        'argc': 3,
+        'return': 'command'
+                     
+    }            
             
     #'!pokemon2' : {
     #    'limit': 0,
