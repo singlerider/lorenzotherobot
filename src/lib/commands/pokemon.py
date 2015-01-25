@@ -20,6 +20,9 @@ def pokemon(args):
     pokemon_1_cat = []
     pokemon_2_cat = []
     
+    pokemon_1_mod = []
+    pokemon_2_mod = []
+    
     multipliers = {'Normal': {
                            'Fighting': 2.0,
                            'Ghost': 0.0,
@@ -355,11 +358,7 @@ def pokemon(args):
     # Script that handles battle    
     def battle():
         # Establishes two randomly selected pokemon as independent variables
-        
-        
-            
 
-        
         pokemon_1 = random.choice (pocket_monster)
         pokemon_2 = random.choice (pocket_monster)
         
@@ -376,33 +375,34 @@ def pokemon(args):
         random.shuffle(pokemon_list)
         random.shuffle(versus_list)
 
-        for name, type, group in pokemon_list:
+        for name, mod, group in pokemon_list:
             
             if pokemon_1.lower() in name.lower():
+                type_index.append(mod)
                 
-                type_index.append(type)
                 for index in type_index:
                     pass
                     #print "Type for 1 " + str(index)
                 
-                    if type == index:
-                        print name + " is Pokemon 1 " + "with type 1 " + str(type)
+                    if mod == index:
+                        pokemon_1_cat.append(" ".join([name, "is Pokemon 1" , "with type(s)" , str(mod).replace('(','').replace(')','').replace("'",'').replace(',','')]))
+                        print pokemon_1_cat[0]
                         
-        for name, type, group in pokemon_list:
+        for name, mod, group in pokemon_list:
             
-            if pokemon_2.lower() in name.lower():
+            if pokemon_2.lower() == name.lower():
+                type_index.append(mod)
                 
-                type_index.append(type)
                 for index in type_index:
                     pass
                     #print "Type for 2 " + str(index)
                 
-                    if type == index:
-                        print " ".join([name, " is Pokemon 2 " , "with type(s)" , str(type)])                       
-        
+                    if mod == index:
+                        pokemon_2_cat.append(" ".join([name, "is Pokemon 2" , "with type(s)" , str(mod).replace('(','').replace(')','').replace("'",'').replace(',','')]))                       
+                        print pokemon_2_cat[0]
         
         # Concatenates results of versus and winner, separated by a space
-        return " ".join([versus, winner])
+        return pokemon_1_cat[0] + " " + pokemon_2_cat[0] + " " + " ".join([versus, winner])
 
     #Return corresponding evolutionary set
     def evolution():

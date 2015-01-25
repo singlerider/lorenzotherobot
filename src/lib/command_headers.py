@@ -287,7 +287,7 @@ commands = {
             
     '!pokemon' : {
         'limit': 0,
-        'argc': 0,
+        'argc': 1,
         'return': 'command'
                   
     },
