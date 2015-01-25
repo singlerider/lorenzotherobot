@@ -49,11 +49,6 @@ commands = {
 		
 	},
 
-	'!dellorenzo': {
-		'limit': 5,
-		'return': 'Dude, one step at a time.'
-	},
-
 	'!chair': {
 		'limit': 1,
 		'return': "There's a chair over there!"
@@ -80,10 +75,11 @@ commands = {
 		'return': 'command'
 	},
             
-	'!mball': {
-        	'limit': 0,
-        	'argc': 0,
-        	'return': 'command'           
+    '!randomemote': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                     
     },
 		
 	'!q': {

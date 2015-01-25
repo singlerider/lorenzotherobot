@@ -12,7 +12,10 @@ import lib.functions_commands as commands
 import sys
 import datetime
 import traceback
-import time
+import sched, time
+import threading
+
+END = False
 
 class Roboraj(object):
 
@@ -23,16 +26,14 @@ class Roboraj(object):
 
 
 	def run(self):
-		"""
 
-		:rtype : object
-		"""
 		irc = self.irc
 		sock = self.socket
 		config = self.config
 
 		while True:
 			try:
+				
 				data = sock.recv(config['socket_buffer_size']).rstrip()
 	
 				if len(data) == 0:
@@ -54,7 +55,6 @@ class Roboraj(object):
 					#ppi(username)
 					
 					print username + " joined"
-					irc.send_message("BOOYAH")
 				
 				if irc.check_for_message(data):
 					message_dict = irc.get_message(data)
@@ -65,7 +65,9 @@ class Roboraj(object):
 	
 					ppi(channel, message, username)
 					
-	
+
+					
+
 					# check if message is a command with no arguments
 					if commands.is_valid_command(message) or commands.is_valid_command(message.split(' ')[0]):
 						command = message
@@ -79,6 +81,7 @@ class Roboraj(object):
 								
 								#if commands.command_user_level(command, channel):
 								
+
 
 	
 								if commands.is_on_cooldown(command, channel):

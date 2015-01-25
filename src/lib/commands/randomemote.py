@@ -13,7 +13,5 @@ def randomemote():
 
 	emote = random.choice(data.keys())
 
-	return '%s = %s' % (
-		emote,
-		emote[:1] + '​'.decode('utf8') + emote[1:]
-	)
+	return emote
+	
