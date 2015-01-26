@@ -17,8 +17,14 @@ def streetfighter():
               'Akuma'],
             ['Ryu'], ['Chun-Li'], ['Ken'], ['M. Bison'], ['Oni'],
             ['Poison'], ['Evil Ryu'], ['Juri'], ['Cammy'], ['Gouken'],
-            ['Sagat'], ['Sakura'], ['Guile']
-            
+            ['Sagat'], ['Sakura'], ['Guile'], ['Vega'], ['Dan'], ['Decapre'],
+            ['Balrog'], ['Blanka'], ['Charlie'], ['Zangief'], ['Seth'], ['Ibuki'],
+            ['Rose'], ['Abel'], ['Elena'], ['Dhalsim'], ['C. Viper'], ['Gen'],
+            ['Gill'], ['Makoto'], ['Fei Long'], ['Hugo'], ['Guy'], ['Hakan'],
+            ['Dudley'], ['Goutetsu'], ['Adon'], ['Oro'], ['Rolento'], ['Alex'],
+            ['Dee Jay'], ['Yun'], ['E. Honda'], ['T. Hawk'], ['Karin'],
+            ['Yang'], ['Skullomania'], ['Urien'], ['Rufus'], ['Sean'],
+            ['Q'], ['El Fuerte'], ['Necro'], ['Twelve']
             ]
 
     # One-line for loop that runs through pokemon_list, searching only the first column    
