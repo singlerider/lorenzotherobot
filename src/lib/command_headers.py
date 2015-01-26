@@ -329,6 +329,13 @@ commands = {
         'argc': 3,
         'return': 'command'
                      
+    },
+            
+    '!streetfighter': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                      
     }            
             
     #'!pokemon2' : {
