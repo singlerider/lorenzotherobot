@@ -350,6 +350,19 @@ commands = {
         'argc': 1,
         'return': 'command'
               
+    },
+            
+    '!llama': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+               
+    },
+            
+    '!odin': {
+        'limit': 10,
+        'return': 'THE POWER OF GOD COMPELS YOU!'
+              
     }           
             
     #'!pokemon2' : {
