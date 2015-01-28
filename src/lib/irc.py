@@ -98,7 +98,9 @@ class irc:
 			if channel in self.config['cron']:
 				if self.config['cron'][channel]['run_cron']:
 					# This is where the thread for cron_job is initiated
+					print "cron_job thread init"
 					thread.start_new_thread(cron.cron(self, channel).run, ())
+					print "cron_job thread kill"
 
 		self.join_channels(self.channels_to_string(self.config['channels']))
 

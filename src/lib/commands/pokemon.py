@@ -393,9 +393,9 @@ def pokemon(args):
                 
                     if mod == index:
                         pokemon_1_cat.append(" ".join([poke, "is Pokemon 1" , "with type(s)" , str(mod).replace('(','').replace(')','').replace("'",'').replace(',','')]))
-                        print pokemon_1_cat[0]
-                        print pocket_monster
-                        print evolution_set
+                  #      print pokemon_1_cat[0]
+                  #      print pocket_monster
+                  #      print evolution_set
                         
 #        for poke, mod, group in master_pokemon:
             
@@ -411,7 +411,7 @@ def pokemon(args):
                 
                     if mod == index:
                         pokemon_2_cat.append(" ".join([poke, "is Pokemon 2" , "with type(s)" , str(mod).replace('(','').replace(')','').replace("'",'').replace(',','')]))                       
-                        print pokemon_2_cat[0]
+                        #print pokemon_2_cat[0]
         
         # Concatenates results of versus and winner, separated by a space
         return pokemon_1_cat[0] + ". " + pokemon_2_cat[0] + ". " + " ".join([versus, winner])
