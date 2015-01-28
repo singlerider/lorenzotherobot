@@ -250,7 +250,7 @@ commands = {
             
     '!emmo': {
         'limit': 10,
-        'return': 'Would you like a brew, momma? <3'
+        'return': "Emmo is Curvyllama's adopted chatroom daughter! <3 <3 <3"
               
     },
             
