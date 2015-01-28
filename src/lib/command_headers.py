@@ -360,10 +360,16 @@ commands = {
     },
             
     '!odin': {
-        'limit': 10,
+        'limit': 15,
         'return': 'THE POWER OF GOD COMPELS YOU!'
               
-    }           
+    },
+            
+    '!shquppa': {
+        'limit': 15,
+        'return': "random fegit who keeps saying plz to everyone"          
+    
+    }
             
     #'!pokemon2' : {
     #    'limit': 0,
