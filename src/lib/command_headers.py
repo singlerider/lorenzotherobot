@@ -336,7 +336,21 @@ commands = {
         'argc': 0,
         'return': 'command'
                       
-    }            
+    },
+            
+    '!poll': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command'
+              
+    } ,
+            
+    '!vote': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command'
+              
+    }           
             
     #'!pokemon2' : {
     #    'limit': 0,

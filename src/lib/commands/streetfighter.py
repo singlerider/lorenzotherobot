@@ -13,9 +13,8 @@ def streetfighter():
 
     
     # Pokemon name,their type(s), and a grouping for their evolution order, in the form of a list
-    street_fighters = [[ 
-              'Akuma'],
-            ['Ryu'], ['Chun-Li'], ['Ken'], ['M. Bison'], ['Oni'],
+    street_fighters = [
+            [ 'Akuma'], ['Ryu'], ['Chun-Li'], ['Ken'], ['M. Bison'], ['Oni'],
             ['Poison'], ['Evil Ryu'], ['Juri'], ['Cammy'], ['Gouken'],
             ['Sagat'], ['Sakura'], ['Guile'], ['Vega'], ['Dan'], ['Decapre'],
             ['Balrog'], ['Blanka'], ['Charlie'], ['Zangief'], ['Seth'], ['Ibuki'],

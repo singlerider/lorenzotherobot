@@ -32,6 +32,8 @@ class Roboraj(object):
 		config = self.config
 
 		while True:
+			
+			
 			try:
 				
 				data = sock.recv(config['socket_buffer_size']).rstrip()
@@ -48,19 +50,34 @@ class Roboraj(object):
 				irc.check_for_ping(data)
 				
 				if irc.check_for_join(data):
+					
 					user_dict = irc.get_user(data)
 
 					username = user_dict['username']
 					
+					#print username + " first check"
+					
+					#return commands.pass_to_function(username)
+					
+					#print username + " second check"
+					
+					#commands.update_last_used(username)
 					#ppi(username)
 					
 					print username + " joined"
+					#resp = username + ' has joined'
+					#pbot(resp)
+					#irc.send_message(resp)
+				
+				#prints message when moderator enters. Broken. Fi in irc.py
+				#if irc.check_mod(data):
+				#	print "MODERATOR HYPE"
 				
 				if irc.check_for_message(data):
 					message_dict = irc.get_message(data)
 	
 					channel = message_dict['channel']
-					message = message_dict['message']
+					message = message_dict['message']#.lower()
 					username = message_dict['username']
 	
 					ppi(channel, message, username)
@@ -114,6 +131,7 @@ class Roboraj(object):
 										irc.send_message(channel, resp)
 			
 							else:
+								#Remove '(%s)' ':' and 'username' to remove username prefix for message
 								resp = '(%s) : %s' % (username, "Incorrect usage")
 								pbot(resp, channel)
 								irc.send_message(channel, resp)

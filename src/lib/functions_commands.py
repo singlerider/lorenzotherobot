@@ -58,7 +58,7 @@ def check_returns_function(command):
 
 def pass_to_function(command, args):
 	try:
-		command = command.replace('!', '')	
+		command = command.replace('!', '')
 		module = importlib.import_module('src.lib.commands.%s' % command)
 		reload(module)
 		function = getattr(module, command)
