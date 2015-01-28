@@ -9,11 +9,14 @@ Forked and tweaked by Shane Engelman <me@5h4n3.com>
 import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
+import src.lib.user_data as info
 import sys
 import datetime
 import traceback
 import sched, time
 import threading
+
+user_data_name = []
 
 END = False
 
@@ -53,18 +56,10 @@ class Roboraj(object):
 					
 					user_dict = irc.get_user(data)
 
-					username = user_dict['username']
+					userjoin = user_dict['username']
 					
-					#print username + " first check"
-					
-					#return commands.pass_to_function(username)
-					
-					#print username + " second check"
-					
-					#commands.update_last_used(username)
-					#ppi(username)
-					
-					print username + " joined"
+
+					print userjoin + " joined"
 					#resp = username + ' has joined'
 					#pbot(resp)
 					#irc.send_message(resp)
@@ -82,7 +77,8 @@ class Roboraj(object):
 	
 					ppi(channel, message, username)
 					
-
+					user_data_name.append(username)
+					print user_data_name[0]
 					
 
 					# check if message is a command with no arguments
