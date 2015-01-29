@@ -14,17 +14,11 @@ def llama():
     cursor = db.cursor()
     
 #####Delete the below lines if first time running
-    
-    try:
-    
-        cursor.execute('''
-        CREATE TABLE users(name TEXT PRIMARY KEY,
-                           pokemon TEXT, treats TEXT, ul TEXT)
-        ''')
-    
-    except:
-        
-        pass
+ 
+    cursor.execute('''
+    CREATE TABLE IF NOT EXIST users(name TEXT PRIMARY KEY,
+                       pokemon TEXT, treats TEXT, ul TEXT)
+    ''')
     
     for p in user_data.user_data_points:
         format_str = """INSERT INTO users (name, pokemon, treats, ul)
@@ -32,8 +26,7 @@ def llama():
     
         sql_command = format_str.format(name=p[0], pokemon=p[1], treats = p[2], ul = p[3])
         cursor.execute(sql_command)
-        
-        
+   
     cursor.execute("SELECT * FROM users")
     
     #prints all entries 
