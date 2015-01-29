@@ -129,7 +129,7 @@ master_pokemon = [[
         [ 'Seaking', ('Water',) , '56' ],
         [ 'Staryu', ('Water',) , '57' ],
         [ 'Starmie', ('Water' , 'Psychic') , '57' ],
-        [ 'Mime', ('Mr.' , 'Mime') , '58' ],
+        [ 'Mr. Mime', ('Psychic', ) , '58' ],
         [ 'Scyther', ('Bug' , 'Flying') , '59' ],
         [ 'Jynx', ('Ice' , 'Psychic') , '60' ],
         [ 'Electabuzz', ('Electric',) , '61' ],

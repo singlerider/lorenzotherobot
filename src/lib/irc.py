@@ -36,6 +36,11 @@ class irc:
 	def check_for_connected(self, data):
 		if re.match(r'^:.+ 001 .+ :connected to TMI$', data):
 			return True
+		
+	def get_logged_in_users(self, data):
+		if data.find ( '353'):
+			return True
+			#:lorenzotherobot.tmi.twitch.tv 353 lorenzotherobot = #curvyllama :l0rd_bulldog agentsfire workundercover69 the_polite_zombie jalenxweezy13 curvyllama hmichaelh2015 steven0405 armypenguin91 hionas22 prophecymxxm singlerider bentleet tesylesor vipervenom2u zombiesdelux115 lorenzotherobot nerdy0rgyparty michaelcycle gewgled jconnfilm rustemperor frozelio
 
 	def check_for_ping(self, data):
 		
@@ -56,15 +61,20 @@ class irc:
 
 	def get_user(self, data):
 		return {
-			'username': re.findall(r'^:([a-zA-Z0-9_]+)\!', data)[0]
-			
+			'username': re.findall(r'^:([a-zA-Z0-9_]+)\!', data)[0],
+			'channel': re.findall(r'^:.+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+.+ JOIN (.*?) :', data)[0]
 		}
+		
+
+	
 
 	def check_login_status(self, data):
 		if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
 			return False
 		else:
 			return True
+		
+		
 
 	def send_message(self, channel, message):
 		self.sock.send('PRIVMSG %s :%s\n' % (channel, message.encode('utf-8')))
