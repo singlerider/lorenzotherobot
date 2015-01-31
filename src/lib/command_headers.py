@@ -170,7 +170,7 @@ commands = {
 		
 	'!welcome': {
 		'limit': 20,
-		'return': "Welcome to the stream. You are now a Llama! If you'd like to know how we do things, type !rules."
+		'return': "Welcome to the Llama family. Sit down, relax, and have a bisqwuit (in other words thanks for following)! If you'd like to know how we do things, type !rules."
 	},
 		
 	'!pwv': {
@@ -220,7 +220,7 @@ commands = {
             
     '!cry': {
         'limit': 0,
-        'return': 'BibleThump BibleThump BibleThump'
+        'return': 'BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump '
              
     },
     
