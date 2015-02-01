@@ -26,7 +26,7 @@ def songrequest(args):
         if dash == '-':
             
             add_to_playlist = "add " + config.spotify_playlist + " 0 " + " ".join([artist, title]).replace('_'," ")
-            
+            search = "search " + " ".join([artist, title]).replace('_'," ")
             # execute spshell:
 
             
@@ -37,7 +37,14 @@ def songrequest(args):
             child.expect('Password')
             child.sendline(password)
             child.expect('Logged in to Spotify as user')
-            child.sendline("search " + add_to_playlist)
+            child.sendline("\n")
+            child.expect("blob for storage")
+            child.sendline(search)
+            child.expect("spotify:track:")
+            song_id = child.before + child.after
+            print "child.after:", song_id
+            child.expect("> ")
+            child.sendline("exit")
 
 
             #spotify:user:jamesypaulmichael:playlist:2HejukmtRzlcan06cXMkGG            
