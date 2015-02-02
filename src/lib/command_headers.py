@@ -223,10 +223,9 @@ commands = {
         'return': 'Saturdays are #shityourpantssaturday (#syps). Amanda plays scary games all night.'
     },
             
-    '!rustemperor': {
+    '!rust': {
         'limit': 100000,
-        'return': "Rust is Curvyllama's most famous troll. If only he'd remember that she's going for a subscribe button..."
-     #   'return': 'FUCK RUST! FUCK RUST!'
+        'return': "Rustemperor is the 'Leeroy Jenkins' of the Llama family. Kappa"
           
     },
     
