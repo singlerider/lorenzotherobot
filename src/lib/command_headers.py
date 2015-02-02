@@ -1,8 +1,5 @@
 from src.config.config import *
 
-def addcom():
-    return "hey dude"
-
 
 
 commands = {
@@ -23,12 +20,7 @@ commands = {
                  
     },
             
-    '!addcom': {
-        'limit': 0,
-        'argc': 3,
-        'return': 'command'
-                
-    },
+
     
     '!weather': {
         'limit': 10,
@@ -43,11 +35,7 @@ commands = {
         'return': 'command'     
     },
 
-	'!addlorenzo': {
-		'limit': 5,
-		'return': addcom()
-		
-	},
+
 
 	'!chair': {
 		'limit': 1,
@@ -314,7 +302,7 @@ commands = {
             
     '!buyprints': {
         'limit': 15,
-        'return': 'Information on buying a print from Amanda is coming soon!'
+        'return': 'Check out some model/cosplay prints & posters Amanda has for sale here: https://www.facebook.com/media/set/?set=a.695350670512515.1073741836.276081062439480'
                    
     },
             
