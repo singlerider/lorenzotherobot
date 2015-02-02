@@ -1,6 +1,7 @@
 import sqlite3
 import sys
 import re
+import socket
 
 import src.lib.user_data as user_data
 
@@ -16,7 +17,7 @@ def llama():
 #####Delete the below lines if first time running
  
     cursor.execute('''
-    CREATE TABLE IF NOT EXIST users(name TEXT PRIMARY KEY,
+    CREATE TABLE IF NOT EXISTS users(name TEXT PRIMARY KEY,
                        pokemon TEXT, treats TEXT, ul TEXT)
     ''')
     
@@ -37,6 +38,7 @@ def llama():
     cursor.execute("SELECT * FROM users") 
     #prints one entry
     print("\nfetch one:")
-    res = cursor.fetchone() 
+    res = cursor.fetchone()
+     
     print(res)
     db.close()
