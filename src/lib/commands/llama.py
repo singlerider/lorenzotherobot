@@ -10,10 +10,21 @@ import os
 import urllib2
 import ast
 
+response = urllib2.urlopen('https://tmi.twitch.tv/group/user/lorenzotherobot/chatters')#change username to your channel
+user_dict = ast.literal_eval(response.read())
+
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
-def database_entry():
+def llama():
     #create/connect to user database
     db = sqlite3.connect('/home/shane/git/lorenzotherobot/src/lib/userdata.db')
+    
+    user_list = []
+    
+    for key, value in user_dict.iteritems():
+        temp = [key,value]
+        user_list.append(temp)
+    
+    print user_list
     
     #get a cursor object
     cursor = db.cursor()
@@ -22,27 +33,26 @@ def database_entry():
     CREATE TABLE IF NOT EXISTS users(name TEXT PRIMARY KEY,
                         pokemon TEXT, treats TEXT, ul TEXT)
      ''')
-    for p in user_data.user_data_points:
+    for p in user_list:
         format_str = """INSERT INTO users (name, pokemon, treats, ul)
         VALUES ("{name}", "{pokemon}", "{treats}", "{ul}" );"""
         sql_command = format_str.format(name=p[0], pokemon=p[1], treats=p[2], ul=p[3])
         cursor.execute(sql_command)
     cursor.execute("SELECT * FROM users")
     #prints all entires
-    print("fetchall:")
+    #print("fetchall:")
     result = cursor.fetchall()
-    for r in result:
-        print(r)
+    #for r in result:
+    #    print(r)
     cursor.execute("SELECT * FROM users")
     #prints one entry
-    print("\nfetch one:")
+    #print("\nfetch one:")
     res = cursor.fetchone()
-    print(res)
+    #print(res)
     db.close()
 
 """Gets list of users and returns them to the chat"""
 
-def llama():
-    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/lorenzotherobot/chatters')#change username to your channel
-    user_dict = ast.literal_eval(response.read())
-    return str("Viewers: " + ", ".join(user_dict["chatters"]["moderators"]) + ", " + ", ".join(user_dict["chatters"]["viewers"]))
+#def llama():
+
+#    return str("Viewers: " + ", ".join(user_dict["chatters"]["moderators"]) + ", " + ", ".join(user_dict["chatters"]["viewers"]))
