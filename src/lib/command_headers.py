@@ -311,9 +311,9 @@ commands = {
                   
     },
             
-    '!songrequest': {
+    '!request': {
         'limit': 0,
-        'argc': 3,
+        'argc': 1,
         'return': 'command'
                      
     },
@@ -356,14 +356,14 @@ commands = {
         'limit': 15,
         'return': "random fegit who keeps saying plz to everyone"          
     
-    }
+    },
             
-    #'!pokemon2' : {
-    #    'limit': 0,
-    #    'argc': 0,
-    #    'return': 'command'
-                   
-    #}
+    '!databasething': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                  
+    }
             
 }
 

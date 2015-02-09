@@ -1,3 +1,9 @@
+"""
+Developed by dustinbcox
+
+Adjustments by Shane Engelman <me@5h4n3.com>
+"""
+
 import sqlite3
 import sys
 import re
@@ -6,21 +12,21 @@ import pexpect
 import time
 import os
 import src.lib.user_data as user_data
-import os
 import urllib2
 import ast
 
-response = urllib2.urlopen('https://tmi.twitch.tv/group/user/freshnica/chatters')#change username to your channel
+response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters')#change username to your channel
 user_dict = ast.literal_eval(response.read())
 
+user_list = "['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str(", ".join(user_dict["chatters"]["viewers"])) + "']"
+
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
-import sqlite3
- 
+
  
 class UserData (object):
     """ Save the points to a database """
  
-    # Start off with 5 points
+    # Start off with 5 points, add incrementally this value each time ran
     INITIAL_VALUE = 5
  
     def __init__(self, filepath):
@@ -32,23 +38,24 @@ class UserData (object):
                     points INTEGER);""")
         conn.commit()
         conn.close()
- 
+    # Saves user and points to database 
     def save(self, users):
         for user in users:
-            if self.get_user(user) is None:
-                conn = sqlite3.connect(self.filepath)
-                # Let's add the user then
-                conn.execute("INSERT INTO users VALUES(?,?)", (user,
-                             self.INITIAL_VALUE))
-                conn.commit()
-                conn.close()
-            else:
-                conn = sqlite3.connect(self.filepath)
-                # Let's update the existing user
-                conn.execute("UPDATE users SET points = points + ?" +
-                             " WHERE username = ?", (self.INITIAL_VALUE, user))
-                conn.commit()
-                conn.close()
+            while user is not '':#added as test
+                if self.get_user(user) is None:
+                    conn = sqlite3.connect(self.filepath)
+                    # Let's add the user then
+                    conn.execute("INSERT INTO users VALUES(?,?)", (user,
+                                 self.INITIAL_VALUE))
+                    conn.commit()
+                    conn.close()
+                else:
+                    conn = sqlite3.connect(self.filepath)
+                    # Let's update the existing user
+                    conn.execute("UPDATE users SET points = points + ?" +
+                                 " WHERE username = ?", (self.INITIAL_VALUE, user))
+                    conn.commit()
+                    conn.close()
  
     def get_user(self, username):
         conn = sqlite3.connect(self.filepath)
@@ -59,25 +66,24 @@ class UserData (object):
             points = points[0] # get only the points from the tuple
         conn.close()
         return points
- 
- 
+
 if __name__ == "__main__":
     llama = UserData("sample_sqlite_database.db")
  
-    my_users = ['greg', 'jerry', 'larry', 'sam', 'jenny', 'moe', 'cindy',
-                'shane']
-    llama.save(my_users)
-    print "Users:"
-    for user in my_users:
-        print "User:", user, " ",
-        print llama.get_user(user)
+    #user_list = ['greg', 'jerry', 'larry', 'sam', 'jenny', 'moe', 'cindy',
+    #            'shane']
     
-    return str("Viewers: " + ", ".join(user_dict["chatters"]["moderators"]) + ", " + ", ".join(user_dict["chatters"]["viewers"]))
+    llama.save(user_list)
+    print "Users:"
+    for user in user_list:
+        while user is not '':#added as test
+            print "User:", user, " ",
+            print llama.get_user(user)
     
 """Gets list of users and returns them to the chat"""
-
-
-
-#def llama():
-
-#    return str("Viewers: " + ", ".join(user_dict["chatters"]["moderators"]) + ", " + ", ".join(user_dict["chatters"]["viewers"]))
+def llama():
+    if "curvyllama" in user_dict["chatters"]["moderators"]:
+        print "Match for user_list: ", user_list
+    else:
+        print "No match for user_list: ", user_list 
+    return str(", ".join(user_dict["chatters"]["moderators"]) + ", " + ", ".join(user_dict["chatters"]["viewers"]))

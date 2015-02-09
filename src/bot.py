@@ -3,7 +3,9 @@ Simple IRC Bot for Twitch.tv
 
 Originally developed by Aidan Thomson <aidraj0@gmail.com>
 
-Forked and tweaked by Shane Engelman <me@5h4n3.com>
+Forked and heavily modified by Shane Engelman <me@5h4n3.com>
+
+Contributions from dustinbcox
 """
 
 import lib.irc as irc_
@@ -27,7 +29,6 @@ class Roboraj(object):
 		self.irc = irc_.irc(config)
 		self.socket = self.irc.get_irc_socket_object()
 
-
 	def run(self):
 
 		irc = self.irc
@@ -35,8 +36,7 @@ class Roboraj(object):
 		config = self.config
 
 		while True:
-			
-			
+
 			try:
 				
 				data = sock.recv(config['socket_buffer_size']).rstrip()
@@ -57,7 +57,6 @@ class Roboraj(object):
 					user_dict = irc.get_user(data)
 
 					userjoin = user_dict['username']
-					
 
 					print userjoin + " joined"
 					#resp = username + ' has joined'
@@ -79,7 +78,6 @@ class Roboraj(object):
 					
 					user_data_name.append(username)
 					print user_data_name[0]
-					
 
 					# check if message is a command with no arguments
 					if commands.is_valid_command(message) or commands.is_valid_command(message.split(' ')[0]):
@@ -93,10 +91,7 @@ class Roboraj(object):
 								command = command.split(' ')[0]
 								
 								#if commands.command_user_level(command, channel):
-								
 
-
-	
 								if commands.is_on_cooldown(command, channel):
 									pbot('Command is on cooldown, sucka. (%s) (%s) (%ss remaining)' % (
 										command, username, commands.get_cooldown_remaining(command, channel)), 
@@ -175,6 +170,3 @@ class Logger(Roboraj):
 		#Log the console output to file as it comes in
 		finally:
 			self.log.flush()
-
-# this should be saved in yourlogfilename.txt
-#print "The following log is for " + str(datetime.date.today()) + ". "
