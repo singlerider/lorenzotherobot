@@ -15,6 +15,7 @@ import os
 import urllib2
 import ast
 
+
 response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters')#change username to your channel
 user_dict = ast.literal_eval(response.read())
 
