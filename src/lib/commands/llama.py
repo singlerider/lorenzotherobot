@@ -18,7 +18,7 @@ import ast
 response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters')#change username to your channel
 user_dict = ast.literal_eval(response.read())
 
-user_list = "['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str(", ".join(user_dict["chatters"]["viewers"])) + "']"
+user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
 
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
@@ -67,23 +67,30 @@ class UserData (object):
         conn.close()
         return points
 
+# If run interactively as llama.py
 if __name__ == "__main__":
-    llama = UserData("sample_sqlite_database.db")
+    llamas = UserData("sample_sqlite_database.db")
  
     #user_list = ['greg', 'jerry', 'larry', 'sam', 'jenny', 'moe', 'cindy',
     #            'shane']
     
-    llama.save(user_list)
+    llamas.save(user_list)
     print "Users:"
     for user in user_list:
         while user is not '':#added as test
             print "User:", user, " ",
-            print llama.get_user(user)
+            print llamas.get_user(user)
     
 """Gets list of users and returns them to the chat"""
 def llama():
+    
+    # Path is relative - for Unix
+    llama_object = UserData("llama.db")
+    
     if "curvyllama" in user_dict["chatters"]["moderators"]:
         print "Match for user_list: ", user_list
+        llama_object.save(user_list)
+        #print "Type: ", type(user_list)# Should say 'list'
     else:
         print "No match for user_list: ", user_list 
     return str(", ".join(user_dict["chatters"]["moderators"]) + ", " + ", ".join(user_dict["chatters"]["viewers"]))
