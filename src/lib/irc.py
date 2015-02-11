@@ -59,11 +59,7 @@ class irc:
 			'message': re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', data)[0].decode('utf8')
 		}
 
-	def get_user(self, data):
-		return {
-			'username': re.findall(r'^:([a-zA-Z0-9_]+)\!', data)[0],
-			'channel': re.findall(r'^:.+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+.+ JOIN (.*?) :', data)[0]
-		}
+	
 		
 
 	

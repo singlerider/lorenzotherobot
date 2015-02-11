@@ -5,11 +5,6 @@ Adjustments by Shane Engelman <me@5h4n3.com>
 """
 
 import sqlite3
-import sys
-import re
-import socket
-import pexpect
-import time
 import os
 #import src.lib.user_data as user_data
 import urllib2
@@ -105,7 +100,9 @@ def enter_into_database():
     # Path is relative - for Unix
     llama_object = UserData(DATABASE_FILE)
     try:
-        if "curvyllama" in user_dict["chatters"]["moderators"]:
+        if user_dict["chatters"]["viewers"] is None:
+            return "No treats are added when only moderators are online"
+        elif "curvyllama" in user_dict["chatters"]["moderators"]:
             #print "Match for user_list: ", user_list
             llama_object.save(user_list)
             print "Added to database!"
@@ -113,15 +110,18 @@ def enter_into_database():
             return "Treats added"
         else:
             #print "No match for user_list: ", user_list 
-            pass
+            return "Treats will only be added when Curvyllama is online."
     except:
         return "Failure"
 
 def llama(args):
-    grab_user = args[0].lower()
+    grab_user = args[0].lower().replace("_", "")
     get_treats = UserData(DATABASE_FILE)
     return_treats = get_treats.get_user(grab_user)
-    if return_treats is not None:
+    return_treats_all = get_treats.get_users(grab_user)
+    if grab_user == "list":
+        return return_treats_all    
+    elif return_treats is not None:
         return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
     else:
         return "No entry found for " + str(args[0])
