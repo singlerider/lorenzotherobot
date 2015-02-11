@@ -75,7 +75,7 @@ class UserData (object):
         cursor = conn.execute("SELECT username,points FROM users ORDER BY points * 1 DESC")
         user_data = cursor.fetchall()
         conn.close()
-        return user_data
+        return str(user_data[2:12]).replace("[", "").replace("(u'", "").replace(", ", " | ").replace("]", "").replace(")", "")
 
 # If run interactively from shell as $ python2 llama.py
 if __name__ == "__main__":
