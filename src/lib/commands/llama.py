@@ -32,7 +32,7 @@ class UserData (object):
     """ Save the points to a database """
  
     # Start off with 5 points, add incrementally this value each time ran
-    INITIAL_VALUE = 5
+    INITIAL_VALUE = 1
  
     def __init__(self, filepath):
         """ Initialize the database as needed """
@@ -110,7 +110,7 @@ def enter_into_database():
             llama_object.save(user_list)
             print "Added to database!"
             #print "Type: ", type(user_list)# Should say 'list'
-            return "Points added"
+            return "Treats added"
         else:
             #print "No match for user_list: ", user_list 
             pass
@@ -124,4 +124,4 @@ def llama(args):
     if return_treats is not None:
         return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
     else:
-        return "No entry found for ", args[0]
+        return "No entry found for " + str(args[0])
