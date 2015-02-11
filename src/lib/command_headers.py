@@ -201,6 +201,12 @@ commands = {
                 
     },
             
+    '!ip': {
+        'limit': 5,
+        'return': "The Minecraft server ip is: joecow.net"
+            
+    },
+                
     '!james': {
         'limit': 10,
         'return': "James is the guy the you guys commonly hear in the background while Amanda streams. He does IT work as his job and is really good with computers. His username is 'peligrosocortez'."               
@@ -224,8 +230,8 @@ commands = {
     },
             
     '!rust': {
-        'limit': 100000,
-        'return': "Rustemperor is the 'Leeroy Jenkins' of the Llama family. Kappa"
+        'limit': 15,
+        'return': "Rustemperor will be Curvyllama's first sub."
           
     },
     
@@ -289,7 +295,7 @@ commands = {
 	'!zombie': {
 
 		'limit': 15,
-		'return': 'the_polite_zombie is the original quicker picker upper'
+		'return': 'Zombie is the last dragon. He possesses the power of the glow.'
 	},
             
     '!data': {
@@ -341,7 +347,7 @@ commands = {
             
     '!llama': {
         'limit': 0,
-        'argc': 0,
+        'argc': 1,
         'return': 'command'
                
     },

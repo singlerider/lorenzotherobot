@@ -16,11 +16,15 @@ import urllib2
 import ast
 
 
-response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters')#change username to your channel
-user_dict = ast.literal_eval(response.read())
+DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
-user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
 
+def get_dict_for_users():
+    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters') #change username to your channel
+    user_dict = ast.literal_eval(response.read())
+    user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
+    return user_dict, user_list
+    
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
  
@@ -78,14 +82,14 @@ class UserData (object):
         conn.close()
         return user_data
 
-# If run interactively as llama.py
+# If run interactively from shell as $ python2 llama.py
 if __name__ == "__main__":
-    llama_object = UserData("llama.db")
+    llama_object = UserData(DATABASE_FILE)
     print llama_object.get_users()
  
     #user_list = ['greg', 'jerry', 'larry', 'sam', 'jenny', 'moe', 'cindy',
     #            'shane']
-    
+    user_dict, user_list = get_dict_for_users()
     llama_object.save(user_list)
     print "Users:"
     for user in user_list:
@@ -95,9 +99,11 @@ if __name__ == "__main__":
     
 """Gets list of users and returns them to the chat"""
 def enter_into_database():
-    
+    # Returns tuple, gets expanded below
+    user_dict, user_list = get_dict_for_users()
+
     # Path is relative - for Unix
-    llama_object = UserData("llama.db")
+    llama_object = UserData(DATABASE_FILE)
     try:
         if "curvyllama" in user_dict["chatters"]["moderators"]:
             #print "Match for user_list: ", user_list
@@ -107,9 +113,15 @@ def enter_into_database():
             return "Points added"
         else:
             #print "No match for user_list: ", user_list 
-            return str(", ".join(user_dict["chatters"]["moderators"]) + ", " + ", ".join(user_dict["chatters"]["viewers"]))
+            pass
     except:
         return "Failure"
 
-def llama():
-    return "working on it" 
+def llama(args):
+    grab_user = args[0].lower()
+    get_treats = UserData(DATABASE_FILE)
+    return_treats = get_treats.get_user(grab_user)
+    if return_treats is not None:
+        return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
+    else:
+        return "No entry found for ", args[0]
