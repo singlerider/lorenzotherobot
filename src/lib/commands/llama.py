@@ -115,7 +115,7 @@ def enter_into_database():
         return "Failure"
 
 def llama(args):
-    grab_user = args[0].lower().replace("_", "")
+    grab_user = args[0].lower()
     get_treats = UserData(DATABASE_FILE)
     return_treats = get_treats.get_user(grab_user)
     return_treats_all = get_treats.get_users(grab_user)
