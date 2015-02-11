@@ -69,7 +69,7 @@ class UserData (object):
             points = points[0] # get only the points from the tuple
         conn.close()
         return points
-    def get_users(self):
+    def get_users(self, username):
         """ Get all of the users point data ordered by point value"""
         conn = sqlite3.connect(self.filepath)
         cursor = conn.execute("SELECT username,points FROM users ORDER BY points * 1 DESC")
