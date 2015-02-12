@@ -52,20 +52,7 @@ class Roboraj(object):
 				# check for ping, reply with pong
 				irc.check_for_ping(data)
 				
-				if irc.check_for_join(data):
-					
-					user_dict = irc.get_user(data)
-
-					userjoin = user_dict['username']
-
-					print userjoin + " joined"
-					#resp = username + ' has joined'
-					#pbot(resp)
-					#irc.send_message(resp)
 				
-				#prints message when moderator enters. Broken. Fi in irc.py
-				#if irc.check_mod(data):
-				#	print "MODERATOR HYPE"
 				
 				if irc.check_for_message(data):
 					message_dict = irc.get_message(data)
