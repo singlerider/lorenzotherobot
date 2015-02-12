@@ -2,10 +2,12 @@ from oauth2client import gce
 import httplib2
 from apiclient.discovery import build
 from apiclient.errors import HttpError
-from oauth2client.tools import argparser
+from oauth2client.tools import argparser, run_flow
 import globals
-
-
+import os
+import sys
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.file import Storage
 
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
@@ -48,13 +50,13 @@ def request(args):
             playlists.append("%s (%s)" % (search_result["snippet"]["title"],
                                     search_result["id"]["playlistId"]))
 
-    print "Videos:\n", "\n".join(videos), "\n"
-    print "Channels:\n", "\n".join(channels), "\n"
-    print "Playlists:\n", "\n".join(playlists), "\n"
+    #print "Videos:\n", "\n".join(videos), "\n"
+    #print "Channels:\n", "\n".join(channels), "\n"
+    #print "Playlists:\n", "\n".join(playlists), "\n"
     try:
         # Only return a result if it's valid - if no result, return exception message
         complete_url.append("https://www.youtube.com/watch?v=" + str(video_id[0]).strip('()'))
-        return str(complete_url[0])
+        return str(videos[0]) + " | " + str(complete_url[0])
     except:
         return "Something happened. You probably spelled it wrong. Kappa"
 
@@ -68,4 +70,6 @@ if __name__ == "__main__":
         print complete_url[0]
     except HttpError, e:
         print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
-        
+
+
+
