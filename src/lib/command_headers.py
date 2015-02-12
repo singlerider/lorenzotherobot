@@ -352,6 +352,13 @@ commands = {
                
     },
             
+    '!test': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+              
+    },
+            
     '!odin': {
         'limit': 15,
         'return': 'THE POWER OF GOD COMPELS YOU!'

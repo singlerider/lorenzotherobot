@@ -9,7 +9,7 @@ import os
 #import src.lib.user_data as user_data
 import urllib2
 import ast
-
+import requests, json
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
@@ -19,6 +19,12 @@ def get_dict_for_users():
     user_dict = ast.literal_eval(response.read())
     user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
     return user_dict, user_list
+
+def get_stream_status():
+    url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+    resp = requests.get(url=url)
+    data = json.loads(resp.content)
+    return data
     
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
@@ -120,6 +126,7 @@ def llama(args):
     return_treats = get_treats.get_user(grab_user)
     return_treats_all = get_treats.get_users(grab_user)
     if grab_user == "list":
+        
         return return_treats_all    
     elif return_treats is not None:
         return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
