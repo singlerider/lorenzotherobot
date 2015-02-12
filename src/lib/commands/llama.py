@@ -24,7 +24,10 @@ def get_stream_status():
     url = 'https://api.twitch.tv/kraken/streams/curvyllama'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
-    return data
+    if data["stream"] is None:
+        return data
+    else:
+        return "Something"
     
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
