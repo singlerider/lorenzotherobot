@@ -1,5 +1,8 @@
 Roboraj
-==========
+=======
+
+Lorenzotherobot
+===============
 
 This is a simple Twitch chat/irc bot written in python.
 
@@ -46,24 +49,20 @@ Add the following to the `commands` dictionary:
 }
 ```
 
-And then in `lib/commands/random.py` , write the following: 
+Working with Pokemon
+====================
 
-```python
-import random
+Built in are several work-in-progress functions for returning "random battles" of the first generation of Pokemon. The idea, in the end is that a user will have a Pokemon assigned to them that they would catch as one is released randomly in the chat. Users will compete to be the first to catch the Pokemon with a separate command.
 
-def random(args):
-  min = args[0]
-  max = args[1]
-    
-  usage = '!random <min> <max>'
-  
-  # carry out validation
-  try:
-    return ranrange(min, max)
-  except ValueError:
-    return '!random <min> <max> (use full integers)'
-  except:
-    return usage
-```
+Currently, the main command combination to use is "!pokemon battle".
+Similarly, users can have have random battles with Street Fighter characters by typing in "!streetfighter".
 
-And now if somebody types `!random 5 10` into the chat, the bot will respond with a pseudo-random number between 5 and 10.
+Llama
+=====
+
+The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a SQLite3 database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
+
+Requests
+========
+
+YouTube API integration is currently being built in to append user-requested songs to existing YouTube playlists. Currently, if a user types "!request <stringoftextwithoutspaces>", a YouTube video link, along with its associated title will appear in the chat. Future integration will allow for an entirely transparent process without extra required software on a user's machine.
