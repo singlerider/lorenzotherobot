@@ -24,14 +24,16 @@ def get_stream_status():
     url = 'https://api.twitch.tv/kraken/streams/curvyllama'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
-    if data["stream"] is None:
+    if data["stream"] is not None:
         return data
     else:
         return "Something"
+
+stream_status = get_stream_status()
     
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
- 
+stream_data = get_stream_status() 
 class UserData (object):
     """ Save the points to a database """
  
@@ -108,20 +110,23 @@ def enter_into_database():
 
     # Path is relative - for Unix
     llama_object = UserData(DATABASE_FILE)
-    try:
-        if user_dict["chatters"]["viewers"] is None:
-            return "No treats are added when only moderators are online"
-        elif "curvyllama" in user_dict["chatters"]["moderators"]:
-            #print "Match for user_list: ", user_list
-            llama_object.save(user_list)
-            print "Added to database!"
-            #print "Type: ", type(user_list)# Should say 'list'
-            return "Treats added"
-        else:
-            #print "No match for user_list: ", user_list 
-            return "Treats will only be added when Curvyllama is online."
-    except:
-        return "Failure"
+    if stream_status["stream"] is not None:
+        try:
+            if user_dict["chatters"]["viewers"] is None:
+                return "No treats are added when only moderators are online"
+            elif "curvyllama" in user_dict["chatters"]["moderators"]:
+                #print "Match for user_list: ", user_list
+                llama_object.save(user_list)
+                print "Added to database!"
+                #print "Type: ", type(user_list)# Should say 'list'
+                return "Treats added"
+            else:
+                #print "No match for user_list: ", user_list 
+                return "Treats will only be added when Curvyllama is online."
+        except:
+            return "Failure"
+    else:
+        return "Treats are only awarded when Curvyllama is online."
 
 def llama(args):
     grab_user = args[0].lower()
@@ -131,7 +136,10 @@ def llama(args):
     if grab_user == "list":
         
         return return_treats_all    
+    elif grab_user == "print":
+        return get_stream_status()
     elif return_treats is not None:
         return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
     else:
+        print get_stream_status()
         return "No entry found for " + str(args[0])
