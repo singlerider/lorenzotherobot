@@ -35,11 +35,11 @@ class cron:
 				# "("+ ",".join(self.args[index]) + ")"
 				pbot('[CRON] ' + self.functions[index].__name__ , self.channel)
 				
-				message = self.functions[index](self.args[index])
+				message = str(self.functions[index](self.args[index]))
 				
 				if message != None:
 				
-					str(self.irc.send_message(self.channel, message[:120]))
+					self.irc.send_message(self.channel, message[:120])
 		
 					self.last_ran = time.time()
 		
