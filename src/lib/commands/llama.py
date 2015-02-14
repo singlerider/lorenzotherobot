@@ -24,10 +24,8 @@ def get_stream_status():
     url = 'https://api.twitch.tv/kraken/streams/curvyllama'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
-    if data["stream"] is not None:
-        return data
-    else:
-        return "Something"
+    if data["stream"] == "null":
+        return True
 
 stream_status = get_stream_status()
     
@@ -107,37 +105,29 @@ if __name__ == "__main__":
 def enter_into_database():
     # Returns tuple, gets expanded below
     user_dict, user_list = get_dict_for_users()
-
     # Path is relative - for Unix
     llama_object = UserData(DATABASE_FILE)
-    if stream_status["stream"] is not None:
-        try:
-            if user_dict["chatters"]["viewers"] is None:
-                return "No treats are added when only moderators are online"
-            elif "curvyllama" in user_dict["chatters"]["moderators"]:
-                #print "Match for user_list: ", user_list
-                llama_object.save(user_list)
-                print "Added to database!"
-                #print "Type: ", type(user_list)# Should say 'list'
-                return "Treats added"
-            else:
-                #print "No match for user_list: ", user_list 
-                return "Treats will only be added when Curvyllama is online."
-        except:
-            return "Failure"
-    else:
-        return "Treats are only awarded when Curvyllama is online."
+    try:
+        llama_object.save(user_list)
+        #print "Added to database!"
+        return "Treats added"
+    except:
+        return "Failure"
+   
 
 def llama(args):
     grab_user = args[0].lower()
     get_treats = UserData(DATABASE_FILE)
     return_treats = get_treats.get_user(grab_user)
     return_treats_all = get_treats.get_users(grab_user)
+    
     if grab_user == "list":
-        
         return return_treats_all    
     elif grab_user == "print":
         return get_stream_status()
+    elif grab_user == "viewers":
+        user_dict, user_list = get_dict_for_users()
+        return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
     elif return_treats is not None:
         return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
     else:
