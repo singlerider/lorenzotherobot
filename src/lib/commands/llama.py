@@ -12,6 +12,7 @@ import ast
 import requests, json
 import src.lib.commands.pokemon as pokemon_import
 
+
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
 
@@ -136,6 +137,14 @@ def llama(args):
         return str(user_data_name) + ", you've got a total of " + str(return_individual_treats) + " Llama treats. You go, girl!"
     elif grab_user == "print":
         return get_stream_status()
+    elif grab_user == "stream":
+        url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+        resp = requests.get(url=url)
+        data = json.loads(resp.content)
+        try:
+            return str(data["stream"]["channel"]["status"]) + " " + str(data["stream"]["channel"]["display_name"]) + " " + "playing " + str(data["stream"]["game"])
+        except:
+            return str(data["stream"]["channel"]["display_name"]) + "doesn't appear to be online?"
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
         return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
