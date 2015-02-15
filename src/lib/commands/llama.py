@@ -13,6 +13,7 @@ import requests, json
 import src.lib.commands.pokemon as pokemon_import
 
 
+
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
 
@@ -131,6 +132,8 @@ def llama(args):
     return_individual_treats = get_treats.get_user(user_data_name)
     return_treats_all = get_treats.get_users(grab_user)
     
+    usage = "!llama (list, treats, stream, [username], viewers, followers, usage)"
+    
     if grab_user == "list":
         return return_treats_all  
     elif grab_user == "treats":
@@ -152,6 +155,8 @@ def llama(args):
         stream_followers = get_stream_followers()
         follower_list = str(stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(stream_followers["follows"][2]["user"]["display_name"]) + ", " + str(stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(stream_followers["follows"][4]["user"]["display_name"])
         return "In case you missed them, here are the five most recent Llamas: " + follower_list
+    elif grab_user == "usage":
+        return usage
     elif return_treats is not None:
         return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
     else:
