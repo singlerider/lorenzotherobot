@@ -28,6 +28,12 @@ def get_stream_status():
         return True
 
 stream_status = get_stream_status()
+
+def get_stream_followers():
+    url = 'https://api.twitch.tv/kraken/channels/curvyllama/follows'
+    resp = requests.get(url=url)
+    data = json.loads(resp.content)
+    return data
     
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
@@ -128,6 +134,10 @@ def llama(args):
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
         return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
+    elif grab_user == "followers":
+        stream_followers = get_stream_followers()
+        follower_list = str(stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(stream_followers["follows"][2]["user"]["display_name"]) + ", " + str(stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(stream_followers["follows"][4]["user"]["display_name"])
+        return "In case you missed them, here are the five most recent Llamas: " + follower_list
     elif return_treats is not None:
         return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
     else:

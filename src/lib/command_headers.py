@@ -283,14 +283,7 @@ commands = {
         'return': 'command'
                
     },
-    """        
-    '!test': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
-              
-    },
-        """    
+
     '!odin': {
         'limit': 15,
         'return': 'THE POWER OF GOD COMPELS YOU!'
@@ -302,6 +295,12 @@ commands = {
         'return': "random fegit who keeps saying plz to everyone"          
     
     },
+            
+    '!fresh': {
+        'limit': 15,
+        'return': "i dont want a command please dont give me a command i hate shane"
+               
+    }
             
 
             
