@@ -63,8 +63,8 @@ class Roboraj(object):
 	
 					ppi(channel, message, username)
 					
-					user_data_name.append(username)
-					print user_data_name[0]
+					#user_data_name.append(username)
+					#print user_data_name[0]
 
 					# check if message is a command with no arguments
 					if commands.is_valid_command(message) or commands.is_valid_command(message.split(' ')[0]):

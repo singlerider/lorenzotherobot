@@ -24,7 +24,7 @@ def get_stream_status():
     url = 'https://api.twitch.tv/kraken/streams/curvyllama'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
-    if data["stream"] == "null":
+    if data["stream"] != None:
         return True
 
 stream_status = get_stream_status()
