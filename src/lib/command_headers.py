@@ -20,42 +20,13 @@ commands = {
                  
     },
             
-
-    
-    '!weather': {
-        'limit': 10,
-        'argc': 2,
-        'return': 'command'
-                 
-    },
-            
-    '!wow': {
-        'limit': 0,
-        'argc': 3,
-        'return': 'command'     
-    },
-
-
+     
 
 	'!chair': {
 		'limit': 1,
 		'return': "There's a chair over there!"
 	},
 
-	'!rails': {
-		'limit': 1,
-		'return': "RUST, GIVE ME THE FUNKIN' RAILS"
-	},
-
-	'!boom': {
-		'limit': 0,
-		'return': 'boom! headshot!'
-	},
-		
-	'!whatever': {
-		'limit': 1,
-		'return': 'idclol'
-	},
 		
 	'!randomnumber': {
 		'limit': 0,
@@ -97,11 +68,7 @@ commands = {
                   
     },
             
-     '!fb': {
-        'limit': 10,
-        'return': "https://www.facebook.com/AmandaDefrance"
-                  
-    },
+
             
      '!instagram': {
         'limit': 10,
@@ -109,11 +76,7 @@ commands = {
                   
     },
             
-     '!ig': {
-        'limit': 10,
-        'return': "http://instagram.com/amanda_defrance"
-                  
-    },
+
             
     '!twitter': {
         'limit': 10,
@@ -133,17 +96,6 @@ commands = {
                  
     },
     
-    '!yt': {
-        'limit': 10,
-        'return': 'https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
-                 
-    },
-            
-    '!gt': {
-        'limit': 10,
-        'return': "curvy8ubbles"
-            
-    },
             
     '!gamertag': {
         'limit': 10,
@@ -253,23 +205,8 @@ commands = {
             
     },
             
-    '!rebecca': {
-        'limit': 0,
-        'return': 'dat fat bitch and her baby needs 2 die.'
-                 
-    },
-    
-    '!clem': {
-        'limit': 0,       
-        'return': 'Leave little Carl alone! BibleThump!'
-    
-    },
-            
-    '!lee': {
-        'limit': 0,
-        'return': '"Clem, keep that hair short."'
-             
-    },
+
+     
 
 	'!friendly': {
 		'limit': 0,
@@ -285,12 +222,7 @@ commands = {
                   
     },
 
-	'!ben': {
-		'limit': 0,
-		'return': 'fuck ben! fuck ben!'
 
-
-	},
 
 	'!zombie': {
 
@@ -351,14 +283,14 @@ commands = {
         'return': 'command'
                
     },
-            
+    """        
     '!test': {
         'limit': 0,
         'argc': 0,
         'return': 'command'
               
     },
-            
+        """    
     '!odin': {
         'limit': 15,
         'return': 'THE POWER OF GOD COMPELS YOU!'
@@ -371,12 +303,7 @@ commands = {
     
     },
             
-    '!databasething': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
-                  
-    }
+
             
 }
 
