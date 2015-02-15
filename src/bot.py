@@ -17,8 +17,9 @@ import datetime
 import traceback
 import sched, time
 import threading
+import src.lib.commands.llama as llama_import
+import importlib
 
-user_data_name = []
 
 END = False
 
@@ -55,15 +56,15 @@ class Roboraj(object):
 				
 				
 				if irc.check_for_message(data):
+					llama_module = importlib.import_module('src.lib.commands.llama')
+					reload(llama_module)
 					message_dict = irc.get_message(data)
-	
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
 					username = message_dict['username']
-	
+					llama_module.user_data_name = username
 					ppi(channel, message, username)
 					
-					#user_data_name.append(username)
 					#print user_data_name[0]
 
 					# check if message is a command with no arguments

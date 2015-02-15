@@ -10,8 +10,10 @@ import os
 import urllib2
 import ast
 import requests, json
+import src.lib.commands.pokemon as pokemon_import
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
+
 
 
 def get_dict_for_users():
@@ -125,10 +127,13 @@ def llama(args):
     grab_user = args[0].lower()
     get_treats = UserData(DATABASE_FILE)
     return_treats = get_treats.get_user(grab_user)
+    return_individual_treats = get_treats.get_user(user_data_name)
     return_treats_all = get_treats.get_users(grab_user)
     
     if grab_user == "list":
-        return return_treats_all    
+        return return_treats_all  
+    elif grab_user == "treats":
+        return str(user_data_name) + ", you've got a total of " + str(return_individual_treats) + " Llama treats. You go, girl!"
     elif grab_user == "print":
         return get_stream_status()
     elif grab_user == "viewers":
