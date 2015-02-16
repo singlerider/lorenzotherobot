@@ -277,6 +277,13 @@ commands = {
               
     },
             
+    '!test': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+              
+    },
+            
     '!llama': {
         'limit': 0,
         'argc': 1,

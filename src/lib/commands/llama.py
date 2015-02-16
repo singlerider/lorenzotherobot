@@ -123,7 +123,6 @@ def enter_into_database():
         return "Treats added"
     except:
         return "Failure"
-   
 
 def llama(args):
     grab_user = args[0].lower()
@@ -131,6 +130,7 @@ def llama(args):
     return_treats = get_treats.get_user(grab_user)
     return_individual_treats = get_treats.get_user(user_data_name)
     return_treats_all = get_treats.get_users(grab_user)
+
     
     usage = "!llama (list, treats, stream, [username], viewers, followers, usage)"
     
