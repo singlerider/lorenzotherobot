@@ -70,7 +70,7 @@ def request(args):
         complete_url.append("https://www.youtube.com/watch?v=" + str(video_id[0]).strip('()'))
         #add_song
     except:
-        return "Something happened. You probably spelled it wrong. Kappa"
+        return "Something happened. 'Couldn't find that video, dude."
     
     def add_to_playlist():
         # The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
