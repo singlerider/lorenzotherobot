@@ -1,3 +1,10 @@
+##################################################################################
+#The first time the bot is run when the requests command is given                #
+#You MUST run the bot in the following manner in order to be able to authenticate#
+#./serve --noauth_local_webserver                                                #
+#After that, do your one-time authentication as prompted                         #
+##################################################################################
+
 from oauth2client import gce
 import httplib2
 from apiclient.discovery import build
@@ -142,7 +149,7 @@ def request(args):
         #print "Video added: %s" % add_video_request
     try:
         add_song = add_to_playlist()
-        return str("Video added: "+ str(videos[0]).encode('utf8', 'ignore') + " | " + str(complete_url[0]))
+        return str("Video added: "+ str(videos[0]) + " | " + str(complete_url[0]))
     except:
         
         print video_id[0].strip("()")

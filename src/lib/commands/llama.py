@@ -25,10 +25,17 @@ def get_dict_for_users():
     return user_dict, user_list
 
 def get_stream_status():
-    url = 'https://api.twitch.tv/kraken/streams/curvyllama'
-    resp = requests.get(url=url)
-    data = json.loads(resp.content)
-    if data["stream"] != None:
+    get_stream_status_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+    get_stream_status_resp = requests.get(url=get_stream_status_url)
+    online_data = json.loads(get_stream_status_resp.content)
+    if online_data["stream"] != None:
+        return True
+    
+def get_offline_status():
+    get_offline_status_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+    get_offline_status_resp = requests.get(url=get_offline_status_url)
+    offline_data = json.loads(get_offline_status_resp.content)
+    if offline_data["stream"] != None:
         return True
 
 stream_status = get_stream_status()
@@ -144,13 +151,16 @@ def llama(args):
     elif grab_user == "print":
         return get_stream_status()
     elif grab_user == "stream":
-        url = 'https://api.twitch.tv/kraken/streams/curvyllama'
-        resp = requests.get(url=url)
-        data = json.loads(resp.content)
+        get_stream_status_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+        get_stream_status_resp = requests.get(url=get_stream_status_url)
+        online_data = json.loads(get_stream_status_resp.content)
+        get_offline_status_url = 'https://api.twitch.tv/kraken/channels/curvyllama'
+        get_offline_status_resp = requests.get(url=get_offline_status_url)
+        offline_data = json.loads(get_offline_status_resp.content)
         try:
-            return str(data["stream"]["channel"]["status"]) + " " + str(data["stream"]["channel"]["display_name"]) + " " + "playing " + str(data["stream"]["game"])
+            return str(online_data["stream"]["channel"]["status"]) + " |  " + str(data["stream"]["channel"]["display_name"]) + " playing " + str(data["stream"]["game"])
         except:
-            return str(data["stream"]["channel"]["display_name"]) + "doesn't appear to be online?"
+            return str(offline_data["status"]) + " | " + str(offline_data["display_name"]) + " playing " + str(offline_data["game"])
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
         return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
