@@ -11,7 +11,7 @@ import urllib2
 import ast
 import requests, json
 import src.lib.commands.pokemon as pokemon_import
-
+import random
 
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
@@ -134,6 +134,13 @@ def enter_into_database():
     except:
         return "Major error reconciled. Notify singlerider (Shane) to let him know he can remove this message."
 
+def random_highlight():
+    get_highlight_url = "https://api.twitch.tv/kraken/channels/curvyllama/videos?limit=20"
+    get_highlight_resp = requests.get(url=get_highlight_url)
+    highlights = json.loads(get_highlight_resp.content)
+    random_highlight_choice = random.choice(highlights["videos"])
+    return str(str(random_highlight_choice["title"]) + " | " + str(random_highlight_choice["description"]) + " | " + str(random_highlight_choice["length"]) + " minutes | " + str(random_highlight_choice["_links"]["self"])).replace("\n", " ").replace("\r", " ")
+
 def llama(args):
     grab_user = args[0].lower()
     get_treats = UserData(DATABASE_FILE)
@@ -142,7 +149,7 @@ def llama(args):
     return_treats_all = get_treats.get_users(grab_user)
 
     
-    usage = "!llama (list, treats, stream, [username], viewers, followers, usage)"
+    usage = "!llama (list, treats, stream, [username], highlight, viewers, followers, usage)"
     
     if grab_user == "list":
         return return_treats_all  
@@ -151,19 +158,23 @@ def llama(args):
     elif grab_user == "print":
         return get_stream_status()
     elif grab_user == "stream":
-        get_stream_status_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
-        get_stream_status_resp = requests.get(url=get_stream_status_url)
-        online_data = json.loads(get_stream_status_resp.content)
         get_offline_status_url = 'https://api.twitch.tv/kraken/channels/curvyllama'
         get_offline_status_resp = requests.get(url=get_offline_status_url)
         offline_data = json.loads(get_offline_status_resp.content)
         try:
-            return str(online_data["stream"]["channel"]["status"]) + " |  " + str(data["stream"]["channel"]["display_name"]) + " playing " + str(data["stream"]["game"])
-        except:
             return str(offline_data["status"]) + " | " + str(offline_data["display_name"]) + " playing " + str(offline_data["game"])
+        except:
+            return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
         return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
+    elif grab_user == "highlight":
+        try:
+            return random_highlight()
+        except:
+            return "Listen, man. Don't blame me. Blame the Twitch API."
+    
+    
     elif grab_user == "followers":
         stream_followers = get_stream_followers()
         follower_list = str(stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(stream_followers["follows"][2]["user"]["display_name"]) + ", " + str(stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(stream_followers["follows"][4]["user"]["display_name"])
