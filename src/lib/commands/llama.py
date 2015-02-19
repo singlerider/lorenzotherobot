@@ -113,16 +113,19 @@ if __name__ == "__main__":
     
 """Gets list of users and returns them to the chat"""
 def enter_into_database():
-    # Returns tuple, gets expanded below
-    user_dict, user_list = get_dict_for_users()
-    # Path is relative - for Unix
-    llama_object = UserData(DATABASE_FILE)
     try:
-        llama_object.save(user_list)
-        #print "Added to database!"
-        return "Treats added"
+        # Returns tuple, gets expanded below
+        user_dict, user_list = get_dict_for_users()
+        # Path is relative - for Unix
+        llama_object = UserData(DATABASE_FILE)
+        try:
+            llama_object.save(user_list)
+            #print "Added to database!"
+            return "Treats added"
+        except:
+            return "Failure"
     except:
-        return "Failure"
+        return "Major error reconciled. Notify singlerider (Shane) to let him know he can remove this message."
 
 def llama(args):
     grab_user = args[0].lower()
