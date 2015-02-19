@@ -1,12 +1,9 @@
 """
-Developed by dustinbcox
-
-Adjustments by Shane Engelman <me@5h4n3.com>
+Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 """
 
 import sqlite3
 import os
-#import src.lib.user_data as user_data
 import urllib2
 import ast
 import requests, json
@@ -45,6 +42,14 @@ def get_stream_followers():
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     return data
+
+def random_highlight():
+    get_highlight_url = "https://api.twitch.tv/kraken/channels/curvyllama/videos?limit=20"
+    get_highlight_resp = requests.get(url=get_highlight_url)
+    highlights = json.loads(get_highlight_resp.content)
+    random_highlight_choice = random.choice(highlights["videos"])
+    return str(str(random_highlight_choice["title"]) + " | " + str(random_highlight_choice["description"]) + " | " + str(random_highlight_choice["length"]) + " minutes | " + str(random_highlight_choice["url"]) + " | Tags: " + str(random_highlight_choice["tag_list"])).replace("\n", " ").replace("\r", " ")
+
     
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
@@ -107,9 +112,6 @@ class UserData (object):
 if __name__ == "__main__":
     llama_object = UserData(DATABASE_FILE)
     print llama_object.get_users()
- 
-    #user_list = ['greg', 'jerry', 'larry', 'sam', 'jenny', 'moe', 'cindy',
-    #            'shane']
     user_dict, user_list = get_dict_for_users()
     llama_object.save(user_list)
     print "Users:"
@@ -133,13 +135,6 @@ def enter_into_database():
             return "Failure"
     except:
         return "Major error reconciled. Notify singlerider (Shane) to let him know he can remove this message."
-
-def random_highlight():
-    get_highlight_url = "https://api.twitch.tv/kraken/channels/curvyllama/videos?limit=20"
-    get_highlight_resp = requests.get(url=get_highlight_url)
-    highlights = json.loads(get_highlight_resp.content)
-    random_highlight_choice = random.choice(highlights["videos"])
-    return str(str(random_highlight_choice["title"]) + " | " + str(random_highlight_choice["description"]) + " | " + str(random_highlight_choice["length"]) + " minutes | " + str(random_highlight_choice["_links"]["self"])).replace("\n", " ").replace("\r", " ")
 
 def llama(args):
     grab_user = args[0].lower()
@@ -173,8 +168,6 @@ def llama(args):
             return random_highlight()
         except:
             return "Listen, man. Don't blame me. Blame the Twitch API."
-    
-    
     elif grab_user == "followers":
         stream_followers = get_stream_followers()
         follower_list = str(stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(stream_followers["follows"][2]["user"]["display_name"]) + ", " + str(stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(stream_followers["follows"][4]["user"]["display_name"])

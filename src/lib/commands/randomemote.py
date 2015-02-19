@@ -1,17 +1,14 @@
 # coding: utf8
 
 import random, json
+import requests
 
 def randomemote():
 	
-	filename = 'src/res/global_emotes.json'
+	emote_url = "http://twitchemotes.com/api_cache/v2/global.json"
+	emote_resp = requests.get(url=emote_url)
+	emote = json.loads(emote_resp.content)
+	emotes = emote["emotes"]
+	random_emote = random.choice(emotes.keys())
 
-	try:
-		data = json.loads(file(filename, 'r').read())
-	except:
-		return 'Error reading %s.' % filename
-
-	emote = random.choice(data.keys())
-
-	return emote
-	
+	return random_emote

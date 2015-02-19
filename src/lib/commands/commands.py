@@ -4,4 +4,4 @@ def commands():
     usage = '!commands'
     
 
-    return ", ".join(sorted(headers.commands))
+    return str(", ".join(sorted(headers.commands))).replace("!","")
