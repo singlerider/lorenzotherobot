@@ -1,3 +1,7 @@
+"""
+Developed by Shane Engelman <me@5h4n3.com> using the YouTube API
+"""
+
 ##################################################################################
 #The first time the bot is run when the requests command is given                #
 #You MUST run the bot in the following manner in order to be able to authenticate#
@@ -16,8 +20,6 @@ import sys
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 
-
-
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
 #   https://cloud.google.com/console
@@ -26,22 +28,14 @@ DEVELOPER_KEY = globals.YOUTUBE_DEVELOPER_KEY
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
-
-
-
-
-
 def request(args):
-    
-    
+
     videos = []
     channels = []
     playlists = []
     video_id = []
     complete_url = []
-    
-    
-    
+
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
       developerKey=DEVELOPER_KEY)
     
@@ -55,9 +49,7 @@ def request(args):
       #Returning only one result, as only the top result will be used
       maxResults = "1"
     ).execute()
-    
-    
-    
+
     # Add each result to the appropriate list, and then display the lists of
     # matching videos, channels, and playlists.
     for search_result in search_response.get("items", []):
@@ -66,9 +58,8 @@ def request(args):
                                  search_result["id"]["videoId"]))
             video_id.append("(%s)" % (search_result["id"]["videoId"]))
             print search_response, search_result
-    
-    
-    #retrieves video duration for the purposes of limiting the maximum playtime of a requested song
+
+    # Retrieves video duration for the purposes of limiting the maximum playtime of a requested song
     video_response = youtube.videos().list(
     id=str(video_id[0]).strip("()"),
     part='snippet, contentDetails'
@@ -76,8 +67,8 @@ def request(args):
     
     video_duration = video_response["items"][0]["contentDetails"]["duration"].replace("PT","")
     
-    print "video_id: " + str(video_id[0]).strip("()")
-    print video_duration
+    #print "video_id: " + str(video_id[0]).strip("()")
+    #print video_duration
     
     #Time is output as PT2M43S
     
@@ -144,8 +135,8 @@ def request(args):
           http=credentials.authorize(httplib2.Http()))
 
         add_video_request=youtube.playlistItems().insert(
-                                                        part="snippet",
-                                                        body={
+            part="snippet",
+            body={
             'snippet': {
               'playlistId': globals.YOUTUBE_PLAYLIST, 
               'resourceId': {
@@ -163,7 +154,7 @@ def request(args):
         return str("Video added: "+ str(videos[0]) + " | " + str(complete_url[0])) + " | Duration: " + video_duration
     except:
         
-        print video_id[0].strip("()")
+        #print video_id[0].strip("()")
         return "Something happened. You probably spelled it wrong. Kappa"
 
 if __name__ == "__main__":
@@ -176,6 +167,3 @@ if __name__ == "__main__":
         print complete_url[0]
     except HttpError, e:
         print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
-
-
-
