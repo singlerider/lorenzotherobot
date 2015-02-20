@@ -1,0 +1,67 @@
+v0.3.8 (14 February 2014)
+! Set all missing Weather.com XML tag values to an empty string
+
+v0.3.7 (21 January 2014)
+! Updated Weather.com URLs
+! Better handling of Weather.com data when current daytime has passed
+
+v0.3.6 (3 September 2013)
+! Fix for Py3k compatibility in get_weather_from_weather_com()
+
+v0.3.5 (14 August 2013)
+! Better handling of Weather.com data when current conditions are empty
+
+v0.3.4 (17 July 2013)
+! Fix for Unicode decoding issue in get_woeid_from_yahoo()
+
+v0.3.3 (2 June 2013)
++ Added suggested dependency on unidecode Python module, to get
+  location IDs for place names containing non-ascii characters
++ Added __version__ string to module for version tracking
+! Now uses json module to parse json replies instead of unsafe eval()
+! Unicode strings are now correctly handled by all methods
+! Fixes for Py3k compatibility
+
+v0.3.2 (21 May 2013)
++ Added function get_loc_id_from_weather_com(), which is same as
+  get_location_ids(), but with return format like get_woeid_from_yahoo().
++ Added function get_where_on_earth_ids(), which is same as
+  get_woeid_from_yahoo(),  but with return format like get_location_ids().
+
+v0.3.1 (17 May 2013)
++ Added function to calculate Heat Index from specified temperature and humidity.
++ Added conversion to Beaufort scale for more wind unit types.
+! get_woeid_from_yahoo() now returns number of results as a dictionary key.
+! Returned get_weather_from_google() to module for backwards compatibility,
+  now always returns 'error' dictionary.
+
+v0.3 (13 March 2013)
++ Now compatible with Python 2.x and Py3k
++ Added support of Weather.com XML feeds
+- Google Weather service was removed. It has been discontinued as of Sep 2012.
+! Functions now return a dictionary with one key, 'error', if something goes wrong.
+! When connecting, now fails gracefully if a URLError occurs.
+! Some changes to prevent possible IndexError issues.
+
+v0.2.2 (31 August 2009)
++ Ability to get countries and cities lists from Google was added.
++ Shebang was added to the example scripts. Thank you, Runa.
+! Small corrections to fix some pychecker's warnings.
+! get_weather_from_google() now supports non-English languages. Thank you, Shinysky.
+! "400: Bad Request" error was fixed. It appeared when Google API is used and
+  location contains special characters(for example spaces). Thank you, Dan.y.tang.
+! Some changes to prevent possible IndexError issues.
+
+v0.2.1 (07 July 2009)
++ GisMeteo service was removed. It doesn't provide XML feeds anymore.
+! IndexError issue was fixed. Thank you, Dr. Drang.
+
+v0.2 (29 May 2009)
++ Added support of NOAA XML feeds
++ Added support of GisMeteo XML feeds
++ Re-organized files: no more package, only one Python module
++ Added some example scripts
++ Added CHANGELOG and README files
+
+v0.1 (18 May 2009)
++ Inital release: it is possible to get weather reports from Yahoo and Google

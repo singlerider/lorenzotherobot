@@ -307,6 +307,13 @@ commands = {
         'limit': 15,
         'return': "i dont want a command please dont give me a command i hate shane"
                
+    },
+            
+    '!weather': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 1
+         
     }
             
 

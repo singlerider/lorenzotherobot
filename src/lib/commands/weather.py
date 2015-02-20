@@ -1,72 +1,29 @@
-# coding: utf8
-from BeautifulSoup import BeautifulStoneSoup
-import urllib
+#!/usr/bin/env python
 
-def weather(args):  # !weather <city> or !weather <city>, <state or country>
-    '''Returns a string containing the weather conditions from a location'''
-    usage = 'Usage: !weather <city> <state>'
+"""
+Developed by Shane Engelman <me@5h4n3.com> using the weather API found at
+https://code.google.com/p/python-weather-api/
+"""
 
-    response = ''
-    conditions = ''
+import importlib
+import pprint
 
-    try:
-        
-        city = args[0].lower().replace("'", '').replace('_', ' ').lower().encode('utf8')
-        realm = args[1].replace("'", '').replace('_', ' ').lower().encode('utf8')
-        
-        location = args.split('!weather')[1]
-        location = location.lstrip()
-        
-        if len(location) < 1:
-            raise Exception('Empty location!')
-    except:
-        response = 'Usage: !weather city, state'
-    else:
-        location = location.replace(' ', '')
-        conditions = get_weather(location)
-        if type(conditions) == type(str()):
-            response = conditions
-        else:
-            response = conditions['location'] + ' - ' + conditions['temp'] + \
-                    ' - ' + conditions['weather'] + ' - Provided by: ' + \
-                    'Weather Underground, Inc.'
 
-    return response.encode('utf8')
-
-def get_weather(location):
-    '''Return a dictionary with the weather, full, temperature_string tags
-    from the XML provided by http://api.wunderground.com
-
-    The dictionary 'conditions' will hold 3 values:
-    location, weather, temperature
-    '''
-
-    degree = '°'.decode('utf8')
-    conditions = {}
-    base_url = 'http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query='
-
-    try:
-        page = urllib.urlopen(base_url + location)
-    except:
-        return 'Could not open the page!'
-    else:
-        soup = BeautifulStoneSoup(page)
-        conditions['location'] = soup.find('full').contents[0]
-
-        if 2 >= len(conditions['location']):
-            return 'Inexistent location: ' + location
-        else:
-            conditions['weather'] = soup.find('weather').contents[0]
-            conditions['temp'] = soup.find('temperature_string').contents[0]
-
-            pos = conditions['temp'].find(' ')
-            conditions['temp'] = conditions['temp'][:pos] + degree + \
-                    conditions['temp'][pos:]
-
-            pos = conditions['temp'].rfind(' ')
-            conditions['temp'] = conditions['temp'][:pos] + degree + \
-                    conditions['temp'][pos:]
-
-        page.close()
-
-    return conditions
+def weather(args):
+    usage = "!weather [zipcode]"
+    
+    pywapi = importlib.import_module('pywapi')
+    
+    result = pywapi.get_weather_from_yahoo(str(args[0]).replace("_", " "), "imperial")
+    
+    current_conditions = result["condition"]["title"] + ": "  + result["condition"]["text"] + ", " + result["condition"]["temp"]
+    five_day_forecast = result["forecasts"]
+    forecast_1 = str(five_day_forecast[0]["day"]) + ": " + str(five_day_forecast[0]["text"]) + ", " + str(five_day_forecast[0]["high"]) + ", " + str(five_day_forecast[0]["low"]) + " | "
+    forecast_2 = str(five_day_forecast[1]["day"]) + ": " + str(five_day_forecast[1]["text"]) + ", " + str(five_day_forecast[1]["high"]) + ", " + str(five_day_forecast[1]["low"]) + " | "
+    forecast_3 = str(five_day_forecast[2]["day"]) + ": " + str(five_day_forecast[2]["text"]) + ", " + str(five_day_forecast[2]["high"]) + ", " + str(five_day_forecast[2]["low"]) + " | "
+    forecast_4 = str(five_day_forecast[3]["day"]) + ": " + str(five_day_forecast[3]["text"]) + ", " + str(five_day_forecast[3]["high"]) + ", " + str(five_day_forecast[3]["low"]) + " | "
+    forecast_5 = str(five_day_forecast[4]["day"]) + ": " + str(five_day_forecast[4]["text"]) + ", " + str(five_day_forecast[4]["high"]) + ", " + str(five_day_forecast[4]["low"])
+    forecasts = forecast_1 + forecast_2 + forecast_3 + forecast_4 + forecast_5
+    
+    return current_conditions + " | Forecasts: " + forecasts
+    #print str(result["condition"]["title"]) " | Sunrise/Sunset: " str(result["astronomy"]["sunrise"]) + str(result["atmosphere"]["humidity"])
