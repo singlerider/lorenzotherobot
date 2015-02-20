@@ -49,11 +49,15 @@ def request(args):
     # query term.
     search_response = youtube.search().list(
       q=args[0].replace("_", " "),
+      type="video",
       part="id,snippet",
+      #videoDuration="short",
       #Returning only one result, as only the top result will be used
       maxResults = "1"
     ).execute()
-
+    
+    
+    
     # Add each result to the appropriate list, and then display the lists of
     # matching videos, channels, and playlists.
     for search_result in search_response.get("items", []):
@@ -61,13 +65,22 @@ def request(args):
             videos.append("%s (%s)" % (search_result["snippet"]["title"],
                                  search_result["id"]["videoId"]))
             video_id.append("(%s)" % (search_result["id"]["videoId"]))
-        elif search_result["id"]["kind"] == "youtube#channel":
-            channels.append("%s (%s)" % (search_result["snippet"]["title"],
-                                   search_result["id"]["channelId"]))
-        elif search_result["id"]["kind"] == "youtube#playlist":
-            playlists.append("%s (%s)" % (search_result["snippet"]["title"],
-                                    search_result["id"]["playlistId"]))
-
+            print search_response, search_result
+    
+    
+    #retrieves video duration for the purposes of limiting the maximum playtime of a requested song
+    video_response = youtube.videos().list(
+    id=str(video_id[0]).strip("()"),
+    part='snippet, contentDetails'
+  ).execute()
+    
+    video_duration = video_response["items"][0]["contentDetails"]["duration"].replace("PT","")
+    
+    print "video_id: " + str(video_id[0]).strip("()")
+    print video_duration
+    
+    #Time is output as PT2M43S
+    
     #print "Videos:\n", "\n".join(videos), "\n"
     #print "Channels:\n", "\n".join(channels), "\n"
     #print "Playlists:\n", "\n".join(playlists), "\n"
@@ -129,9 +142,7 @@ def request(args):
         
         youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
           http=credentials.authorize(httplib2.Http()))
-    
-        
-        
+
         add_video_request=youtube.playlistItems().insert(
                                                         part="snippet",
                                                         body={
@@ -149,7 +160,7 @@ def request(args):
         #print "Video added: %s" % add_video_request
     try:
         add_song = add_to_playlist()
-        return str("Video added: "+ str(videos[0]) + " | " + str(complete_url[0]))
+        return str("Video added: "+ str(videos[0]) + " | " + str(complete_url[0])) + " | Duration: " + video_duration
     except:
         
         print video_id[0].strip("()")
