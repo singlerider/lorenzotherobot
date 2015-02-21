@@ -318,7 +318,7 @@ commands = {
     
     '!specs': {
     	'limit':15,
-    	'return': 'NZXT Phantom case, GIGABYTE GA-990FXA-UD3 AM3+, G.SKILL Ripjaws X Series 32GB OC'd at 1866, EVGA SuperClocked GeForce GTX 680, AMD FX-8350 Black Edition Vishera 8-Core OC'd at 5GHz'
+    	'return': "NZXT Phantom case, GIGABYTE GA-990FXA-UD3 AM3+, G.SKILL Ripjaws X Series 32GB OC'd at 1866, EVGA SuperClocked GeForce GTX 680, AMD FX-8350 Black Edition Vishera 8-Core OC'd at 5GHz"
     	
     }
             
