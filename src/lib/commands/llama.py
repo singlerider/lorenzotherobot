@@ -90,6 +90,21 @@ class UserData (object):
                         conn.close()
         except:
             pass
+        
+    def special_save(self, delta_user, delta):
+        try:
+            if delta_user is not '':#added as test
+                try:
+                    conn = sqlite3.connect(self.filepath)
+                    # Let's update the existing user
+                    conn.execute("UPDATE users SET points = points + ?" +
+                                 " WHERE username = ?", (self.delta, delta_user))
+                    conn.commit()
+                    conn.close()
+                except:
+                    return "User not found"
+        except:
+            pass
  
     def get_user(self, username):
         conn = sqlite3.connect(self.filepath)
@@ -136,9 +151,10 @@ def enter_into_database():
     except:
         return "Major error reconciled. Notify singlerider (Shane) to let him know he can remove this message."
 
-def delta_treats(add_remove, user, delta):
-    llama_object = UserData(DATABASE_FILE)
-    llama_object.save(user)
+def delta_treats(add_remove, delta_user, delta):
+    if add_remove == "add":
+        llama_object = UserData(DATABASE_FILE)
+        llama_object.special_save(delta_user, delta)
 
 def llama(args):
     grab_user = args[0].lower()
