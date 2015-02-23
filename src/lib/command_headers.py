@@ -49,11 +49,6 @@ commands = {
 		'return': 'She is smoking hookah with no weed in it.'
 	},
 		
-	'!social': {
-		'limit': 30,
-		'return': 'https://www.facebook.com/AmandaDefrance http://instagram.com/amanda_defrance https://twitter.com/Amanda_Defrance https://vine.co/AmandaDefrance https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
-	
-	},
             
     '!fb': {
         'limit': 10,
@@ -63,14 +58,13 @@ commands = {
             
 
             
-     '!instagram': {
+     '!ig': {
         'limit': 10,
         'return': "http://instagram.com/amanda_defrance"
                   
     },
             
-
-            
+   
     '!twitter': {
         'limit': 10,
         'return': "https://twitter.com/Amanda_Defrance"
@@ -120,18 +114,6 @@ commands = {
 	},
             
 
-    '!shane':  {
-        'limit': 10,
-        'return': "Shane's the robot dude that helps Amanda stream sometimes. He has a chip implanted in his left hand and a magnet implanted in each ring finger and nanomachines Kappa. His username is 'singlerider'."
-                
-    },
-            
-    '!ip': {
-        'limit': 5,
-        'return': "The Minecraft server ip is: joecow.net"
-            
-    },
-                
     '!james': {
         'limit': 10,
         'return': "James is the guy the you guys commonly hear in the background while Amanda streams. He does IT work as his job and is really good with computers. His username is 'peligrosocortez'."               
@@ -182,20 +164,13 @@ commands = {
     },
 
 
-
 	'!zombie': {
 
 		'limit': 15,
 		'return': 'Zombie is the last dragon. He possesses the power of the glow.'
 	},
             
-    '!data': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
-               
-    },
-            
+    
     '!buyprints': {
         'limit': 15,
         'return': 'Check out some model/cosplay prints & posters Amanda has for sale here: https://www.facebook.com/media/set/?set=a.695350670512515.1073741836.276081062439480'
