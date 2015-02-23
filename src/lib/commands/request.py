@@ -57,7 +57,6 @@ def request(args):
             videos.append("%s (%s)" % (search_result["snippet"]["title"],
                                  search_result["id"]["videoId"]))
             video_id.append("(%s)" % (search_result["id"]["videoId"]))
-            print search_response, search_result
 
     # Retrieves video duration for the purposes of limiting the maximum playtime of a requested song
     video_response = youtube.videos().list(
@@ -164,6 +163,6 @@ if __name__ == "__main__":
     
     try:
         request(args)
-        print complete_url[0]
+        #print complete_url[0]
     except HttpError, e:
         print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)

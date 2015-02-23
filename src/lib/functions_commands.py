@@ -45,12 +45,40 @@ def get_return(command):
 def check_has_args(command):
 	if 'argc' in commands[command]:
 		return True
+	
+def check_is_space_case(message):
+	"""Check to see if the command is a space case"""
+	command = message.split(' ')[0]
+	argc = commands[command]['argc']
+	# Space Cases
+	# Cool show
+	return argc == 1 and 'space_case' in commands[command] and commands[command]['space_case']
+	
 
 def check_has_correct_args(message, command):
-	message = message.split(' ')
-	if len(message) - 1 == commands[command]['argc']:
-		return True
+	"""Check to see if message has the correct number of arguments,
+	if the commands[command]['argc'] == 1 then we can handle spaces, otherwise
+	arguments are seperated by spaces"""
+	argc = commands[command]['argc']
 
+	if check_is_space_case(message):
+		# As long as it has a length > 1
+		message_without_command = message[len(command):]
+		# Cool show
+		# length of string wihtout command will have one space and one character min
+		return len(message_without_command) > 2
+	message = message.split(' ')
+	if len(message) - 1 == argc:
+		return True
+	else:
+		return False
+
+def check_has_ul(username, command):
+	if 'ul' in commands[command]:
+		if 'mod' in commands[command]['ul']:
+			return True
+		else:
+			return False
 
 def check_returns_function(command):
 	if commands[command]['return'] == 'command': 

@@ -57,26 +57,42 @@ class Roboraj(object):
 				
 				if irc.check_for_message(data):
 					llama_module = importlib.import_module('src.lib.commands.llama')
-					reload(llama_module)
+					treats_module = importlib.import_module('src.lib.commands.treats')
+					reload(llama_module, treats_module)
 					message_dict = irc.get_message(data)
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
 					username = message_dict['username']
 					llama_module.user_data_name = username
+					treats_module.mod_name = username
 					ppi(channel, message, username)
 					
-					#print user_data_name[0]
-
 					# check if message is a command with no arguments
 					if commands.is_valid_command(message) or commands.is_valid_command(message.split(' ')[0]):
 						command = message
 	
 						if commands.check_returns_function(command.split(' ')[0]):
-							if commands.check_has_correct_args(command, command.split(' ')[0]):
-								args = command.split(' ')
-								del args[0]
-								
+							if commands.check_has_correct_args(message, command.split(' ')[0]):
 								command = command.split(' ')[0]
+								if commands.check_is_space_case(message):
+									# let's get crazy with space cases!
+									args = []
+									args.append(message[len(command):])
+									# basically if we only have argc as defined in command_headers then
+									# we can allow spaces.
+								else:
+									args = message.split(' ')[1:]
+								print "Args matey! {0}:".format(len(args)), args
+								
+									
+								# Handles Moderator-level commands - add 'ul': 'mod' to all commands with intended restriction
+								
+								if commands.check_has_ul(username, command):
+									if username not in llama_import.get_dict_for_users()[0]["chatters"]["moderators"]:
+										resp = '(%s) : %s' % (username, "This is a moderator-only command!")
+										pbot(resp, channel)
+										irc.send_message(channel, resp)
+										continue
 								
 								#if commands.command_user_level(command, channel):
 
@@ -125,7 +141,7 @@ class Roboraj(object):
 									command, username), 
 									channel
 								)
-								commands.update_last_used(command, channel)
+								#commands.update_last_used(command, channel)
 	
 								resp = '(%s) : %s' % (username, commands.get_return(command))
 								commands.update_last_used(command, channel)

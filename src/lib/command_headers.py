@@ -19,8 +19,6 @@ commands = {
         'ul': 'reg'
                  
     },
-            
-     
 
 	'!chair': {
 		'limit': 1,
@@ -252,8 +250,8 @@ commands = {
     '!request': {
         'limit': 0,
         'argc': 1,
-        'return': 'command'
-                     
+        'return': 'command',
+        'space_case': True
     },
             
     '!streetfighter': {
@@ -266,14 +264,17 @@ commands = {
     '!poll': {
         'limit': 0,
         'argc': 1,
-        'return': 'command'
+        'return': 'command',
+        'ul': 'mod',
+        'space_case': True
               
     } ,
             
     '!vote': {
         'limit': 0,
         'argc': 1,
-        'return': 'command'
+        'return': 'command',
+        'space_case': True
               
     },
             
@@ -314,10 +315,16 @@ commands = {
         'return': 'command',
         'argc': 1
          
+    },
+            
+    '!treats': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 3,
+        'ul': 'mod'
+                
     }
-            
-
-            
+         
 }
 
 
