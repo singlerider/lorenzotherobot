@@ -11,6 +11,9 @@ def treats(args):
     delta = args[2]
     
     if mod_name in approved_list:
-        llama_import.delta_treats(add_remove, delta_user, delta)
+        llama_import.delta = delta
+        return llama_import.delta_treats(add_remove, delta_user, delta)
+        
+        
     else:
         return "Only " + ", ".join(approved_list) + "are allowed to do that!"

@@ -10,13 +10,14 @@ import requests, json
 import src.lib.commands.pokemon as pokemon_import
 import random
 import src.bot
+import sys
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
 
 
 def get_dict_for_users():
-    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/lorenzotherobot/chatters') #change username to your channel
+    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters') #change username to your channel
     user_dict = ast.literal_eval(response.read())
     user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
     return user_dict, user_list
@@ -59,6 +60,8 @@ class UserData (object):
  
     # Start off with 5 points, add incrementally this value each time ran
     INITIAL_VALUE = 1
+    
+    delta = []
  
     def __init__(self, filepath):
         """ Initialize the database as needed """
@@ -91,20 +94,25 @@ class UserData (object):
         except:
             pass
         
-    def special_save(self, delta_user, delta):
-        try:
-            if delta_user is not '':#added as test
-                try:
-                    conn = sqlite3.connect(self.filepath)
-                    # Let's update the existing user
-                    conn.execute("UPDATE users SET points = points + ?" +
-                                 " WHERE username = ?", (self.delta, delta_user))
-                    conn.commit()
-                    conn.close()
-                except:
-                    return "User not found"
-        except:
-            pass
+    def special_save(self, users):
+        if self.get_user(users) is not None:
+            print self.delta[0]
+            conn = sqlite3.connect(self.filepath)
+                # Let's update the existing user
+            conn.execute("UPDATE users SET points = points + ?" +
+                         " WHERE username = ?", (self.delta[0], users))
+            conn.commit()
+            conn.close()
+            
+    def special_remove(self, users):
+        if self.get_user(users) is not None:
+            print self.delta[0]
+            conn = sqlite3.connect(self.filepath)
+                # Let's update the existing user
+            conn.execute("UPDATE users SET points = points - ?" +
+                         " WHERE username = ?", (self.delta[0], users))
+            conn.commit()
+            conn.close()
  
     def get_user(self, username):
         conn = sqlite3.connect(self.filepath)
@@ -152,9 +160,27 @@ def enter_into_database():
         return "Major error reconciled. Notify singlerider (Shane) to let him know he can remove this message."
 
 def delta_treats(add_remove, delta_user, delta):
+    users = delta_user
+    UserData.delta.append(delta)
+    print "1"
     if add_remove == "add":
+        print "2"
         llama_object = UserData(DATABASE_FILE)
-        llama_object.special_save(delta_user, delta)
+        try:
+            llama_object.special_save(users)
+            return "Success! " + delta + " treats added for " + delta_user + "!"
+        except:
+            return "failure"
+    elif add_remove == "remove":
+        print "3"
+        llama_object = UserData(DATABASE_FILE)
+        try:
+            llama_object.special_remove(users)
+            return "Success! " + delta + " treats removed from " + delta_user + "!"
+        except:
+            return "failure"
+    
+        
 
 def llama(args):
     grab_user = args[0].lower()
