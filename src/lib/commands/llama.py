@@ -11,6 +11,8 @@ import src.lib.commands.pokemon as pokemon_import
 import random
 import src.bot
 import sys
+import datetime
+import time
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
@@ -28,6 +30,19 @@ def get_stream_status():
     online_data = json.loads(get_stream_status_resp.content)
     if online_data["stream"] != None:
         return True
+    
+def get_stream_uptime():
+    try:
+        format = "%Y-%m-%d %H:%M:%S"
+        get_stream_uptime_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+        get_stream_uptime_resp = requests.get(url=get_stream_uptime_url)
+        uptime_data = json.loads(get_stream_uptime_resp.content)
+        start_time = str(uptime_data['stream']['created_at']).replace("T", " ").replace("Z", "")
+        stripped_start_time = datetime.datetime.strptime(start_time, format)
+        time_delta = datetime.datetime.utcnow() - stripped_start_time
+        return time_delta
+    except:
+        return "She's offline, duh."
     
 def get_offline_status():
     get_offline_status_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
@@ -190,7 +205,7 @@ def llama(args):
     return_treats_all = get_treats.get_users(grab_user)
 
     
-    usage = "!llama (list, treats, stream, [username], highlight, viewers, followers, usage)"
+    usage = "!llama (list, treats, stream, [username], highlight, viewers, followers, usage, uptime)"
     
     if grab_user == "list":
         return return_treats_all  
@@ -218,6 +233,9 @@ def llama(args):
         stream_followers = get_stream_followers()
         follower_list = str(stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(stream_followers["follows"][2]["user"]["display_name"]) + ", " + str(stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(stream_followers["follows"][4]["user"]["display_name"])
         return "In case you missed them, here are the five most recent Llamas: " + follower_list
+    elif grab_user == "uptime":
+        return get_stream_uptime()
+    
     elif grab_user == "usage":
         return usage
     elif return_treats is not None:
