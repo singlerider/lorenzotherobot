@@ -39,11 +39,6 @@ commands = {
                      
     },
 		
-	'!q': {
-		'limit': 0,
-		'return': 'QQQQqQqqqqqqQQQQQqQqqQQQQQQQQQqQqqQqQQQQqQQQQqQqQqqQqQQqqQqQQQQqQqQQqQQqQQ E'
-	},
-	
 	'!carlpoppa': {
 		'limit': 0,
 		'return': 'Jiggy Jar Jar Do!'
@@ -60,7 +55,7 @@ commands = {
 	
 	},
             
-    '!facebook': {
+    '!fb': {
         'limit': 10,
         'return': "https://www.facebook.com/AmandaDefrance"
                   
@@ -95,7 +90,7 @@ commands = {
     },
     
             
-    '!gamertag': {
+    '!gt': {
         'limit': 10,
         'return': "curvy8ubbles"
                   
@@ -117,34 +112,14 @@ commands = {
 			
 	},
 		
-	'!links': {
-		'limit': 5,
-		'return': 'DO NOT POST LINKS unless its approved by mods or curvy!'
-			
-	},
-		
+
 	'!daddy': {
 		'limit': 0,
 		'return': 'DADDYS BACK YOU BITCHES!!!!!!!!'	
 			
 	},
             
-    '!kavinsky': {
-        'limit': 5,
-        'return': 'And it will forever be known as... the ghost car.'
-                  
-    },
-            
-    '!sunday': {
-        'limit': 0,
-        'return': '(Metal Gear) Solid Sundays with Amanda and Shane!'
-    }, 
-    
-    '!monday': {
-        'limit': 0,
-        'return': 'Minecraft Mondays with JoeCow and Phin!'
-    },
-    
+
     '!shane':  {
         'limit': 10,
         'return': "Shane's the robot dude that helps Amanda stream sometimes. He has a chip implanted in his left hand and a magnet implanted in each ring finger and nanomachines Kappa. His username is 'singlerider'."
@@ -168,11 +143,6 @@ commands = {
              
     },
     
-    '!duck': {
-        'limit': 0,
-        'return': 'FUCK DUCK! FUCK DUCK!'
-              
-    },
             
     '!saturday': {
         'limit': 0,
@@ -203,15 +173,6 @@ commands = {
             
     },
             
-
-     
-
-	'!friendly': {
-		'limit': 0,
-		'return': "Friendly!! Don't shoot! \Kappa/"
-
-    },
-
             
     '!pokemon' : {
         'limit': 0,
@@ -254,12 +215,12 @@ commands = {
         'space_case': True
     },
             
-    '!streetfighter': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
-                      
-    },
+    #'!streetfighter': {
+    #    'limit': 0,
+    #    'argc': 0,
+    #    'return': 'command'
+    #                  
+    #},
             
     '!poll': {
         'limit': 0,
@@ -310,12 +271,12 @@ commands = {
                
     },
             
-    '!weather': {
-        'limit': 0,
-        'return': 'command',
-        'argc': 1
-         
-    },
+    #'!weather': {
+    #    'limit': 0,
+    #    'return': 'command',
+    #    'argc': 1
+    #     
+    #},
     
     '!specs': {
     	'limit':15,
