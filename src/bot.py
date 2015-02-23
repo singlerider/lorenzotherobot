@@ -57,8 +57,9 @@ class Roboraj(object):
 				
 				if irc.check_for_message(data):
 					llama_module = importlib.import_module('src.lib.commands.llama')
+					reload(llama_module)
 					treats_module = importlib.import_module('src.lib.commands.treats')
-					reload(llama_module, treats_module)
+					reload(treats_module)
 					message_dict = irc.get_message(data)
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
