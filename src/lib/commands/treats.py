@@ -7,7 +7,7 @@ def treats(args):
     approved_list = ['curvyllama', 'peligrosocortez', 'singlerider']
     
     add_remove = args[0]
-    delta_user = args[1]
+    delta_user = args[1].lower()
     delta = args[2]
     
     if mod_name in approved_list:
