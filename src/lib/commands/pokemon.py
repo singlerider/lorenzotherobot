@@ -348,17 +348,7 @@ def pokemon(args):
     evolution_set = [k[2] for k in master_pokemon]
     
     # Grabs multiplier of pokemon based on name[type]
-    '''
-    def get_multiplier(pokemon_1_type, pokemon_2_type):
-        default = 1.0
-        for i in multiplier:
-            for j in multiplier:
-                try:
-                    print "dict['Name']: ", multipliers[0];
-                    print "dict['Age']: ", multipliers[1];
-                except:
-                    print "Whoops"            
-    '''
+
      
     # Script that handles battle    
     def battle():
