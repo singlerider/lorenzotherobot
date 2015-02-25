@@ -265,6 +265,12 @@ commands = {
         'argc': 3,
         'ul': 'mod'
                 
+    },
+    
+    '!romero': {
+    	'limit': 0,
+    	'return': 'One tequila, two tequila, three tequila, floor.'
+    	
     }
          
 }
