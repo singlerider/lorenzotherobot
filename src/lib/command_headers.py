@@ -269,7 +269,7 @@ commands = {
     
     '!romero': {
     	'limit': 10,
-    	'return': 'One tequila, two tequila, three tequila, floor.'
+    	'return': "One tequila, two tequila, three tequila, floor. I would drink another bottle but I can't take it anymore."
     	
     }
          
