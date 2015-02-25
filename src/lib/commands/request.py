@@ -19,6 +19,7 @@ import os
 import sys
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
+import traceback
 
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
@@ -79,7 +80,9 @@ def request(args):
     try:
         complete_url.append("https://www.youtube.com/watch?v=" + str(video_id[0]).strip('()'))
         #add_song
-    except:
+    except Exception as error:
+        print >> sys.stdout, str (error)
+        traceback.print_exc(file=sys.stdout)
         return "Something happened. 'Couldn't find that video, dude."
     
     def add_to_playlist():
@@ -94,7 +97,7 @@ def request(args):
         # For more information about the client_secrets.json file format, see:
         #   https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
         
-        CLIENT_SECRETS_FILE = "client_secret_221588655181-j4rkfkis8h2df80kon2nq6rs2au3aa30.apps.googleusercontent.com.json"
+        CLIENT_SECRETS_FILE = "client_secret_903221304600-cqh20m4v1fitiu8u9okgrh2k27t0is67.apps.googleusercontent.com.json"
         
         # This variable defines a message to display if the CLIENT_SECRETS_FILE is
         # missing.
@@ -151,8 +154,9 @@ def request(args):
     try:
         add_song = add_to_playlist()
         return str("Video added: "+ str(videos[0]) + " | " + str(complete_url[0])) + " | Duration: " + video_duration
-    except:
-        
+    except Exception as error:
+        print >> sys.stdout, str (error)
+        traceback.print_exc(file=sys.stdout)
         #print video_id[0].strip("()")
         return "Something happened. You probably spelled it wrong. Kappa"
 
