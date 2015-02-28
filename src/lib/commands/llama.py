@@ -61,7 +61,7 @@ def get_user_command():
         user_command = user_commands_import.user_command_dict[user_data_name]["return"]
         return user_command
     except:
-        return "Dude... stop. You don't have a user command... yet."
+        return "Dude... stop. You don't have a user command... yet. R)"
 
 def get_stream_followers():
     url = 'https://api.twitch.tv/kraken/channels/' + globals.channel + '/follows'
@@ -74,9 +74,8 @@ def random_highlight():
     get_highlight_resp = requests.get(url=get_highlight_url)
     highlights = json.loads(get_highlight_resp.content)
     random_highlight_choice = random.choice(highlights["videos"])
-    return str(str(random_highlight_choice["title"]) + " | " + str(random_highlight_choice["description"]) + " | " + str(random_highlight_choice["length"]) + " minutes | " + str(random_highlight_choice["url"]) + " | Tags: " + str(random_highlight_choice["tag_list"])).replace("\n", " ").replace("\r", " ")
+    return str(str(random_highlight_choice["title"]) + " | " + str(random_highlight_choice["description"]) + " | " + str(random_highlight_choice["length"]) + " time units | " + str(random_highlight_choice["url"]) + " | Tags: " + str(random_highlight_choice["tag_list"])).replace("\n", " ").replace("\r", " ")
 
-"""Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
 stream_data = get_stream_status() 
 class UserData (object):
@@ -148,6 +147,17 @@ class UserData (object):
                          " WHERE username = ?", (self.delta[0], users))
             conn.commit()
             conn.close()
+            
+#######pokemon stuff is in progress            
+    def add_pokemon(self, poke_master, pokemon):
+        if self.get_user(poke_master) is not None:
+            print self.delta[0]
+            conn = sqlite3.connect(self.filepath)
+                # Let's update the existing user
+            conn.execute("UPDATE users SET pokemon = pokemon = ?" +
+                         " WHERE username = ?", (self.delta[0], poke_master))
+            conn.commit()
+            conn.close()
  
     def get_user(self, username):
         conn = sqlite3.connect(self.filepath)
@@ -158,6 +168,7 @@ class UserData (object):
             points = points[0] # get only the points from the tuple
         conn.close()
         return points
+    
     def get_users(self, username):
         """ Get all of the users point data ordered by point value"""
         conn = sqlite3.connect(self.filepath)
@@ -222,7 +233,6 @@ def delta_treats(add_remove, delta_user, delta):
             return "Success! " + delta_user + "'s treats set to " + delta + "!"
         except:
             return "failure"
-        
 
 def llama(args):
     grab_user = args[0].lower()
