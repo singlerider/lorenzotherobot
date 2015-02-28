@@ -7,8 +7,7 @@ commands = {
     '!commands': {
         'limit': 10,
         'argc': 0,
-        'return': 'command',
-        'ul': 'mod'
+        'return': 'command'
                   
     },
             
@@ -57,14 +56,12 @@ commands = {
     },
             
 
-            
      '!ig': {
         'limit': 10,
         'return': "http://instagram.com/amanda_defrance"
                   
     },
             
-   
     '!twitter': {
         'limit': 10,
         'return': "https://twitter.com/Amanda_Defrance"
@@ -113,49 +110,19 @@ commands = {
 			
 	},
             
-
-    '!james': {
-        'limit': 10,
-        'return': "James is the guy the you guys commonly hear in the background while Amanda streams. He does IT work as his job and is really good with computers. His username is 'peligrosocortez'."               
-    },
-            
+   
     '!cry': {
         'limit': 0,
         'return': 'BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump BibleThump '
              
     },
-    
-            
+        
     '!saturday': {
         'limit': 0,
         'return': 'Saturdays are #shityourpantssaturday (#syps). Amanda plays scary games all night.'
     },
             
-    '!rust': {
-        'limit': 15,
-        'return': "Rustemperor will be Curvyllama's first sub."
-          
-    },
     
-    '!ny': {
-        'limit': 10,
-        'return': "NewYork_Triforce is here to RKO trolls outta nowhere!!!"
-    
-    },
-            
-    '!emmo': {
-        'limit': 10,
-        'return': "Emmo is Curvyllama's adopted chatroom daughter! <3 <3 <3"
-              
-    },
-            
-    '!aj': {
-        'limit': 10,
-        'return': 'Aj used ban on troll, it was super effective!!!'
-            
-    },
-            
-            
     '!pokemon' : {
         'limit': 0,
         'argc': 1,
@@ -164,13 +131,6 @@ commands = {
     },
 
 
-	'!zombie': {
-
-		'limit': 15,
-		'return': 'Zombie is the last dragon. He possesses the power of the glow.'
-	},
-            
-    
     '!buyprints': {
         'limit': 15,
         'return': 'Check out some model/cosplay prints & posters Amanda has for sale here: https://www.facebook.com/media/set/?set=a.695350670512515.1073741836.276081062439480'
@@ -190,12 +150,12 @@ commands = {
         'space_case': True
     },
             
-    #'!streetfighter': {
-    #    'limit': 0,
-    #    'argc': 0,
-    #    'return': 'command'
-    #                  
-    #},
+    '!streetfighter': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                      
+    },
             
     '!poll': {
         'limit': 0,
@@ -217,7 +177,8 @@ commands = {
     '!test': {
         'limit': 0,
         'argc': 0,
-        'return': 'command'
+        'return': 'command',
+        'ul': 'mod'
               
     },
             
@@ -227,31 +188,14 @@ commands = {
         'return': 'command'
                
     },
-
-    '!odin': {
-        'limit': 15,
-        'return': 'THE POWER OF GOD COMPELS YOU!'
-              
-    },
             
-    '!shquppa': {
-        'limit': 15,
-        'return': "random fegit who keeps saying plz to everyone"          
-    
+    '!weather': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 1,
+        'ul': 'mod'
+        
     },
-            
-    '!fresh': {
-        'limit': 15,
-        'return': "i dont want a command please dont give me a command i hate shane"
-               
-    },
-            
-    #'!weather': {
-    #    'limit': 0,
-    #    'return': 'command',
-    #    'argc': 1
-    #     
-    #},
     
     '!specs': {
     	'limit':15,
@@ -267,11 +211,7 @@ commands = {
                 
     },
     
-    '!romero': {
-    	'limit': 10,
-    	'return': "One tequila, two tequila, three tequila, floor. I would drink another bottle but I can't take it anymore."
-    	
-    }
+
          
 }
 

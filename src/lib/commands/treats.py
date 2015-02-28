@@ -16,4 +16,4 @@ def treats(args):
         
         
     else:
-        return "Only " + ", ".join(approved_list) + "are allowed to do that!"
+        return "Only " + ", ".join(approved_list) + " are allowed to do that!"

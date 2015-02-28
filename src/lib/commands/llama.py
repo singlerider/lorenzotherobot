@@ -13,6 +13,7 @@ import src.bot
 import sys
 import datetime
 import time
+import src.lib.user_commands as user_commands_import
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
@@ -40,7 +41,7 @@ def get_stream_uptime():
         start_time = str(uptime_data['stream']['created_at']).replace("T", " ").replace("Z", "")
         stripped_start_time = datetime.datetime.strptime(start_time, format)
         time_delta = datetime.datetime.utcnow() - stripped_start_time
-        return time_delta
+        return "The stream has been live for EXACTLY " + str(time_delta) + "!"
     except:
         return "She's offline, duh."
     
@@ -52,6 +53,10 @@ def get_offline_status():
         return True
 
 stream_status = get_stream_status()
+
+def get_user_command():
+    user_command = user_commands_import.user_command_dict[user_data_name]["return"]
+    return user_command
 
 def get_stream_followers():
     url = 'https://api.twitch.tv/kraken/channels/curvyllama/follows'
@@ -205,14 +210,14 @@ def llama(args):
     return_treats_all = get_treats.get_users(grab_user)
 
     
-    usage = "!llama (list, treats, stream, [username], highlight, viewers, followers, usage, uptime)"
+    usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime)"
     
     if grab_user == "list":
         return return_treats_all  
     elif grab_user == "treats":
         return str(user_data_name) + ", you've got a total of " + str(return_individual_treats) + " Llama treats. You go, girl!"
-    elif grab_user == "print":
-        return get_stream_status()
+    elif grab_user == "me":
+        return get_user_command()
     elif grab_user == "stream":
         get_offline_status_url = 'https://api.twitch.tv/kraken/channels/curvyllama'
         get_offline_status_resp = requests.get(url=get_offline_status_url)
@@ -239,7 +244,11 @@ def llama(args):
     elif grab_user == "usage":
         return usage
     elif return_treats is not None:
-        return str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
+        user_return = str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
+        if grab_user in user_commands_import.user_command_dict:
+            return user_commands_import.user_command_dict[grab_user]["return"] + " | " + user_return
+        else:
+            return user_return
     else:
         print get_stream_status()
         return "No entry found for " + str(args[0])

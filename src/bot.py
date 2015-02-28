@@ -60,12 +60,15 @@ class Roboraj(object):
 					reload(llama_module)
 					treats_module = importlib.import_module('src.lib.commands.treats')
 					reload(treats_module)
+					commands_module = importlib.import_module('src.lib.commands.commands')
+					reload(commands_module)
 					message_dict = irc.get_message(data)
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
 					username = message_dict['username']
 					llama_module.user_data_name = username
 					treats_module.mod_name = username
+					commands_module.mod_name = username
 					ppi(channel, message, username)
 					
 					# check if message is a command with no arguments
