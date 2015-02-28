@@ -10,5 +10,5 @@ def randomemote():
 	emote = json.loads(emote_resp.content)
 	emotes = emote["emotes"]
 	random_emote = random.choice(emotes.keys())
-
+	
 	return random_emote

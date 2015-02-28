@@ -74,7 +74,7 @@ commands = {
                  
     },
             
-	'!youtube': {
+	'!yt': {
         'limit': 10,
         'return': 'https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
                  

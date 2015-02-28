@@ -1,3 +1,6 @@
+import src.lib.commands.randomemote as emote
+
+
 user_command_dict =  {
 
 'aaronlovesanime': {
@@ -30,7 +33,7 @@ user_command_dict =  {
     'return': 'Zombie is the last dragon. He possesses the power of the glow.'
     },
     
-'!odin': {
+'kotoramiodin': {
     'limit': 15,
     'return': 'THE POWER OF GOD COMPELS YOU!'
               
@@ -50,13 +53,13 @@ user_command_dict =  {
     
 'peligrosocortez': {
     'limit': 15,
-    'return': "James is the guy the you guys commonly hear in the background while Amanda streams. He does IT work as his job and is really good with computers. His username is 'peligrosocortez'."               
+    'return': "James is the guy the you guys commonly hear in the background while Amanda streams."               
     
     },
     
 'singlerider': {
     'limit': 15,
-    'return': "Singlerider is the guy that developed this bot. He is currently watching you"           
+    'return': "Singlerider is the guy that developed this bot. He is currently watching you! " + emote.randomemote()
     
     }
 
