@@ -150,12 +150,12 @@ commands = {
         'space_case': True
     },
             
-    '!streetfighter': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
-                      
-    },
+    #'!streetfighter': {
+    #    'limit': 0,
+    #    'argc': 0,
+    #    'return': 'command'
+    #                  
+    #},
             
     '!poll': {
         'limit': 0,
@@ -210,6 +210,12 @@ commands = {
         'ul': 'mod'
                 
     },
+            
+    '!help': {
+        'limit': 15,
+        'return': 'There is a super useful help document at htp://www.github.com/singlerider/lorenzotherobot'
+              
+    }
     
 
          

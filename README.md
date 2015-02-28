@@ -10,7 +10,6 @@ Lorenzotherobot
 
 This is a simple Twitch chat/irc bot written in python.
 
-
 Installation
 ============
 * Open up your terminal/shell of choice.
@@ -66,7 +65,9 @@ Llama
 
 The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a SQLite3 database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
 
+Type "!llama usage" to find out everything you can do!
+
 Requests
 ========
 
-YouTube API integration is currently being built in to append user-requested songs to existing YouTube playlists. Currently, if a user types "!request <stringoftextwithoutspaces>", a YouTube video link, along with its associated title will appear in the chat. Future integration will allow for an entirely transparent process without extra required software on a user's machine.
+YouTube API integration is currently being built in to append user-requested songs to existing YouTube playlists. Currently, if a user types "!request <anything you can imagine>", a YouTube video link, along with its associated title will appear in the chat.

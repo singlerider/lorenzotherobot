@@ -20,8 +20,6 @@ reload(user_commands_import)
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
-
-
 def get_dict_for_users():
     response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters') #change username to your channel
     user_dict = ast.literal_eval(response.read())
@@ -58,8 +56,11 @@ def get_offline_status():
 stream_status = get_stream_status()
 
 def get_user_command():
-    user_command = user_commands_import.user_command_dict[user_data_name]["return"]
-    return user_command
+    try:
+        user_command = user_commands_import.user_command_dict[user_data_name]["return"]
+        return user_command
+    except:
+        return "Dude... stop. You don't have a user command... yet."
 
 def get_stream_followers():
     url = 'https://api.twitch.tv/kraken/channels/curvyllama/follows'
@@ -74,7 +75,6 @@ def random_highlight():
     random_highlight_choice = random.choice(highlights["videos"])
     return str(str(random_highlight_choice["title"]) + " | " + str(random_highlight_choice["description"]) + " | " + str(random_highlight_choice["length"]) + " minutes | " + str(random_highlight_choice["url"]) + " | Tags: " + str(random_highlight_choice["tag_list"])).replace("\n", " ").replace("\r", " ")
 
-    
 """Database in progress. This will run as a cron job and will serve as the points counter and Pokemon assigning tool"""
 
 stream_data = get_stream_status() 
@@ -95,6 +95,7 @@ class UserData (object):
                     points INTEGER);""")
         conn.commit()
         conn.close()
+        
     # Saves user and points to database 
     def save(self, users):
         try:
@@ -202,8 +203,6 @@ def delta_treats(add_remove, delta_user, delta):
             return "Success! " + delta + " treats removed from " + delta_user + "!"
         except:
             return "failure"
-    
-        
 
 def llama(args):
     grab_user = args[0].lower()
@@ -212,7 +211,6 @@ def llama(args):
     return_individual_treats = get_treats.get_user(user_data_name)
     return_treats_all = get_treats.get_users(grab_user)
 
-    
     usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime)"
     
     if grab_user == "list":
