@@ -6,13 +6,20 @@ import src.lib.commands.poll as options
 
 def vote(args):
     
-    usage = "!vote <option>"
+    usage = "!vote [option]"
     
     vote_choice = args[0]
     
     def return_vote():
         
-        options.results.append(vote_choice)
-        return "Vote counted: " + vote_choice + "!"
-    
+        if voter in options.voters:
+            return "You can't vote twice!"
+        else:
+            if vote_choice in options.poll().create_poll().options_separated:
+                options.voters.append(voter)
+                options.results.append(vote_choice)
+                return "Vote counted: " + vote_choice + "!"
+            else:
+                return "It doesn't look like your choice is valid. Try entering a number."
+        
     return return_vote()

@@ -14,6 +14,7 @@ import sys
 import datetime
 import time
 import importlib
+import globals
 
 user_commands_import = importlib.import_module('src.lib.user_commands')
 reload(user_commands_import)
@@ -21,13 +22,13 @@ reload(user_commands_import)
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
 def get_dict_for_users():
-    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/curvyllama/chatters') #change username to your channel
+    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters') #change username to your channel
     user_dict = ast.literal_eval(response.read())
     user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
     return user_dict, user_list
 
 def get_stream_status():
-    get_stream_status_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+    get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + globals.channel
     get_stream_status_resp = requests.get(url=get_stream_status_url)
     online_data = json.loads(get_stream_status_resp.content)
     if online_data["stream"] != None:
@@ -36,7 +37,7 @@ def get_stream_status():
 def get_stream_uptime():
     try:
         format = "%Y-%m-%d %H:%M:%S"
-        get_stream_uptime_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+        get_stream_uptime_url = 'https://api.twitch.tv/kraken/streams/' + globals.channel
         get_stream_uptime_resp = requests.get(url=get_stream_uptime_url)
         uptime_data = json.loads(get_stream_uptime_resp.content)
         start_time = str(uptime_data['stream']['created_at']).replace("T", " ").replace("Z", "")
@@ -47,7 +48,7 @@ def get_stream_uptime():
         return "She's offline, duh."
     
 def get_offline_status():
-    get_offline_status_url = 'https://api.twitch.tv/kraken/streams/curvyllama'
+    get_offline_status_url = 'https://api.twitch.tv/kraken/streams/' + globals.channel
     get_offline_status_resp = requests.get(url=get_offline_status_url)
     offline_data = json.loads(get_offline_status_resp.content)
     if offline_data["stream"] != None:
@@ -63,13 +64,13 @@ def get_user_command():
         return "Dude... stop. You don't have a user command... yet."
 
 def get_stream_followers():
-    url = 'https://api.twitch.tv/kraken/channels/curvyllama/follows'
+    url = 'https://api.twitch.tv/kraken/channels/' + globals.channel + '/follows'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     return data
 
 def random_highlight():
-    get_highlight_url = "https://api.twitch.tv/kraken/channels/curvyllama/videos?limit=20"
+    get_highlight_url = "https://api.twitch.tv/kraken/channels/" + globals.channel + "/videos?limit=20"
     get_highlight_resp = requests.get(url=get_highlight_url)
     highlights = json.loads(get_highlight_resp.content)
     random_highlight_choice = random.choice(highlights["videos"])
@@ -134,6 +135,16 @@ class UserData (object):
             conn = sqlite3.connect(self.filepath)
                 # Let's update the existing user
             conn.execute("UPDATE users SET points = points - ?" +
+                         " WHERE username = ?", (self.delta[0], users))
+            conn.commit()
+            conn.close()
+            
+    def special_set(self, users):
+        if self.get_user(users) is not None:
+            print self.delta[0]
+            conn = sqlite3.connect(self.filepath)
+                # Let's update the existing user
+            conn.execute("UPDATE users SET points = points = ?" +
                          " WHERE username = ?", (self.delta[0], users))
             conn.commit()
             conn.close()
@@ -203,6 +214,15 @@ def delta_treats(add_remove, delta_user, delta):
             return "Success! " + delta + " treats removed from " + delta_user + "!"
         except:
             return "failure"
+    elif add_remove == "set":
+        print "4"
+        llama_object = UserData(DATABASE_FILE)
+        try:
+            llama_object.special_set(users)
+            return "Success! " + delta_user + "'s treats set to " + delta + "!"
+        except:
+            return "failure"
+        
 
 def llama(args):
     grab_user = args[0].lower()
@@ -220,7 +240,7 @@ def llama(args):
     elif grab_user == "me":
         return get_user_command()
     elif grab_user == "stream":
-        get_offline_status_url = 'https://api.twitch.tv/kraken/channels/curvyllama'
+        get_offline_status_url = 'https://api.twitch.tv/kraken/channels/' + globals.channel
         get_offline_status_resp = requests.get(url=get_offline_status_url)
         offline_data = json.loads(get_offline_status_resp.content)
         try:

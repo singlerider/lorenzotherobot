@@ -7,8 +7,8 @@ import time
 import re
 
 # Pokemon name,their type(s), and a grouping for their evolution order, in the form of a list
-master_pokemon = [[ 
-          'Bulbasaur', ('Grass' , 'Poison') , '0' ],
+master_pokemon = [
+        [ 'Bulbasaur', ('Grass' , 'Poison') , '0' ],
         [ 'Ivysaur', ('Grass' , 'Poison') , '0' ],
         [ 'Venusaur', ('Grass' , 'Poison') , '0' ],
         [ 'Charmander', ('Fire',) , '1' ],
@@ -174,13 +174,12 @@ def pokemon(args):
     
     evolution_index = []
     
-    
     pokemon_1_cat = []
     pokemon_2_cat = []
     
     pokemon_1_mod = []
     pokemon_2_mod = []
-    
+
     evolution_cat = []
     
     multipliers = {'Normal': {
@@ -349,6 +348,46 @@ def pokemon(args):
     
     # Grabs multiplier of pokemon based on name[type]
 
+    def get_fighting_index():
+        
+        #pokemon 1 is electric(mod) and psychic(mod). weak against ground(opp) and bug(opp)/ghost(opp)
+        #pokemon 2 is ghost(mod) and dark(mod). weak against dark(opp) and fighting(opp)/bug(opp)/fairy(opp)
+        
+        #pokemon 1 will be affected by pokemon 2 x2, resulting in a max index of 2
+        #pokemon 2 will be affected by pokemon 1 x1, resulting in a max index of 1
+        
+        #pokemon2 will be victorious due to its lower damage index
+        
+        pokemon_1_opp = []
+        pokemon_2_opp = []
+        
+        pokemon_1_index = []
+        pokemon_2_index = []
+
+        if len(pokemon_1_mod) == 1:
+            pokemon_1_opp.append(multipliers[pokemon_1_mod[0]])
+        else:
+            pokemon_1_opp.append(multipliers[pokemon_1_mod[0]], multipliers[pokemon_1_mod[1]])
+        if len(pokemon_1_mod) == 1:
+            pokemon_2_opp.append(multipliers[pokemon_2_mod[0]])
+        else:
+            pokemon_2_opp.append(multipliers[pokemon_2_mod[0]], multipliers[pokemon_2_mod[1]])
+                
+        if pokemon_1_mod in pokemon_2_opp:
+            for type, index in pokemon_2_opp.iteritems():
+                pokemon_2_index.append(type, index)
+        if pokemon_2_mod in pokemon_1_opp:
+            for type, index in pokemon_1_opp.iteritems():
+                pokemon_1_index.append(type, index)
+                
+        if pokemon_1_index > pokemon_2_index:
+            return "pokemon 2 wins"
+        elif pokemon_2_index > pokemon_1_index:
+            return "pokemon 1 wins"
+        else:
+            return "nothing happened"
+                
+    
      
     # Script that handles battle    
     def battle():
@@ -383,9 +422,9 @@ def pokemon(args):
                 
                     if mod == index:
                         pokemon_1_cat.append(" ".join([poke, "is Pokemon 1" , "with type(s)" , str(mod).replace('(','').replace(')','').replace("'",'').replace(',','')]))
-                  #      print pokemon_1_cat[0]
-                  #      print pocket_monster
-                  #      print evolution_set
+                        #print pokemon_1_cat[0]
+                        #print pocket_monster
+                        #print evolution_set
                         
 #        for poke, mod, group in master_pokemon:
             
@@ -404,7 +443,7 @@ def pokemon(args):
                         #print pokemon_2_cat[0]
         
         # Concatenates results of versus and winner, separated by a space
-        return pokemon_1_cat[0] + ". " + pokemon_2_cat[0] + ". " + " ".join([versus, winner])
+        return pokemon_1_cat[0] + ". " + pokemon_2_cat[0] + ". " + " ".join([versus, winner]) + " " + get_fighting_index()
 
     #Return corresponding evolutionary set
     def evolution():

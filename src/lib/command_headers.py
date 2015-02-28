@@ -169,18 +169,10 @@ commands = {
     '!vote': {
         'limit': 0,
         'argc': 1,
-        'return': 'command',
-        'space_case': True
+        'return': 'command'
               
     },
             
-    '!test': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command',
-        'ul': 'mod'
-              
-    },
             
     '!llama': {
         'limit': 0,
