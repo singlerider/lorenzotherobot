@@ -13,7 +13,10 @@ import src.bot
 import sys
 import datetime
 import time
-import src.lib.user_commands as user_commands_import
+import importlib
+
+user_commands_import = importlib.import_module('src.lib.user_commands')
+reload(user_commands_import)
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
