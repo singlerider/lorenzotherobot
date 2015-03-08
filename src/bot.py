@@ -20,6 +20,7 @@ import threading
 import src.lib.commands.llama as llama_import
 import importlib
 
+
 END = False
 
 class Roboraj(object):
@@ -45,12 +46,15 @@ class Roboraj(object):
 					pp('Connection was lost, reconnecting.')
 					sock = self.irc.get_irc_socket_object()
 
+	
 				if config['debug']:
 					print data
 						
 				# check for ping, reply with pong
 				irc.check_for_ping(data)
-
+				
+				
+				
 				if irc.check_for_message(data):
 					llama_module = importlib.import_module('src.lib.commands.llama')
 					reload(llama_module)
@@ -91,14 +95,13 @@ class Roboraj(object):
 									# we can allow spaces.
 								else:
 									args = message.split(' ')[1:]
-								#print "Args matey! {0}:".format(len(args)), args
+								print "Args matey! {0}:".format(len(args)), args
 								
 									
 								# Handles Moderator-level commands - add 'ul': 'mod' to all commands with intended restriction
 								
 								if commands.check_has_ul(username, command):
-									#if username not in llama_import.get_dict_for_users()[0]["chatters"]["moderators"]:
-									if username != "singlerider":
+									if username not in llama_import.get_dict_for_users()[0]["chatters"]["moderators"]:
 										resp = '(%s) : %s' % (username, "This is a moderator-only command!")
 										pbot(resp, channel)
 										irc.send_message(channel, resp)
