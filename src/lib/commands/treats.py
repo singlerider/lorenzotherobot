@@ -4,7 +4,7 @@ def treats(args):
 
     usage = "!treats (add/remove [username] [amount])"
     
-    approved_list = ['curvyllama', 'peligrosocortez', 'singlerider']
+    approved_list = ['curvyllama', 'peligrosocortez', 'singlerider', 'newyork_triforce']
     
     add_remove = args[0]
     delta_user = args[1].lower()

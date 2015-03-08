@@ -291,7 +291,10 @@ def llama(args):
         return usage
     
     elif grab_user == "shots":
-        return shots_import.return_shots
+        if shots_import.return_shots is not None:
+            return str(shots_import.return_shots) + " shots left. She's already drunk ResidentSleeper"
+        else:
+            return "No shots found. Donate before she goes crazy! Kreygasm"
     elif return_treats is not None:
         user_return = str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
         if grab_user in user_commands_import.user_command_dict:

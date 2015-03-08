@@ -95,6 +95,9 @@ class UserData (object):
         user_data = cursor.fetchall()
         conn.close()
         return str(user_data[0:12]).replace("[", "").replace("(u'", "").replace(", ", " | ").replace("]", "").replace(")", "")
+ 
+get_shots = UserData(DATABASE_FILE)
+return_shots = get_shots.get_user("curvyllama")
     
 def delta_shots(add_remove, delta_user, delta):
     users = globals.channel
@@ -113,7 +116,7 @@ def delta_shots(add_remove, delta_user, delta):
         shots_object = UserData(DATABASE_FILE)
         try:
             shots_object.special_remove(users)
-            return "Success! " + delta + " shots removed!"
+            return str(delta) + " shots removed! Only " + str(return_shots - int(delta)) + " remaining!"
         except:
             return "failure"
     elif add_remove == "set":
@@ -121,7 +124,7 @@ def delta_shots(add_remove, delta_user, delta):
         shots_object = UserData(DATABASE_FILE)
         try:
             shots_object.special_set(users)
-            return "Success! " + delta_user + "'s treats set to " + delta + "!"
+            return "The number of shots has been set to " + delta + "! It has begun."
         except:
             return "failure"
     elif add_remove == "init":
@@ -135,8 +138,7 @@ def delta_shots(add_remove, delta_user, delta):
     else:
         return "You must choose either 'add', 'remove', 'init', or 'set'"
 
-get_shots = UserData(DATABASE_FILE)
-return_shots = get_shots.get_user("curvyllama")
+
         
 def shots(args):
     
