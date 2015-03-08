@@ -139,7 +139,7 @@ commands = {
             
     '!playlist': {
         'limit': 15,
-        'return': 'Song request is not used on this channel. Please feel free to add songs to this community playlist on Spotify. http://open.spotify.com/user/jamesypaulmichael/playlist/2HejukmtRzlcan06cXMkGG'
+        'return': 'https://www.youtube.com/playlist?list=PLN5FU2O1KYjlkturlsYgNyCLZ8gsH6UZg'
                   
     },
             
