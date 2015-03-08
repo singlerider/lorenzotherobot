@@ -13,8 +13,10 @@ def commands():
     if mod_name in user_dict["chatters"]["moderators"]:
         return str(", ".join(sorted(headers.commands))).replace("!","")
     else:
-        for key, value in headers.commands.iteritems():
-            for subkey in value.iteritems():
-                if 'ul' and 'mod' not in subkey:
-                    key_list.append(key)
-        return str(sorted(set(key_list))).strip("[]").replace("!", "").replace("'", "")
+        return "A full list of commands can be found at http://www.github.com/singlerider/lorenzotherobot"
+        #Returns non-mod commands
+        #for key, value in headers.commands.iteritems():
+        #    for subkey in value.iteritems():
+        #        if 'ul' and 'mod' not in subkey:
+        #            key_list.append(key)
+        #return str(sorted(set(key_list))).strip("[]").replace("!", "").replace("'", "")

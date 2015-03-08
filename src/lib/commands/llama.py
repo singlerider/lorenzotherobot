@@ -272,9 +272,14 @@ def llama(args):
             return str(offline_data["status"]) + " | " + str(offline_data["display_name"]) + " playing " + str(offline_data["game"])
         except:
             return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"
+    
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
-        return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
+        if user_data_name in user_dict["chatters"]["moderators"]:
+            return str(int(len(user_dict["chatters"]["moderators"])) + int(len(user_dict["chatters"]["viewers"]))) + " viewers are in here. That's it?! Kreygasm"
+            #return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
+        #else:
+            #return "Only moderators can flood the chat window with a bunch of text :/"
     elif grab_user == "highlight":
         try:
             return random_highlight()

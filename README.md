@@ -52,8 +52,9 @@ So, what can the bot do? Here are a list of current commands in no particular or
     '!llama' 'usage' - shows everything the 'llama suite' can do - see below for more detailed instructions
     '!weather'* [zip_code] - shows current weather and forecast for any US zip code
     '!specs'
-    '!treats'* ['add'/'remove'] ['username'] [amount] - allows mod to decide how many treats a user either gets added to them or removed
+    '!treats'* ['add'/'remove'/'set'] ['username'] [amount] - allows mod to decide how many treats a user either gets added to them or removed
     '!help'
+    '!shots'* ['add'/'remove'/'set'] [amount] - allows mod to keep track of how many shots a streamer has remaining
 
 Adding your own commands
 ========================
@@ -118,6 +119,7 @@ Type "!llama usage" to find out everything you can do!
 'followers' - returns a list of previous five followers
 'usage' - returns 'list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime'
 'uptime' - shows how long the current stream has been online
+'shots' - shows how many shots she has left
 
 Requests
 ========
