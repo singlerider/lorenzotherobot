@@ -15,6 +15,7 @@ import datetime
 import time
 import importlib
 import globals
+import src.lib.commands.shots as shots_import
 
 user_commands_import = importlib.import_module('src.lib.user_commands')
 reload(user_commands_import)
@@ -255,7 +256,7 @@ def llama(args):
     return_individual_treats = get_treats.get_user(user_data_name)
     return_treats_all = get_treats.get_users(grab_user)
 
-    usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime)"
+    usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"
     
     if grab_user == "list":
         return return_treats_all  
@@ -288,12 +289,16 @@ def llama(args):
     
     elif grab_user == "usage":
         return usage
+    
+    elif grab_user == "shots":
+        return shots_import.return_shots
     elif return_treats is not None:
         user_return = str(args[0]) + " has a total of " + str(return_treats) + " Llama treats. Keep it up!"
         if grab_user in user_commands_import.user_command_dict:
             return user_commands_import.user_command_dict[grab_user]["return"] + " | " + user_return
         else:
             return user_return
+    
     else:
         print get_stream_status()
         return "No entry found for " + str(args[0])

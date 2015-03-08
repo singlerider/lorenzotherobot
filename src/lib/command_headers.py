@@ -203,9 +203,17 @@ commands = {
                 
     },
             
+    '!shots': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 2,
+        'ul': 'mod'
+        
+    },
+            
     '!help': {
         'limit': 15,
-        'return': 'There is a super useful help document at htp://www.github.com/singlerider/lorenzotherobot'
+        'return': 'There is a super useful README for lorenzo at htp://www.github.com/singlerider/lorenzotherobot'
               
     }
     

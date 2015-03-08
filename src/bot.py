@@ -62,6 +62,8 @@ class Roboraj(object):
 					reload(vote_module)
 					capture_module = importlib.import_module('src.lib.commands.capture')
 					reload(capture_module)
+					shots_module = importlib.import_module('src.lib.commands.shots')
+					reload(shots_module)
 					message_dict = irc.get_message(data)
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
@@ -69,6 +71,7 @@ class Roboraj(object):
 					llama_module.user_data_name = username
 					treats_module.mod_name = username
 					commands_module.mod_name = username
+					shots_module.mod_name = username
 					vote_module.voter = username
 					capture_module.poke_master = username
 					ppi(channel, message, username)
