@@ -85,6 +85,8 @@ class UserData (object):
     INITIAL_VALUE = 1
     
     delta = []
+
+############ NEED TO ADD ALTER TABLE for pokemon IF NOT EXISTS
  
     def __init__(self, filepath):
         """ Initialize the database as needed """
@@ -148,16 +150,26 @@ class UserData (object):
             conn.commit()
             conn.close()
             
-#######pokemon stuff is in progress            
+####### pokemon stuff is in progress            
     def add_pokemon(self, poke_master, pokemon):
         if self.get_user(poke_master) is not None:
             print self.delta[0]
             conn = sqlite3.connect(self.filepath)
                 # Let's update the existing user
             conn.execute("UPDATE users SET pokemon = pokemon = ?" +
-                         " WHERE username = ?", (self.delta[0], poke_master))
+                         " WHERE username = ?", (self.pokemon, poke_master))
             conn.commit()
             conn.close()
+            
+    def get_pokemon(self, username):
+        conn = sqlite3.connect(self.filepath)
+        cursor = conn.execute("SELECT pokemon FROM users WHERE username = ?",
+                              (username,))
+        pokemon = cursor.fetchone()
+        if pokemon is not None:
+            pokemon = pokemon[0] # get only the name from the tuple
+        conn.close()
+        return pokemon
  
     def get_user(self, username):
         conn = sqlite3.connect(self.filepath)
@@ -233,6 +245,8 @@ def delta_treats(add_remove, delta_user, delta):
             return "Success! " + delta_user + "'s treats set to " + delta + "!"
         except:
             return "failure"
+    else:
+        return "You must choose either 'add', 'remove', or 'set'"
 
 def llama(args):
     grab_user = args[0].lower()

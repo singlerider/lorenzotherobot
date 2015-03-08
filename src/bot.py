@@ -20,7 +20,6 @@ import threading
 import src.lib.commands.llama as llama_import
 import importlib
 
-
 END = False
 
 class Roboraj(object):
@@ -46,15 +45,12 @@ class Roboraj(object):
 					pp('Connection was lost, reconnecting.')
 					sock = self.irc.get_irc_socket_object()
 
-	
 				if config['debug']:
 					print data
 						
 				# check for ping, reply with pong
 				irc.check_for_ping(data)
-				
-				
-				
+
 				if irc.check_for_message(data):
 					llama_module = importlib.import_module('src.lib.commands.llama')
 					reload(llama_module)
@@ -63,7 +59,9 @@ class Roboraj(object):
 					commands_module = importlib.import_module('src.lib.commands.commands')
 					reload(commands_module)
 					vote_module = importlib.import_module('src.lib.commands.vote')
-					reload(poll_module)
+					reload(vote_module)
+					capture_module = importlib.import_module('src.lib.commands.capture')
+					reload(capture_module)
 					message_dict = irc.get_message(data)
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
@@ -72,6 +70,7 @@ class Roboraj(object):
 					treats_module.mod_name = username
 					commands_module.mod_name = username
 					vote_module.voter = username
+					capture_module.poke_master = username
 					ppi(channel, message, username)
 					
 					# check if message is a command with no arguments
@@ -89,13 +88,14 @@ class Roboraj(object):
 									# we can allow spaces.
 								else:
 									args = message.split(' ')[1:]
-								print "Args matey! {0}:".format(len(args)), args
+								#print "Args matey! {0}:".format(len(args)), args
 								
 									
 								# Handles Moderator-level commands - add 'ul': 'mod' to all commands with intended restriction
 								
 								if commands.check_has_ul(username, command):
-									if username not in llama_import.get_dict_for_users()[0]["chatters"]["moderators"]:
+									#if username not in llama_import.get_dict_for_users()[0]["chatters"]["moderators"]:
+									if username != "singlerider":
 										resp = '(%s) : %s' % (username, "This is a moderator-only command!")
 										pbot(resp, channel)
 										irc.send_message(channel, resp)

@@ -27,7 +27,7 @@ def poll(args):
     usage = "!poll <option1/option2/option3>"
     
     options_raw = args[0]
-    query.append(options)
+    query.append(results)
 
     def create_poll(self):
         print "create poll"
