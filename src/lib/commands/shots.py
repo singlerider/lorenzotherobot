@@ -144,7 +144,6 @@ def shots(args):
     
     usage = "!shots (add/remove/set [amount])"
     
-    
     approved_list = ['curvyllama', 'peligrosocortez', 'singlerider', 'newyork_triforce']
     
     add_remove = args[0]

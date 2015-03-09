@@ -264,6 +264,12 @@ commands = {
         'return': 'command',
         'argc': 0
                 
+    },
+            
+    '!kappa': {
+        'limit': 0,
+        'return': 'Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa',
+               
     }
     
 

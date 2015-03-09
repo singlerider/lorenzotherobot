@@ -45,16 +45,13 @@ class Roboraj(object):
 				if len(data) == 0:
 					pp('Connection was lost, reconnecting.')
 					sock = self.irc.get_irc_socket_object()
-
 	
 				if config['debug']:
 					print data
 						
 				# check for ping, reply with pong
 				irc.check_for_ping(data)
-				
-				
-				
+
 				if irc.check_for_message(data):
 					
 					message_dict = irc.get_message(data)

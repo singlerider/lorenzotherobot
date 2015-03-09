@@ -20,6 +20,7 @@ import sys
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 import traceback
+import src.lib.commands.llama as llama_import
 
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
@@ -152,8 +153,19 @@ def request(args):
     
         #print "Video added: %s" % add_video_request
     try:
-        add_song = add_to_playlist()
-        return str("Video added: "+ str(videos[0]) + " | " + str(complete_url[0])) + " | Duration: " + video_duration
+        DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
+        llama_object = llama_import.UserData(DATABASE_FILE)
+        username = llama_import.user_data_name
+        delta_treats = 10
+        users = username
+        args = username
+        if int(llama_object.get_user(username)) >= delta_treats:
+            llama_import.UserData.delta.append(delta_treats)
+            llama_object.special_remove(users)
+            add_song = add_to_playlist()
+            return str("Video added: "+ str(videos[0])) + " | Duration: " + str(video_duration) + " | " + str(delta_treats) + " treats removed from " + str(username) + "."
+        else:
+            return "Not enough treats to request a song. Keep watching to earn some! R)"
     except Exception as error:
         print >> sys.stdout, str (error)
         traceback.print_exc(file=sys.stdout)

@@ -221,9 +221,7 @@ def enter_into_database():
 def delta_treats(add_remove, delta_user, delta):
     users = delta_user
     UserData.delta.append(delta)
-    print "1"
     if add_remove == "add":
-        print "2"
         llama_object = UserData(DATABASE_FILE)
         try:
             llama_object.special_save(users)
@@ -231,7 +229,6 @@ def delta_treats(add_remove, delta_user, delta):
         except:
             return "failure"
     elif add_remove == "remove":
-        print "3"
         llama_object = UserData(DATABASE_FILE)
         try:
             llama_object.special_remove(users)
@@ -239,7 +236,6 @@ def delta_treats(add_remove, delta_user, delta):
         except:
             return "failure"
     elif add_remove == "set":
-        print "4"
         llama_object = UserData(DATABASE_FILE)
         try:
             llama_object.special_set(users)
