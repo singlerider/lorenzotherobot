@@ -39,10 +39,10 @@ So, what can the bot do? Here are a list of current commands in no particular or
 	'!yt'  
     '!gt'
 	'!rules'
-	'!welcome'
-	'!pwv'
+	'!welcome' - Welcome message to newbies
+	'!pwv' - Play with Viewers
 	'!daddy'
-    '!cry'
+    '!cry' - BibleThump times a bunch
     '!pokemon' 'battle' - forces two random pokemon to battle. at the end, a winner is declared
     '!buyprints'
     '!playlist' - depracated spotify playlist
@@ -55,6 +55,12 @@ So, what can the bot do? Here are a list of current commands in no particular or
     '!treats'* ['add'/'remove'/'set'] ['username'] [amount] - allows mod to decide how many treats a user either gets added to them or removed
     '!help'
     '!shots'* ['add'/'remove'/'set'] [amount] - allows mod to keep track of how many shots a streamer has remaining
+    '!me' - Same as '!llama me'
+    '!viewers' - Same as '!llama viewers'
+    '!highlight' - Same as '!llama viewers'
+    '!followers' - Same as '!llama followers'
+    '!uptime' - Same as '!llama uptime'
+    '!stream' - Same as '!llama stream'
 
 Adding your own commands
 ========================

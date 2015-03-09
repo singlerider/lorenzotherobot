@@ -275,8 +275,8 @@ def llama(args):
     
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
-        if user_data_name in user_dict["chatters"]["moderators"]:
-            return str(int(len(user_dict["chatters"]["moderators"])) + int(len(user_dict["chatters"]["viewers"]))) + " viewers are in here. That's it?! Kreygasm"
+        #if user_data_name in user_dict["chatters"]["moderators"]:
+        return str(int(len(user_dict["chatters"]["moderators"])) + int(len(user_dict["chatters"]["viewers"]))) + " viewers are in here. That's it?! Kreygasm"
             #return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
         #else:
             #return "Only moderators can flood the chat window with a bunch of text :/"
@@ -288,7 +288,7 @@ def llama(args):
     elif grab_user == "followers":
         stream_followers = get_stream_followers()
         follower_list = str(stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(stream_followers["follows"][2]["user"]["display_name"]) + ", " + str(stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(stream_followers["follows"][4]["user"]["display_name"])
-        return "In case you missed them, here are the five most recent Llamas: " + follower_list
+        return "In case you missed them, here are the five most recent Llamas: " + follower_list + " HeyGuys"
     elif grab_user == "uptime":
         return get_stream_uptime()
     

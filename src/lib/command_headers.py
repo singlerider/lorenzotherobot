@@ -191,7 +191,7 @@ commands = {
     
     '!specs': {
     	'limit':15,
-    	'return': "NZXT Phantom case, GIGABYTE GA-990FXA-UD3 AM3+, G.SKILL Ripjaws X Series 32GB OC'd at 1866, EVGA SuperClocked GeForce GTX 680, AMD FX-8350 Black Edition Vishera 8-Core OC'd at 5GHz"
+    	'return': "Case: Phanteks ATX-Full, MoBo: Gigabyte GA 990-FXA-UD3, CPU: AMD FX-4300, RAM: 8GB G-Skill 1600, GPU: AMD R9 270, PSU: 450 Watt, "
     	
     },
            
@@ -215,6 +215,48 @@ commands = {
         'limit': 15,
         'return': 'There is a super useful README for lorenzo at htp://www.github.com/singlerider/lorenzotherobot'
               
+    },
+            
+    '!me': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 0
+            
+    },
+            
+    '!viewers': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 0
+                 
+    },
+            
+    '!highlight': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 0
+                   
+    },
+            
+    '!followers': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 0
+                   
+    },
+            
+    '!uptime': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 0
+                
+    },
+            
+    '!stream': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 0
+                
     }
     
 
