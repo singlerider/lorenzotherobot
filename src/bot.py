@@ -56,28 +56,12 @@ class Roboraj(object):
 				
 				
 				if irc.check_for_message(data):
-					llama_module = importlib.import_module('src.lib.commands.llama')
-					reload(llama_module)
-					treats_module = importlib.import_module('src.lib.commands.treats')
-					reload(treats_module)
-					commands_module = importlib.import_module('src.lib.commands.commands')
-					reload(commands_module)
-					vote_module = importlib.import_module('src.lib.commands.vote')
-					reload(vote_module)
-					capture_module = importlib.import_module('src.lib.commands.capture')
-					reload(capture_module)
-					shots_module = importlib.import_module('src.lib.commands.shots')
-					reload(shots_module)
+					
 					message_dict = irc.get_message(data)
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
 					username = message_dict['username']
-					llama_module.user_data_name = username
-					treats_module.mod_name = username
-					commands_module.mod_name = username
-					shots_module.mod_name = username
-					vote_module.voter = username
-					capture_module.poke_master = username
+					
 					ppi(channel, message, username)
 					
 					# check if message is a command with no arguments
@@ -85,6 +69,26 @@ class Roboraj(object):
 						command = message
 	
 						if commands.check_returns_function(command.split(' ')[0]):
+							
+							llama_module = importlib.import_module('src.lib.commands.llama')
+							reload(llama_module)
+							treats_module = importlib.import_module('src.lib.commands.treats')
+							reload(treats_module)
+							commands_module = importlib.import_module('src.lib.commands.commands')
+							reload(commands_module)
+							vote_module = importlib.import_module('src.lib.commands.vote')
+							reload(vote_module)
+							capture_module = importlib.import_module('src.lib.commands.capture')
+							reload(capture_module)
+							shots_module = importlib.import_module('src.lib.commands.shots')
+							reload(shots_module)
+							llama_module.user_data_name = username
+							treats_module.mod_name = username
+							commands_module.mod_name = username
+							shots_module.mod_name = username
+							vote_module.voter = username
+							capture_module.poke_master = username
+							
 							if commands.check_has_correct_args(message, command.split(' ')[0]):
 								command = command.split(' ')[0]
 								if commands.check_is_space_case(message):
