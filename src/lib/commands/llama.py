@@ -297,7 +297,7 @@ def llama(args):
     
     elif grab_user == "shots":
         if shots_import.return_shots is not None:
-            return str(shots_import.return_shots) + " shots left. She's already drunk ResidentSleeper"
+            return str(shots_import.return_shots) + " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! Kreygasm"
     elif return_treats is not None:

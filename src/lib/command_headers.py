@@ -150,6 +150,13 @@ commands = {
         'space_case': True
     },
             
+    '!songrequest': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'space_case': True
+    },
+            
     #'!streetfighter': {
     #    'limit': 0,
     #    'argc': 0,

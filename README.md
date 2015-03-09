@@ -47,6 +47,7 @@ So, what can the bot do? Here are a list of current commands in no particular or
     '!buyprints'
     '!playlist' - depracated spotify playlist
     '!request' ['artist name and song title'] - adds requested search query result to a youtube playlist, specified by bot admin
+    '!songrequest' - Same as '!request'
     '!poll'* ['choice 1/choice 2/choice 3'] - mod can establish things for users to vote on from within the chat window
     '!vote' [number] - users simply send a number to decide the choice they'd like
     '!llama' 'usage' - shows everything the 'llama suite' can do - see below for more detailed instructions
