@@ -33,7 +33,7 @@ user_command_dict =  {
     'return': 'Zombie is the last dragon. He possesses the power of the glow.'
     },
     
-'kotoramiodin': {
+'koiratammi_odin': {
     'limit': 15,
     'return': 'THE POWER OF GOD COMPELS YOU!'
               
