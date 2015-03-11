@@ -145,7 +145,7 @@ class UserData (object):
                         conn = sqlite3.connect(self.filepath)
                         # Let's update the existing user
                         conn.execute("UPDATE users SET points = points + ?" +
-                                     " WHERE username = ?", (self.INITIAL_VALUE, user))
+                                     " WHERE username = ?", (self.delta[0], user))
                         conn.commit()
                         conn.close()
         except:
