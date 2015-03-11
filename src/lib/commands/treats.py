@@ -11,8 +11,11 @@ def treats(args):
     delta = args[2]
     
     if mod_name in approved_list:
-        llama_import.delta = delta
-        return llama_import.delta_treats(add_remove, delta_user, delta)
+        
+        if add_remove == "add" and delta_user == "all":
+            return llama_import.enter_into_database_all(delta)
+        else:
+            return llama_import.delta_treats(add_remove, delta_user, delta)
         
         
     else:

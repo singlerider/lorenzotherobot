@@ -123,13 +123,33 @@ class UserData (object):
         
     def special_save(self, users):
         if self.get_user(users) is not None:
-            print self.delta[0]
             conn = sqlite3.connect(self.filepath)
                 # Let's update the existing user
             conn.execute("UPDATE users SET points = points + ?" +
                          " WHERE username = ?", (self.delta[0], users))
             conn.commit()
             conn.close()
+            
+    def special_save_all(self, users):
+        try:
+            for user in users:
+                if user is not '':#added as test
+                    if self.get_user(user) is None:
+                        conn = sqlite3.connect(self.filepath)
+                        # Let's add the user then
+                        conn.execute("INSERT INTO users VALUES(?,?)", (user,
+                                     self.delta[0]))
+                        conn.commit()
+                        conn.close()
+                    else:
+                        conn = sqlite3.connect(self.filepath)
+                        # Let's update the existing user
+                        conn.execute("UPDATE users SET points = points + ?" +
+                                     " WHERE username = ?", (self.INITIAL_VALUE, user))
+                        conn.commit()
+                        conn.close()
+        except:
+            pass
             
     def special_remove(self, users):
         if self.get_user(users) is not None:
@@ -213,6 +233,22 @@ def enter_into_database():
             llama_object.save(user_list)
             #print "Added to database!"
             return "Treats added"
+        except:
+            return "Failure"
+    except:
+        return "Major error reconciled. Notify singlerider (Shane) to let him know he can remove this message."
+
+def enter_into_database_all(delta):
+    try:
+        UserData.delta.append(delta)
+        # Returns tuple, gets expanded below
+        user_dict, user_list = get_dict_for_users()
+        # Path is relative - for Unix
+        llama_object = UserData(DATABASE_FILE)
+        try:
+            llama_object.special_save_all(user_list)
+            #print "Added to database!"
+            return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
         except:
             return "Failure"
     except:
