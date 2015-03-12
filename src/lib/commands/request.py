@@ -68,7 +68,6 @@ def request(args):
     
     video_duration = video_response["items"][0]["contentDetails"]["duration"].replace("PT","")
     
-    #print "video_id: " + str(video_id[0]).strip("()")
     #print video_duration
     
     #Time is output as PT2M43S
@@ -159,11 +158,20 @@ def request(args):
         delta_treats = 10
         users = username
         args = username
+        maximum_track_length = 10
         if int(llama_object.get_user(username)) >= delta_treats:
-            llama_import.UserData.delta.append(delta_treats)
-            llama_object.special_remove(users)
-            add_song = add_to_playlist()
-            return str("Video added: "+ str(videos[0])) + " | Duration: " + str(video_duration) + " | " + str(delta_treats) + " treats removed from " + str(username) + "."
+            if "H" not in video_duration:
+                converted_time = video_duration.split ('M')[0]
+                #print converted_time
+                if int(converted_time) < maximum_track_length:
+                    llama_import.UserData.delta.append(delta_treats)
+                    llama_object.special_remove(users)
+                    add_song = add_to_playlist()
+                    return str("Track added: "+ str(videos[0])) + " | Duration: " + str(video_duration) + " | " + str(delta_treats) + " treats removed from " + str(username) + "."
+                else:
+                    return "The track has to be less than " + str(maximum_track_length) + " minutes."
+            else:
+                return "That track is way too long, yo."
         else:
             return "Not enough treats to request a song. Keep watching to earn some! R)"
     except Exception as error:

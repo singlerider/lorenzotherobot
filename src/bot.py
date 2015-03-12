@@ -3,7 +3,7 @@ Simple IRC Bot for Twitch.tv
 
 Originally developed by Aidan Thomson <aidraj0@gmail.com>
 
-Forked and heavily modified by Shane Engelman <me@5h4n3.com>
+Forked and modified by Shane Engelman <me@5h4n3.com>
 
 Contributions from dustinbcox
 """
@@ -19,7 +19,6 @@ import sched, time
 import threading
 import src.lib.commands.llama as llama_import
 import importlib
-
 
 END = False
 
@@ -96,8 +95,8 @@ class Roboraj(object):
 									# we can allow spaces.
 								else:
 									args = message.split(' ')[1:]
-								print "Args matey! {0}:".format(len(args)), args
-								
+								#Uncomment line below to display arguments in console
+								#print "Args matey! {0}:".format(len(args)), args
 									
 								# Handles Moderator-level commands - add 'ul': 'mod' to all commands with intended restriction
 								
@@ -120,16 +119,6 @@ class Roboraj(object):
 										command, username), 
 										channel
 									)
-									
-									#if commands.command_user_level(command, channel):
-									#	pbot('Command User Level is Mod. (%s) (%s) (%ss remaining)'
-									#	)
-									#	print "USER LEVEL MOD"
-									#	
-									#else:
-									#	pbot('Command User Level is Not Mod. (%s) (%s) (%ss remaining)' 
-									#	)
-									#	print "USER LEVEL REG"
 									
 									result = commands.pass_to_function(command, args)
 									commands.update_last_used(command, channel)

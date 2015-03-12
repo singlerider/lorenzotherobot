@@ -23,10 +23,17 @@ reload(user_commands_import)
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
 def get_dict_for_users():
-    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters') #change username to your channel
-    user_dict = ast.literal_eval(response.read())
-    user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
+    get_chatters_url = 'https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters'
+    get_chatters_resp = requests.get(url=get_chatters_url)
+    chatters = json.loads(get_chatters_resp.content)
+    user_dict = chatters
+    user_list = "['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']"
     return user_dict, user_list
+    
+    #response = urllib2.urlopen('https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters') #change username to your channel
+    #user_dict = ast.literal_eval(response.read())
+    #user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
+    #return user_dict, user_list
 
 def get_stream_status():
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + globals.channel
