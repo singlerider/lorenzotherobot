@@ -51,23 +51,25 @@ def request(args):
       #Returning only one result, as only the top result will be used
       maxResults = "1"
     ).execute()
-
-    # Add each result to the appropriate list, and then display the lists of
-    # matching videos, channels, and playlists.
-    for search_result in search_response.get("items", []):
-        if search_result["id"]["kind"] == "youtube#video":
-            videos.append("%s (%s)" % (search_result["snippet"]["title"],
-                                 search_result["id"]["videoId"]))
-            video_id.append("(%s)" % (search_result["id"]["videoId"]))
-
-    # Retrieves video duration for the purposes of limiting the maximum playtime of a requested song
-    video_response = youtube.videos().list(
-    id=str(video_id[0]).strip("()"),
-    part='snippet, contentDetails'
-  ).execute()
+    try:
+        # Add each result to the appropriate list, and then display the lists of
+        # matching videos, channels, and playlists.
+        for search_result in search_response.get("items", []):
+            if search_result["id"]["kind"] == "youtube#video":
+                videos.append("%s (%s)" % (search_result["snippet"]["title"],
+                                     search_result["id"]["videoId"]))
+                video_id.append("(%s)" % (search_result["id"]["videoId"]))
     
-    video_duration = video_response["items"][0]["contentDetails"]["duration"].replace("PT","")
+        # Retrieves video duration for the purposes of limiting the maximum playtime of a requested song
+        video_response = youtube.videos().list(
+        id=str(video_id[0]).strip("()"),
+        part='snippet, contentDetails'
+      ).execute()
+        
+        video_duration = video_response["items"][0]["contentDetails"]["duration"].replace("PT","")
     
+    except:
+        return "Nothing found. Try looking for an actual song."
     #print video_duration
     
     #Time is output as PT2M43S
