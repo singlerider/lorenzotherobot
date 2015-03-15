@@ -270,6 +270,13 @@ commands = {
         'limit': 0,
         'return': 'Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa',
                
+    },
+            
+    '!winner': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                
     }
     
 
