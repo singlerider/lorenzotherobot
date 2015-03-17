@@ -14,6 +14,9 @@ class irc:
 	def check_for_message(self, data):
 		if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
 			return True
+		else:
+			if not 'PING' in data:  
+				print "Debug check_for_message" , data
 		
 	def check_for_join(self, data):
 		if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):

@@ -1,4 +1,5 @@
 import src.lib.commands.llama as llama_import
+import globals
 
 def treats(args):
 
@@ -9,6 +10,8 @@ def treats(args):
     add_remove = args[0]
     delta_user = args[1].lower()
     delta = args[2]
+    
+    mod_name = globals.CURRENT_USER
     
     if mod_name in approved_list:
         

@@ -3,6 +3,9 @@ Developed by Shane Engelman <me@5h4n3.com>
 '''
 
 import src.lib.commands.poll as options
+import globals
+
+voter = globals.CURRENT_USER
 
 def vote(args):
     

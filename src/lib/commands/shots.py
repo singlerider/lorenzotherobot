@@ -9,6 +9,8 @@ import globals
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "shots.db"))
 
+mod_name = globals.CURRENT_USER
+
 class UserData (object):
     """ Save the points to a database """
 

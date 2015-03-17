@@ -1,6 +1,7 @@
 import src.lib.command_headers as headers
 import urllib2
 import ast
+import globals
 
 def commands():
     usage = '!commands'
@@ -9,6 +10,8 @@ def commands():
     user_dict = ast.literal_eval(response.read())
     
     key_list = []
+    
+    mod_name = globals.CURRENT_USER
     
     if mod_name in user_dict["chatters"]["moderators"]:
         return str(", ".join(sorted(headers.commands))).replace("!","")

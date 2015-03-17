@@ -9,7 +9,6 @@ import ast
 import requests, json
 import src.lib.commands.pokemon as pokemon_import
 import random
-import src.bot
 import sys
 import datetime
 import time
@@ -18,7 +17,9 @@ import globals
 import src.lib.commands.shots as shots_import
 
 user_commands_import = importlib.import_module('src.lib.user_commands')
-reload(user_commands_import)
+#reload(user_commands_import)
+
+user_data_name = globals.CURRENT_USER
 
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
@@ -243,7 +244,7 @@ def enter_into_database():
         except:
             return "Failure"
     except:
-        return "Major error reconciled. Notify singlerider (Shane) to let him know he can remove this message."
+        return "Http error. Call/text/email Anarchy_2 IMMEDIATEL.. ResidentSleeper"
 
 def enter_into_database_all(delta):
     try:

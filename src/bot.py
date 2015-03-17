@@ -19,6 +19,7 @@ import sched, time
 import threading
 import src.lib.commands.llama as llama_import
 import importlib
+import globals
 
 END = False
 
@@ -57,6 +58,7 @@ class Roboraj(object):
 					channel = message_dict['channel']
 					message = message_dict['message']#.lower()
 					username = message_dict['username']
+					globals.CURRENT_USER = username
 					
 					ppi(channel, message, username)
 					
@@ -67,17 +69,17 @@ class Roboraj(object):
 						if commands.check_returns_function(command.split(' ')[0]):
 							
 							llama_module = importlib.import_module('src.lib.commands.llama')
-							reload(llama_module)
+							#reload(llama_module)
 							treats_module = importlib.import_module('src.lib.commands.treats')
-							reload(treats_module)
+							#reload(treats_module)
 							commands_module = importlib.import_module('src.lib.commands.commands')
-							reload(commands_module)
+							#reload(commands_module)
 							vote_module = importlib.import_module('src.lib.commands.vote')
-							reload(vote_module)
+							#reload(vote_module)
 							capture_module = importlib.import_module('src.lib.commands.capture')
-							reload(capture_module)
+							#reload(capture_module)
 							shots_module = importlib.import_module('src.lib.commands.shots')
-							reload(shots_module)
+							#reload(shots_module)
 							llama_module.user_data_name = username
 							treats_module.mod_name = username
 							commands_module.mod_name = username
