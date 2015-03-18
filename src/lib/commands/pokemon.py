@@ -5,6 +5,8 @@ Developed by Shane Engelman <me@5h4n3.com>
 import random
 import time
 import re
+import src.lib.commands.capture as capture_import
+import globals
 
 # Pokemon name,their type(s), and a grouping for their evolution order, in the form of a list
 master_pokemon = [
@@ -499,10 +501,16 @@ def pokemon(args):
     #return getmultiplier()
     if action == "battle":# and name.lower() == "now":
         return battle()
-    
-    if action == "evolution":
+    elif action == "me":
+        poke_master = globals.CURRENT_USER
+        print poke_master
+        if capture_import.pokemon_query(poke_master) is not "":
+            return capture_import.pokemon_query(poke_master)
+        else:
+            return "You gotta catch something first, ya dope"
+    elif action == "evolution":
         return evolution()
-    if action == "print":
+    elif action == "print":
         return print_pokemon()
     else:
         return "Usage: " + usage.replace('<','').replace('>','')

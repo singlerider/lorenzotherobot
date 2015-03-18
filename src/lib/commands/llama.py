@@ -7,7 +7,6 @@ import os
 import urllib2
 import ast
 import requests, json
-import src.lib.commands.pokemon as pokemon_import
 import random
 import sys
 import datetime

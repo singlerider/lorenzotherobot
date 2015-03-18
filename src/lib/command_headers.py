@@ -277,6 +277,13 @@ commands = {
         'argc': 0,
         'return': 'command'
                 
+    },
+    
+    '!capture': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
+                 
     }
     
 
