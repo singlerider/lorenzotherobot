@@ -31,9 +31,16 @@ def get_dict_for_users():
     #user_list = "['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']"
     #return user_dict, user_list
     
-    response = urllib2.urlopen('https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters') #change username to your channel
-    user_dict = ast.literal_eval(response.read())
-    user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
+    user_dict = user_list = None
+    for retry_loop in range(2):    
+        try:
+            print "Trying to get URL data with try:", retry_loop + 1
+            response = urllib2.urlopen('https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters') #change username to your channel
+            user_dict = ast.literal_eval(response.read())
+            user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
+            break
+        except Exception, error:
+            print "Shit happends, and today is your day:", error
     return user_dict, user_list
 
 def get_stream_status():
@@ -295,7 +302,8 @@ def llama(args):
     return_treats = get_treats.get_user(grab_user)
     return_individual_treats = get_treats.get_user(user_data_name)
     return_treats_all = get_treats.get_users(grab_user)
-
+    return_shots = shots_import.return_shots
+    
     usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"
     
     if grab_user == "list":
@@ -336,8 +344,8 @@ def llama(args):
         return usage
     
     elif grab_user == "shots":
-        if shots_import.return_shots is not None:
-            return str(shots_import.return_shots) + " shots left. She's already dru... ResidentSleeper"
+        if return_shots is not None:
+            return str(return_shots) + " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! Kreygasm"
     elif return_treats is not None:

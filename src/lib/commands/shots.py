@@ -139,8 +139,6 @@ def delta_shots(add_remove, delta_user, delta):
             return "failure"
     else:
         return "You must choose either 'add', 'remove', 'init', or 'set'"
-
-
         
 def shots(args):
     
