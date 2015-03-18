@@ -156,7 +156,7 @@ def request(args):
     try:
         DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
         llama_object = llama_import.UserData(DATABASE_FILE)
-        username = llama_import.user_data_name
+        username = globals.CURRENT_USER
         delta_treats = 10
         users = username
         args = username
