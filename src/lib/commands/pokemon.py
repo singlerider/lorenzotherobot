@@ -1121,7 +1121,7 @@ master_pokemon_dict = {
     'type1': "Fire",
     'evolution_set': 32,
     'evolution_position': 2,
-    'rarity': 3,
+    'rarity': 2,
     'time': 3,
     'attack': 100,
     'sp_atk': 80,
@@ -2047,7 +2047,7 @@ master_pokemon_dict = {
     'speed': 85
   },
   'Zapdos': {
-    'type1': "Zapdos",
+    'type1': "Electric",
     'type2': "Flying",
     'evolution_set': 75,
     'evolution_position': 1,
@@ -2352,49 +2352,6 @@ def pokemon(args):
     
     poke_master = globals.CURRENT_USER
     
-
-    def get_fighting_index():
-        
-        #pokemon 1 is electric(mod) and psychic(mod). weak against ground(opp) and bug(opp)/ghost(opp)
-        #pokemon 2 is ghost(mod) and dark(mod). weak against dark(opp) and fighting(opp)/bug(opp)/fairy(opp)
-        
-        #pokemon 1 will be affected by pokemon 2 x2, resulting in a max index of 2
-        #pokemon 2 will be affected by pokemon 1 x1, resulting in a max index of 1
-        
-        #pokemon2 will be victorious due to its lower damage index
-        
-        pokemon_1_opp = []
-        pokemon_2_opp = []
-        
-        pokemon_1_index = []
-        pokemon_2_index = []
-
-        if len(pokemon_1_mod) == 1:
-            pokemon_1_opp.append(multipliers[pokemon_1_mod[0]])
-        else:
-            pokemon_1_opp.append(multipliers[pokemon_1_mod[0]], multipliers[pokemon_1_mod[1]])
-        if len(pokemon_1_mod) == 1:
-            pokemon_2_opp.append(multipliers[pokemon_2_mod[0]])
-        else:
-            pokemon_2_opp.append(multipliers[pokemon_2_mod[0]], multipliers[pokemon_2_mod[1]])
-                
-        if pokemon_1_mod in pokemon_2_opp:
-            for type, index in pokemon_2_opp.iteritems():
-                pokemon_2_index.append(type, index)
-        if pokemon_2_mod in pokemon_1_opp:
-            for type, index in pokemon_1_opp.iteritems():
-                pokemon_1_index.append(type, index)
-                
-        if pokemon_1_index > pokemon_2_index:
-            return "pokemon 2 wins"
-        elif pokemon_2_index > pokemon_1_index:
-            return "pokemon 1 wins"
-        else:
-            return "nothing happened"
-                
-    
-     
-    # Script that handles battle    
     def battle():
         # Establishes two randomly selected pokemon as independent variables
         #print "master_pokemon_dict: ", master_pokemon_dict
@@ -2404,49 +2361,67 @@ def pokemon(args):
         pokemon_2 = random.choice (master_pokemon_dict.keys())
         print "pokemon_2: " + pokemon_2
         
+        versus_list = [pokemon_1, pokemon_2]
+        winner = random.choice (versus_list)
+        
         if "type2" in master_pokemon_dict[pokemon_1]:
-            pokemon_1_type = master_pokemon_dict[pokemon_1]["type1"], master_pokemon_dict[pokemon_1]["type2"]
+            pokemon_1_type = master_pokemon_dict[pokemon_1]["type1"]
             print "pokemon_1_types: ", pokemon_1_type
+            modifier_1 = multipliers[pokemon_1_type]
+            print "modifier_1: ", modifier_1
         else:
             pokemon_1_type = master_pokemon_dict[pokemon_1]["type1"]
             print "pokemon_1_type: " + pokemon_1_type
+            modifier_1 = multipliers[pokemon_1_type]
+            print "modifier_1: ", modifier_1
         
         if "type2" in master_pokemon_dict[pokemon_2]:
-            pokemon_2_type = master_pokemon_dict[pokemon_2]["type1"], master_pokemon_dict[pokemon_2]["type2"]
+            pokemon_2_type = master_pokemon_dict[pokemon_2]["type1"]
             print "pokemon_2_types: ", pokemon_2_type
+            modifier_2 = multipliers[pokemon_2_type]
+            print "modifier_2: ", modifier_2
         else:
-            pokemon_2_type = master_pokemon_dict[pokemon_1]["type1"]
-            print "pokemon_2_type: " + pokemon_2_type       
+            pokemon_2_type = master_pokemon_dict[pokemon_2]["type1"]
+            print "pokemon_2_type: " + pokemon_2_type   
+            modifier_2 = multipliers[pokemon_1_type]
+            print "modifier_2: ", modifier_2    
         
-        versus_list = [pokemon_1, pokemon_2]
+        if pokemon_2_type not in modifier_1 and pokemon_1_type not in modifier_2:
+            return "Neither Pokemon adversely affects the other! It's " + pokemon_1 +" versus " + pokemon_2 + "! " + winner + " wins!"
+        elif pokemon_2_type in modifier_1 and pokemon_1_type in modifier_2:
+            damage_modifier_1 = modifier_1[pokemon_2_type]
+            damage_modifier_2 = modifier_2[pokemon_1_type]
+            pokemon_1_return = pokemon_1 + "'s damage modifier is " + str(damage_modifier_1) + " from " + pokemon_2 + "!"
+            pokemon_2_return = pokemon_2 + "'s damage modifier is " + str(damage_modifier_2) + " from " + pokemon_1 + "!"
+            return pokemon_1_return + " " + pokemon_2_return
+        elif pokemon_1_type in modifier_2 and pokemon_2_type not in modifier_1:
+            damage_modifier_2 = modifier_2[pokemon_1_type]
+            pokemon_2_return = pokemon_2 + "'s damage modifier is " + str(damage_modifier_2) + " from " + pokemon_1 + "!"
+            return pokemon_2_return
+        elif pokemon_2_type in modifier_1 and pokemon_1_type not in modifier_2:
+            damage_modifier_1 = modifier_1[pokemon_2_type]
+            pokemon_1_return = pokemon_1 + "'s damage modifier is " + str(damage_modifier_1) + " from " + pokemon_2 + "!"
+            return pokemon_1_return
+        else:
+            return "I have no idea how there was no result."
         
-        winner = random.choice (versus_list)
         
-        return "It's " + pokemon_1 +" versus " + pokemon_2 + "! " + winner + " wins!"
+        
+        #return "It's " + pokemon_1 +" versus " + pokemon_2 + "! " + winner + " wins!"
         
     #Return corresponding evolutionary set
     def evolution():
         #Iterate through nested list, returning Pokemon name, type, and set
-        #and adding it to empty evolution_set
-        for poke,__,set in master_pokemon:
-            
-            if args[1] == poke.lower():
-                evolution_index.append(set)
+        
+        evolution_set_list = []
 
-                for index in evolution_index:
-                    pass
-                
-                    if set == index:
-                        evolution_cat.append(" ".join([poke,set]))
+        for poke in str(master_pokemon_dict[poke]['evolution_set']):
+            evolution_set_list.append(poke)
+        
+        #pokemon_evolutions = random.choice (rarity_list)
+        print "evolution_set_list: ", evolution_set_list
+        #print "rarity list: ", rarity_list        
                         
-                
-        #evolved_pokemon = random.choice (evolution_set)
-                if set == evolution_index[0]:
-                    print "MATCH FOR INDEX " + str(evolution_index[0])
-                    print evolution_cat[0]
-        #random.shuffle(master_pokemon)
-                return str(evolution_index[0])
-    
     def print_pokemon():
         
         print_dict[0] = args[1]
