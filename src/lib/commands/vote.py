@@ -7,14 +7,15 @@ import globals
 
 voter = globals.CURRENT_USER
 
+
 def vote(args):
-    
+
     usage = "!vote [option]"
-    
+
     vote_choice = args[0]
-    
+
     def return_vote():
-        
+
         if voter in options.voters:
             return "You can't vote twice!"
         else:
@@ -24,5 +25,5 @@ def vote(args):
                 return "Vote counted: " + vote_choice + "!"
             else:
                 return "It doesn't look like your choice is valid. Try entering a number."
-        
+
     return return_vote()

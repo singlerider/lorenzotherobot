@@ -3,9 +3,10 @@ import time
 
 random.seed(time.time())
 
+
 def randomnumber():
     usage = '!randomnumber'
-      # carry out validation
+    # carry out validation
     try:
         num = range(1, 101)
         return num[random.randint(0, len(num) - 1)]
