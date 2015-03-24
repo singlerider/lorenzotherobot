@@ -26,11 +26,7 @@ master_pokemon_dict = {
         'type2': "Poison",
         'evolution_set': 1,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 2,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 16,
         'attack': 49,
@@ -45,11 +41,7 @@ master_pokemon_dict = {
         'type2': "Poison",
         'evolution_set': 1,
         'evolution_position': 2,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 32,
         'attack': 62,
@@ -77,11 +69,7 @@ master_pokemon_dict = {
         'type1': "Fire",
         'evolution_set': 2,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 2,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 16,
         'attack': 39,
@@ -95,11 +83,7 @@ master_pokemon_dict = {
         'type1': "Fire",
         'evolution_set': 2,
         'evolution_position': 2,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 32,
         'attack': 64,
@@ -127,11 +111,7 @@ master_pokemon_dict = {
         'type1': "Water",
         'evolution_set': 3,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 2,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 16,
         'attack': 48,
@@ -145,11 +125,7 @@ master_pokemon_dict = {
         'type1': "Water",
         'evolution_set': 3,
         'evolution_position': 2,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 32,
         'attack': 63,
@@ -376,11 +352,7 @@ master_pokemon_dict = {
         'type1': "Poison",
         'evolution_set': 9,
         'evolution_position': 2,
-<<<<<<< HEAD
         'rarity': 2,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 85,
         'sp_atk': 65,
@@ -505,11 +477,7 @@ master_pokemon_dict = {
         'type1': "Poison",
         'evolution_set': 13,
         'evolution_position': 2,
-<<<<<<< HEAD
         'rarity': 2,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 32,
         'evolution_item': 'Moon Stone',
@@ -525,11 +493,7 @@ master_pokemon_dict = {
         'type2': "Ground",
         'evolution_set': 13,
         'evolution_position': 3,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 102,
         'sp_atk': 85,
@@ -830,11 +794,7 @@ master_pokemon_dict = {
         'type1': "Water",
         'evolution_set': 23,
         'evolution_position': 2,
-<<<<<<< HEAD
         'rarity': 1,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 82,
         'sp_atk': 95,
@@ -1556,11 +1516,7 @@ master_pokemon_dict = {
         'type1': "Fighting",
         'evolution_set': 47,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 120,
         'sp_atk': 35,
@@ -1573,11 +1529,7 @@ master_pokemon_dict = {
         'type1': "Fighting",
         'evolution_set': 48,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 105,
         'sp_atk': 35,
@@ -1617,11 +1569,7 @@ master_pokemon_dict = {
         'type1': "Poison",
         'evolution_set': 50,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 2,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 90,
         'sp_atk': 85,
@@ -1896,11 +1844,7 @@ master_pokemon_dict = {
         'type2': "Flying",
         'evolution_set': 65,
         'evolution_position': 2,
-<<<<<<< HEAD
         'rarity': 1,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 125,
         'sp_atk': 60,
@@ -1914,11 +1858,7 @@ master_pokemon_dict = {
         'type2': "Ice",
         'evolution_set': 66,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 85,
         'sp_atk': 85,
@@ -2000,11 +1940,7 @@ master_pokemon_dict = {
         'type1': "Normal",
         'evolution_set': 69,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 60,
         'sp_atk': 85,
@@ -2018,11 +1954,7 @@ master_pokemon_dict = {
         'type2': "Water",
         'evolution_set': 70,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 40,
         'attack': 40,
@@ -2051,11 +1983,7 @@ master_pokemon_dict = {
         'type2': "Water",
         'evolution_set': 71,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'evolution_level': 40,
         'attack': 80,
@@ -2084,11 +2012,7 @@ master_pokemon_dict = {
         'type2': "Flying",
         'evolution_set': 72,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 1,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 105,
         'sp_atk': 60,
@@ -2212,11 +2136,7 @@ master_pokemon_dict = {
         'type1': "Psychic",
         'evolution_set': 79,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 100,
         'sp_atk': 100,
@@ -2230,11 +2150,7 @@ master_pokemon_dict = {
         'type2': "Flying",
         'evolution_set': 0,
         'evolution_position': 1,
-<<<<<<< HEAD
         'rarity': 0,
-=======
-        'rarity': 3,
->>>>>>> d62e68848d24b30e893b8b1b15167192b966a9d6
         'time': 3,
         'attack': 120,
         'sp_atk': 70,
