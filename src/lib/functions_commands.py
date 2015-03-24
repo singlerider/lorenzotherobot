@@ -100,7 +100,7 @@ def pass_to_function(command, args):
     try:
         command = command.replace('!', '')
         module = importlib.import_module('src.lib.commands.%s' % command)
-        reload(module)
+        # reload(module)
         function = getattr(module, command)
         if args:
             # need to reference to src.lib.commands.<command
