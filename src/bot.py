@@ -59,12 +59,17 @@ class Roboraj(object):
                 if not valid:
                     continue
 
-                self.handleCommand(message)
+                self.handleCommand(message, channel, username, message)
             except Exception as err:
                 traceback.print_exc(file=self.log)
 
-    def handleCommand(self, command):
-        cmd, args = command.split(" ", 1)
+    def handleCommand(self, command, channel, username, message):
+        irc = self.irc # todo: remove this, actually use self.irc everywhere.
+        if " " in command:
+            cmd, args = command.split(" ", 1)
+        else:
+            cmd = command
+            args = []
 
         if not commands.check_returns_function(cmd):
             if commands.is_on_cooldown(command, channel):
@@ -87,7 +92,7 @@ class Roboraj(object):
                 irc.send_message(channel, resp)
             return
 
-        if not commands.check_has_correct_args(cmd):
+        if not commands.check_has_correct_args(message, cmd):
             # Remove '(%s)' ':' and 'username' to remove username
             # prefix for message
             resp = '(%s) : %s' % (username, "Incorrect usage")
