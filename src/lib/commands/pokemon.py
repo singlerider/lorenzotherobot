@@ -2342,8 +2342,7 @@ def pokemon_calculate():
             rarity_list.append(poke)
 
     pokemon_choice = random.choice(rarity_list)
-    print "pokemon choice: ", pokemon_choice
-    print "rarity list: ", rarity_list
+    return rarity_list
 
 
 def pokemon(args):
