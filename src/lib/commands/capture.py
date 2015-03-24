@@ -84,7 +84,7 @@ def enter_into_database():
     try:
         capture_object.save(users, pokemon)
         # print "Added to database!"
-        return "Wild " + pokemon + " was caught!"
+        return "Wild " + globals.POKEMON + " was caught!"
     except:
         return "Failure"
 
