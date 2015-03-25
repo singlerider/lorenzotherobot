@@ -9,11 +9,15 @@ import globals
 from src.lib.commands.pokedex.pokedata import *
 from src.lib.commands.pokedex import pokedex
 
+def randomPokemon():
+  # This method is replaced during testing for determitic pokemon choices.
+  return random.choice(master_pokemon_dict.keys())
+
 #!pokemon battle
 def battle():
     # Establishes two randomly selected pokemon as independent variables
-    pokemon_1 = random.choice(master_pokemon_dict.keys())
-    pokemon_2 = random.choice(master_pokemon_dict.keys())
+    pokemon_1 = randomPokemon()
+    pokemon_2 = randomPokemon()
 
     versus_list = [pokemon_1, pokemon_2]
     winner = random.choice(versus_list)
