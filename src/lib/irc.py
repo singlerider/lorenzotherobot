@@ -88,7 +88,7 @@ class irc:
             return True
 
     def send_message(self, channel, message):
-        self.sock.send('PRIVMSG %s :%s\n' % (channel, message.encode('utf-8')))
+        self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message.encode('utf-8')))
 
     def connect(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
