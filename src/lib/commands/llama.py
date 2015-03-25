@@ -25,28 +25,13 @@ DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
 
 def get_dict_for_users():
-    #get_chatters_url = 'https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters'
-    #get_chatters_resp = requests.get(url=get_chatters_url)
-    #chatters = json.loads(get_chatters_resp.content)
-    #user_dict = chatters
-    #user_list = "['" + str("', '".join(user_dict["chatters"]["moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']"
-    # return user_dict, user_list
-
-    user_dict = user_list = None
-    for retry_loop in range(2):
-        try:
-            print "Trying to get URL data with try:", retry_loop + 1
-            # change username to your channel
-            response = urllib2.urlopen(
-                'https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters')
-            user_dict = ast.literal_eval(response.read())
-            user_list = ast.literal_eval("['" + str("', '".join(user_dict["chatters"][
-                                         "moderators"])) + "', '" + str("', '".join(user_dict["chatters"]["viewers"])) + "']")
-            break
-        except Exception, error:
-            print "Shit happends, and today is your day:", error
+    
+    get_dict_for_users_url = 'https://tmi.twitch.tv/group/user/' + globals.channel + '/chatters'
+    get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
+    users = json.loads(get_dict_for_users_resp.content)
+    user_dict = users
+    user_list = users['chatters']['moderators'],users['chatters']['viewers']
     return user_dict, user_list
-
 
 def get_stream_status():
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
