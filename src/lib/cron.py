@@ -1,11 +1,10 @@
 import time
-from src.config.config import *
 from functions_general import *
 
 
 class cron:
 
-    def __init__(self, irc, channel):
+    def __init__(self, irc, channel, config):
         #self.messages = config['cron'][channel]['cron_messages']
         self.run_time = config['cron'][channel]['run_time']
         self.functions = [funcs[0]

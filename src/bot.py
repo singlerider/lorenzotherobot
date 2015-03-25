@@ -11,6 +11,7 @@ Contributions from dustinbcox
 import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
+import src.lib.command_headers
 import src.lib.user_data as info
 import sys
 import datetime
@@ -29,6 +30,7 @@ class Roboraj(object):
 
     def __init__(self, config):
         self.config = config
+        src.lib.command_headers.initalizeCommands(config)
         self.irc = irc_.irc(config)
 
     def run(self):

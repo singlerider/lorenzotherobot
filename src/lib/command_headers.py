@@ -1,6 +1,3 @@
-from src.config.config import *
-
-
 commands = {
 
     '!commands': {
@@ -290,7 +287,8 @@ commands = {
 }
 
 
-for channel in config['channels']:
-    for command in commands:
-        commands[command][channel] = {}
-        commands[command][channel]['last_used'] = 0
+def initalizeCommands(config):
+    for channel in config['channels']:
+        for command in commands:
+            commands[command][channel] = {}
+            commands[command][channel]['last_used'] = 0

@@ -1,6 +1,5 @@
 import time
 
-from src.config.config import *
 from commands import *
 from command_headers import *
 import sys
