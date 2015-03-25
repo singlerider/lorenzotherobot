@@ -52,7 +52,9 @@ class TestCommands(unittest.TestCase):
                 self.server.simulateMessage("randomUser", "#theepicsnail", cmd)
                 out = self.server.getOutput()
                 expected = "PRIVMSG {chan} :({user}) : {msg}".format(
-                    chan = "#theepicsnail", user="randomUser", msg=desc['return'])
+                    chan = "#theepicsnail", user="randomUser", msg=desc['return'].encode('utf-8'))
 
                 self.assertEqual(out, expected)
 
+    def test_pokemon_capture(self):
+        pass
