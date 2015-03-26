@@ -3,9 +3,10 @@ import time
 
 random.seed(time.time())
 
+usage = '!randomnumber'
 
 def randomnumber():
-    usage = '!randomnumber'
+    
     # carry out validation
     try:
         num = range(1, 101)

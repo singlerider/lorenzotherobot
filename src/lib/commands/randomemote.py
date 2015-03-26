@@ -4,6 +4,7 @@ import random
 import json
 import requests
 
+usage = "!randomemote"
 
 def randomemote():
 

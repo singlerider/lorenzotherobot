@@ -7,10 +7,11 @@ import globals
 
 voter = globals.CURRENT_USER
 
+usage = "!vote [option]"
 
 def vote(args):
 
-    usage = "!vote [option]"
+    
 
     vote_choice = args[0]
 

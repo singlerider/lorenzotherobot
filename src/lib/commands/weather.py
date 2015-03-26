@@ -7,9 +7,10 @@ https://code.google.com/p/python-weather-api/
 
 import pywapi
 
+usage = "!weather [zipcode]"
 
 def weather(args):
-    usage = "!weather [zipcode]"
+    
 
     try:
         result = pywapi.get_weather_from_yahoo(

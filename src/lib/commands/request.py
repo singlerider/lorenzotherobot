@@ -30,6 +30,7 @@ DEVELOPER_KEY = globals.YOUTUBE_DEVELOPER_KEY
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
+usage = "!request artist name and song title"
 
 def request(args):
 

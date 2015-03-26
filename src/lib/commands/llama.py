@@ -10,6 +10,7 @@ import src.lib.llama as llamadb
 user_commands_import = importlib.import_module('src.lib.user_commands')
 # reload(user_commands_import)
 
+usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"
 
 def random_highlight():
     get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
@@ -44,7 +45,7 @@ def llama(args):
     user_data_name = globals.CURRENT_USER.lower()
 
 
-    usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"
+    
     llamadbconn = llamadb.newConnection()
     if grab_user == "list":
         return llamadbconn.getTopUsers()

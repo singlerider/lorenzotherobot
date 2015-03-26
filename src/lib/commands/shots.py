@@ -11,6 +11,7 @@ DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "shots.db"))
 
 mod_name = globals.CURRENT_USER
 
+usage = "!shots (add/remove/set [amount])"
 
 class UserData (object):
 
@@ -147,7 +148,7 @@ def delta_shots(add_remove, delta_user, delta):
 
 def shots(args):
 
-    usage = "!shots (add/remove/set [amount])"
+    
 
     approved_list = [
         'curvyllama', 'peligrosocortez', 'singlerider', 'newyork_triforce']

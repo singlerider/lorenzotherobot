@@ -9,6 +9,8 @@ import globals
 from src.lib.commands.pokedex.pokedata import *
 from src.lib.commands.pokedex import pokedex
 
+usage = '!pokemon <action (battle/me)>'
+
 def cron(a=None): #todo remove this arg requirement.
     globals.CAUGHT = False
     pocket_monster = random.choice(master_pokemon_dict.keys())
@@ -52,7 +54,7 @@ def battle():
 
 
 def pokemon(args):
-    usage = '!pokemon <action (battle/me)>'
+    
 
     action = args[0]
 
