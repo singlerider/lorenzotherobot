@@ -14,6 +14,7 @@ import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
 import src.lib.command_headers
+import src.lib.twitch as twitch
 import src.lib.user_data as info
 import sys
 import datetime
@@ -21,7 +22,6 @@ import traceback
 import sched
 import time
 import threading
-from src.lib.commands.twitch import *
 import importlib
 import globals
 
@@ -37,15 +37,14 @@ class Roboraj(object):
 
     def run(self):
 
-        irc = self.irc
         config = self.config
         while True:
             try:
-                data = irc.nextMessage()
-                if not irc.check_for_message(data):
+                data = self.irc.nextMessage()
+                if not self.irc.check_for_message(data):
                     continue
 
-                message_dict = irc.get_message(data)
+                message_dict = self.irc.get_message(data)
                 channel = message_dict['channel']
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
@@ -63,91 +62,77 @@ class Roboraj(object):
                 if not valid:
                     continue
 
-                self.handleCommand(message, channel, username, message)
+                self.handleCommand(part, channel, username, message)
             except Exception as err:
+                raise
                 traceback.print_exc(file=self.log)
 
+
     def handleCommand(self, command, channel, username, message):
-        irc = self.irc # todo: remove this, actually use self.irc everywhere.
-        if " " in command:
-            cmd, args = command.split(" ", 1)
-        else:
-            cmd = command
+        # parse arguments
+        # if command is space case then
+        #   !foo bar baz
+        # turns into
+        #   command = "!foo", args=["bar baz"]
+        # otherwise it turns into
+        #   command = "!foo", args=["bar", "baz:]
+        print("Inputs:", command, channel, username, message)
+        if command == message:
             args = []
+        else:
+            args = [message[len(command)+1:]] # default to args = ["bar baz"]
 
-        if not commands.check_returns_function(cmd):
-            if commands.is_on_cooldown(command, channel):
-                pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
-                    command, username, commands.get_cooldown_remaining(command, channel)),
-                    channel
-                )
-            elif commands.check_has_return(command):
-                pbot('Command is valid and not on cooldown. (%s) (%s)' % (
-                    command, username),
-                    channel
-                )
+        if not commands.check_is_space_case(command) and args:
+            # if it's not space case, break the arg apart
+            args = args[0].split(" ")
 
-                resp = '(%s) : %s' % (
-                    username, commands.get_return(command))
-                commands.update_last_used(command, channel)
+        print("Command:", command, "args", args)
 
-                pbot(resp, channel)
-                irc.send_message(channel, resp)
+        # check cooldown.
+        if commands.is_on_cooldown(command, channel):
+            pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
+                command, username, commands.get_cooldown_remaining(command, channel)),
+                channel
+            )
+            return
+        pbot('Command is valid and not on cooldown. (%s) (%s)' %
+                (command, username) ,channel)
+
+
+        # Check for and handle the simple non-command case.
+        cmd_return = commands.get_return(command)
+        if cmd_return != "command":
+            # it's a return = "some message here" kind of function
+            resp = '(%s) : %s' % (username, cmd_return)
+            commands.update_last_used(command, channel)
+            self.irc.send_message(channel, resp)
             return
 
-        if not commands.check_has_correct_args(message, cmd):
-            # Remove '(%s)' ':' and 'username' to remove username
-            # prefix for message
-            if "usage" in command.command():
-                resp = '(%s) : %s' % (username, command.command().usage)
-            else:
-                resp = '(%s) : %s' % (username, "Incorrect Usage")
-            pbot(resp, channel)
-            irc.send_message(channel, resp)
-            return
 
-        command = cmd
-
-        if commands.check_is_space_case(message):
-            args = []
-            args.append(message[len(command):])
-        else:
-            args = message.split(' ')[1:]
-            # Uncomment line below to display arguments in console
-            # print "Args matey! {0}:".format(len(args)), args
-
-            # Handles Moderator-level commands - add 'ul': 'mod' to
-            # all commands with intended restriction
-
+        # if there's a required userleve, validate it.
         if commands.check_has_ul(username, command):
-            user_dict, user_list = get_dict_for_users()
+            user_dict, user_list = twitch.get_dict_for_users()
             if username not in user_dict["chatters"]["moderators"]:
                 resp = '(%s) : %s' % (
                     username, "This is a moderator-only command!")
                 pbot(resp, channel)
-                irc.send_message(channel, resp)
+                self.irc.send_message(channel, resp)
                 return
 
-        # if commands.command_user_level(command, channel):
+        # Run the command!
+        pbot('Command is valid an not on cooldown. (%s) (%s)' % (
+            command, username),
+            channel
+        )
 
-        if commands.is_on_cooldown(command, channel):
-            pbot('Command is on cooldown, sucka. (%s) (%s) (%ss remaining)' % (
-                command, username, commands.get_cooldown_remaining(command, channel)),
-                channel
-            )
-        else:
-            pbot('Command is valid an not on cooldown. (%s) (%s)' % (
-                command, username),
-                channel
-            )
+        result = commands.pass_to_function(command, args)
+        commands.update_last_used(command, channel)
 
-            result = commands.pass_to_function(command, args)
-            commands.update_last_used(command, channel)
-
-            if result:
-                resp = '(%s) : %s' % (username, result)
-                pbot(resp, channel)
-                irc.send_message(channel, resp)
+        pbot("Command %s(%s) had a result of %s" % (command, args, result), channel)
+        if result:
+            resp = '(%s) : %s' % (username, result)
+            pbot(resp, channel)
+            self.irc.send_message(channel, resp)
 
 
 class Logger(Roboraj):

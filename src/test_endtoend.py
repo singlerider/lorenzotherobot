@@ -3,15 +3,13 @@ import unittest
 import threading
 from bot import Roboraj
 
-import src.lib.functions_commands
-src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 
 TEST_CHANNEL = "#theepicsnail"
 
 # Replace the get_dict_for_users function with something that returns
 # the right users.
-import src.lib.commands.llama as llama
-llama.get_dict_for_users = lambda: (
+import src.lib.twitch as twitch
+twitch.get_dict_for_users = lambda: (
     {'chatters':
         {'moderators': ["theepicsnail_", "singlerider"],
         'global_mods': [],
@@ -23,6 +21,8 @@ llama.get_dict_for_users = lambda: (
     'chatter_count': 0},
     ['', ''])
 
+import src.lib.functions_commands
+src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 
 server, client = None, None
 def setUpModule():

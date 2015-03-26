@@ -24,6 +24,7 @@ def get_command_limit(command):
 def is_on_cooldown(command, channel):
     if time.time() - commands[command][channel]['last_used'] < commands[command]['limit']:
         return True
+    return False
 
 
 def get_cooldown_remaining(command, channel):
@@ -42,6 +43,7 @@ def command_user_level(command):
 def check_has_return(command):
     if commands[command]['return'] and commands[command]['return'] != 'command':
         return True
+    return False
 
 
 def get_return(command):
@@ -53,13 +55,11 @@ def check_has_args(command):
         return True
 
 
-def check_is_space_case(message):
-    """Check to see if the command is a space case"""
-    command = message.split(' ')[0]
-    argc = commands[command]['argc']
-    # Space Cases
-    # Cool show
-    return argc == 1 and 'space_case' in commands[command] and commands[command]['space_case']
+def check_is_space_case(command):
+    """Check to see if the command is a space case
+    by default it's not."""
+    return commands[command].get("space_case", False)
+
 
 
 def check_has_correct_args(message, command):
@@ -86,8 +86,7 @@ def check_has_ul(username, command):
     if 'ul' in commands[command]:
         if 'mod' in commands[command]['ul']:
             return True
-        else:
-            return False
+    return False
 
 
 def check_returns_function(command):
