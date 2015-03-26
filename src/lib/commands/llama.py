@@ -4,38 +4,14 @@ Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 
 import sqlite3
 import os
-import urllib2
-import ast
-import requests
-import json
-import random
-import sys
-import datetime
-import time
 import importlib
-import globals
 import src.lib.commands.shots as shots_import
 from src.lib.twitch import *
 
 user_commands_import = importlib.import_module('src.lib.user_commands')
 # reload(user_commands_import)
 
-user_data_name = globals.CURRENT_USER
-
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
-
-
-def random_highlight():
-    get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
-        globals.channel + "/videos?limit=20"
-    get_highlight_resp = requests.get(url=get_highlight_url)
-    highlights = json.loads(get_highlight_resp.content)
-    random_highlight_choice = random.choice(highlights["videos"])
-    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n"," ").replace("\r", " ")
-
-
-stream_data = get_stream_status()
-
 
 class UserData (object):
 
@@ -125,31 +101,11 @@ class UserData (object):
             print self.delta[0]
             conn = sqlite3.connect(self.filepath)
             # Let's update the existing user
-            conn.execute("UPDATE users SET points = points = ?" +
+            conn.execute("UPDATE users SET points = points == ?" +
                          " WHERE username = ?", (self.delta[0], users))
             conn.commit()
             conn.close()
 
-# pokemon stuff is in progress
-    def add_pokemon(self, poke_master, pokemon):
-        if self.get_user(poke_master) is not None:
-            print self.delta[0]
-            conn = sqlite3.connect(self.filepath)
-            # Let's update the existing user
-            conn.execute("UPDATE users SET pokemon = pokemon = ?" +
-                         " WHERE username = ?", (self.pokemon, poke_master))
-            conn.commit()
-            conn.close()
-
-    def get_pokemon(self, username):
-        conn = sqlite3.connect(self.filepath)
-        cursor = conn.execute("SELECT pokemon FROM users WHERE username = ?",
-                              (username,))
-        pokemon = cursor.fetchone()
-        if pokemon is not None:
-            pokemon = pokemon[0]  # get only the name from the tuple
-        conn.close()
-        return pokemon
 
     def get_user(self, username):
         conn = sqlite3.connect(self.filepath)
@@ -223,25 +179,17 @@ def delta_treats(add_remove, delta_user, delta):
     UserData.delta.append(delta)
     if add_remove == "add":
         llama_object = UserData(DATABASE_FILE)
-        try:
-            llama_object.special_save(users)
-            return "Success! " + delta + " treats added for " + delta_user + "!"
-        except:
-            return "failure"
+        llama_object.special_save(users)
+        return "Success! " + delta + " treats added for " + delta_user + "!"
     elif add_remove == "remove":
         llama_object = UserData(DATABASE_FILE)
-        try:
-            llama_object.special_remove(users)
-            return "Success! " + delta + " treats removed from " + delta_user + "!"
-        except:
-            return "failure"
+        llama_object.special_remove(users)
+        return "Success! " + delta + " treats removed from " + delta_user + "!"
+       
     elif add_remove == "set":
         llama_object = UserData(DATABASE_FILE)
-        try:
-            llama_object.special_set(users)
-            return "Success! " + delta_user + "'s treats set to " + delta + "!"
-        except:
-            return "failure"
+        llama_object.special_set(users)
+        return "Success! " + delta_user + "'s treats set to " + delta + "!"
     else:
         return "You must choose either 'add', 'remove', or 'set'"
 

@@ -6,6 +6,8 @@ Originally developed by Aidan Thomson <aidraj0@gmail.com>
 Forked and modified by Shane Engelman <me@5h4n3.com>
 
 Contributions from dustinbcox
+
+Rekt by theepicsnail
 """
 
 import lib.irc as irc_
@@ -84,7 +86,6 @@ class Roboraj(object):
                     command, username),
                     channel
                 )
-                #commands.update_last_used(command, channel)
 
                 resp = '(%s) : %s' % (
                     username, commands.get_return(command))
@@ -97,26 +98,26 @@ class Roboraj(object):
         if not commands.check_has_correct_args(message, cmd):
             # Remove '(%s)' ':' and 'username' to remove username
             # prefix for message
-            resp = '(%s) : %s' % (username, "Incorrect usage")
+            if "usage" in command.command():
+                resp = '(%s) : %s' % (username, command.command().usage)
+            else:
+                resp = '(%s) : %s' % (username, "Incorrect Usage")
             pbot(resp, channel)
             irc.send_message(channel, resp)
             return
 
         command = cmd
 
-        if commands.check_is_space_case(message):  # Keep spaces, so 1 arg.
-            # let's get crazy with space cases!
+        if commands.check_is_space_case(message):
             args = []
             args.append(message[len(command):])
-            # basically if we only have argc as defined in command_headers then
-            # we can allow spaces.
         else:
             args = message.split(' ')[1:]
-        # Uncomment line below to display arguments in console
-        # print "Args matey! {0}:".format(len(args)), args
+            # Uncomment line below to display arguments in console
+            # print "Args matey! {0}:".format(len(args)), args
 
-        # Handles Moderator-level commands - add 'ul': 'mod' to
-        # all commands with intended restriction
+            # Handles Moderator-level commands - add 'ul': 'mod' to
+            # all commands with intended restriction
 
         if commands.check_has_ul(username, command):
             if username not in llama_import.get_dict_for_users()[0]["chatters"]["moderators"]:

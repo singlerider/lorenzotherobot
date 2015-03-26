@@ -1,6 +1,10 @@
 import globals
 import requests
 import json
+import random
+from src.bot import *
+
+user_data_name = globals.CURRENT_USER
 
 def get_dict_for_users():
 
@@ -44,8 +48,6 @@ def get_offline_status():
     if offline_data["stream"] != None:
         return True
 
-stream_status = get_stream_status()
-
 
 def get_user_command():
     try:
@@ -64,3 +66,10 @@ def get_stream_followers():
     return data
 
 
+def random_highlight():
+    get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
+        globals.channel + "/videos?limit=20"
+    get_highlight_resp = requests.get(url=get_highlight_url)
+    highlights = json.loads(get_highlight_resp.content)
+    random_highlight_choice = random.choice(highlights["videos"])
+    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n"," ").replace("\r", " ")

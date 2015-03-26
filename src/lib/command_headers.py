@@ -156,13 +156,6 @@ commands = {
         'space_case': True
     },
 
-    #'!streetfighter': {
-    #    'limit': 0,
-    #    'argc': 0,
-    #    'return': 'command'
-    #
-    #},
-
     '!poll': {
         'limit': 0,
         'argc': 1,
