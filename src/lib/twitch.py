@@ -8,7 +8,7 @@ def get_dict_for_users():
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     users = json.loads(get_dict_for_users_resp.content)
     user_dict = users
-    user_list = users['chatters']['moderators'],users['chatters']['viewers']
+    user_list = users['chatters']['moderators']+users['chatters']['viewers']
     return user_dict, user_list
 
 def get_stream_status():
