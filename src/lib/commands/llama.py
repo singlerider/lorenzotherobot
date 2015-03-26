@@ -31,7 +31,7 @@ def random_highlight():
     get_highlight_resp = requests.get(url=get_highlight_url)
     highlights = json.loads(get_highlight_resp.content)
     random_highlight_choice = random.choice(highlights["videos"])
-    return str(str(random_highlight_choice["title"]) + " | " + str(random_highlight_choice["description"]) + " | " + str(random_highlight_choice["length"]) + " time units | " + str(random_highlight_choice["url"]) + " | Tags: " + str(random_highlight_choice["tag_list"])).replace("\n", " ").replace("\r", " ")
+    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n"," ").replace("\r", " ")
 
 
 stream_data = get_stream_status()
