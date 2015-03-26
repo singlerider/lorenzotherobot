@@ -21,7 +21,7 @@ import traceback
 import sched
 import time
 import threading
-import src.lib.commands.llama as llama_import
+from src.lib.commands.twitch import *
 import importlib
 import globals
 
@@ -120,7 +120,8 @@ class Roboraj(object):
             # all commands with intended restriction
 
         if commands.check_has_ul(username, command):
-            if username not in llama_import.get_dict_for_users()[0]["chatters"]["moderators"]:
+            user_dict, user_list = get_dict_for_users()
+            if username not in user_dict["chatters"]["moderators"]:
                 resp = '(%s) : %s' % (
                     username, "This is a moderator-only command!")
                 pbot(resp, channel)
