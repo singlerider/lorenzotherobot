@@ -9,6 +9,13 @@ import globals
 from src.lib.commands.pokedex.pokedata import *
 from src.lib.commands.pokedex import pokedex
 
+def cron(a=None): #todo remove this arg requirement.
+    globals.CAUGHT = False
+    pocket_monster = random.choice(master_pokemon_dict.keys())
+    globals.POKEMON = pocket_monster
+    return "A wild " + pocket_monster + " appeared!"
+
+
 def randomPokemon():
   # This method is replaced during testing for determitic pokemon choices.
   return random.choice(master_pokemon_dict.keys())

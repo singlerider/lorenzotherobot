@@ -7,14 +7,6 @@ import importlib
 import globals
 
 # Some example cron jobs.
-def pokemon_cron(a):
-    globals.CAUGHT = False
-    pocket_monster = random.choice(pokemon_import.master_pokemon_dict.keys())
-    globals.POKEMON = pocket_monster
-    # text returned from a cron job goes to the channel
-    return "A wild " + pocket_monster + " appeared!"
-
-
 def treats_cron(a):
     if not llama.get_stream_status():
         return llama.enter_into_database()
@@ -54,7 +46,7 @@ config = {
             'run_cron': True,
             'run_time': 30,            # time in seconds
             'cron_functions': [
-                (pokemon_cron, (pokemon_import.master_pokemon_dict,)),
+                (pokemon_import.cron, ()) ,
                 (treats_cron, ())
             ]
         },
