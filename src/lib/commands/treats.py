@@ -1,4 +1,6 @@
-import src.lib.commands.llama as llama_import
+import src.lib.commands.llama as llama_import # for channel wide treats
+from src.lib import llama as llamadb
+
 import globals
 
 
@@ -11,16 +13,23 @@ def treats(args):
 
     add_remove = args[0]
     delta_user = args[1].lower()
-    delta = args[2]
+
+    try:
+      delta = int(args[2])
+    except:
+      return "ammount has to be a number, ya dingus!"
 
     mod_name = globals.CURRENT_USER
 
-    if mod_name in approved_list:
-
-        if add_remove == "add" and delta_user == "all":
-            return llama_import.enter_into_database_all(delta)
-        else:
-            return llama_import.delta_treats(add_remove, delta_user, delta)
-
-    else:
+    if mod_name not in approved_list:
         return "Only " + ", ".join(approved_list) + " are allowed to do that!"
+
+    if add_remove == "remove":
+      delta *= -1
+
+    if delta_user == "all":
+      llama_import.enter_into_database_all(delta)
+    else:
+      llamadb.newConnection().addPoints(delta_user, delta)
+
+    return "{} treats for {}!".format(delta, delta_user)

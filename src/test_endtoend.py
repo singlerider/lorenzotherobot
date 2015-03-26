@@ -9,7 +9,7 @@ from bot import Roboraj
 import src.lib.commands.llama as llama
 llama.get_dict_for_users = lambda: (
     {'chatters':
-        {'moderators': ["theepicsnail"],
+        {'moderators': ["theepicsnail_", "singlerider"],
         'global_mods': [],
         'admins': [],
         'viewers': [],
@@ -95,4 +95,23 @@ class TestPokemon(unittest.TestCase):
         server.simulateMessage("randomUser", "#theepicsnail", "!pokemon battle")
         self.assertIn("randomUser", server.getOutput())
 
+class TestTreats(unittest.TestCase):
+    def test_normal_cant_add_treats(self):
+      server.simulateMessage("randomUser", "#theepicsnail", "!treats set randomUser 1000")
+      self.assertIn("This is a moderator-only command!", server.getOutput())
 
+    def test_mod_can_add_treats(self):
+      #singlerider has permission to add treats but theepicsnail doesnt, even in '#theepicsnail'
+      #this is weird.
+      server.simulateMessage("randomUser", "#theepicsnail", "!llama treats")
+
+      # position 10 is where the number of treats are.
+      old_treats = int(server.getOutput().split(" ")[10])
+
+      server.simulateMessage("singlerider", "#theepicsnail", "!treats add randomUser 1000")
+      server.getOutput()
+
+      server.simulateMessage("randomUser", "#theepicsnail", "!llama treats")
+      new_treats = int(server.getOutput().split(" ")[10])
+
+      self.assertEqual(old_treats + 1000, new_treats)
