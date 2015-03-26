@@ -4,72 +4,61 @@ import src.lib.commands.pokemon as pokemon_import
 import src.lib.commands.llama as llama
 import random
 import importlib
+import globals
+import src.lib.commands.capture as capture_import
 
+# Some example cron jobs.
 def pokemon_cron(a):
-    pocket_monster = [x[0] for x in pokemon_import.master_pokemon]
-    monster = random.choice(pocket_monster)
-    return "A wild " + monster + " appeared!"
-    
+    globals.CAUGHT = False
+    pocket_monster = random.choice(pokemon_import.master_pokemon_dict.keys())
+    globals.POKEMON = pocket_monster
+    capture_import.pokemon_config = pocket_monster
+    # text returned from a cron job goes to the channel
+    return "A wild " + pocket_monster + " appeared!"
+
+
 def treats_cron(a):
     if not llama.get_stream_status():
-        try:
-            return llama.enter_into_database()
-        except:
-            return "Error"
+        return llama.enter_into_database()
     else:
         return "Treats are earned while Curvyllama is streaming."
-        
 
 
 config = {
-        
-        # details required to login to twitch IRC server
-        'server': 'irc.twitch.tv',
-        'port': 6667,
-        'username': 'usernamegoeshere',
-        'oauth_password': 'oauth:klajsdkljasdaslkjdlkasjdkas', # get this from http://twitchapps.com/tmi/
-        
-        # channel to join
-        'channels': ['#lorenzotherobot'],
+    # details required to login to twitch IRC server
+    'server': 'irc.twitch.tv',
+    'port': 6667,
+    'username': 'lorenzotherobot',
+    'oauth_password': 'oauth:a1s2d3f4g5h6j7k8l9aassddff',
 
-        # if set to true will display any data received
-        'debug': True,
+    'debug': True,
+    'log_messages': True,
 
-        # To run cron_functions, pass in a tuple (function_without_params,(arg0,arg1,arg2,arg3))  
-        
+    # channel to join
+    'channels': ['#lorenzotherobot'],
 
-        
-        'cron': {
-                '#lorenzotherobot':
-                {
-                        'run_cron': True,      # set this to false if you want don't want to run the cronjob but you want to preserve the messages etc
-                        'run_time': 2,            # time in seconds
-                        'cron_functions': [
-                                (pokemon_cron,(pokemon_import.master_pokemon,)),
-                                 (treats_cron, ())
-                        ]#,
-                        #'cron_secondary': [
-                        #        (test_cron,(pokemon_import.master_pokemon,)),
-                        #         (test_cronb, ())
-                        #]
-                },
 
-#                '#curvyllama':{
-#                        'run_cron': False,
-#                        'run_time': 300,
-#                        'cron_messages': [
-#                                'This is channel_two cron message one.'
-#                        ]
-#                },
+    # cron is a map of channel names to:
+    # {
+    #    'run_cron': True/False - Should this cron be turned on
+    #    'run_time': int(seconds) - How often to run this
+    #    'cron_functions': [
+    #       (function, (args)),
+    #       ...
+    #    ]
+    # }
+
+    'cron': {
+        '#lorenzotherobot':
+        {
+            # set this to false if you want don't want to run the
+            # cronjob but you want to preserve the messages etc
+            'run_cron': True,
+            'run_time': 30,            # time in seconds
+            'cron_functions': [
+                (pokemon_cron, (pokemon_import.master_pokemon_dict,)),
+                (treats_cron, ())
+            ]
         },
-
-        # if set to true will display any data received
-        'debug': True,
-
-        # if set to true will log all messages from all channels
-        # todo
-        'log_messages': True,
-
-        # maximum amount of bytes to receive from socket - 1024-4096 recommended
-        'socket_buffer_size': 2048
+    },
 }
