@@ -63,7 +63,7 @@ commands = {
 
     '!twitter': {
         'limit': 10,
-        'return': "https://twitter.com/Amanda_Defrance"
+        'return': "https://twitter.com/Amanda_Defrance - Make sure to follow Curvy on Twitter to see when she goes live!"
 
     },
 
