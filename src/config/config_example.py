@@ -5,14 +5,12 @@ import src.lib.commands.llama as llama
 import random
 import importlib
 import globals
-import src.lib.commands.capture as capture_import
 
 # Some example cron jobs.
 def pokemon_cron(a):
     globals.CAUGHT = False
     pocket_monster = random.choice(pokemon_import.master_pokemon_dict.keys())
     globals.POKEMON = pocket_monster
-    capture_import.pokemon_config = pocket_monster
     # text returned from a cron job goes to the channel
     return "A wild " + pocket_monster + " appeared!"
 
