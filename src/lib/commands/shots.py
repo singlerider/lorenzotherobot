@@ -102,7 +102,7 @@ class UserData (object):
         return str(user_data[0:12]).replace("[", "").replace("(u'", "").replace(", ", " | ").replace("]", "").replace(")", "")
 
 get_shots = UserData(DATABASE_FILE)
-return_shots = get_shots.get_user("curvyllama")
+return_shots = get_shots.get_user(globals.channel)
 
 
 def delta_shots(add_remove, delta_user, delta):

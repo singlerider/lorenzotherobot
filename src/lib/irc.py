@@ -6,9 +6,7 @@ from functions_general import *
 import cron
 import thread
 
-
 threshold = 5 * 60  # five minutes, make this whatever you want
-
 
 class irc:
 
@@ -37,9 +35,6 @@ class irc:
     def check_for_message(self, data):
         if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
             return True
-        else:
-            if not 'PING' in data:
-                print "Debug check_for_message", data
 
     def check_for_join(self, data):
         if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
@@ -48,11 +43,6 @@ class irc:
     def check_for_part(self, data):
         if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
             return True
-
-    # broken code
-    # def check_mod(self, data):
-    #    if re.match(r':jtv + MODE + #[a-zA-Z0-9_] +o [a-zA-Z0-9_]'):
-    #        return True
 
     def check_is_command(self, message, valid_commands):
         for command in valid_commands:
@@ -125,7 +115,6 @@ class irc:
         for channel in self.config['channels']:
             if channel in self.config['cron']:
                 if self.config['cron'][channel]['run_cron']:
-                    # This is where the thread for cron_job is initiated
 
                     thread.start_new_thread(cron.cron(self, channel, self.config).run, ())
 

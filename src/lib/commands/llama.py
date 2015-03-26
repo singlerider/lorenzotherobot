@@ -4,16 +4,7 @@ Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 
 import sqlite3
 import os
-import urllib2
-import ast
-import requests
-import json
-import random
-import sys
-import datetime
-import time
 import importlib
-import globals
 import src.lib.commands.shots as shots_import
 from src.lib.twitch import *
 import src.lib.llama as llamadb
@@ -21,10 +12,7 @@ import src.lib.llama as llamadb
 user_commands_import = importlib.import_module('src.lib.user_commands')
 # reload(user_commands_import)
 
-user_data_name = globals.CURRENT_USER
-
 DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
-
 
 def random_highlight():
     get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
@@ -46,9 +34,6 @@ def get_user_command():
 
 stream_data = get_stream_status()
 
-
-
-
 def enter_into_database(delta = 5):
     # This could use a more sensible name...
     user_dict, user_list = get_dict_for_users()
@@ -56,7 +41,6 @@ def enter_into_database(delta = 5):
         llamadb.newConnection().addPoints(user, delta)
 
     return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
-
 
 def llama(args):
     grab_user = args[0].lower()
