@@ -2,8 +2,6 @@
 Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 """
 
-import sqlite3
-import os
 import importlib
 import src.lib.commands.shots as shots_import
 from src.lib.twitch import *
@@ -12,7 +10,6 @@ import src.lib.llama as llamadb
 user_commands_import = importlib.import_module('src.lib.user_commands')
 # reload(user_commands_import)
 
-DATABASE_FILE = os.path.abspath(os.path.join(__file__, "../..", "llama.db"))
 
 def random_highlight():
     get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
