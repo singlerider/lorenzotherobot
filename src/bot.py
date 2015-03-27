@@ -36,11 +36,7 @@ class Roboraj(object):
         self.irc = irc_.irc(config)
 
         # start threads for channels that have cron messages to run
-        for channel in self.config['channels']:
-            if channel in self.config['cron']:
-                if self.config['cron'][channel]['run_cron']:
-                    thread.start_new_thread(cron.cron(self, channel, self.config).run, ())
-
+        cron.initialize(self.irc, self.config.get("cron", {}))
 
     def run(self):
 

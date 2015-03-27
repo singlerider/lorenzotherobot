@@ -1,41 +1,36 @@
 import time
-from functions_general import *
+from threading import Thread
+
+def initialize(irc, config):
+  # start up the cron jobs.
+  # config should be in the structure of
+  # {
+  #   "#channel": [ (period, enabled, callback),.... ]
+  #   ...
+  # }
+  for channel, jobs in config.items():
+    # jobs can be [], False, None...
+    if not jobs:
+      continue
+
+    for (delay, enabled, callback) in jobs:
+      if not enabled:
+        continue
+
+      CronJob(irc, channel, delay, callback).start()
 
 
-class cron:
+class CronJob(Thread):
+  def __init__(self, irc, channel, delay, callback):
+    Thread.__init__(self)
+    self.delay = delay
+    self.callback = callback
+    self.irc = irc
+    self.channel = channel
 
-    def __init__(self, irc, channel, config):
-        #self.messages = config['cron'][channel]['cron_messages']
-        self.run_time = config['cron'][channel]['run_time']
-        self.functions = [funcs[0]
-                          for funcs in config['cron'][channel]['cron_functions']]
-        self.args = [args[1]
-                     for args in config['cron'][channel]['cron_functions']]
+  def run(self):
+    while True:
+      time.sleep(self.delay)
+      print(self.callback, self.channel)
+      self.irc.send_message(self.channel, self.callback())
 
-        # Do a sanity check to make sure that we have real functions in the
-        # functions list
-        for func in self.functions:
-            if not callable(func):
-                raise ValueError(
-                    "Not a function, consider that the odds of winning are very low")
-        self.irc = irc
-        self.channel = channel
-
-    def run(self):
-        time.sleep(self.run_time)
-        while True:
-            try:
-                for index in range(len(self.functions)):
-                    # "("+ ",".join(self.args[index]) + ")"
-                    pbot(
-                        '[CRON] ' + self.functions[index].__name__, self.channel)
-                    message = str(self.functions[index](self.args[index]))
-                    if len(message) > 0 and message != str(None):
-                        self.irc.send_message(self.channel, message[:120])
-                        self.last_ran = time.time()
-                        time.sleep(self.run_time)
-                    else:
-                        print "Momma likes you, but she has nothing to say"
-            except Exception, error:
-                print "Your momma likes it in the back door:" + str(error)
-                return "error"

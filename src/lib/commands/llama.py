@@ -29,15 +29,6 @@ def get_user_command():
 
 
 stream_data = get_stream_status()
-
-def enter_into_database(delta = 5):
-    # This could use a more sensible name...
-    user_dict, user_list = get_dict_for_users()
-    for user in user_list:
-        llamadb.newConnection().addPoints(user, delta)
-
-    return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
-
 def llama(args):
     grab_user = args[0].lower()
     user_data_name = globals.CURRENT_USER.lower()

@@ -1,7 +1,16 @@
-import src.lib.commands.llama as llama_import # for channel wide treats
 from src.lib import llama as llamadb
-
+import src.lib.twitch as twitch
 import globals
+
+
+def cron():
+  treatsForAll(1)
+
+def treatsForAll(delta):
+    user_dict, user_list = twitch.get_dict_for_users()
+    for user in user_list:
+        llamadb.newConnection().addPoints(user, delta)
+    return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
 
 
 def treats(args):
@@ -28,7 +37,7 @@ def treats(args):
       delta *= -1
 
     if delta_user == "all":
-      llama_import.enter_into_database_all(delta)
+      return treatsForAll(delta)
     else:
       llamadb.newConnection().addPoints(delta_user, delta)
 
