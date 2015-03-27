@@ -1,24 +1,14 @@
 global config
 
-import src.lib.commands.pokemon as pokemon_import
-import src.lib.commands.llama as llama
-import random
-import globals
-
-# Some example cron jobs.
-def treats_cron(a):
-    if not llama.get_stream_status():
-        return llama.enter_into_database()
-    else:
-        return "Treats are earned while Curvyllama is streaming."
-
+import src.lib.commands.pokemon as pokemon
+import src.lib.commands.treats as treats
 
 config = {
     # details required to login to twitch IRC server
     'server': 'irc.twitch.tv',
     'port': 6667,
-    'username': 'lorenzotherobot',
-    'oauth_password': 'oauth:a1s2d3f4g5h6j7k8l9aassddff',
+    'username': 'YourUsername',
+    'oauth_password': 'YourOauthToken',# get this from http://twitchapps.com/tmi/
 
     'debug': True,
     'log_messages': True,
@@ -26,28 +16,12 @@ config = {
     # channel to join
     'channels': ['#lorenzotherobot'],
 
-
-    # cron is a map of channel names to:
-    # {
-    #    'run_cron': True/False - Should this cron be turned on
-    #    'run_time': int(seconds) - How often to run this
-    #    'cron_functions': [
-    #       (function, (args)),
-    #       ...
-    #    ]
-    # }
-
+    # Cron jobs.
     'cron': {
-        '#lorenzotherobot':
-        {
-            # set this to false if you want don't want to run the
-            # cronjob but you want to preserve the messages etc
-            'run_cron': True,
-            'run_time': 30,            # time in seconds
-            'cron_functions': [
-                (pokemon_import.cron, ()) ,
-                (treats_cron, ())
-            ]
-        },
+        '#lorenzotherobot': [
+            #time, run, callback
+            (120, True, pokemon.cron), # pokemon released every 2 minutes
+            (300, True, treats.cron), # treat handed out every 5 minutes
+        ],
     },
 }
