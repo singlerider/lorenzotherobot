@@ -77,7 +77,21 @@ class irc:
             return True
 
     def send_message(self, channel, message):
-        self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message.encode('utf-8')))
+        # message can be any of the formats:
+        # None - sends nothing
+        # String - sends this line as a message
+        # List - sends each line individually.
+        #  -- technically since this is recursive you can have a tree of messages
+        #  -- [["1", ["2", "3"]], "4"] will send "1", "2", "3", "4".
+        if not message:
+          return
+
+        if type(message) == str:
+          self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message.encode('utf-8')))
+
+        if type(message) == list:
+          for line in message:
+            self.send_message(channel, line)
 
     def connect(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
