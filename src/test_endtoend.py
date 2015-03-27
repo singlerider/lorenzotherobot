@@ -4,7 +4,7 @@ import threading
 from bot import Roboraj
 
 
-TEST_CHANNEL = "#theepicsnail"
+TEST_CHANNEL = "#theepicsnail_"
 
 # Replace the get_dict_for_users function with something that returns
 # the right users.
@@ -34,7 +34,6 @@ def setUpModule():
         "username": "testUsername",
         "oauth_password": "testOauth",
         "channels": [TEST_CHANNEL],
-        "cron":[],
     })
     threading.Thread(target=client.run).start()
 
@@ -64,7 +63,7 @@ class TestCommands(unittest.TestCase):
                 # get output
                 out = server.getOutput()
                 expected = "PRIVMSG {chan} :({user}) : {msg}".format(
-                    chan = "#theepicsnail", user="randomUser", msg=desc['return'].encode('utf-8'))
+                    chan = TEST_CHANNEL, user="randomUser", msg=desc['return'].encode('utf-8'))
 
                 # validate
                 self.assertEqual(out, expected)
