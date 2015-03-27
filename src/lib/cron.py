@@ -23,6 +23,7 @@ def initialize(irc, config):
 class CronJob(Thread):
   def __init__(self, irc, channel, delay, callback):
     Thread.__init__(self)
+    self.daemon = True
     self.delay = delay
     self.callback = callback
     self.irc = irc
