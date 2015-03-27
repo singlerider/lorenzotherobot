@@ -3,7 +3,6 @@ import re
 import time
 import sys
 from functions_general import *
-import cron
 import thread
 
 threshold = 5 * 60  # five minutes, make this whatever you want
@@ -110,13 +109,6 @@ class irc:
         # Wait until we're ready before starting stuff.
         while "376" not in self.nextMessage():
             pass
-
-        # start threads for channels that have cron messages to run
-        for channel in self.config['channels']:
-            if channel in self.config['cron']:
-                if self.config['cron'][channel]['run_cron']:
-
-                    thread.start_new_thread(cron.cron(self, channel, self.config).run, ())
 
         self.join_channels(self.channels_to_string(self.config['channels']))
 

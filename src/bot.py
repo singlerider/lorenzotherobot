@@ -16,6 +16,7 @@ import lib.functions_commands as commands
 import src.lib.command_headers
 import src.lib.twitch as twitch
 import src.lib.user_data as info
+import src.lib.cron as cron
 import sys
 import datetime
 import traceback
@@ -33,6 +34,13 @@ class Roboraj(object):
         self.config = config
         src.lib.command_headers.initalizeCommands(config)
         self.irc = irc_.irc(config)
+
+        # start threads for channels that have cron messages to run
+        for channel in self.config['channels']:
+            if channel in self.config['cron']:
+                if self.config['cron'][channel]['run_cron']:
+                    thread.start_new_thread(cron.cron(self, channel, self.config).run, ())
+
 
     def run(self):
 
