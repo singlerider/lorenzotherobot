@@ -9,7 +9,10 @@ import pickle
 def writeShots():
     pickle.dump(shot_count, open("shots.pkl", "wb"))
 def readShots():
-    return pickle.load(open("shots.pkl", "rb"))
+    try:
+        return pickle.load(open("shots.pkl", "rb"))
+    except:
+        return 0
 
 shot_count = readShots()
 usage = "!shots (add/remove/set [amount])"
