@@ -44,7 +44,7 @@ class TwitchIrc:
         self.client.close()
         self.sock.close()
 
-    def getOutput(self, timeout = None):
+    def getOutput(self, timeout = 1):
         self.cv.acquire()
         if not self.lines:
           self.cv.wait(timeout)
