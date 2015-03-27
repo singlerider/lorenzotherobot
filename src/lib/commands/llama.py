@@ -2,12 +2,10 @@
 Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 """
 
-import importlib
 import src.lib.commands.shots as shots_import
 from src.lib.twitch import *
 import src.lib.llama as llamadb
-
-user_commands_import = importlib.import_module('src.lib.user_commands')
+import src.lib.user_commands as user_commands_import
 # reload(user_commands_import)
 
 usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"

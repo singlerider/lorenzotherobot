@@ -22,7 +22,6 @@ import traceback
 import sched
 import time
 import threading
-import importlib
 import globals
 
 END = False
