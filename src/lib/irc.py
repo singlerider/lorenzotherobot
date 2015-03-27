@@ -86,7 +86,7 @@ class irc:
         if not message:
           return
 
-        if type(message) == str:
+        if isinstance(message, basestring):
           self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message.encode('utf-8')))
 
         if type(message) == list:
