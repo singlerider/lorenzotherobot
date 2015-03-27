@@ -45,7 +45,7 @@ def llama(args):
     user_data_name = globals.CURRENT_USER.lower()
 
 
-    
+
     llamadbconn = llamadb.newConnection()
     if grab_user == "list":
         return llamadbconn.getTopUsers()
@@ -89,8 +89,8 @@ def llama(args):
         return usage
 
     elif grab_user == "shots":
-        if shots_import.return_shots is not None:
-            return str(shots_import.return_shots) + " shots left. She's already dru... ResidentSleeper"
+        if shots_import.shot_count != 0:
+            return str(shots_import.shot_count) + " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! Kreygasm"
     elif llamadbconn.hasUser(grab_user):

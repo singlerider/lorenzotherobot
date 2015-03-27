@@ -118,7 +118,6 @@ class TestPokemon(unittest.TestCase):
         simulateMessage("randomUser", "!pokemon me")
         self.assertNotEqual(original, server.getOutput(), "Pokemon didn't change")
 
-
 class TestTreats(unittest.TestCase):
     def test_normal_cant_add_treats(self):
       simulateMessage("randomUser", "!treats set randomUser 1000")
@@ -139,3 +138,23 @@ class TestTreats(unittest.TestCase):
       new_treats = int(server.getOutput().split(" ")[10])
 
       self.assertEqual(old_treats + 1000, new_treats)
+
+
+
+class TestShots(unittest.TestCase):
+    def test_add_shots_normal_user(self):
+        simulateMessage("randomUser", "!shots add 10000")
+        self.assertIn("moderator-only", server.getOutput())
+
+    def test_add_shots_mod(self):
+        simulateMessage("randomUser", "!llama shots")
+        before = server.getOutput()
+        simulateMessage("singlerider", "!shots add 1")
+        server.getOutput()
+        simulateMessage("randomUser", "!llama shots")
+        after = server.getOutput()
+        self.assertNotEqual(before, after)
+
+
+
+
