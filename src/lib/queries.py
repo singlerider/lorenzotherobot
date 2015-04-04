@@ -4,7 +4,7 @@
 import MySQLdb as mdb
 import sys
 import globals
-con = mdb.connect('localhost', user, password, database_name);
+con = "temp"#mdb.connect('localhost', user, password, database_name);
 
 def mysql_version():
     #When this was run, it prevented other things from working.
