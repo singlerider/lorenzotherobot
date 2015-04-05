@@ -14,6 +14,14 @@ def mysql_version():
     #When this was run, it prevented other things from working.
     #It worked on its own, though. I removed the code stuffs from it.
     pass
+
+def get_points_list():
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""SELECT username, points FROM users ORDER BY points * 1 DESC""")
+        user_data = cur.fetchall()
+        return str(user_data[0:9])
             
 def get_user_points(username):
     with con: 

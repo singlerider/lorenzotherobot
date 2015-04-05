@@ -33,7 +33,7 @@ def llama(args):
     user_data_name = globals.CURRENT_USER.lower()
 
     if grab_user == "list":
-        return "Working on upgrading this feature. Stand by."
+        return points_import.get_points_list()
     elif grab_user == "treats":
         return points_import.get_user_points(globals.CURRENT_USER)
 
