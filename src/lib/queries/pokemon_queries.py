@@ -47,14 +47,14 @@ def remove_user_pokemon():
             return "Nothing to release!"
     
 
-def get_user_party_info():
+def get_user_party_info(username):
     #broken
     with con: 
 
         cur = con.cursor()
         cur.execute("""select userpokemon.position, userpokemon.nickname from userpokemon
-        where username = 'the_polite_zombie'
-        order by userpokemon.position""")
+        where username = %s
+        order by userpokemon.position""", [username])
         
         party_members = cur.fetchall()
         return party_members

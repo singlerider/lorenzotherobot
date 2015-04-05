@@ -8,6 +8,7 @@ import random
 import globals
 from src.lib.commands.pokedex.pokedata import *
 from src.lib.commands.pokedex import pokedex
+from src.lib.queries.pokemon_queries import *
 
 usage = '!pokemon <action (battle/me)>'
 
@@ -68,5 +69,9 @@ def pokemon(args):
             return "Your current pokemon: " + pokemon
         else:
             return "You gotta catch something first, ya dope"
-
-    return "Usage: " + usage.replace('<', '').replace('>', '')
+    else:
+        try:
+            return get_user_party_info(action)
+        except Exception as err:
+            print Exception, err
+            return "Usage: " + usage.replace('<', '').replace('>', '')
