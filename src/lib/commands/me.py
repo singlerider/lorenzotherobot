@@ -1,5 +1,6 @@
 from src.lib.queries.pokemon_queries import *
 from src.lib.queries.points_queries import *
+import globals
 
 def me():
     usage = "!me"
@@ -12,7 +13,7 @@ def me():
     #    return llama_import.llama.user_return
     # return llama_import.get_user_command()
     # return set_user_points()
-    return get_user_party_info()
+    return get_user_party_info(globals.CURRENT_USER)
     # return remove_user_pokemon()
     # return get_battle_stats()
     # return get_user_points(globals.CURRENT_USER)
