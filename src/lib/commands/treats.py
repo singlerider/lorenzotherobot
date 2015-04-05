@@ -9,7 +9,10 @@ def cron():
 
 def treatsForAll(delta):
     user_dict, user_list = twitch.get_dict_for_users()
-    modify_points_all_users(1)
+    if get_stream_status():
+        modify_points_all_users(1)
+    else: 
+        pass
     #for user in user_list:
     #    llamadb.newConnection().addPoints(user, delta)
     # return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
