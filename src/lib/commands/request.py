@@ -21,6 +21,7 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 import traceback
 import src.lib.commands.llama as llama_import
+import src.lib.queries.points_queries as points_import
 
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
@@ -160,21 +161,17 @@ def request(args):
 
         # print "Video added: %s" % add_video_request
     try:
-        DATABASE_FILE = os.path.abspath(
-            os.path.join(__file__, "../..", "llama.db"))
-        llama_object = llama_import.UserData(DATABASE_FILE)
         username = globals.CURRENT_USER
-        delta_treats = 10
-        users = username
+        delta_treats = -10
+        required_treats = delta_treats * -1
         args = username
         maximum_track_length = 10
-        if int(llama_object.get_user(username)) >= delta_treats:
+        if int(points_import.get_user_points(username)) >= required_treats:
             if "H" not in video_duration:
                 converted_time = video_duration.split('M')[0]
                 # print converted_time
                 if int(converted_time) < maximum_track_length:
-                    llama_import.UserData.delta.append(delta_treats)
-                    llama_object.special_remove(users)
+                    points_import.modify_user_points(username, delta_treats)
                     add_song = add_to_playlist()
                     return str("Track added: " + str(videos[0])) + " | Duration: " + str(video_duration) + " | " + str(delta_treats) + " treats removed from " + str(username) + "."
                 else:
