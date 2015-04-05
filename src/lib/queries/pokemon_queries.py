@@ -126,20 +126,20 @@ def get_battle_stats():
 
         cur = con.cursor()
         cur.execute("""SELECT username,
-    userpokemon.nickname as 'Nickname',
-    userpokemon.level as 'Level',
-    pokemon.name as 'Name',
-    type_primary as 'Type 1',
-    type_secondary as 'Type 2',
-    ((2*pokemon.hp_base)/100*userpokemon.level)+110 as 'Health Points',
-    ((2*pokemon.speed_base)/100*userpokemon.level)+5 as 'Speed',
-    ((2*pokemon.attack_base)/100*userpokemon.level)+5 as 'Attack',
-    ((2*pokemon.defense_base)/100*userpokemon.level)+5 as 'Defense',
-    ((2*pokemon.special_attack_base)/100*userpokemon.level)+5 as 'Special',
-    ((2*pokemon.special_defense_base)/100*userpokemon.level)+5 as 'Special Defense'
-    from userpokemon
-    inner join pokemon on pokemon.id = userpokemon.pokemon_id
-    where username = %s and userpokemon.position = 1""", [globals.CURRENT_USER])
+        userpokemon.nickname as 'Nickname',
+        userpokemon.level as 'Level',
+        pokemon.name as 'Name',
+        type_primary as 'Type 1',
+        type_secondary as 'Type 2',
+        ((2*pokemon.hp_base)/100*userpokemon.level)+110 as 'Health Points',
+        ((2*pokemon.speed_base)/100*userpokemon.level)+5 as 'Speed',
+        ((2*pokemon.attack_base)/100*userpokemon.level)+5 as 'Attack',
+        ((2*pokemon.defense_base)/100*userpokemon.level)+5 as 'Defense',
+        ((2*pokemon.special_attack_base)/100*userpokemon.level)+5 as 'Special',
+        ((2*pokemon.special_defense_base)/100*userpokemon.level)+5 as 'Special Defense'
+        from userpokemon
+        inner join pokemon on pokemon.id = userpokemon.pokemon_id
+        where username = %s and userpokemon.position = 1""", [globals.CURRENT_USER])
         
         battle_stats = cur.fetchone()
         
@@ -236,46 +236,46 @@ def trade_transaction():
     with con: 
 
         cur = con.cursor()
-        cur.execute("""start transaction""")
-        cur.execute("""set @player_1 = 'singlerider'""")
-        cur.execute("""set @position_1 = 3""")
-        cur.execute("""set @player_2 = 'lorenzotherobot'""")
-        cur.execute("""set @position_2 = 1""")
-        cur.execute("""update userpokemon set username = @player_1, for_trade = 0, position = 0
-        where username = @player_2 and position = @position_2""")
-        cur.execute("""update userpokemon set username = @player_2, for_trade = 0, position = @position_2
-        where username = @player_1 and position = @position_1""")
-        cur.execute("""update userpokemon set position = @position_1
-        where position = 0""")
+        cur.execute("""START transaction""")
+        cur.execute("""SET @player_1 = 'singlerider'""")
+        cur.execute("""SET @position_1 = 3""")
+        cur.execute("""SET @player_2 = 'lorenzotherobot'""")
+        cur.execute("""SET @position_2 = 1""")
+        cur.execute("""UPDATE userpokemon SET username = @player_1, for_trade = 0, position = 0
+        WHERE username = @player_2 AND position = @position_2""")
+        cur.execute("""UPDATE userpokemon SET username = @player_2, for_trade = 0, position = @position_2
+        WHERE username = @player_1 AND position = @position_1""")
+        cur.execute("""UPDATE userpokemon SET position = @position_1
+        WHERE position = 0""")
         cur.execute("""COMMIT""")
 
 def show_all_pokemon_for_sale():
     with con: 
 
         cur = con.cursor()
-        cur.execute("""select userpokemon.username as 'Owner', pokemon.name, userpokemon.asking_price
-        from userpokemon
-        inner join pokemon on pokemon.id = userpokemon.pokemon_id
-        where for_sale = 1;""")
+        cur.execute("""SELECT userpokemon.username AS 'Owner', pokemon.name, userpokemon.asking_price
+        FROM userpokemon
+        INNER JOIN pokemon ON pokemon.id = userpokemon.pokemon_id
+        WHERE for_sale = 1;""")
 
 def show_user_pokemon_for_sale():
     with con:
         
         cur = con.cursor()
-        cur.execute("""select userpokemon.username, pokemon.name, userpokemon.position
-        from userpokemon
-        inner join pokemon on pokemon.id = userpokemon.pokemon_id
-        where for_sale = 1 and username = %s""", [globals.CURRENT_USER])
+        cur.execute("""SELECT userpokemon.username, pokemon.name, userpokemon.position
+        FROM userpokemon
+        INNER JOIN pokemon ON pokemon.id = userpokemon.pokemon_id
+        WHERE for_sale = 1 AND username = %s""", [globals.CURRENT_USER])
         
 def check_for_pokemon_for_sale():
     pokemon_query = "Mewtwo"
     with con:
         
         cur = con.cursor()
-        cur.execute("""select userpokemon.username, pokemon.name, userpokemon.asking_price
-        from pokemon
-        left join userpokemon on userpokemon.pokemon_id = pokemon.id
-        where for_sale = 1 and pokemon.name = %s""", [pokemon_query])
+        cur.execute("""SELECT userpokemon.username, pokemon.name, userpokemon.asking_price
+        FROM pokemon
+        LEFT JOIN userpokemon on userpokemon.pokemon_id = pokemon.id
+        WHERE for_sale = 1 and pokemon.name = %s""", [pokemon_query])
         
 def set_pokemon_as_for_sale():
     for_sale = 1

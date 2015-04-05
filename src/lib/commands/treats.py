@@ -1,5 +1,6 @@
 from src.lib import llama as llamadb
 import src.lib.twitch as twitch
+from src.lib.queries.points_queries import *
 import globals
 
 
@@ -8,9 +9,10 @@ def cron():
 
 def treatsForAll(delta):
     user_dict, user_list = twitch.get_dict_for_users()
-    for user in user_list:
-        llamadb.newConnection().addPoints(user, delta)
-    return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
+    modify_points_all_users(1)
+    #for user in user_list:
+    #    llamadb.newConnection().addPoints(user, delta)
+    # return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
 
 
 def treats(args):
@@ -26,7 +28,7 @@ def treats(args):
     try:
       delta = int(args[2])
     except:
-      return "ammount has to be a number, ya dingus!"
+      return "amount has to be a number, ya dingus!"
 
     mod_name = globals.CURRENT_USER
 
