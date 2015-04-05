@@ -4,7 +4,8 @@
 import MySQLdb as mdb
 import sys
 import globals
-con = "temp"#mdb.connect('localhost', user, password, database_name);
+login = globals.mysql_credentials
+con = mdb.connect(login[0], login[1], login[2], login[3])
 
 def mysql_version():
     #When this was run, it prevented other things from working.
@@ -56,33 +57,43 @@ def find_open_party_positions():
         return available_positions
 
 def insert_user_pokemon():
-#broken   
     pokemon_id = 25
     pokemon_level = 1
-    open_position = 2
-    with con: 
-
-        cur = con.cursor()
-        cur.execute("insert into userpokemon (username, caught_by, position, pokemon_id, level, nickname, for_trade, for_sale) values (%s, %s, %s, %s, %s, (SELECT name from pokemon where id = %s), 0, 0)", [globals.CURRENT_USER,globals.CURRENT_USER,pokemon_level,pokemon_id,open_position,pokemon_id])
+    open_position = 6
+    try:
+        with con: 
+    
+            cur = con.cursor()
+            cur.execute("""insert into userpokemon (username, caught_by, position, pokemon_id, level, nickname, for_trade, for_sale) values (%s, %s, %s, %s, %s, (SELECT name from pokemon where id = %s), 0, 0)""", [globals.CURRENT_USER,globals.CURRENT_USER,open_position,pokemon_id,pokemon_level,pokemon_id])
+            cur.execute("""select nickname from userpokemon where username = %s and position = %s""", [globals.CURRENT_USER, open_position])
+            pokemon_caught = cur.fetchone()
         
-        user_pokemon_insert_information = cur.fetchone()
-        return user_pokemon_insert_information
-
-def insert_user_pokemon2():
-#broken
-    pokemon_id = 25
-    pokemon_level = 1
-    open_position = 2
-    with con: 
-
+            return str(pokemon_caught[0]) + ' successfuly added!'
+    except:
+        return "Party full. One empty slot in party needed."
+    
+def remove_user_pokemon():
+    position = 6
+    
+    with con:
         cur = con.cursor()
-        cur.execute("insert into userpokemon (username, caught_by, position, pokemon_id, level, nickname, for_trade, for_sale) values ('poop', 'poop', 1, 16, 5, (SELECT name from pokemon where id = 16), 0, 0)")
-        user_pokemon_insert_information = cur.fetchone()
-        return user_pokemon_insert_information
+        success = cur.execute("""delete from userpokemon where username = 'singlerider' and position = 6""")
+        if (success):
+            return "Released party member #" + str(position)
+        else:
+            return "Nothing to release!"
+    
 
 def get_user_party_info():
-#broken
-    pass
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""select userpokemon.position, userpokemon.nickname from userpokemon
+        where username = 'singlerider'
+        order by userpokemon.position""")
+        
+        party_members = cur.fetchall()
+        return party_members
 
 def user_pokemon_types_summary():
     with con: 

@@ -94,15 +94,19 @@ def check_returns_function(command):
 
 
 def pass_to_function(command, args):
-
-    command=command[1:]
-    print("command:", command)
-    print(dir(src.lib.commands))
-    module = getattr(src.lib.commands, command)
-    print("module:", module)
-    function = getattr(module, command)
-    print("Function:", function)
-    if args:
-        return function(args)
-    else:
-        return function()
+    try:
+        command=command[1:]
+        print("command:", command)
+        print(dir(src.lib.commands))
+        module = getattr(src.lib.commands, command)
+        print("module:", module)
+        function = getattr(module, command)
+        print("Function:", function)
+        if args:
+            return function(args)
+        else:
+            return function()
+    except Exception as error:
+        print >> sys.stdout, str(error)
+        traceback.print_exc(file=sys.stdout)
+        return 'Command Unavailable'
