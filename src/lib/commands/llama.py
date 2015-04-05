@@ -32,9 +32,8 @@ def llama(args):
     grab_user = args[0].lower()
     user_data_name = globals.CURRENT_USER.lower()
 
-    llamadbconn = llamadb.newConnection()
     if grab_user == "list":
-        return llamadbconn.getTopUsers()
+        return "Working on upgrading this feature. Stand by."
     elif grab_user == "treats":
         return points_import.get_user_points(globals.CURRENT_USER)
 
