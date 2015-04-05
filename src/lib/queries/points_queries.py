@@ -15,21 +15,27 @@ def mysql_version():
     #It worked on its own, though. I removed the code stuffs from it.
     pass
             
-def get_user_points():
+def get_user_points(username):
     with con: 
 
         cur = con.cursor()
-        cur.execute("select points from users where username = %s", [globals.CURRENT_USER])
+        cur.execute("select points from users where username = %s", [username])
     
         points = cur.fetchone()
         return points[0]
 
-def set_user_points():
+def set_user_points(delta_user, delta):
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("update users set points = %s where username = %s", [delta, delta_user])
+        
+def modify_user_points(delta_user, delta):
 # update integer variable path to interact with delta_treats(400)
     with con: 
 
         cur = con.cursor()
-        cur.execute("update users set points = %s where username = %s", [400, globals.CURRENT_USER])
+        cur.execute("""INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + %s""", [delta_user,delta,delta])
     
 def modify_points_all_users(points_to_increment = 1):
     user_list_for_query = [(x,points_to_increment) for x in user_list]

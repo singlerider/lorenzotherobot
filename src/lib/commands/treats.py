@@ -26,21 +26,28 @@ def treats(args):
     delta_user = args[1].lower()
 
     try:
-      delta = int(args[2])
+        delta = int(args[2])
     except:
-      return "amount has to be a number, ya dingus!"
+        return "amount has to be a number, ya dingus!"
 
     mod_name = globals.CURRENT_USER
 
     if mod_name not in approved_list:
         return "Only " + ", ".join(approved_list) + " are allowed to do that!"
+    
+    elif add_remove == "add":
+        modify_user_points(delta_user, delta)
+    
+    elif add_remove == "remove":
+        delta *= -1
+        modify_user_points(delta_user, delta)
+        
+    elif add_remove == "set":
+        set_user_points(delta_user, delta)
 
-    if add_remove == "remove":
-      delta *= -1
-
-    if delta_user == "all":
-      return treatsForAll(delta)
+    elif delta_user == "all":
+        modify_points_all_users(delta)
     else:
-      llamadb.newConnection().addPoints(delta_user, delta)
+        return usage
 
     return "{} treats for {}!".format(delta, delta_user)

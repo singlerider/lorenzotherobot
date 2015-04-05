@@ -6,7 +6,7 @@ import src.lib.commands.shots as shots_import
 from src.lib.twitch import *
 import src.lib.llama as llamadb
 import src.lib.user_commands as user_commands_import
-# reload(user_commands_import)
+import src.lib.queries.points_queries as points_import
 
 usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"
 
@@ -27,20 +27,16 @@ def get_user_command():
     except:
         return "Dude... stop. You don't have a user command... yet. R)"
 
-
 stream_data = get_stream_status()
 def llama(args):
     grab_user = args[0].lower()
     user_data_name = globals.CURRENT_USER.lower()
 
-
-
     llamadbconn = llamadb.newConnection()
     if grab_user == "list":
         return llamadbconn.getTopUsers()
     elif grab_user == "treats":
-        return "{}, You've got a total of {} Llama treats. You go, girl!".format(
-            user_data_name, llamadbconn.getPoints(user_data_name))
+        return points_import.get_user_points(globals.CURRENT_USER)
 
     elif grab_user == "me":
         return get_user_command()
@@ -82,14 +78,12 @@ def llama(args):
             return str(shots_import.shot_count) + " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! Kreygasm"
-    elif llamadbconn.hasUser(grab_user):
-        user_return = "{} has a total of {} Llama treats. Key it up!".format(
-            args[0], llamadbconn.getPoints(grab_user))
+    elif points_import.get_user_points(grab_user) != None:
 
         if grab_user in user_commands_import.user_command_dict:
-            return user_commands_import.user_command_dict[grab_user]["return"] + " | " + user_return
+            return user_commands_import.user_command_dict[grab_user]["return"] + " | " + str(points_import.get_user_points(grab_user))
         else:
-            return user_return
+            return points_import.get_user_points(grab_user)
 
     else:
         print get_stream_status()
