@@ -48,11 +48,12 @@ def remove_user_pokemon():
     
 
 def get_user_party_info():
+    #broken
     with con: 
 
         cur = con.cursor()
         cur.execute("""select userpokemon.position, userpokemon.nickname from userpokemon
-        where username = 'singlerider'
+        where username = 'the_polite_zombie'
         order by userpokemon.position""")
         
         party_members = cur.fetchall()

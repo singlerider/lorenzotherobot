@@ -15,4 +15,5 @@ def me():
     # return get_user_party_info()
     # return remove_user_pokemon()
     # return get_battle_stats()
-    return get_user_points(globals.CURRENT_USER)
+    # return get_user_points(globals.CURRENT_USER)
+    return user_pokemon_types_summary()
