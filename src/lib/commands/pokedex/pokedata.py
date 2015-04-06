@@ -1451,7 +1451,7 @@ master_pokemon_dict = {
         'hp': 60,
         'speed': 40
     },
-    'Exeggcuter': {
+    'Exeggutor': {
         'type1': "Grass",
         'type2': "Psychic",
         'evolution_set': 45,
@@ -1819,7 +1819,7 @@ master_pokemon_dict = {
         'hp': 20,
         'speed': 80
     },
-    'Gyrados': {
+    'Gyarados': {
         'type1': "Water",
         'type2': "Flying",
         'evolution_set': 65,

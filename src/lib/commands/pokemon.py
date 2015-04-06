@@ -12,16 +12,20 @@ from src.lib.queries.pokemon_queries import *
 
 usage = '!pokemon <action (battle/me)>'
 
+def randomPokemon():
+    rarity_list = []
+    
+    for poke in master_pokemon_dict:
+        for number in range(master_pokemon_dict[poke]['rarity']):
+            rarity_list.append(poke)
+    return rarity_list
+
 def cron(a=None): #todo remove this arg requirement.
     globals.CAUGHT = False
-    pocket_monster = random.choice(master_pokemon_dict.keys())
+    pocket_monster = random.choice(randomPokemon())
     globals.POKEMON = pocket_monster
     return "A wild " + pocket_monster + " appeared!"
 
-
-def randomPokemon():
-  # This method is replaced during testing for determitic pokemon choices.
-  return random.choice(master_pokemon_dict.keys())
 
 #!pokemon battle
 def battle():
