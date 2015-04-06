@@ -63,8 +63,14 @@ def get_user_party_info(username):
         where username = %s
         order by userpokemon.position""", [username])
         
+        simplified_party_members = []
+        
         party_members = cur.fetchall()
-        return party_members
+        for item in party_members:
+            for member in item:
+                simplified_party_members.append(member)
+        
+        return simplified_party_members
 
 def user_pokemon_types_summary():
     with con: 

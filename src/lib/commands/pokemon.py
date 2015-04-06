@@ -66,13 +66,7 @@ def pokemon(args):
     if action == "battle":
         return battle()
 
-    if action == "me":
-        pokemon = pokedex.getPokemon(globals.CURRENT_USER)
-
-        if pokemon is not None:
-            return "Your current pokemon: " + pokemon
-        else:
-            return "You gotta catch something first, ya dope"
+    
     else:
         try:
             return get_user_party_info(action)

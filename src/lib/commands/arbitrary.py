@@ -6,7 +6,7 @@ import requests
 import time
 
 
-usage = "!random [emote/number]"
+usage = "!arbitrary [emote/number]"
 
 def emote():
     emote_url = "http://twitchemotes.com/api_cache/v2/global.json"
