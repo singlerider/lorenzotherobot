@@ -215,7 +215,7 @@ commands = {
 
     '!help': {
         'limit': 15,
-        'return': 'There is a super useful README for lorenzo at htp://www.github.com/singlerider/lorenzotherobot'
+        'return': 'There is a super useful README for lorenzo at http://www.github.com/singlerider/lorenzotherobot'
 
     },
 
@@ -281,12 +281,19 @@ commands = {
 
     },
 
-    #'!capture': {
-    #    'limit': 0,
-    #    'argc': 0,
-    #    'return': 'command'
+    '!catch': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command'
 
-    #}
+    },
+    
+    '!release': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command'
+                 
+    }
 }
 
 def initalizeCommands(config):

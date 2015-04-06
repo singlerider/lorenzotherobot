@@ -7,40 +7,37 @@ import globals
 login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
             
-def find_open_party_positions():    
+def find_open_party_positions(username):    
     with con: 
 
         cur = con.cursor()
-        cur.execute("SELECT position from userpokemon where username = %s order by position", [globals.CURRENT_USER])
+        cur.execute("SELECT position from userpokemon where username = %s order by position", [username])
         
-        occupied_positions = cur.fetchone()
+        occupied_positions = cur.fetchall()
+        simple_list = [x[0] for x in occupied_positions]
         possible_positions = [1,2,3,4,5,6]
-        available_positions = list(set(possible_positions) - set(occupied_positions))
+        available_positions = list(set(possible_positions) - set(simple_list))
         
         return available_positions
 
-def insert_user_pokemon():
-    pokemon_id = 25
-    pokemon_level = 1
-    open_position = 6
+def insert_user_pokemon(username, caught_by, position, id, level, nickname, for_trade, for_sale):
     try:
         with con: 
     
             cur = con.cursor()
-            cur.execute("""insert into userpokemon (username, caught_by, position, pokemon_id, level, nickname, for_trade, for_sale) values (%s, %s, %s, %s, %s, (SELECT name from pokemon where id = %s), 0, 0)""", [globals.CURRENT_USER,globals.CURRENT_USER,open_position,pokemon_id,pokemon_level,pokemon_id])
-            cur.execute("""select nickname from userpokemon where username = %s and position = %s""", [globals.CURRENT_USER, open_position])
+            cur.execute("""INSERT INTO userpokemon (username, caught_by, position, pokemon_id, level, nickname, for_trade, for_sale) VALUES (%s, %s, %s, %s, %s, (SELECT name FROM pokemon WHERE id = %s), 0, 0)""", [username, caught_by, position, id, level, id])
+            cur.execute("""SELECT nickname FROM userpokemon WHERE username = %s AND position = %s""", [username, position])
             pokemon_caught = cur.fetchone()
         
             return str(pokemon_caught[0]) + ' successfuly added!'
     except:
         return "Party full. One empty slot in party needed."
     
-def remove_user_pokemon():
-    position = 6
+def remove_user_pokemon(username,position):
     
     with con:
         cur = con.cursor()
-        success = cur.execute("""delete from userpokemon where username = 'singlerider' and position = 6""")
+        success = cur.execute("""DELETE FROM userpokemon WHERE username = %s AND position = %s""", [username, position])
         if (success):
             return "Released party member #" + str(position)
         else:
