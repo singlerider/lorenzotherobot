@@ -6,6 +6,16 @@ import sys
 import globals
 login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
+
+def get_pokemon_id_from_name(pokemon_name):
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""SELECT pokemon.id FROM pokemon WHERE pokemon.name = %s""", [pokemon_name])
+        
+        pokemon_id = cur.fetchone()
+        
+        return pokemon_id[0]
             
 def find_open_party_positions(username):    
     with con: 
