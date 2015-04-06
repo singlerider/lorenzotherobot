@@ -9,6 +9,7 @@ def cron():
 
 def treatsForAll(delta):
     user_dict, user_list = twitch.get_dict_for_users()
+    mysql_ping()
     if get_stream_status():
         modify_points_all_users(1)
     else: 

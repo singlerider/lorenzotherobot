@@ -15,6 +15,12 @@ def mysql_version():
     #It worked on its own, though. I removed the code stuffs from it.
     pass
 
+def mysql_ping():
+    with con:
+        
+        con.ping()
+        print "pinging database"
+
 def get_points_list():
     with con: 
 
