@@ -293,6 +293,13 @@ commands = {
         'argc': 2,
         'return': 'command'
                  
+    },
+    
+    '!arbitrary': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command'
+                   
     }
 }
 

@@ -1,4 +1,4 @@
-import src.lib.commands.randomemote as emote
+import src.lib.commands.arbitrary as arbitrary_import
 
 
 user_command_dict = {
@@ -59,7 +59,7 @@ user_command_dict = {
 
     'singlerider': {
         'limit': 15,
-        'return': "Singlerider is the guy that developed this bot. He is currently watching you! " + emote.randomemote()
+        'return': "Singlerider is the guy that developed this bot. He is currently watching you! " + arbitrary_import.emote()
 
     }
 
