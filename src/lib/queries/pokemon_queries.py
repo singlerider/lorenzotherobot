@@ -98,7 +98,7 @@ def level_up_user_pokemon():
         where username = %s and position = %s
         """, [globals.CURRENT_USER, pokemon_position])
         
-def get_battle_stats():
+def get_battle_stats(username, position):
     with con: 
 
         cur = con.cursor()
@@ -116,17 +116,17 @@ def get_battle_stats():
         ((2*pokemon.special_defense_base)/100*userpokemon.level)+5 as 'Special Defense'
         from userpokemon
         inner join pokemon on pokemon.id = userpokemon.pokemon_id
-        where username = %s and userpokemon.position = 1""", [globals.CURRENT_USER])
+        where username = %s and userpokemon.position = %s""", [username, position])
         
         battle_stats = cur.fetchone()
         
         nickname = battle_stats[1]
-        hp = battle_stats[6]
-        speed = battle_stats[7]
-        attack = battle_stats[8]
-        defense = battle_stats[9]
-        special_attack = battle_stats[10]
-        special_defense = battle_stats[11]
+        hp = round(battle_stats[6])
+        speed = round(battle_stats[7])
+        attack = round(battle_stats[8])
+        defense = round(battle_stats[9])
+        special_attack = round(battle_stats[10])
+        special_defense = round(battle_stats[11])
         
         return nickname + "'s battle stats - HP: " + str(hp) + ", Speed: " + str(speed) + ", Attack: " + str(attack) + ", Defense: " + str(defense) + ", Special Atack: " + str(special_attack) + ", Special Defense: " + str(special_defense)
 

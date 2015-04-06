@@ -300,6 +300,13 @@ commands = {
         'argc': 1,
         'return': 'command'
                    
+    },
+            
+    '!party': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command'
+               
     }
 }
 
