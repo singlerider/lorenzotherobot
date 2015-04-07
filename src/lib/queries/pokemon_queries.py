@@ -76,7 +76,13 @@ def user_pokemon_types_summary():
     with con: 
 
         cur = con.cursor()
-        cur.execute("SELECT userpokemon.nickname as 'Nickname', pokemon.name as 'Name', type_primary.identifier as 'Type 1', type_secondary.identifier as 'Type 2' from userpokemon inner join pokemon on pokemon.id = userpokemon.pokemon_id inner join types as type_primary on ( type_primary.id = pokemon.type_primary ) left outer join types as type_secondary on ( type_secondary.id = pokemon.type_secondary ) where username = %s and userpokemon.position = 1;", [globals.CURRENT_USER])
+        cur.execute("""SELECT userpokemon.nickname as 'Nickname',
+        pokemon.name as 'Name', type_primary.identifier as 'Type 1',
+        type_secondary.identifier as 'Type 2'
+        from userpokemon inner join pokemon on pokemon.id = userpokemon.pokemon_id inner
+        join types as type_primary on ( type_primary.id = pokemon.type_primary )
+        left outer join types as type_secondary on ( type_secondary.id = pokemon.type_secondary )
+        where username = %s and userpokemon.position = 1""", [globals.CURRENT_USER])
     
         types_summary = cur.fetchone()
         user_pokemon_nickname = types_summary[0]
