@@ -18,4 +18,5 @@ def me():
     # return get_battle_stats()
     # return get_user_points(globals.CURRENT_USER)
     # return user_pokemon_types_summary()
-    return user_pokemon_types_summary(globals.CURRENT_USER, 1)
+    # return user_pokemon_types_summary(globals.CURRENT_USER, 1)
+    return "use '!party members' instead"
