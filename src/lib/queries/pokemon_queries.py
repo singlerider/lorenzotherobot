@@ -28,7 +28,7 @@ def find_open_party_positions(username):
         possible_positions = [1,2,3,4,5,6]
         available_positions = list(set(possible_positions) - set(simple_list))
         
-        return available_positions
+        return available_positions, occupied_positions
 
 def insert_user_pokemon(username, caught_by, position, id, level, nickname, for_trade, for_sale):
     try:
@@ -72,37 +72,40 @@ def get_user_party_info(username):
         
         return simplified_party_members
 
-def user_pokemon_types_summary():
+def user_pokemon_types_summary(username, position):
     with con: 
 
         cur = con.cursor()
         cur.execute("""SELECT userpokemon.nickname as 'Nickname',
+        type_primary.id as 'ID 1', type_secondary.id as 'ID 2',
         pokemon.name as 'Name', type_primary.identifier as 'Type 1',
         type_secondary.identifier as 'Type 2'
         from userpokemon inner join pokemon on pokemon.id = userpokemon.pokemon_id inner
         join types as type_primary on ( type_primary.id = pokemon.type_primary )
         left outer join types as type_secondary on ( type_secondary.id = pokemon.type_secondary )
-        where username = %s and userpokemon.position = 1""", [globals.CURRENT_USER])
+        where username = %s and userpokemon.position = %s""", [username, position])
     
         types_summary = cur.fetchone()
-        user_pokemon_nickname = types_summary[0]
-        pokemon_name = types_summary[1]
-        pokemon_type1 = types_summary[2]
-        if types_summary[3] is not None:
-            pokemon_type2 = types_summary[3]
+        print types_summary
+        nickname = types_summary[0]
+        pokemon_type1_id = types_summary[1]
+        pokemon_type2_id = types_summary[2]
+        pokemon_name = types_summary[3]
+        pokemon_type1 = types_summary[4]
+        if types_summary[2] and types_summary[5] is not None:
+            pokemon_type2 = types_summary[5]
+            return nickname, pokemon_type1_id, pokemon_type2_id, pokemon_name, pokemon_type1, pokemon_type2
         else:
             pokemon_type2 = "No secondary type."
-        
-        return 'Nickname: ' + user_pokemon_nickname + ', Pokemon: ' + pokemon_name + ', Types: ' + pokemon_type1 + ', ' + pokemon_type2
+            return nickname, pokemon_type1_id, 'none', pokemon_name, pokemon_type1, 'none'
 
-def level_up_user_pokemon():
-    pokemon_position = 1
+def level_up_user_pokemon(username, position):
     with con: 
 
         cur = con.cursor()
         cur.execute("""update userpokemon set level = level + 1
         where username = %s and position = %s
-        """, [globals.CURRENT_USER, pokemon_position])
+        """, [username, position])
         
 def get_battle_stats(username, position):
     with con: 
@@ -136,19 +139,43 @@ def get_battle_stats(username, position):
         special_attack = int(round(battle_stats[10]))
         special_defense = int(round(battle_stats[11]))
         
-        return "lvl " + str(level) + " " + nickname + "'s stats: HP " + str(hp) + " Spd " + str(speed) + " Att " + str(attack) + " Def " + str(defense) + " SAtt " + str(special_attack) + " SDef " + str(special_defense)
+        return level, nickname, hp, speed, attack, defense, special_attack, special_defense
 
-def get_damage_multiplier():
-#I'm afraid to even touch this one
+def broken_get_damage_multiplier(attacking_type, defending_type):
     with con: 
 
         cur = con.cursor()
-        cur.execute("SET @attacking_type = 15")
-        cur.execute("SET @defending_type = 12")
-        cur.execute("""SET @query = CONCAT('SELECT ',@table,'.',@defending_type,' as "Damage Multiplier" FROM types WHERE id = ', @attacking_type)""")
+        cur.execute("SET @attacking_type = %s", [attacking_type])
+        cur.execute("SET @defending_type = %s", [defending_type])
+        cur.execute("""SET @query = CONCAT('SELECT ',@table,'.',@defending_type,'
+        as "Damage Multiplier" FROM types WHERE id = ', @attacking_type)""")
         cur.execute("PREPARE stmt FROM @query")
         cur.execute("EXECUTE stmt")
-
+        
+        damage_multiplier = cur.fetchone()
+        
+        return damage_multiplier
+    
+def get_attacker_multiplier(attacker_type, defender_type):
+    with con: 
+        cur = con.cursor()
+        cur.execute("""SELECT * from types WHERE id = %s""", [attacker_type])
+        attacker_multipliers = cur.fetchone()
+        row_correction = defender_type + 1
+    
+        attacker_effect = attacker_multipliers[row_correction]
+        return attacker_effect
+    
+def get_defender_multiplier(attacker_type, defender_type):
+    with con: 
+        cur = con.cursor()
+        cur.execute("""SELECT * from types WHERE id = %s""", [defender_type])
+        defender_multipliers = cur.fetchone()
+        row_correction = attacker_type + 1
+        
+        defender_effect = defender_multipliers[row_correction]
+        return defender_effect
+    
 is_tradeable = 1
 asking_pokemon_id = 150
 minimum_level = 10

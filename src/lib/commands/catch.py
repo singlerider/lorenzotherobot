@@ -9,7 +9,7 @@ def catch():
     if globals.CAUGHT == False:
         pokemon_trainer = globals.CURRENT_USER
         modify_user_points(globals.CURRENT_USER, 0) # This is here for if the user is brand new. This creates an entry in the users table, which userpokemon is dependent on
-        open_position = find_open_party_positions(pokemon_trainer)
+        open_position, occupied_positions = find_open_party_positions(pokemon_trainer)
         desired_level = 5
         pokemon_id = get_pokemon_id_from_name(globals.POKEMON)
         print pokemon_id

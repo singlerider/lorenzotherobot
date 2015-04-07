@@ -314,6 +314,13 @@ commands = {
         'argc': 1,
         'return': 'command'
                
+    },
+            
+    '!battle': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command'
+                
     }
 }
 

@@ -13,8 +13,9 @@ def me():
     #    return llama_import.llama.user_return
     # return llama_import.get_user_command()
     # return set_user_points()
-    return get_user_party_info(globals.CURRENT_USER)
+    # return get_user_party_info(globals.CURRENT_USER)
     # return remove_user_pokemon()
     # return get_battle_stats()
     # return get_user_points(globals.CURRENT_USER)
     # return user_pokemon_types_summary()
+    return user_pokemon_types_summary(globals.CURRENT_USER, 1)

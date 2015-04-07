@@ -18,7 +18,7 @@ def random_highlight():
     if len(highlights["videos"]) == 0:
         return "No videos yet!"
     random_highlight_choice = random.choice(highlights["videos"])
-    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n"," ").replace("\r", " ")
+    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n", " ").replace("\r", " ")
 
 def get_user_command():
     try:

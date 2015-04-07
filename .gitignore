@@ -6,3 +6,4 @@ globals.py
 *.json
 *.pkl
 log/*
+src/lib/trivia/*
