@@ -7,7 +7,7 @@ import smtplib
 def report(args):
     fromaddr = globals.email_credentials[1]
     toaddrs = globals.email_credentials[0]
-    msg = str(globals.CURRENT_USER) + " would like to report a bug: " + str(args[0])
+    msg = str(args[0])
     
     username = fromaddr
     password = globals.email_credentials[2]

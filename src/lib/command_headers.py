@@ -12,6 +12,13 @@ commands = {
     '!flip':{
         'limit': 10,
         'return': u"\u256f\u00b0\u25a1\u00b0\uff09\u256f\ufe35"
+        
+    },
+            
+    '!maggie': {
+        'limit': 10,
+        'return': 'Amanda is, in reality the actual Lauren Cohan from The Walking Dead.'
+                
     },
             
     '!commands': {
