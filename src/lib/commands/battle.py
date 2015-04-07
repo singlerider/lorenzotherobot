@@ -11,9 +11,9 @@ def battle(args):
     
     if opponent in user_list:
         if opponent != globals.CURRENT_USER:
-            open_position, occupied_positions = find_open_party_positions(opponent)
+            available_positions, occupied_positions = find_open_party_positions(opponent)
             print occupied_positions
-            if len(open_position) > 0:
+            if len(occupied_positions) > 0:
                 random_opponent_position = random.choice(occupied_positions)[0]
                 print random_opponent_position
                 nickname_1, pokemon_type1_id_1, pokemon_type2_id_1, pokemon_name_1, pokemon_type1_1, pokemon_type2_1 = user_pokemon_types_summary(globals.CURRENT_USER, position)
@@ -36,7 +36,7 @@ def battle(args):
                 elif total_attacker < total_defender:
                     return globals.CURRENT_USER + "'s " + nickname_1 + " was defeated by " + opponent + "'s " + nickname_2 + "."
             else:
-                return opponent + "has nothing to battle with. Tell them to use !catch"
+                return opponent + " has nothing to battle with. Tell them to use !catch"
         else:
             return "You can't battle yourself."
         return "total attacker ", total_attacker, "total defender ", total_defender
