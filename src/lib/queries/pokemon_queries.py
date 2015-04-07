@@ -130,7 +130,7 @@ def get_battle_stats(username, position):
         special_attack = int(round(battle_stats[10]))
         special_defense = int(round(battle_stats[11]))
         
-        return "lvl " + str(level) + " " + nickname + "'s stats - HP: " + str(hp) + " Spd: " + str(speed) + " Att: " + str(attack) + " Def: " + str(defense) + " SpAtt: " + str(special_attack) + " SpDef: " + str(special_defense)
+        return "lvl " + str(level) + " " + nickname + "'s stats: HP " + str(hp) + " Spd " + str(speed) + " Att " + str(attack) + " Def " + str(defense) + " SAtt " + str(special_attack) + " SDef " + str(special_defense)
 
 def get_damage_multiplier():
 #I'm afraid to even touch this one

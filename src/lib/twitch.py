@@ -25,7 +25,7 @@ def get_stream_status():
 
 
 def get_stream_uptime():
-    try:
+    if get_stream_status():
         format = "%Y-%m-%d %H:%M:%S"
         get_stream_uptime_url = 'https://api.twitch.tv/kraken/streams/' + \
             globals.channel
@@ -36,7 +36,7 @@ def get_stream_uptime():
         stripped_start_time = datetime.datetime.strptime(start_time, format)
         time_delta = datetime.datetime.utcnow() - stripped_start_time
         return "The stream has been live for EXACTLY " + str(time_delta) + "!"
-    except:
+    else:
         return "She's offline, duh."
 
 
