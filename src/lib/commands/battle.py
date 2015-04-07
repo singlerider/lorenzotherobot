@@ -5,12 +5,12 @@ import random
 def battle(args):
     
     position = args[0]
-    opponent = args[1]
+    opponent = args[1].lower()
     
     user_dict, user_list = get_dict_for_users()
     
-    if opponent.lower() in user_list:
-        if opponent.lower() != globals.CURRENT_USER:
+    if opponent in user_list:
+        if opponent != globals.CURRENT_USER:
             open_position, occupied_positions = find_open_party_positions(opponent)
             if len(open_position) > 0:
                 random_opponent_position = random.choice(occupied_positions)
