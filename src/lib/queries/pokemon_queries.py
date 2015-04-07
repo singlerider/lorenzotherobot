@@ -83,7 +83,7 @@ def user_pokemon_types_summary(username, position):
         from userpokemon inner join pokemon on pokemon.id = userpokemon.pokemon_id inner
         join types as type_primary on ( type_primary.id = pokemon.type_primary )
         left outer join types as type_secondary on ( type_secondary.id = pokemon.type_secondary )
-        where username = %s and userpokemon.position = %s""", [username, position])
+        where username = %s and userpokemon.position = %s""", [username,position])
     
         types_summary = cur.fetchone()
         print types_summary

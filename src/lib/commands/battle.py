@@ -4,7 +4,7 @@ import random
 
 def battle(args):
     
-    position = args[0]
+    position = int(args[0])
     opponent = args[1].lower()
     
     user_dict, user_list = get_dict_for_users()
@@ -12,8 +12,10 @@ def battle(args):
     if opponent in user_list:
         if opponent != globals.CURRENT_USER:
             open_position, occupied_positions = find_open_party_positions(opponent)
+            print occupied_positions
             if len(open_position) > 0:
-                random_opponent_position = random.choice(occupied_positions)
+                random_opponent_position = random.choice(occupied_positions)[0]
+                print random_opponent_position
                 nickname_1, pokemon_type1_id_1, pokemon_type2_id_1, pokemon_name_1, pokemon_type1_1, pokemon_type2_1 = user_pokemon_types_summary(globals.CURRENT_USER, position)
                 nickname_2, pokemon_type1_id_2, pokemon_type2_id_2, pokemon_name_2, pokemon_type1_2, pokemon_type2_2 = user_pokemon_types_summary(opponent, random_opponent_position)
                 attacker_stats = get_battle_stats(globals.CURRENT_USER, position)
