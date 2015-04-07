@@ -2,6 +2,7 @@ import globals
 import requests
 import json
 import random
+import datetime
 from src.bot import *
 
 user_data_name = globals.CURRENT_USER
