@@ -107,6 +107,24 @@ def level_up_user_pokemon(username, position):
         where username = %s and position = %s
         """, [username, position])
         
+def get_last_battle(username):
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""SELECT lastbattle from users WHERE username = %s""", [username])
+        last_battle = cur.fetchone()
+        
+        return last_battle[0]
+    
+def set_battle_timestamp(username, datetime):
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""UPDATE users SET lastbattle = %s WHERE username = %s""", [datetime, username])
+        last_battle = cur.fetchone()
+        
+        
+                
 def get_battle_stats(username, position):
     with con: 
 
@@ -327,3 +345,12 @@ def sell_transaction():
         cur.execute("""update users set points = points - @price
         where username = @buyer""")
         cur.execute("""COMMIT""")
+        
+def spawn_tallgrass(rarity_index):
+    with con:
+        
+        cur = con.cursor()
+        cur.execute("""SELECT id FROM pokemon WHERE rarity = %s AND evolution_trigger = 0 ORDER BY rand() limit 1""", [rarity_index])
+        rare_pokemon = cur.fetchone()
+        
+        return rare_pokemon

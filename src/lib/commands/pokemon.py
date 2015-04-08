@@ -14,7 +14,6 @@ usage = '!pokemon <action (battle/me)>'
 
 def randomPokemon():
     rarity_list = []
-    
     for poke in master_pokemon_dict:
         for number in range(master_pokemon_dict[poke]['rarity']):
             rarity_list.append(poke)

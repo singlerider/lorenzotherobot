@@ -32,19 +32,19 @@ So, what can the bot do? Here are a list of current commands in no particular or
     '!randomemote' - returns a random emote from Twitch's standard emotes library
 	'!carlpoppa'
 	'!hookah'
-    '!fb'
-    '!ig'
-    '!twitter'
-    '!vine'
-	'!yt'  
-    '!gt'
-	'!rules'
-	'!welcome' - Welcome message to newbies
+	'!maggie'
+    '!fb' - Link to Streamer's Faceook
+    '!ig' - Link to Streamer's Instagram
+    '!twitter' - Link to Streamer'sTwitter
+    '!vine' - Link to Streamer's Vine
+	'!yt' - Link to Streamer's YouTube
+    '!gt' - Displays Streamer's Gamertag
+	'!rules' - Shows the Rules
+	'!welcome' - Welcome Message to Newbies
 	'!pwv' - Play with Viewers
 	'!daddy'
     '!cry' - BibleThump times a bunch
-    '!pokemon' 'battle' - forces two random pokemon to battle. at the end, a winner is declared
-    '!buyprints'
+    '!buyprints' - Link to Streamer's Posters for Sale
     '!playlist' - depracated spotify playlist
     '!request' ['artist name and song title'] - adds requested search query result to a youtube playlist, specified by bot admin
     '!songrequest' - Same as '!request'
@@ -56,12 +56,11 @@ So, what can the bot do? Here are a list of current commands in no particular or
     '!treats'* ['add'/'remove'/'set'] ['username'] [amount] - allows mod to decide how many treats a user either gets added to them or removed
     '!help'
     '!shots'* ['add'/'remove'/'set'] [amount] - allows mod to keep track of how many shots a streamer has remaining
-    '!me' - Same as '!llama me'
-    '!viewers' - Same as '!llama viewers'
-    '!highlight' - Same as '!llama viewers'
-    '!followers' - Same as '!llama followers'
-    '!uptime' - Same as '!llama uptime'
-    '!stream' - Same as '!llama stream'
+    '!viewers' - Shows a Count of the Number of Viewers
+    '!highlight' - Shows a Link to Random Highlight from Streamer's Archive
+    '!followers' - Shows Streamer's 5 Most Recent Followers
+    '!uptime' - Time Stream has been Online, if it is in fact Online
+    '!stream' - Shows Streamer's Current Stream Title
 
 Adding your own commands
 ========================
@@ -107,7 +106,13 @@ Pokemon
 
 Built in are several work-in-progress functions for returning "random battles" of the first generation of Pokemon. The idea, in the end is that a user will have a Pokemon assigned to them that they would catch as one is released randomly in the chat. Users will compete to be the first to catch the Pokemon with a separate command.
 
-Currently, the main command combination to use is "!pokemon battle".
+    '!catch'* - Adds Pokemon to Party if Conditions (if Pokemon is Released / An Empty Slot is Available) are Met
+    '!pokemon [username]'- provides information for another users' pokemon party
+    
+    '!party ['members' / position_in_party]' - Displays information about user's party ('members' yields pokemon position and nicknames)([position] yields )
+    	'!party 5' - yields stats for the 5th spot in your party.
+    '!release [position_in_party] [your_username]' - Allows you to release a member of your party with username entered for confirmation
+    	'!release 2 lorenzotherobot' - releases the 2nd slot in lorenzotherobot's own party
 
 Llama
 =====
@@ -118,14 +123,7 @@ Type "!llama usage" to find out everything you can do!
 
 'list' - shows a list in descending order of users with most treats
 'treats' - shows the user that types the command's treat amount
-'me' - shows a user-specific command (if earned/applicable) along with current treats
-'stream' - shows description of current stream
-'[username]' - shows the typed user's user-specific command (if earned/applicable) along with their current treats
-'highlight' - returns a random highlight from the channel
-'viewers' - returns a list of all viewers in a channel
-'followers' - returns a list of previous five followers
 'usage' - returns 'list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime'
-'uptime' - shows how long the current stream has been online
 'shots' - shows how many shots she has left
 
 Requests

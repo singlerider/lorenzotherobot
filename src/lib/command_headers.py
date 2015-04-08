@@ -41,19 +41,6 @@ commands = {
         'return': "There's a chair over there!"
     },
 
-    '!randomnumber': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
-    },
-
-    '!randomemote': {
-        'limit': 0,
-        'argc': 0,
-        'return': 'command'
-
-    },
-
     '!carlpoppa': {
         'limit': 0,
         'return': 'Jiggy Jar Jar Do!'
