@@ -315,6 +315,14 @@ commands = {
         'argc': 2,
         'return': 'command'
                    
+    },
+            
+    '!gift': {
+        'limit': 0,
+        'argc': 3,
+        'return': 'command',
+        'ul': 'mod'
+              
     }
 }
 

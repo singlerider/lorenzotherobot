@@ -69,6 +69,7 @@ def get_user_party_info(username):
         for item in party_members:
             for member in item:
                 simplified_party_members.append(member)
+        print party_members
         
         return simplified_party_members
 
