@@ -26,15 +26,14 @@ def battle(args):
                             eligible_positions = []
                             attacker_stats = get_battle_stats(globals.CURRENT_USER, position)
                             for spot in occupied_positions:
-                                for occupied_spot in occupied_positions:
-                                    all_defender_stats = get_battle_stats(opponent, int(occupied_spot[0]))
-                                    if attacker_stats[0] - all_defender_stats[0] < 5:
-                                        if attacker_stats[0] - all_defender_stats[0] > -5:
-                                            eligible_positions.append(spot[0])
-                                        else:
-                                            pass
+                                all_defender_stats = get_battle_stats(opponent, int(spot[0]))
+                                if attacker_stats[0] - all_defender_stats[0] < 5:
+                                    if attacker_stats[0] - all_defender_stats[0] > -5:
+                                        eligible_positions.append(spot[0])
                                     else:
                                         pass
+                                else:
+                                    pass
                             if len(eligible_positions) > 0:
                                 random_opponent_position = random.choice(eligible_positions)
                             else:
