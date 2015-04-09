@@ -308,6 +308,13 @@ commands = {
         'argc': 2,
         'return': 'command'
                 
+    },
+            
+    '!tallgrass': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command'
+                   
     }
 }
 

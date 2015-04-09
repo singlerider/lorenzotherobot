@@ -24,7 +24,7 @@ Commands
 ========
 
 So, what can the bot do? Here are a list of current commands in no particular order with a description of each (if one is needed):
-
+* marks a moderator-only command
     '!commands'* - has different results, depending on whether or not a moderator sent the command
     '!opinion' - acts as a magic 8 ball
 	'!chair'
@@ -108,7 +108,7 @@ Built in are several work-in-progress functions for returning "random battles" o
 
     '!catch'* - Adds Pokemon to Party if Conditions (if Pokemon is Released / An Empty Slot is Available) are Met
     '!pokemon [username]'- provides information for another users' pokemon party
-    
+    	'!pokemon singlerider' displays party information for the username 'singlerider'
     '!party ['members' / position_in_party]' - Displays information about user's party ('members' yields pokemon position and nicknames)([position] yields )
     	'!party 5' - yields stats for the 5th spot in your party.
     '!release [position_in_party] [your_username]' - Allows you to release a member of your party with username entered for confirmation
@@ -131,4 +131,4 @@ Requests
 
 IMPORTANT: The first time running the bot when this command is used, serve.py MUST be run as './serve --noauth_local_webserver' to be able to properly authenticate
 
-Built with YouTube API integration. If a user types "!request <anything you can imagine>", a YouTube video link, along with its associated title will appear in the chat and the result will append to an existing YouTube playlist. This allows a streamer to have a completely automated listening experience as determined by users and mods.
+Built with YouTube API integration. If a user types "!request [anything you can imagine]", a YouTube video with its associated title will appear in the chat and the result will append to an existing YouTube playlist. This allows a streamer to have a completely automated listening experience as determined by users and mods.

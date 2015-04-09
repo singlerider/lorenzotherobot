@@ -39,7 +39,7 @@ def insert_user_pokemon(username, caught_by, position, id, level, nickname, for_
             cur.execute("""SELECT nickname FROM userpokemon WHERE username = %s AND position = %s""", [username, position])
             pokemon_caught = cur.fetchone()
         
-            return str(pokemon_caught[0]) + ' successfuly added!'
+            return str(pokemon_caught[0]) + ' was caught!'
     except:
         return "Party full. One empty slot in party needed."
     
@@ -350,7 +350,7 @@ def spawn_tallgrass(rarity_index):
     with con:
         
         cur = con.cursor()
-        cur.execute("""SELECT id FROM pokemon WHERE rarity = %s AND evolution_trigger = 0 ORDER BY rand() limit 1""", [rarity_index])
+        cur.execute("""SELECT name FROM pokemon WHERE rarity = %s AND evolution_trigger = 0 AND id != 244 ORDER BY rand() limit 1""", [rarity_index]) #Intentionally excludes Entei
         rare_pokemon = cur.fetchone()
         
-        return rare_pokemon
+        return rare_pokemon[0]
