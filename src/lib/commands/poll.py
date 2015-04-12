@@ -13,40 +13,68 @@ import src.lib.cron as cron
 import globals
 import src.lib.irc as irc
 
-query = []
 
-results = []
+voteline = "" # message to send periodically about the poll
+voted = set() # users who've voted
+options = {} # choiceid to option string
+votes = {} # choiceid to count
+activePoll = False
 
-voters = []
+def computeWinner():
+  global activePoll
+  activePoll = False
 
-print "global"
-
-
-def __init__(self, config):
-    self.config = config
-    print "init"
-
+  count = -1
+  winners = []
+  for k,v in votes.items():
+    if v > count:
+      winners = [options[k]]
+      count = v
+    elif v == count:
+      winners.append(options[k])
+  if len(winners) == 1:
+    return "Winner! " + winners[0]
+  return "Tie! " + " and " .join(winners)
 
 def poll(args):
-    print "def poll"
-    usage = "!poll <option1/option2/option3>"
+    global voteline, voted, options, votes, activePoll
+    arg = args[0]
 
-    options_raw = args[0]
-    query.append(results)
+    if arg == "end":
+      if activePoll:
+        return computeWinner()
+      return "No poll active"
 
-    def create_poll(self):
-        print "create poll"
-        thread.start_new_thread(cron.cron(self, globals.channel).run, (60))
-        print "End Thread"
+    if "/" not in arg:
+      return "need multiple options separated by /'s"
 
-        poll_results = "Vote for option 1, 2, or 3 by typing '!vote [option_number (1/2/3)]'"
+    voted = set()
+    options = {}
+    votes = {}
+    activePoll = True
 
-        options_separated = options_raw.split('/')
+    options_lines = arg.split("/")
+    voteline = ""
+    for idx, opt in enumerate(options_lines):
+      idx = str(idx+1) # 1 index
+      opt = opt.strip()
+      voteline += "%s) %s " % (idx, opt)
+      options[idx] = opt
+      votes[idx] = 0
 
-        irc.irc.send_message(self, globals.channel, poll_results)
-        irc.irc.send_message(self, globals.channel, poll_results)
-        irc.irc.send_message(self, globals.channel, poll_results)
+    out = "A wild poll has emerged! !vote " + voteline
+    return out
 
-        return query[0]
 
-    return str(query) + "Results: " + str(results)
+def onVote(arg):
+  if activePoll is False:
+    return "There's no active poll, ya big dummy."
+  if globals.CURRENT_USER in voted:
+    return "You've already voted!"
+  if arg not in votes:
+    return "That's not a valid option"
+
+  voted.add(globals.CURRENT_USER)
+  votes[arg] += 1
+  return "Vote counted"
+

@@ -139,7 +139,6 @@ class TestTreats(unittest.TestCase):
       self.assertEqual(old_treats + 1000, new_treats)
 
 
-
 class TestShots(unittest.TestCase):
     def test_add_shots_normal_user(self):
         simulateMessage("randomUser", "!shots add 10000")
@@ -155,5 +154,24 @@ class TestShots(unittest.TestCase):
         self.assertNotEqual(before, after)
 
 
+class TestPoll(unittest.TestCase):
+    def test_poll(self):
+        simulateMessage("singlerider", "!poll opt1 / opt2 / opt3")
+        self.assertIn("!vote",  server.getOutput())
+
+        simulateMessage("user1", "!vote 1")
+        self.assertIn("Vote counted", server.getOutput())
+
+        simulateMessage("user1", "!vote 1")
+        self.assertIn("already voted", server.getOutput())
+
+        simulateMessage("user2", "!vote cat")
+        self.assertIn("not a valid option", server.getOutput())
+
+        simulateMessage("user2", "!vote 2")
+        self.assertIn("Vote counted", server.getOutput())
+
+        simulateMessage("singlerider", "!poll end")
+        self.assertIn("Tie", server.getOutput())
 
 
