@@ -76,5 +76,5 @@ def onVote(arg):
 
   voted.add(globals.CURRENT_USER)
   votes[arg] += 1
-  return "Vote counted"
+  #return "Vote counted"
 
