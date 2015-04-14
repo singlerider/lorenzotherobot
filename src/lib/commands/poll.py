@@ -58,7 +58,7 @@ def poll(args):
     for idx, opt in enumerate(options_lines):
       idx = str(idx+1) # 1 index
       opt = opt.strip()
-      voteline += "( %s: %s )" % (idx, opt)
+      voteline += " %s(: %s )" % (idx, opt)
       options[idx] = opt
       votes[idx] = 0
 
