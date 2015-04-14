@@ -1,5 +1,5 @@
 '''
-Developed by Shane Engelman <me@5h4n3.com>
+Developed by theepicsnail
 '''
 
 import socket
@@ -58,7 +58,7 @@ def poll(args):
     for idx, opt in enumerate(options_lines):
       idx = str(idx+1) # 1 index
       opt = opt.strip()
-      voteline += "%s) %s " % (idx, opt)
+      voteline += "( %s: %s )" % (idx, opt)
       options[idx] = opt
       votes[idx] = 0
 
@@ -68,7 +68,7 @@ def poll(args):
 
 def onVote(arg):
   if activePoll is False:
-    return "There's no active poll, ya big dummy."
+    return "There's no active poll, ya dope."
   if globals.CURRENT_USER in voted:
     return "You've already voted!"
   if arg not in votes:

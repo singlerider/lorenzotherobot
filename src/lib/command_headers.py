@@ -199,7 +199,7 @@ commands = {
         'limit': 0,
         'argc': 1,
         'return': 'command',
-        'usage': '!llama [treats/shots/username]'
+        'usage': "!llama [treats/shots/username]"
 
     },
 
