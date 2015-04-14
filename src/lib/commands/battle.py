@@ -16,7 +16,6 @@ def battle(args):
     last_battle_time = get_last_battle(globals.CURRENT_USER)
     
     def battle_logic():
-            required_battle_cooldown = now - timedelta(minutes=1)
             if last_battle_time < now - timedelta(minutes=cooldown_time):
                 time_delta = now - last_battle_time
                 if opponent in user_list:
@@ -30,10 +29,6 @@ def battle(args):
                                 if attacker_stats[0] - all_defender_stats[0] < 5:
                                     if attacker_stats[0] - all_defender_stats[0] > -5:
                                         eligible_positions.append(spot[0])
-                                    else:
-                                        pass
-                                else:
-                                    pass
                             if len(eligible_positions) > 0:
                                 random_opponent_position = random.choice(eligible_positions)
                             else:
@@ -55,8 +50,6 @@ def battle(args):
                             elif total_attacker > total_defender:
                                 if attacker_stats[0] < 100: # attacker's level
                                     level_up_user_pokemon(globals.CURRENT_USER, position)
-                                else:
-                                    pass
                                 return globals.CURRENT_USER + "'s " + nickname_1 + " defeated " + opponent + "'s " + nickname_2 + "."
                             elif total_attacker < total_defender:
                                 return globals.CURRENT_USER + "'s " + nickname_1 + " was defeated by " + opponent + "'s " + nickname_2 + "."
@@ -76,5 +69,3 @@ def battle(args):
         return battle_logic()
     else:
         return battle_logic()
-        
-    

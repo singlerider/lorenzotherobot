@@ -34,9 +34,11 @@ def get_user_points(username):
 
         cur = con.cursor()
         cur.execute("select points from users where username = %s", [username])
-    
-        points = cur.fetchone()
-        return points[0]
+        try:
+            points = cur.fetchone()
+            return points[0]
+        except:
+            return "User not found. Check your spelling."
 
 def set_user_points(delta_user, delta):
     with con: 

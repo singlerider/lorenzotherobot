@@ -109,4 +109,7 @@ def pass_to_function(command, args):
     except Exception as error:
         print >> sys.stdout, str(error)
         traceback.print_exc(file=sys.stdout)
-        return 'Command Unavailable'
+        try:
+            return "usage for " + command + ": " + commands['!' + command]['usage']
+        except:
+            return "Command Unavailable"

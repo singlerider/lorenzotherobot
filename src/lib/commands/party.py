@@ -12,4 +12,8 @@ def party(args):
     elif args[0] == 'members':
         return get_user_party_info(globals.CURRENT_USER)
     else:
-        return usage
+        try:
+            return get_user_party_info(position)
+        except Exception as err:
+            print Exception, err
+            return "Usage: " + usage

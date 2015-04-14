@@ -11,9 +11,11 @@ def treatsForAll(delta):
     user_dict, user_list = twitch.get_dict_for_users()
     mysql_ping()
     if get_stream_status():
-        modify_points_all_users(1)
-    else: 
-        pass
+        try:
+            modify_points_all_users(1)
+        except:
+            return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
+
     #for user in user_list:
     #    llamadb.newConnection().addPoints(user, delta)
     # return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
