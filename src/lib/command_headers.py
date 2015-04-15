@@ -99,6 +99,12 @@ commands = {
         'usage': '!gt'
 
     },
+            
+    '!social': {
+        'limit': 30,
+        'return': 'https://www.facebook.com/AmandaDefrance http://instagram.com/amanda_defrance https://twitter.com/Amanda_Defrance https://vine.co/AmandaDefrance https://www.youtube.com/channel/UC4RGs5bL4wIKbmS5kG64ABg'
+    
+    },
 
     '!rules': {
         'limit': 20,
