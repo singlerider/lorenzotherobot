@@ -4,6 +4,7 @@ import json
 import random
 import datetime
 from src.bot import *
+import src.lib.user_commands as user_commands_import
 
 user_data_name = globals.CURRENT_USER
 
@@ -14,6 +15,7 @@ def get_dict_for_users():
     users = json.loads(get_dict_for_users_resp.content)
     user_dict = users
     user_list = users['chatters']['moderators']+users['chatters']['viewers']
+    print user_list
     return user_dict, user_list
 
 def get_stream_status():
@@ -28,7 +30,7 @@ def get_stream_status():
 def get_stream_uptime():
     if get_stream_status():
         format = "%Y-%m-%d %H:%M:%S"
-        get_stream_uptime_url = 'http://api.twitch.tv/kraken/streams/' + \
+        get_stream_uptime_url = 'https://api.twitch.tv/kraken/streams/' + \
             globals.channel
         get_stream_uptime_resp = requests.get(url=get_stream_uptime_url)
         uptime_data = json.loads(get_stream_uptime_resp.content)
@@ -42,7 +44,7 @@ def get_stream_uptime():
 
 
 def get_offline_status():
-    get_offline_status_url = 'http://api.twitch.tv/kraken/streams/' + \
+    get_offline_status_url = 'https://api.twitch.tv/kraken/streams/' + \
         globals.channel
     get_offline_status_resp = requests.get(url=get_offline_status_url)
     offline_data = json.loads(get_offline_status_resp.content)
