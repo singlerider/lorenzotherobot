@@ -42,8 +42,12 @@ def treats(args):
         return "Only " + ", ".join(approved_list) + " are allowed to do that!"
     
     elif add_remove == "add":
-        modify_user_points(delta_user, delta)
-    
+        
+        if delta_user == "all":
+            modify_points_all_users(delta)
+        else:
+            modify_user_points(delta_user, delta)
+        
     elif add_remove == "remove":
         delta *= -1
         modify_user_points(delta_user, delta)
@@ -51,9 +55,6 @@ def treats(args):
     elif add_remove == "set":
         set_user_points(delta_user, delta)
 
-    elif delta_user == "all":
-        modify_points_all_users(delta)
-    else:
-        return usage
+    
 
     return "{} treats for {}!".format(delta, delta_user)
