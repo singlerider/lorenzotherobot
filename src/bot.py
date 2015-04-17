@@ -114,7 +114,7 @@ class Roboraj(object):
 
         # if there's a required userleve, validate it.
         if commands.check_has_ul(username, command):
-            user_dict, user_list = twitch.get_dict_for_users()
+            user_dict, all_users = twitch.get_dict_for_users()
             if username not in user_dict["chatters"]["moderators"]:
                 resp = '(%s) : %s' % (
                     username, "This is a moderator-only command!")
