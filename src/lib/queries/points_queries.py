@@ -67,3 +67,12 @@ def modify_points_all_users(points_to_increment = 1):
     except Exception, error:
         print "ERROR", error
         return "Error incrementing points:" + str(error)
+    
+def modify_points_all_users_hack(points_to_increment = 1):
+    with con:
+        print unicode(all_users)
+        cur = con.cursor()
+        cur.execute("INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + " + str(points_to_increment), user)
+        
+        #print "DEBUG (last executed): " + cur._last_executed
+        return "success"
