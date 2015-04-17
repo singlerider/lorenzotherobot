@@ -1,4 +1,5 @@
 from src.lib.twitch import *
+import globals
 
 def followers():
     usage = "!followers"
@@ -13,4 +14,13 @@ def followers():
         appended_list.append(follower['notifications'])
     print appended_list.count(True)
     
-    return globals.channel + "'s most recent followers: " + follower_list + ". " + str(appended_list.count(True)) + "% of the last 100 followers have opted for notifications."
+    mod_return = str(appended_list.count(True)) + "% of the last 100 followers have opted for notifications."
+    follower_return = "Most recent followers: " + follower_list + ". "
+    
+    user_dict, _user_list = get_dict_for_users()
+    
+    if globals.CURRENT_USER in user_dict['chatters']['moderators']:
+        return follower_return + mod_return
+    else:
+        return follower_return
+    
