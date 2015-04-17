@@ -65,6 +65,10 @@ def poll(args):
     out = "A wild poll has emerged! !vote " + voteline
     return out
 
+def cron():
+    if activePoll is True:
+        return voteline
+
 
 def onVote(arg):
   if activePoll is False:
