@@ -8,7 +8,7 @@ from src.lib.twitch import *
 login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
 
-user_dict, user_list = get_dict_for_users()
+user_dict, all_users = get_dict_for_users()
 
 def mysql_version():
     #When this was run, it prevented other things from working.
@@ -54,7 +54,7 @@ def modify_user_points(delta_user, delta):
         cur.execute("""INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + %s""", [delta_user,delta,delta])
     
 def modify_points_all_users(points_to_increment = 1):
-    user_list_for_query = [(x,points_to_increment) for x in user_list]
+    user_list_for_query = [(x,points_to_increment) for x in all_users]
     try:
         with con:
             cur = con.cursor()

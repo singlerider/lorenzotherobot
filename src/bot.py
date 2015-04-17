@@ -79,7 +79,7 @@ class Roboraj(object):
         #   command = "!foo", args=["bar baz"]
         # otherwise it turns into
         #   command = "!foo", args=["bar", "baz:]
-        print("Inputs:", command, channel, username, message)
+        # print("Inputs:", command, channel, username, message)
         if command == message:
             args = []
         else:
@@ -89,7 +89,7 @@ class Roboraj(object):
             # if it's not space case, break the arg apart
             args = args[0].split(" ")
 
-        print("Command:", command, "args", args)
+        # print("Command:", command, "args", args)
 
         # check cooldown.
         if commands.is_on_cooldown(command, channel):
@@ -122,11 +122,7 @@ class Roboraj(object):
                 self.irc.send_message(channel, resp)
                 return
 
-        # Run the command!
-        pbot('Command is valid an not on cooldown. (%s) (%s)' % (
-            command, username),
-            channel
-        )
+       
 
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)

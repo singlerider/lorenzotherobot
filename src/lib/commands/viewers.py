@@ -1,9 +1,10 @@
-import src.lib.commands.llama as llama_import
-
+from src.lib.twitch import *
 
 def viewers():
     usage = "!viewers"
 
-    user_dict, user_list = llama_import.get_dict_for_users()
+    user_dict, all_users = get_dict_for_users()
+    
+    chatter_count = user_dict['chatter_count']
 
-    return str(len(user_list)) + " viewers are in here. That's it?! Kreygasm"
+    return str(chatter_count) + " viewers are in here. That's it?! PogChamp"

@@ -15,8 +15,13 @@ def get_dict_for_users():
     users = json.loads(get_dict_for_users_resp.content)
     user_dict = users
     user_list = users['chatters']['moderators']+users['chatters']['viewers']
-    print user_list
-    return user_dict, user_list
+    all_users = []
+    for user in users['chatters']['moderators']:
+        all_users.append(user)
+    for user in users['chatters']['viewers']:
+        all_users.append(user)
+    # print "all_users: " + str(all_users)
+    return user_dict, all_users
 
 def get_stream_status():
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
