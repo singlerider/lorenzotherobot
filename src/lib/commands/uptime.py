@@ -10,6 +10,6 @@ def uptime():
     
     if get_stream_status():
         
-        return "The current !uptime is '" + str(uptime) + "'. Why not head to " + form_url + " and input the !uptime result in the form for " + channel + "?"
+        return "The current !uptime is '" + str(uptime) + "'. Why not head to " + form_url + " and input the !uptime result in the form for " + channel + "'s highlights?"
     else:
         return "She's offline, but if you'd like to submit a hightlight, head to " + form_url + " and submit the timestamp for " + channel + "!"

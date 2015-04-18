@@ -42,7 +42,7 @@ def get_stream_uptime():
             "T", " ").replace("Z", "")
         stripped_start_time = datetime.datetime.strptime(start_time, format)
         time_delta = datetime.datetime.utcnow() - stripped_start_time
-        return "The stream has been live for EXACTLY " + str(time_delta) + "!"
+        return str(time_delta)
     else:
         return "She's offline, duh."
 
