@@ -36,7 +36,7 @@ def get_user_points(username):
         cur.execute("select points from users where username = %s", [username])
         try:
             points = cur.fetchone()
-            if points[0] is not None:
+            if points[0] > 0:
                 return points[0]
             else:
                 return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
