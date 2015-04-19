@@ -370,6 +370,14 @@ commands = {
         'ul': 'mod',
         'usage': "!gift [username] [Pokemon_name] [starting_level]"
               
+    },
+            
+    '!evolve': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'usage': '!evolve [position_to_evolve]'
+                
     }
 }
 

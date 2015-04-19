@@ -123,8 +123,6 @@ def set_battle_timestamp(username, datetime):
         cur = con.cursor()
         cur.execute("""UPDATE users SET lastbattle = %s WHERE username = %s""", [datetime, username])
         last_battle = cur.fetchone()
-        
-        
                 
 def get_battle_stats(username, position):
     with con: 
@@ -355,3 +353,42 @@ def spawn_tallgrass(rarity_index):
         rare_pokemon = cur.fetchone()
         
         return rare_pokemon[0]
+    
+def check_evolution_eligibility(username, position):
+    with con:
+        
+        cur = con.cursor()
+        cur.execute("""SELECT userpokemon.nickname, pokemon.name, pokeset.name, pokeset.id FROM userpokemon
+        JOIN pokemon on userpokemon.pokemon_id = pokemon.id
+        JOIN pokemon as pokeset on pokemon.evolution_set = pokeset.evolution_set
+        WHERE pokeset.evolution_set <= userpokemon.level
+        AND pokeset.evolution_index > pokemon.evolution_index AND userpokemon.username = %s
+        AND userpokemon.position = %s LIMIT 1;
+        """, [username, position])
+        
+        eligible_evolution = cur.fetchone()
+        return eligible_evolution
+    
+        # nickname  | name      | name    | id |
+        #| Bulbasaur | Bulbasaur | Ivysaur |  2 |
+
+def apply_evolution(username, position):
+    evolution_result = check_evolution_eligibility(username, position)
+    nickname = evolution_result[0]
+    id = evolution_result[3]
+    
+    if evolution_result is not None:
+    
+        if nickname == evolution_result[1]:
+            nickname = evolution_result[2]
+        
+        with con:
+            
+            cur = con.cursor()
+            cur.execute("""UPDATE userpokemon SET pokemon_id = %s, nickname = %s WHERE username = %s AND position = %s
+            """, [id, nickname, username, position])
+            
+            return nickname + " has evolved! Raise your Kappa s!!!" 
+    else:
+        return "No Pokemon eligible for evolution."
+    

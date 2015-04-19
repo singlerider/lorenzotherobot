@@ -19,12 +19,6 @@ usage = "!shots (add/remove/set [amount])"
 def shots(args):
     global shot_count
 
-    approved_list = [
-            'curvyllama', 'peligrosocortez', 'singlerider', 'newyork_triforce']
-
-    if globals.CURRENT_USER not in approved_list:
-        return "Only " + ", ".join(approved_list) + " are allowed to do that!"
-
     action = args[0]
 
     try:
