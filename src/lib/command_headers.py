@@ -386,6 +386,16 @@ commands = {
         'return': 'command',
         'usage': '!nickname [posiiton_to_update] [nickname]'
                   
+    },
+            
+    '!popularity': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'space_case': True,
+        'ul': 'mod',
+        'usage': '!popularity [name_of_game]'
+                    
     }
 }
 

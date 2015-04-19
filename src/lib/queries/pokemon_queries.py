@@ -71,7 +71,10 @@ def get_user_party_info(username):
                 simplified_party_members.append(member)
         print party_members
         
-        return simplified_party_members
+        if simplified_party_members != None:
+            return simplified_party_members
+        else:
+            return "No Pokemon found. Tell them to use !catch"
 
 def user_pokemon_types_summary(username, position):
     with con: 

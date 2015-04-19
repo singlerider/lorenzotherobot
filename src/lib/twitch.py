@@ -71,7 +71,6 @@ def get_stream_followers():
     data = json.loads(resp.content)
     return data
 
-
 def random_highlight():
     get_highlight_url = "http://api.twitch.tv/kraken/channels/" + \
         globals.channel + "/videos?limit=20"
@@ -79,3 +78,27 @@ def random_highlight():
     highlights = json.loads(get_highlight_resp.content)
     random_highlight_choice = random.choice(highlights["videos"])
     return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n"," ").replace("\r", " ")
+
+def get_game_popularity(game):
+    
+    try:
+        game_http_request = game.replace(' ', '%20')
+        
+        url = 'https://api.twitch.tv/kraken/search/streams?q=' + game_http_request + '&limit=100'
+        resp = requests.get(url=url)
+        data = json.loads(resp.content)
+        
+        first_streamer = str(data["streams"][0]["channel"]["display_name"])
+        second_streamer = str(data["streams"][1]["channel"]["display_name"])
+        third_streamer = str(data["streams"][2]["channel"]["display_name"])
+        
+        first_viewers = str(data["streams"][0]["viewers"])
+        second_viewers = str(data["streams"][1]["viewers"])
+        third_viewers = str(data["streams"][2]["viewers"])
+        
+        top_three = first_streamer + ": " + first_viewers + ", " + second_streamer + \
+        ": " + second_viewers + ", " + third_streamer + ": " + third_viewers
+        return "In descending order, the top three streamers playing " + game + " are: " + top_three
+    
+    except:
+        return "Avoid using special characters and check your spelling."
