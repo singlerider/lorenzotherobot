@@ -6,4 +6,4 @@ def evolve(args):
     try:
         return apply_evolution(globals.CURRENT_USER, position)
     except:
-        return "It doesn't look like you have any Pokemon that can evolve. Sorry."
+        return "It doesn't look like your Pokemon can evolve now. Sorry."

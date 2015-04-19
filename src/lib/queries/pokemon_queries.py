@@ -198,7 +198,7 @@ asking_pokemon_id = 150
 minimum_level = 10
 party_position = 1
         
-def set_pokemon_trade_status():
+def set_pokemon_trade_status(is_tradeable, asking_pokemon_id, minimum_level, username, party_position):
     with con: 
 
         cur = con.cursor()
@@ -207,7 +207,7 @@ def set_pokemon_trade_status():
         asking_trade = %s,
         asking_level = %s
         where username = %s and position = %s
-        """, [is_tradeable, asking_pokemon_id, minimum_level, globals.CURRENT_USER, party_position])
+        """, [is_tradeable, asking_pokemon_id, minimum_level, username, party_position])
 
 def mark_pokemon_trade_status():
     with con: 
@@ -260,16 +260,16 @@ def show_user_tradeable_pokemon():
         for trade in trades:
             print trade
 
-def trade_transaction():
+def trade_transaction(giver, giver_position, receiver, receiver_position):
 #will test this under supervision
     with con: 
 
         cur = con.cursor()
         cur.execute("""START transaction""")
-        cur.execute("""SET @player_1 = 'singlerider'""")
-        cur.execute("""SET @position_1 = 3""")
-        cur.execute("""SET @player_2 = 'lorenzotherobot'""")
-        cur.execute("""SET @position_2 = 1""")
+        cur.execute("""SET @player_1 = %s""", [giver])
+        cur.execute("""SET @position_1 = %s""", [giver_position])
+        cur.execute("""SET @player_2 = %s""", [receiver])
+        cur.execute("""SET @position_2 = %s""", [receiver_position])
         cur.execute("""UPDATE userpokemon SET username = @player_1, for_trade = 0, position = 0
         WHERE username = @player_2 AND position = @position_2""")
         cur.execute("""UPDATE userpokemon SET username = @player_2, for_trade = 0, position = @position_2
@@ -369,7 +369,7 @@ def check_evolution_eligibility(username, position):
         eligible_evolution = cur.fetchone()
         return eligible_evolution
     
-        # nickname  | name      | name    | id |
+        #| nickname  | name      | name    | id |
         #| Bulbasaur | Bulbasaur | Ivysaur |  2 |
 
 def apply_evolution(username, position):
@@ -391,4 +391,4 @@ def apply_evolution(username, position):
             return nickname + " has evolved! Raise your Kappa s!!!" 
     else:
         return "No Pokemon eligible for evolution."
-    
+
