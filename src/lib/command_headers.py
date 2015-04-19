@@ -384,7 +384,7 @@ commands = {
         'limit': 0,
         'argc': 2,
         'return': 'command',
-        'usage': '!nickname [posiiton_to_update] [nickname]'
+        'usage': '!nickname [position_to_update] [nickname]'
                   
     },
             
@@ -393,7 +393,7 @@ commands = {
         'argc': 1,
         'return': 'command',
         'space_case': True,
-        'ul': 'mod',
+        #'ul': 'mod',
         'usage': '!popularity [name_of_game]'
                     
     }
