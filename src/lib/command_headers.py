@@ -378,6 +378,14 @@ commands = {
         'return': 'command',
         'usage': '!evolve [position_to_evolve]'
                 
+    },
+            
+    '!nickname': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command',
+        'usage': '!nickname [posiiton_to_update] [nickname]'
+                  
     }
 }
 

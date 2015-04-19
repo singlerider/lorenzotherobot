@@ -392,3 +392,11 @@ def apply_evolution(username, position):
     else:
         return "No Pokemon eligible for evolution."
 
+def update_nickname(nickname, username, position):
+    
+    # todo - error message on no entry
+    with con:
+        
+        cur = con.cursor()
+        cur.execute("""UPDATE userpokemon SET nickname = %s WHERE username = %s
+        AND position = %s""", [nickname, username, position])
