@@ -66,7 +66,7 @@ def get_user_command():
 
 
 def get_stream_followers():
-    url = 'https://api.twitch.tv/kraken/channels/' + channel + '/follows?limit=100'
+    url = 'https://api.twitch.tv/kraken/channels/' + globals.channel + '/follows?limit=100'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     return data
