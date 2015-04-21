@@ -300,13 +300,6 @@ commands = {
 
     },
 
-    '!kappa': {
-        'limit': 0,
-        'return': 'Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Keepo Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa',
-        'usage': '!kappa'
-        
-    },
-
     '!winner': {
         'limit': 0,
         'argc': 0,

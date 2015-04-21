@@ -98,7 +98,7 @@ def get_game_popularity(game):
         
         top_three = first_streamer + ": " + first_viewers + ", " + second_streamer + \
         ": " + second_viewers + ", " + third_streamer + ": " + third_viewers
-        return "In descending order, the top three streamers playing " + game + " are: " + top_three
+        return "The top three streamers playing " + game + " are: " + top_three
     
     except:
         return "Avoid using special characters and check your spelling."
