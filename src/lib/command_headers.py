@@ -384,7 +384,7 @@ commands = {
         'limit': 0,
         'argc': 2,
         'return': 'command',
-        'usage': '!nickname [position_to_update] [nickname]'
+        'usage': '!nickname [position_to_update] [nickname(must not contain spaces)]'
                   
     },
             
@@ -396,6 +396,13 @@ commands = {
         #'ul': 'mod',
         'usage': '!popularity [name_of_game]'
                     
+    },
+            
+    '!tickets': {
+        'limit': 15,
+        'return': 'For every $5 donated, you get a raffle ticket. At the end of each month, 2 random viewers will be selected from the raffle\
+        and be given a prize. Donate link: http://bit.ly/1s4HRig'
+                 
     }
 }
 
