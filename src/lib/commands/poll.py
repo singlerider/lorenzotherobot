@@ -38,6 +38,8 @@ def computeWinner():
   return "Tie! " + " and " .join(winners)
 
 def poll(args):
+    if globals.global_channel == 'shedeviil_09':
+        return None
     global voteline, voted, options, votes, activePoll
     arg = args[0]
 

@@ -2,6 +2,9 @@ from src.lib.twitch import *
 import globals
 
 def highlight():
+    if globals.global_channel == 'shedeviil_09':
+        return None
+
     usage = "!highlight"
     
     uptime = get_stream_uptime()
