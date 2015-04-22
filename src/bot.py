@@ -28,6 +28,7 @@ import globals
 END = False
 
 
+
 class Roboraj(object):
 
     def __init__(self, config):
@@ -49,6 +50,9 @@ class Roboraj(object):
 
                 message_dict = self.irc.get_message(data)
                 channel = message_dict['channel']
+                globals.global_channel = channel.lstrip('#')
+                print "channel", channel.lstrip('#')
+                print "globals.channel", globals.global_channel.lstrip('#')
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
@@ -82,6 +86,16 @@ class Roboraj(object):
         # print("Inputs:", command, channel, username, message)
         if command == message:
             args = []
+            
+            
+        ######TEMPORARY COMMAND IGNORES FOR shedeviil_09
+        
+        elif command == message and command in commands.keys():
+            print "Yes, it is in commands"
+            
+            
+            
+            
         else:
             args = [message[len(command)+1:]] # default to args = ["bar baz"]
 

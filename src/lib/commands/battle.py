@@ -8,7 +8,8 @@ def battle(args):
     position = int(args[0])
     opponent = args[1].lower()
     
-    user_dict, all_users = get_dict_for_users()
+    __, all_users = get_dict_for_users()
+    __, shedeviil_09_all_users = shedevil_09_get_dict_for_users()
     
     now = datetime.utcnow()
     cooldown_time = 1
@@ -18,7 +19,7 @@ def battle(args):
     def battle_logic():
             if last_battle_time < now - timedelta(minutes=cooldown_time):
                 time_delta = now - last_battle_time
-                if opponent in all_users:
+                if opponent in all_users or opponent in shedeviil_09_all_users:
                     if opponent != globals.CURRENT_USER:
                         available_positions, occupied_positions = find_open_party_positions(opponent)
                         if len(occupied_positions) > 0:

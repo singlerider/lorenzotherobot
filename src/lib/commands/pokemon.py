@@ -25,6 +25,13 @@ def cron(a=None): #todo remove this arg requirement.
     globals.POKEMON = pocket_monster
     return "A wild " + pocket_monster + " appeared!"
 
+def shedeviil_09_cron(a=None): #todo remove this arg requirement.
+    globals.shedeviil_09_CAUGHT = False
+    pocket_monster = random.choice(randomPokemon())
+    globals.shedeviil_09_POKEMON = pocket_monster
+    print "trying"
+    return "A wild " + pocket_monster + " appeared!"
+
 
 #!pokemon battle
 def battle():
