@@ -17,6 +17,9 @@ def tallgrass(args):
     actual_points = get_user_points(username)
     treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
     
+    if globals.global_channel == "shedeviil_09":
+        return "This only works in Curvyllama's chat. Excuse my dust as I upgrade my systems!"
+    
     if abs(points_to_sacrifice) >= 1000:
         print "abs(points_to_sacrifice) > 1000:", abs(points_to_sacrifice)
         if actual_points >= abs(points_to_sacrifice):
