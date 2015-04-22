@@ -8,14 +8,19 @@ login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
 
 def get_pokemon_id_from_name(pokemon_name):
-    with con: 
-
-        cur = con.cursor()
-        cur.execute("""SELECT pokemon.id FROM pokemon WHERE pokemon.name = %s""", [pokemon_name])
+    try:
+    
+        with con: 
+            
+            cur = con.cursor()
+            cur.execute("""SELECT pokemon.id FROM pokemon WHERE pokemon.name = %s""", [pokemon_name])
+            
+            pokemon_id = cur.fetchone()
+            
+            return pokemon_id[0]
         
-        pokemon_id = cur.fetchone()
-        
-        return pokemon_id[0]
+    except:
+        return "You can't catch a Pokemon now. Is your party full?"        
             
 def find_open_party_positions(username):    
     with con: 
@@ -364,9 +369,8 @@ def check_evolution_eligibility(username, position):
         cur.execute("""SELECT userpokemon.nickname, pokemon.name, pokeset.name, pokeset.id FROM userpokemon
         JOIN pokemon on userpokemon.pokemon_id = pokemon.id
         JOIN pokemon as pokeset on pokemon.evolution_set = pokeset.evolution_set
-        WHERE pokeset.evolution_set <= userpokemon.level
-        AND pokeset.evolution_index > pokemon.evolution_index AND userpokemon.username = %s
-        AND userpokemon.position = %s LIMIT 1;
+        WHERE userpokemon.level >= pokemon.evolution_level AND pokeset.id > userpokemon.pokemon_id
+        AND userpokemon.username = %s AND userpokemon.position = %s LIMIT 1
         """, [username, position])
         
         eligible_evolution = cur.fetchone()

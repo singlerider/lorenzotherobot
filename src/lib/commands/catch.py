@@ -7,10 +7,10 @@ from src.lib.queries.points_queries import *
 
 def catch():
     
-    print "globals.global_channel: ", globals.global_channel
+    #print "globals.global_channel: ", globals.global_channel
     
     if globals.global_channel == "shedeviil_09":
-        print "globals.global_channel == shedeviil_09"
+        #print "globals.global_channel == shedeviil_09"
         
         if globals.shedeviil_09_CAUGHT == False:
             pokemon_trainer = globals.CURRENT_USER
@@ -28,7 +28,7 @@ def catch():
             return "Too slow!"
         
     else:
-        print "globals.global_channel: ", globals.global_channel
+        #print "globals.global_channel: ", globals.global_channel
         if globals.CAUGHT == False:
             pokemon_trainer = globals.CURRENT_USER
             modify_user_points(globals.CURRENT_USER, 0) # This is here for if the user is brand new. This creates an entry in the users table, which userpokemon is dependent on
