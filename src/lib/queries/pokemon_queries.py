@@ -64,9 +64,8 @@ def get_user_party_info(username):
     with con: 
 
         cur = con.cursor()
-        cur.execute("""select userpokemon.position, userpokemon.nickname from userpokemon
-        where username = %s
-        order by userpokemon.position""", [username])
+        cur.execute("""SELECT userpokemon.position, userpokemon.level, userpokemon.nickname
+        FROM userpokemon WHERE username = %s ORDER BY userpokemon.position;""", [username])
         
         simplified_party_members = []
         
