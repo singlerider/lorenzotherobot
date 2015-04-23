@@ -33,7 +33,7 @@ def battle(args):
                             if len(eligible_positions) > 0:
                                 random_opponent_position = random.choice(eligible_positions)
                             else:
-                                return "You can only battle an opponent with a Pokemon within five levels of your attacker! Let's be fair, here."
+                                return "You can only battle an opponent with a Pokemon within five levels of your attacker! Try using "
                             nickname_1, pokemon_type1_id_1, pokemon_type2_id_1, pokemon_name_1, pokemon_type1_1, pokemon_type2_1 = user_pokemon_types_summary(globals.CURRENT_USER, position)
                             nickname_2, pokemon_type1_id_2, pokemon_type2_id_2, pokemon_name_2, pokemon_type1_2, pokemon_type2_2 = user_pokemon_types_summary(opponent, random_opponent_position)
                             defender_stats = get_battle_stats(opponent, random_opponent_position)

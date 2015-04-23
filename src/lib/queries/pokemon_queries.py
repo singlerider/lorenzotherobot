@@ -7,20 +7,20 @@ import globals
 login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
 
+###TODO: with con.cursor() as cur: 
+
 def get_pokemon_id_from_name(pokemon_name):
-    try:
     
-        with con: 
-            
-            cur = con.cursor()
-            cur.execute("""SELECT pokemon.id FROM pokemon WHERE pokemon.name = %s""", [pokemon_name])
-            
-            pokemon_id = cur.fetchone()
-            
-            return pokemon_id[0]
+    with con:
+        cur = con.cursor()
+        cur.execute("""SELECT pokemon.id FROM pokemon WHERE pokemon.name = %s""", [pokemon_name])
         
-    except:
-        return "You can't catch a Pokemon now. Is your party full?"        
+        pokemon_id = cur.fetchone()
+        
+        if pokemon_id is not None:
+            return pokemon_id[0]
+        else:
+            return "Error"
             
 def find_open_party_positions(username):    
     with con: 
@@ -199,39 +199,42 @@ is_tradeable = 1
 asking_pokemon_id = 150
 minimum_level = 10
 party_position = 1
+
+def get_pokemon_id(username, position):
+    with con: 
+    
+        cur = con.cursor()
+        cur.execute("""SELECT userpokemon.pokemon_id WHERE username = %s and position = %s
+        """, [username, position])
         
-def set_pokemon_trade_status(is_tradeable, asking_pokemon_id, minimum_level, username, party_position):
+        pokemon_id = cur.fetchone()
+        return pokemon_id
+    
+        
+def set_pokemon_trade_status(asking_pokemon_id, minimum_level, username, party_position):
     with con: 
 
         cur = con.cursor()
-        cur.execute("""update userpokemon
-        set for_trade = %s,
-        asking_trade = %s,
-        asking_level = %s
-        where username = %s and position = %s
-        """, [is_tradeable, asking_pokemon_id, minimum_level, username, party_position])
+        cur.execute("""update userpokemon set for_trade = 1, asking_trade = %s, asking_level = %s where username = %s and position = %s
+        """, [asking_pokemon_id, minimum_level, username, party_position])
 
-def mark_pokemon_trade_status():
+def get_receiver_trade_status():
     with con: 
 
         cur = con.cursor()
-        cur.execute("""update userpokemon
-        set for_trade = %s,
-        asking_trade = (select id from pokemon where name = 'Charmander'),
-        asking_level = %s
-        where username = %s and position = %s
-        """, [is_tradeable, minimum_level, globals.CURRENT_USER, party_position])
+        cur.execute("""SELECT for_trade, 
+        """, [asking_pokemon_id, minimum_level, username, party_position])
         
 def show_all_tradeable_pokemon():
     with con: 
 
         cur = con.cursor()
         cur.execute("""select
-        userpokemon.username as 'Owner',
-        owner_pokemon.name as 'Pokemon',
-        userpokemon.position as 'Position',
-        asking_for.name as 'Trading for',
-        asking_level as 'Minimum level'
+        userpokemon.username,
+        owner_pokemon.name,
+        userpokemon.position,
+        asking_for.name,
+        asking_level
         from userpokemon
         inner join pokemon as owner_pokemon on owner_pokemon.id = userpokemon.pokemon_id
         left outer join pokemon as asking_for on asking_for.id = userpokemon.asking_trade
@@ -242,43 +245,38 @@ def show_all_tradeable_pokemon():
         for trade in trades:
             print trade
             
-def show_user_tradeable_pokemon():
+        return trades
+            
+def show_user_tradeable_pokemon(username):
     with con: 
 
         cur = con.cursor()
         cur.execute("""select
-        userpokemon.username as 'Owner',
-        owner_pokemon.name as 'Pokemon',
-        userpokemon.position as 'Position',
-        asking_for.name as 'Trading for',
-        asking_level as 'Minimum level'
+        userpokemon.username,
+        owner_pokemon.name,
+        userpokemon.position,
+        asking_for.name,
+        asking_level
         from userpokemon
         inner join pokemon as owner_pokemon on owner_pokemon.id = userpokemon.pokemon_id
         left outer join pokemon as asking_for on asking_for.id = userpokemon.asking_trade
         where for_trade = 1 and username = %s
-        """, [globals.CURRENT_USER])
+        """, [username])
         
         trades = cur.fetchall()
-        for trade in trades:
-            print trade
+        return trades
 
 def trade_transaction(giver, giver_position, receiver, receiver_position):
 #will test this under supervision
     with con: 
 
         cur = con.cursor()
-        cur.execute("""START transaction""")
-        cur.execute("""SET @player_1 = %s""", [giver])
-        cur.execute("""SET @position_1 = %s""", [giver_position])
-        cur.execute("""SET @player_2 = %s""", [receiver])
-        cur.execute("""SET @position_2 = %s""", [receiver_position])
-        cur.execute("""UPDATE userpokemon SET username = @player_1, for_trade = 0, position = 0
-        WHERE username = @player_2 AND position = @position_2""")
-        cur.execute("""UPDATE userpokemon SET username = @player_2, for_trade = 0, position = @position_2
-        WHERE username = @player_1 AND position = @position_1""")
-        cur.execute("""UPDATE userpokemon SET position = @position_1
-        WHERE position = 0""")
-        cur.execute("""COMMIT""")
+        cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 0, position = 0
+        WHERE username = %s AND position = %s""", [giver, receiver, receiver_position])
+        cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 0, position = %s
+        WHERE username = %s AND position = %s""", [receiver, receiver_position, giver, giver_position])
+        cur.execute("""UPDATE userpokemon SET position = %s, for_trade = 2
+        WHERE position = 0""", [giver_position])
 
 def show_all_pokemon_for_sale():
     with con: 
@@ -401,3 +399,15 @@ def update_nickname(nickname, username, position):
         cur = con.cursor()
         cur.execute("""UPDATE userpokemon SET nickname = %s WHERE username = %s
         AND position = %s""", [nickname, username, position])
+
+def check_items():
+    
+    with con:
+        cur = con.cursor()
+        cur.execute("""SELECT name, value FROM items WHERE id IN (1,2,3,4,5,11,12,13,14)""")
+        for_sale = cur.fetchall()
+        
+        return for_sale
+    
+    
+        

@@ -396,6 +396,21 @@ commands = {
         'return': 'For every $5 donated, you get a raffle ticket. At the end of each month, 2 random viewers will be selected from the raffle\
         and be given a prize. Donate link: http://bit.ly/1s4HRig'
                  
+    },
+            
+    #'!trade': {
+    #    'limit': 0,
+    #    'argc': 3,
+    #    'return':'command',
+    #    'usage': "!trade [party_position/'redeem'] [pokemon_to_trade/username] [asking_level/position_to_redeem]"
+    #},
+            
+    '!check': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'usage': "!check ['trade'/'market'/'items'/username]"
+               
     }
 }
 

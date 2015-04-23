@@ -4,7 +4,7 @@ import globals
 def uptime():
     usage = "!uptime"
     if globals.global_channel == 'shedeviil_09':
-        return None
+        return
     uptime = get_stream_uptime()
     channel = globals.channel
     
