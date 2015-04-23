@@ -102,7 +102,7 @@ commands = {
 
     '!rules': {
         'limit': 20,
-        'return': "1. No sexual harassment 2.Be respectful in the chat 3. No asking for mod, it will be earned 4. No advertising channels 5. Don't be annoying with spam in the chat. Lastly, have fun!",
+        'return': "1. No sexual harassment 2.Be respectful in the chat 3. No asking for mod, it will be earned 4. No advertising channels 5. Don't be annoying with spam in the chat. Lastly, have fun! Twitch ToS: http://www.twitch.tv/p/rules-of-conduct",
         'usage': '!rules'
     },
 

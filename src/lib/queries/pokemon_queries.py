@@ -218,12 +218,17 @@ def set_pokemon_trade_status(asking_pokemon_id, minimum_level, username, party_p
         cur.execute("""update userpokemon set for_trade = 1, asking_trade = %s, asking_level = %s where username = %s and position = %s
         """, [asking_pokemon_id, minimum_level, username, party_position])
 
-def get_receiver_trade_status():
+def get_receiver_trade_status(giver, position, receiver):
     with con: 
 
         cur = con.cursor()
-        cur.execute("""SELECT userpokemon.pokemon_id, userpokemon.nickname 
-        """, [asking_pokemon_id, minimum_level, username, party_position])
+        cur.execute("""SELECT userpokemon.pokemon_id where username = %s AND 
+        """, [username])
+        cur.execute("""SELECT userpokemon.pokemon_id where username = %s AND 
+        """, [username])
+        
+        trader_party = cur.fetchall()
+        print trader_party
         
 def show_all_tradeable_pokemon():
     with con: 
