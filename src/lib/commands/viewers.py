@@ -7,4 +7,4 @@ def viewers():
     
     chatter_count = user_dict['chatter_count']
 
-    return str(chatter_count) + " viewers are in here. That's it?! PogChamp"
+    return str(chatter_count) + " chatters are in here. That's it?! PogChamp"

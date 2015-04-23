@@ -207,7 +207,6 @@ commands = {
         'limit': 0,
         'return': 'command',
         'argc': 1,
-        'ul': 'mod',
         'usage': '!weather [zip_code]'
 
     },
@@ -405,12 +404,20 @@ commands = {
         
     },
             
-    #'!trade': {
-    #    'limit': 0,
-    #    'argc': 3,
-    #    'return':'command',
-    #    'usage': "!trade [party_position/'redeem'] [pokemon_to_trade/username] [asking_level/position_to_redeem]"
-    #},
+    '!trade': {
+        'limit': 0,
+        'argc': 3,
+        'return':'command',
+        'usage': "!trade [party_position/'redeem'] [pokemon_to_trade/username] [asking_level/position_to_redeem]"
+    },
+    
+    '!redeem': {
+        'limit': 0,
+        'argc': 3,
+        'return': 'command',
+        'usage': "!redeem [party_position_to_trade] [username_to_trade] [party_position_to_redeem_from_user]"
+                
+    },
             
     '!check': {
         'limit': 0,

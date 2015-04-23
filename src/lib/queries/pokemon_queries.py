@@ -292,7 +292,7 @@ def trade_transaction(giver, giver_position, receiver, receiver_position):
         cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 0, position = %s
         WHERE username = %s AND position = %s""", [giver, giver_position, receiver, receiver_position])
         cur.execute("""UPDATE userpokemon SET position = %s, for_trade = 2
-        WHERE position = 0""", [giver_position])
+        WHERE position = 0""", [receiver_position])
 
 def show_all_pokemon_for_sale():
     with con: 
