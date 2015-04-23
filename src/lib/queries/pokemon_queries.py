@@ -218,17 +218,27 @@ def set_pokemon_trade_status(asking_pokemon_id, minimum_level, username, party_p
         cur.execute("""update userpokemon set for_trade = 1, asking_trade = %s, asking_level = %s where username = %s and position = %s
         """, [asking_pokemon_id, minimum_level, username, party_position])
 
-def get_receiver_trade_status(giver, position, receiver):
+def get_receiver_trade_status(position, receiver):
     with con: 
 
         cur = con.cursor()
-        cur.execute("""SELECT userpokemon.pokemon_id where username = %s AND 
-        """, [username])
-        cur.execute("""SELECT userpokemon.pokemon_id where username = %s AND 
-        """, [username])
+        cur.execute("""
+        SELECT pokemon_id, level FROM userpokemon WHERE username = %s AND position = %s
+        """, [position, receiver])
         
         trader_party = cur.fetchall()
-        print trader_party
+        return trader_party
+        
+def get_giver_trade_staus(position, giver):
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""
+        SELECT asking_trade, asking_level FROM userpokemon WHERE username = %s AND position = %s
+        """, [position, giver])
+        
+        trader_party = cur.fetchall()
+        return trader_party
         
 def show_all_tradeable_pokemon():
     with con: 
@@ -269,6 +279,7 @@ def show_user_tradeable_pokemon(username):
         """, [username])
         
         trades = cur.fetchall()
+        print trades
         return trades
 
 def trade_transaction(giver, giver_position, receiver, receiver_position):
@@ -277,9 +288,9 @@ def trade_transaction(giver, giver_position, receiver, receiver_position):
 
         cur = con.cursor()
         cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 0, position = 0
-        WHERE username = %s AND position = %s""", [giver, receiver, receiver_position])
+        WHERE username = %s AND position = %s""", [receiver, giver, giver_position])
         cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 0, position = %s
-        WHERE username = %s AND position = %s""", [receiver, receiver_position, giver, giver_position])
+        WHERE username = %s AND position = %s""", [giver, giver_position, receiver, receiver_position])
         cur.execute("""UPDATE userpokemon SET position = %s, for_trade = 2
         WHERE position = 0""", [giver_position])
 
