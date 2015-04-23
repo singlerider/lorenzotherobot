@@ -19,7 +19,7 @@ def get_dict_for_users():
         all_users.append(str(user))
     for user in users['chatters']['viewers']:
         all_users.append(str(user))
-    for user in users['chatters']['viewers']:
+    for user in users['chatters']['staff']:
         all_users.append(str(user))
     # print "all_users: " + str(all_users)
     return user_dict, all_users
