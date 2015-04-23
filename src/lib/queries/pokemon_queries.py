@@ -67,16 +67,11 @@ def get_user_party_info(username):
         cur.execute("""SELECT userpokemon.position, userpokemon.level, userpokemon.nickname
         FROM userpokemon WHERE username = %s ORDER BY userpokemon.position;""", [username])
         
-        simplified_party_members = []
         
         party_members = cur.fetchall()
-        for item in party_members:
-            for member in item:
-                simplified_party_members.append(member)
-        print party_members
         
-        if simplified_party_members != None:
-            return simplified_party_members
+        if party_members != None:
+            return party_members
         else:
             return "No Pokemon found. Tell them to use !catch"
 
