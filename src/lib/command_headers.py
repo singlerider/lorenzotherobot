@@ -397,6 +397,13 @@ commands = {
         and be given a prize. Donate link: http://bit.ly/1s4HRig'
                  
     },
+    
+    '!kappa': {
+        'limit': 0,
+        'return': 'Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Keepo Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa Kappa',
+        'usage': '!kappa'
+        
+    },
             
     #'!trade': {
     #    'limit': 0,

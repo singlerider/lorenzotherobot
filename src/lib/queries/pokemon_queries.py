@@ -222,7 +222,7 @@ def get_receiver_trade_status():
     with con: 
 
         cur = con.cursor()
-        cur.execute("""SELECT for_trade, 
+        cur.execute("""SELECT userpokemon.pokemon_id, userpokemon.nickname 
         """, [asking_pokemon_id, minimum_level, username, party_position])
         
 def show_all_tradeable_pokemon():

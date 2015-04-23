@@ -19,7 +19,7 @@ def trade(args):
             tradeable_positions.append(i)
         print username, tradeable_positions
         if int(position) == tradeable_positions[0]:
-            
+            get_receiver_trade_status(globals.CURRENT_USER)
             trade_transaction(username, position, globals.CURRENT_USER, receiver_position)
         else:
             return "False"
