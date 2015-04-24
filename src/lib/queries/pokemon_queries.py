@@ -294,9 +294,9 @@ def trade_transaction(giver, giver_position, receiver, receiver_position):
     with con: 
 
         cur = con.cursor()
-        cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 0, position = 0
+        cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 2, position = 0
         WHERE username = %s AND position = %s""", [receiver, giver, giver_position])
-        cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 0, position = %s
+        cur.execute("""UPDATE userpokemon SET username = %s, for_trade = 2, position = %s
         WHERE username = %s AND position = %s""", [giver, giver_position, receiver, receiver_position])
         cur.execute("""UPDATE userpokemon SET position = %s, for_trade = 2
         WHERE position = 0""", [receiver_position])
