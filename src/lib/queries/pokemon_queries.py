@@ -289,6 +289,20 @@ def show_user_tradable_pokemon(username):
         print trades
         return trades
 
+def add_win(username):
+    with con:
+        
+        cur = con.cursor()
+        cur.execute("""UPDATE users SET wins = wins + 1 WHERE username = %s
+        """, [username])
+        
+def add_loss(username):
+    with con:
+        
+        cur = con.cursor()
+        cur.execute("""UPDATE users SET losses = losses + 1 WHERE username = %s
+        """, [username])
+
 def trade_transaction(giver, giver_position, receiver, receiver_position):
 #will test this under supervision
     with con: 

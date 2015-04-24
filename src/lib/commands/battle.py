@@ -51,8 +51,10 @@ def battle(args):
                             elif total_attacker > total_defender:
                                 if attacker_stats[0] < 100: # attacker's level
                                     level_up_user_pokemon(globals.CURRENT_USER, position)
+                                add_win(globals.CURRENT_USER)
                                 return globals.CURRENT_USER + "'s " + nickname_1 + " defeated " + opponent + "'s " + nickname_2 + "."
                             elif total_attacker < total_defender:
+                                add_loss(globals.CURRENT_USER)
                                 return globals.CURRENT_USER + "'s " + nickname_1 + " was defeated by " + opponent + "'s " + nickname_2 + "."
                         else:
                             return opponent + " has nothing to battle with. Tell them to use !catch"
