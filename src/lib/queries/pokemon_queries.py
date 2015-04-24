@@ -209,14 +209,21 @@ def get_pokemon_id(username, position):
         
         pokemon_id = cur.fetchone()
         return pokemon_id
-    
+
+def reset_trade_timestamp(time):
+        with con: 
+
+            cur = con.cursor()
+            cur.execute("""UPDATE userpokemon SET for_trade = 0, time_trade_set = NULL WHERE time_trade_set < %s
+            """, [time])
         
-def set_pokemon_trade_status(asking_pokemon_id, minimum_level, username, party_position):
+def set_pokemon_trade_status(time, asking_pokemon_id, minimum_level, username, party_position):
     with con: 
 
         cur = con.cursor()
-        cur.execute("""update userpokemon set for_trade = 1, asking_trade = %s, asking_level = %s where username = %s and position = %s
-        """, [asking_pokemon_id, minimum_level, username, party_position])
+        cur.execute("""UPDATE userpokemon SET time_trade_set = %s, for_trade = 1, asking_trade = %s, asking_level = %s
+        WHERE username = %s AND position = %s
+        """, [time, asking_pokemon_id, minimum_level, username, party_position])
 
 def get_receiver_trade_status(position, receiver):
     with con: 
@@ -224,23 +231,23 @@ def get_receiver_trade_status(position, receiver):
         cur = con.cursor()
         cur.execute("""
         SELECT pokemon_id, level FROM userpokemon WHERE username = %s AND position = %s
-        """, [position, receiver])
+        """, [receiver, position])
         
         trader_party = cur.fetchall()
         return trader_party
-        
-def get_giver_trade_staus(position, giver):
+
+def get_giver_trade_status(position, giver):
     with con: 
 
         cur = con.cursor()
         cur.execute("""
         SELECT asking_trade, asking_level FROM userpokemon WHERE username = %s AND position = %s
-        """, [position, giver])
+        """, [giver, position])
         
         trader_party = cur.fetchall()
         return trader_party
         
-def show_all_tradeable_pokemon():
+def show_all_tradable_pokemon():
     with con: 
 
         cur = con.cursor()
@@ -262,7 +269,7 @@ def show_all_tradeable_pokemon():
             
         return trades
             
-def show_user_tradeable_pokemon(username):
+def show_user_tradable_pokemon(username):
     with con: 
 
         cur = con.cursor()
@@ -293,6 +300,10 @@ def trade_transaction(giver, giver_position, receiver, receiver_position):
         WHERE username = %s AND position = %s""", [giver, giver_position, receiver, receiver_position])
         cur.execute("""UPDATE userpokemon SET position = %s, for_trade = 2
         WHERE position = 0""", [receiver_position])
+        cur.execute("""UPDATE userpokemon SET time_trade_set = NULL WHERE username = %s AND position = %s
+        """, [receiver, receiver_position])
+        #cur.execute("""UPDATE userpokemon SET time_trade_set = NULL WHERE username = %s AND position = %s
+        #""", [giver, giver_position])
 
 def show_all_pokemon_for_sale():
     with con: 
