@@ -16,7 +16,7 @@ def check(args):
         for_sale_comprehension = ["({}) {}, {}".format( int(x),y.replace(' ', ''), int(z)) for x,y,z in for_sale]
         return " | ".join(for_sale_comprehension)
     elif args[0] == 'inventory':
-        return "Coming soon"
+        return check_inventory(globals.CURRENT_USER)
     else:
         username = args[0].lower()
         user_tradable_pokemon = show_user_tradable_pokemon(username)

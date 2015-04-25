@@ -425,7 +425,16 @@ commands = {
         'return': 'command',
         'usage': "!check ['trade'/'market'/'items'/'inventory'/username]"
                
+    },
+            
+    '!buy': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'usage': "!buy [item_number]"
+        
     }
+        
 }
 
 def initalizeCommands(config):

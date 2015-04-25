@@ -6,6 +6,8 @@ import sys
 import globals
 login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
+from src.lib.queries.points_queries import *
+
 
 ###TODO: with con.cursor() as cur: 
 
@@ -449,20 +451,45 @@ def check_items():
         for_sale = cur.fetchall()
         
         return for_sale
-    
-def buy_items(id, username):
+
+def get_item_value(id):
     
     with con:
         cur = con.cursor()
-        cur.execute("""SELECT id FROM items where id = %s""", [id])
+        cur.execute("""SELECT value FROM items WHERE id = %s""", [id])
+        value = cur.fetchone()
         
-        
-        cur.execute("""IF NOT EXISTS INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 0)""", [username, id])
-        cur.execute("""UPDATE useritems SET quantity = quantity + 1 WHERE username = %s AND item_id = %s""", [username, id])
-        
-        for_sale = cur.fetchall()
-        
-        return for_sale
+        return value[0]
+
+def check_inventory(username):
     
-    
+    with con:
+        cur = con.cursor()
+        cur.execute("""SELECT item_id, quantity FROM useritems WHERE username = %s""", [username])
+        inventory = cur.fetchall()
         
+        return inventory
+
+def buy_items(id, username):
+    try:
+        if int(id) in (1,2,3,4,5,11,12,13,14):
+            print "ID FOUND TO MATCH ITEMS AVAILABLE"
+            points = int(get_user_points(username))
+            value = int(get_item_value(id))
+            print value
+            print type(value)
+            if points > value:
+                print "POINTS ARE HIGHER THAN ITEM VALUE"
+                with con:
+                    cur = con.cursor()
+                    cur.execute("""INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 1) ON
+                    DUPLICATE KEY UPDATE quantity = quantity + 1""", [username, id])
+                    cur.execute("""UPDATE users SET points = points - %s WHERE username = %s""", [value,username])
+                    
+                    return "Transaction successful."
+            else:
+                return "You need more points for that!"
+        else:
+            return "That is not a valid item position."
+    except:
+        return "Item ID must be a number"
