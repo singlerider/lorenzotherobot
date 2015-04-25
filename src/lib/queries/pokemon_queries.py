@@ -445,7 +445,21 @@ def check_items():
     
     with con:
         cur = con.cursor()
-        cur.execute("""SELECT name, value FROM items WHERE id IN (1,2,3,4,5,11,12,13,14)""")
+        cur.execute("""SELECT id, name, value FROM items WHERE id IN (1,2,3,4,5,11,12,13,14)""")
+        for_sale = cur.fetchall()
+        
+        return for_sale
+    
+def buy_items(id, username):
+    
+    with con:
+        cur = con.cursor()
+        cur.execute("""SELECT id FROM items where id = %s""", [id])
+        
+        
+        cur.execute("""IF NOT EXISTS INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 0)""", [username, id])
+        cur.execute("""UPDATE useritems SET quantity = quantity + 1 WHERE username = %s AND item_id = %s""", [username, id])
+        
         for_sale = cur.fetchall()
         
         return for_sale

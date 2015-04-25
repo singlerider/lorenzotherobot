@@ -1709,7 +1709,7 @@ master_pokemon_dict = {
         'hp': 60,
         'speed': 115
     },
-    'Mr. Mime': {
+    'Mr-Mime': {
         'type1': "Psychic",
         'type2': "Flying",
         'evolution_set': 58,
