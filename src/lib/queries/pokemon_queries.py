@@ -465,7 +465,7 @@ def check_inventory(username):
     
     with con:
         cur = con.cursor()
-        cur.execute("""SELECT items.name, useritems.quantity
+        cur.execute("""SELECT items.id, items.name, useritems.quantity
         FROM useritems
         INNER JOIN items ON items.id = useritems.item_id
         WHERE username = %s""", [username])
@@ -481,7 +481,7 @@ def buy_items(id, username):
             value = int(get_item_value(id))
             print value
             print type(value)
-            if points > value:
+            if points >= value:
                 print "POINTS ARE HIGHER THAN ITEM VALUE"
                 with con:
                     cur = con.cursor()
@@ -496,3 +496,83 @@ def buy_items(id, username):
             return "That is not a valid item position."
     except:
         return "Item ID must be a number"
+
+
+
+def use_item(username, item, position):
+    try:
+        if int(item) == 11:
+            item_in_stock = False
+            inventory = check_inventory(username)
+            for id, __, __ in inventory:
+                if int(id) == int(item):
+                    item_in_stock = True
+            if item_in_stock == True: 
+                cur = con.cursor()
+                cur.execute("""UPDATE userpokemon SET level = level + 10
+                WHERE username = %s AND position = %s
+                """, [username, position])
+                cur = con.cursor()
+                cur.execute("""UPDATE userpokemon SET level = 100
+                WHERE username = %s AND position = %s AND level > 100
+                """, [username, position])
+                cur.execute("""UPDATE useritems SET quantity = quantity - 1 WHERE username = %s AND item_id = %s
+                        """, [username, item])
+                cur.execute("""DELETE FROM useritems WHERE username = %s AND quantity <= 0""", [username])
+                return "Level up!!!"
+            else:
+                return "You don't have any more!"
+            
+        else:
+            
+            def check_special_evolution_eligibility(username, position, item):
+    
+                with con:
+                    
+                    cur = con.cursor()
+                    cur.execute("""SELECT userpokemon.nickname, pokemon.name, pokeset.name, pokeset.id, pokeset.evolution_set, pokeset.evolution_index, pokeset.evolution_trigger
+                    FROM userpokemon
+                    JOIN pokemon on userpokemon.pokemon_id = pokemon.id
+                    JOIN pokemon as pokeset on pokemon.evolution_set = pokeset.evolution_set
+                    WHERE userpokemon.username = %s AND userpokemon.position = %s AND pokeset.evolution_index = pokemon.evolution_index + 1
+                    AND pokeset.evolution_trigger = %s
+                    """, [username, position, item])
+                    
+                    #+----------+-------+----------+-----+---------------+-----------------+-------------------+
+                    #| nickname | name  | name     | id  | evolution_set | evolution_index | evolution_trigger |
+                    #+----------+-------+----------+-----+---------------+-----------------+-------------------+
+                    #| Eevee    | Eevee | Vaporeon | 134 |            51 |               2 |                 2 |
+                    #+----------+-------+----------+-----+---------------+-----------------+-------------------+
+                                                
+                    eligible_evolution = cur.fetchone()
+                    return eligible_evolution
+            
+            evolution_result = check_special_evolution_eligibility(username, position, item)
+            nickname = evolution_result[0]
+            id = evolution_result[3]
+            evolution_set = evolution_result[4]
+            evolution_index = evolution_result[5]
+            evolution_trigger = evolution_result[6]
+            
+            if evolution_result is not None:
+            
+                if nickname == evolution_result[1]:
+                    nickname = evolution_result[2]
+                
+                with con:
+                    
+                    cur = con.cursor()
+                    cur.execute("""UPDATE useritems SET quantity = quantity - 1 WHERE username = %s AND item_id = %s
+                    """, [username, item])
+                    cur.execute("""UPDATE userpokemon SET pokemon_id = %s, nickname = %s WHERE username = %s AND position = %s
+                    """, [id, nickname, username, position])
+                    cur.execute("""DELETE FROM useritems WHERE username = %s AND quantity <= 0""", [username])
+                    
+                    return nickname + " has evolved! Raise your Kappa s!!!" 
+            else:
+                return "No Pokemon eligible for evolution."
+    
+    except:
+        return "Item being selected must be a number"
+    
+    

@@ -13,10 +13,12 @@ def check(args):
         return show_all_pokemon_for_sale()
     elif args[0] == 'items':
         for_sale = check_items()
-        for_sale_comprehension = ["({}) {}, {}".format( int(x),y.replace(' ', ''), int(z)) for x,y,z in for_sale]
+        for_sale_comprehension = ["({}) {}, {}".format( int(x),y, int(z)) for x,y,z in for_sale]
         return " | ".join(for_sale_comprehension)
     elif args[0] == 'inventory':
-        return check_inventory(globals.CURRENT_USER)
+        inventory = check_inventory(globals.CURRENT_USER)
+        inventory_comprehension = ["({}) {}, {}".format( int(x),y, int(z)) for x,y,z in inventory]
+        return " | ".join(inventory_comprehension)
     else:
         username = args[0].lower()
         user_tradable_pokemon = show_user_tradable_pokemon(username)

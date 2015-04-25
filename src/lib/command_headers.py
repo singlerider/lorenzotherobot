@@ -433,6 +433,14 @@ commands = {
         'return': 'command',
         'usage': "!buy [item_number]"
         
+    },
+            
+    '!use': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command',
+        'usage': '!use [item_position] [party_position]'
+
     }
         
 }
