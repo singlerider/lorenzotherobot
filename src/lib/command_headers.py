@@ -408,7 +408,7 @@ commands = {
         'limit': 0,
         'argc': 3,
         'return':'command',
-        'usage': "!trade [party_position] [pokemon_to_trade] [asking_level]"
+        'usage': "!trade [party_position] [requested_pokemon] [asking_level]"
     },
     
     '!redeem': {

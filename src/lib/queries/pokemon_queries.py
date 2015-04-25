@@ -465,7 +465,10 @@ def check_inventory(username):
     
     with con:
         cur = con.cursor()
-        cur.execute("""SELECT item_id, quantity FROM useritems WHERE username = %s""", [username])
+        cur.execute("""SELECT items.name, useritems.quantity
+        FROM useritems
+        INNER JOIN items ON items.id = useritems.item_id
+        WHERE username = %s""", [username])
         inventory = cur.fetchall()
         
         return inventory
