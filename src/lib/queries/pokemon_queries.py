@@ -19,7 +19,7 @@ def get_pokemon_id_from_name(pokemon_name):
         
         pokemon_id = cur.fetchone()
         
-        if pokemon_id is not None:
+        if int(pokemon_id[0]) != 0:
             return pokemon_id[0]
         else:
             return "Error"
@@ -306,7 +306,6 @@ def add_loss(username):
         """, [username])
 
 def trade_transaction(giver, giver_position, receiver, receiver_position):
-#will test this under supervision
     with con: 
 
         cur = con.cursor()
@@ -409,17 +408,45 @@ def check_evolution_eligibility(username, position):
         """, [username, position])
         
         eligible_evolution = cur.fetchone()
+        
         return eligible_evolution
     
         #| nickname  | name      | name    | id |
         #| Bulbasaur | Bulbasaur | Ivysaur |  2 |
 
+def check_trade_evolution_eligibility(username, position):
+    
+    with con:
+        
+        cur = con.cursor()
+        cur.execute("""SELECT userpokemon.nickname, pokemon.name, pokeset.name, pokeset.id,
+        pokeset.evolution_set, pokeset.evolution_index, pokeset.evolution_trigger, userpokemon.for_trade
+        FROM userpokemon JOIN pokemon on userpokemon.pokemon_id = pokemon.id
+        JOIN pokemon as pokeset on pokemon.evolution_set = pokeset.evolution_set
+        WHERE userpokemon.username = %s AND userpokemon.position = %s
+        AND pokeset.evolution_index = pokemon.evolution_index + 1
+        AND pokeset.evolution_trigger = 20 and for_trade = 2;
+        """, [username, position])
+        
+        #+----------+---------+--------+----+---------------+-----------------+-------------------+
+        #| nickname | name    | name   | id | evolution_set | evolution_index | evolution_trigger |
+        #+----------+---------+--------+----+---------------+-----------------+-------------------+
+        #| Haunter  | Haunter | Gengar | 94 |            39 |               3 |                20 |
+        #+----------+---------+--------+----+---------------+-----------------+-------------------+
+                                    
+        eligible_evolution = cur.fetchone()
+        return eligible_evolution
+
 def apply_evolution(username, position):
     evolution_result = check_evolution_eligibility(username, position)
-    nickname = evolution_result[0]
-    id = evolution_result[3]
+    trade_evolution_result = check_trade_evolution_eligibility(username, position)
+    
+    print "trade_evolution_result", trade_evolution_result
     
     if evolution_result is not None:
+        
+        nickname = evolution_result[0]
+        id = evolution_result[3]
     
         if nickname == evolution_result[1]:
             nickname = evolution_result[2]
@@ -430,7 +457,24 @@ def apply_evolution(username, position):
             cur.execute("""UPDATE userpokemon SET pokemon_id = %s, nickname = %s WHERE username = %s AND position = %s
             """, [id, nickname, username, position])
             
-            return nickname + " has evolved! Raise your Kappa s!!!" 
+            return nickname + " has evolved! Raise your Kappa s!!!"
+        
+    elif trade_evolution_result is not None:
+        
+        nickname = trade_evolution_result[0]
+        id = trade_evolution_result[3]
+        
+        if nickname == trade_evolution_result[1]:
+            nickname = trade_evolution_result[2]
+        
+        with con:
+            
+            cur = con.cursor()
+            cur.execute("""UPDATE userpokemon SET pokemon_id = %s, nickname = %s WHERE username = %s AND position = %s
+            """, [id, nickname, username, position])
+            
+            return nickname + " has evolved! Raise your Kappa s!!!"
+     
     else:
         return "No Pokemon eligible for evolution."
 
@@ -447,7 +491,7 @@ def check_items():
     
     with con:
         cur = con.cursor()
-        cur.execute("""SELECT id, name, value FROM items WHERE id IN (1,2,3,4,5,11,12,13,14)""")
+        cur.execute("""SELECT id, name, value FROM items WHERE id IN (1,2,3,4,5,11)""")
         for_sale = cur.fetchall()
         
         return for_sale
@@ -475,7 +519,7 @@ def check_inventory(username):
 
 def buy_items(id, username):
     try:
-        if int(id) in (1,2,3,4,5,11,12,13,14):
+        if int(id) in (1,2,3,4,5,11):
             print "ID FOUND TO MATCH ITEMS AVAILABLE"
             points = int(get_user_points(username))
             value = int(get_item_value(id))
@@ -519,7 +563,7 @@ def use_item(username, item, position):
                 cur.execute("""UPDATE useritems SET quantity = quantity - 1 WHERE username = %s AND item_id = %s
                         """, [username, item])
                 cur.execute("""DELETE FROM useritems WHERE username = %s AND quantity <= 0""", [username])
-                return "Level up!!!"
+                return "Level up!!! RARE CANDY HYPE!!!!!!!!!!!!!!!!!!!!! GET SOME kappas IN THE CHAT!!!! \ Kappa /"
             else:
                 return "You don't have any more!"
             
@@ -573,6 +617,6 @@ def use_item(username, item, position):
                 return "No Pokemon eligible for evolution."
     
     except:
-        return "Item being selected must be a number"
+        return "Well, that didn't work. Did you pick the right items? Do you actually have those items? Kappa"
     
     

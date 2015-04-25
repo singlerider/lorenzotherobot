@@ -17,10 +17,16 @@ def check(args):
         return " | ".join(for_sale_comprehension)
     elif args[0] == 'inventory':
         inventory = check_inventory(globals.CURRENT_USER)
-        inventory_comprehension = ["({}) {}, {}".format( int(x),y, int(z)) for x,y,z in inventory]
-        return " | ".join(inventory_comprehension)
+        if len(inventory) > 0:
+            inventory_comprehension = ["({}) {}, {}".format( int(x),y, int(z)) for x,y,z in inventory]
+            return " | ".join(inventory_comprehension)
+        else:
+            return "You have no items"
     else:
         username = args[0].lower()
         user_tradable_pokemon = show_user_tradable_pokemon(username)
-        user_tradable_pokemon_comprehension = ["({}) {}, {}, lvl {})".format(int(pos), str(giverpoke), str(askingpoke), int(askinglevel)) for user,giverpoke, pos, askingpoke, askinglevel in user_tradable_pokemon]
-        return username + "'s listings ordered by position, listed Pokemon, asking Pokemon, asking level: " + str(" | ".join(user_tradable_pokemon_comprehension))
+        if len(user_tradable_pokemon) > 0:
+            user_tradable_pokemon_comprehension = ["({}) {}, {}, lvl {})".format(int(pos), str(giverpoke), str(askingpoke), int(askinglevel)) for user,giverpoke, pos, askingpoke, askinglevel in user_tradable_pokemon]
+            return username + "'s listings ordered by position, listed Pokemon, asking Pokemon, asking level: " + str(" | ".join(user_tradable_pokemon_comprehension))
+        else:
+            return "No trades available from the selected user."

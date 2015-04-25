@@ -408,7 +408,7 @@ commands = {
         'limit': 0,
         'argc': 3,
         'return':'command',
-        'usage': "!trade [party_position] [requested_pokemon] [asking_level]"
+        'usage': "!trade [party_position] [requested_pokemon] [minimum_asking_level]"
     },
     
     '!redeem': {
@@ -423,7 +423,7 @@ commands = {
         'limit': 0,
         'argc': 1,
         'return': 'command',
-        'usage': "!check ['trade'/'market'/'items'/'inventory'/username]"
+        'usage': "!check ['trades'/'market'/'items'/'inventory'/username]"
                
     },
             
