@@ -3,6 +3,9 @@ import globals
 
 usage = "!party [position/'members']"
 
+def cron():
+    return "New to the channel? Use '!catch', then '!battle' one of my party members: " + str(get_user_party_info("lorenzotherobot"))
+
 def party(args):
     position = args[0]
     if position in ['1','2','3','4','5','6']:

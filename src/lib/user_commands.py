@@ -59,7 +59,7 @@ user_command_dict = {
 
     'singlerider': {
         'limit': 15,
-        'return': "Singlerider is the guy that developed this bot. He is currently watching you! " + arbitrary_import.emote()
+        'return': "Singlerider is gone for good. " + arbitrary_import.emote()
 
     }
 
