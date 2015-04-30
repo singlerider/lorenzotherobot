@@ -60,16 +60,31 @@ def modify_user_points(delta_user, delta):
     
 def modify_points_all_users(points_to_increment = 1):
     print all_users
-    user_list_for_query = [x for x in all_users]
+    user_list_for_query = [(x,points_to_increment) for x in all_users]
     print user_list_for_query
+    length = len(user_list_for_query) - 1
     
     try:
         with con:
             cur = con.cursor()
             
-            cur.executemany("INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + %s", [[user_list_for_query], points_to_increment, points_to_increment] )
+            dData = user_list_for_query  # exact input you gave
+
+            sql = """
+            INSERT INTO users
+              (username, points)
+            VALUES
+              (%s, %s)
+            ON DUPLICATE KEY UPDATE
+              points = points + """ + str(points_to_increment)
+            # keep parameters in one part of the statement
+            
+            # generator expression takes care of the repeated values
+            cur.executemany(sql, ((user, points) for user, points in dData) )
+            
+            #cur.executemany("INSERT INTO users (username, points) VALUES (%s, 1) ON DUPLICATE KEY UPDATE points = points + 1", (user_list_for_query) )
                 
-            con.commit()
+            #con.commit()
             #print "DEBUG (last executed): " + cur._last_executed
             return "success"
 
