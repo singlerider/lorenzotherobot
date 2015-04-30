@@ -55,14 +55,20 @@ def modify_user_points(delta_user, delta):
 
         cur = con.cursor()
         cur.execute("""INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + %s""", [delta_user,delta,delta])
+
+
     
 def modify_points_all_users(points_to_increment = 1):
-    user_list_for_query = [(x,points_to_increment) for x in all_users]
+    print all_users
+    user_list_for_query = [x for x in all_users]
+    print user_list_for_query
+    
     try:
         with con:
             cur = con.cursor()
-            cur.executemany("INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + " + str(points_to_increment), user_list_for_query)
             
+            cur.executemany("INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + %s", [[user_list_for_query], points_to_increment, points_to_increment] )
+                
             con.commit()
             #print "DEBUG (last executed): " + cur._last_executed
             return "success"

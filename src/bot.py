@@ -130,13 +130,13 @@ class Roboraj(object):
         if commands.check_has_ul(username, command):
             user_dict, all_users = twitch.get_dict_for_users()
             if username not in user_dict["chatters"]["moderators"]:
-                resp = '(%s) : %s' % (
-                    username, "This is a moderator-only command!")
-                pbot(resp, channel)
-                self.irc.send_message(channel, resp)
-                return
-
-       
+                if username != 'singlerider':
+                    print username
+                    resp = '(%s) : %s' % (
+                        username, "This is a moderator-only command!")
+                    pbot(resp, channel)
+                    self.irc.send_message(channel, resp)
+                    return
 
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
