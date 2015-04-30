@@ -645,9 +645,9 @@ def get_leaderboard():
     with con: 
 
         cur = con.cursor()
-        cur.execute("""SELECT username, wins, losses FROM users ORDER BY wins/losses * 1 DESC""")
+        cur.execute("""SELECT username, wins, losses FROM users WHERE wins > 25 ORDER BY wins/losses * 1 DESC""")
         user_data = cur.fetchall()
-        user_data_comprehension = ["{}: W{}, L{}".format( str(x), int(y), int(z)) for x,y,z in user_data]
+        user_data_comprehension = ["{}: W{}, L{}, {}%".format( str(x), int(y), int(z), ((int(y)*10)/int(z)) ) for x,y,z in user_data]
         return "The top 10 fighters are " + str(" | ".join(user_data_comprehension[0:9]))
     
     
