@@ -15,7 +15,7 @@ def gift(args):
         
         if name == "item":
             id = args[2]
-            return buy_items(id, username)
+            return gift_items(id, username)
         else:
             if len(open_position) > 0:
                 if level <= 100:

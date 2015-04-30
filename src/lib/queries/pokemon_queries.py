@@ -540,6 +540,28 @@ def buy_items(id, username):
             return "That is not a valid item position."
     except:
         return "Item ID must be a number"
+    
+def gift_items(id, username):
+    try:
+        if int(id) in (1,2,3,4,5,11):
+            print "ID FOUND TO MATCH ITEMS AVAILABLE"
+            points = int(get_user_points(username))
+            value = int(get_item_value(id))
+            print value
+            print type(value)
+            if points >= value:
+                print "POINTS ARE HIGHER THAN ITEM VALUE"
+                with con:
+                    cur = con.cursor()
+                    cur.execute("""INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 1) ON
+                    DUPLICATE KEY UPDATE quantity = quantity + 1""", [username, id])
+                    return "Gift successful."
+            else:
+                return "You need more points for that!"
+        else:
+            return "That is not a valid item position."
+    except:
+        return "Item ID must be a number"
 
 
 
@@ -618,5 +640,14 @@ def use_item(username, item, position):
     
     except:
         return "Well, that didn't work. Did you pick the right items? Do you actually have those items? Kappa"
+
+def get_leaderboard():
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""SELECT username, wins, losses FROM users ORDER BY wins/losses * 1 DESC""")
+        user_data = cur.fetchall()
+        user_data_comprehension = ["{}: W{}, L{}".format( str(x), int(y), int(z)) for x,y,z in user_data]
+        return "The top 10 fighters are " + str(" | ".join(user_data_comprehension[0:9]))
     
     
