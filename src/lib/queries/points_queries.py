@@ -8,8 +8,6 @@ from src.lib.twitch import *
 login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
 
-user_dict, all_users = get_dict_for_users()
-
 def mysql_version():
     #When this was run, it prevented other things from working.
     #It worked on its own, though. I removed the code stuffs from it.
@@ -58,11 +56,10 @@ def modify_user_points(delta_user, delta):
 
 
     
-def modify_points_all_users(points_to_increment = 1):
+def modify_points_all_users(all_users, points_to_increment = 1):
     print all_users
     user_list_for_query = [(x,points_to_increment) for x in all_users]
     print user_list_for_query
-    length = len(user_list_for_query) - 1
     
     try:
         with con:

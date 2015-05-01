@@ -11,7 +11,7 @@ def treatsForAll(delta):
     if get_stream_status():
         user_dict, all_users = twitch.get_dict_for_users()
         try:
-            modify_points_all_users(1)
+            modify_points_all_users(all_users, 1)
             print "Treats added to " + str(all_users)
         except:
             return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."

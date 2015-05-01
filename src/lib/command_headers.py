@@ -360,7 +360,7 @@ commands = {
         'argc': 3,
         'return': 'command',
         'ul': 'mod',
-        'usage': "!gift [username] [Pokemon_name]['item'] [starting_level]['item_number']"
+        'usage': "!gift [username] [Pokemon_name/'item'] [starting_level/'item_number']"
               
     },
             
