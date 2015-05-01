@@ -23,6 +23,8 @@ def treatsForAll(delta):
 
 def treats(args):
 
+    user_dict, all_users = twitch.get_dict_for_users()
+
     usage = "!treats (add/remove [username] [amount])"
 
     approved_list = [
@@ -44,7 +46,7 @@ def treats(args):
     elif add_remove == "add":
         
         if delta_user == "all":
-            modify_points_all_users(delta)
+            modify_points_all_users(all_users, delta)
         else:
             modify_user_points(delta_user, delta)
         
