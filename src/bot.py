@@ -113,7 +113,7 @@ class Roboraj(object):
             self.irc.send_message(channel, resp)
             return
 
-        # if there's a required userleve, validate it.
+        # if there's a required userlevel, validate it.
         if commands.check_has_ul(username, command):
             user_dict, all_users = twitch.get_dict_for_users()
             if username not in user_dict["chatters"]["moderators"]:
@@ -123,7 +123,13 @@ class Roboraj(object):
                     pbot(resp, channel)
                     self.irc.send_message(channel, resp)
                     return
-
+                
+        if globals.global_channel == "shedeviil_09" or globals.global_channel == "lycomedesgames":
+            prevented_list = ['songrequest', 'request', 'llama', 'shots', 'treats']
+            #print command
+            if command.replace("!","") in prevented_list:
+                return
+            
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
 
