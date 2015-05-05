@@ -53,13 +53,11 @@ def modify_user_points(delta_user, delta):
 
         cur = con.cursor()
         cur.execute("""INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + %s""", [delta_user,delta,delta])
-
-
     
 def modify_points_all_users(all_users, points_to_increment = 1):
-    print all_users
+    #print all_users
     user_list_for_query = [(x,str(points_to_increment)) for x in all_users]
-    print user_list_for_query
+    #print user_list_for_query
     
     try:
         with con:

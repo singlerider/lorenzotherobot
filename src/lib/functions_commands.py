@@ -6,34 +6,27 @@ from command_headers import *
 import sys
 import traceback
 
-
 def is_valid_command(command):
     if command in commands:
         return True
 
-
 def update_last_used(command, channel):
     commands[command][channel]['last_used'] = time.time()
 
-
 def get_command_limit(command):
     return commands[command]['limit']
-
 
 def is_on_cooldown(command, channel):
     if time.time() - commands[command][channel]['last_used'] < commands[command]['limit']:
         return True
     return False
 
-
 def get_cooldown_remaining(command, channel):
     return round(commands[command]['limit'] - (time.time() - commands[command][channel]['last_used']))
-
 
 def command_user_level(command):
     if commands[command]['ul']:
         return True
-
 
 # def get_user_level(username, channel):
 #	if '+o' is in data.stream:
@@ -44,22 +37,17 @@ def check_has_return(command):
         return True
     return False
 
-
 def get_return(command):
     return commands[command]['return']
-
 
 def check_has_args(command):
     if 'argc' in commands[command]:
         return True
 
-
 def check_is_space_case(command):
     """Check to see if the command is a space case
     by default it's not."""
     return commands[command].get("space_case", False)
-
-
 
 def check_has_correct_args(message, command):
     """Check to see if message has the correct number of arguments,
@@ -80,13 +68,11 @@ def check_has_correct_args(message, command):
     else:
         return False
 
-
 def check_has_ul(username, command):
     if 'ul' in commands[command]:
         if 'mod' in commands[command]['ul']:
             return True
     return False
-
 
 def check_returns_function(command):
     if commands[command]['return'] == 'command':

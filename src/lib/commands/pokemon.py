@@ -32,6 +32,12 @@ def shedeviil_09_cron(a=None): #todo remove this arg requirement.
     print "trying"
     return "A wild " + pocket_monster + " appeared!"
 
+def lycomedesgames_cron(a=None): #todo remove this arg requirement
+    globals.lycomedesgames_CAUGHT = False
+    pocket_monster = random.choice(randomPokemon())
+    globals.lycomedesgames_POKEMON = pocket_monster
+    print "trying"
+    return "A wild " + pocket_monster + " appeared!"
 
 #!pokemon battle
 def battle():

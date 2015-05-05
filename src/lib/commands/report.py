@@ -2,8 +2,6 @@ import globals
 
 import smtplib
 
-
-
 def report(args):
     fromaddr = globals.email_credentials[1]
     toaddrs = globals.email_credentials[0]

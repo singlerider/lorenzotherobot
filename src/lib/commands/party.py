@@ -14,8 +14,6 @@ def party(args):
         return "lvl " + str(level) + " " + pokemon_name + ": HP " + str(hp) + ", Att " + str(attack) + ", Spd " + str(speed) + ", Def " + str(defense) + ", SpAtt " + str(special_attack) + ", SpDef " + str(special_defense) + ", " + pokemon_type1 + ", " + pokemon_type2
     elif args[0] == 'members':
         party_members = get_user_party_info(globals.CURRENT_USER)
-        for item in party_members:
-            print item
         return party_members
     else:
         try:

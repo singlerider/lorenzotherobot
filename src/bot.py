@@ -27,8 +27,6 @@ import globals
 
 END = False
 
-
-
 class Roboraj(object):
 
     def __init__(self, config):
@@ -51,13 +49,9 @@ class Roboraj(object):
                 message_dict = self.irc.get_message(data)
                 channel = message_dict['channel']
                 globals.global_channel = channel.lstrip('#')
-                print "channel", channel.lstrip('#')
-                print "globals.channel", globals.global_channel.lstrip('#')
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-
-                ppi(channel, message, username)
 
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
@@ -74,7 +68,6 @@ class Roboraj(object):
                 raise
                 traceback.print_exc(file=self.log)
 
-
     def handleCommand(self, command, channel, username, message):
         # parse arguments
         # if command is space case then
@@ -87,14 +80,10 @@ class Roboraj(object):
         if command == message:
             args = []
             
-            
         ######TEMPORARY COMMAND IGNORES FOR shedeviil_09
         
         elif command == message and command in commands.keys():
             print "Yes, it is in commands"
-            
-            
-            
             
         else:
             args = [message[len(command)+1:]] # default to args = ["bar baz"]
@@ -115,7 +104,6 @@ class Roboraj(object):
         pbot('Command is valid and not on cooldown. (%s) (%s)' %
                 (command, username) ,channel)
 
-
         # Check for and handle the simple non-command case.
         cmd_return = commands.get_return(command)
         if cmd_return != "command":
@@ -125,13 +113,11 @@ class Roboraj(object):
             self.irc.send_message(channel, resp)
             return
 
-
         # if there's a required userleve, validate it.
         if commands.check_has_ul(username, command):
             user_dict, all_users = twitch.get_dict_for_users()
             if username not in user_dict["chatters"]["moderators"]:
                 if username != 'singlerider':
-                    print username
                     resp = '(%s) : %s' % (
                         username, "This is a moderator-only command!")
                     pbot(resp, channel)
@@ -146,30 +132,3 @@ class Roboraj(object):
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
             self.irc.send_message(channel, resp)
-
-
-class Logger(Roboraj):
-
-    def __init__(self, config, filename="Default.log"):
-        # this should be saved in yourlogfilename.txt
-        print "The following log is for " + str(datetime.date.today()) + ". "
-        super(Logger, self).__init__(config)
-        self.terminal = sys.stdout
-        sys.stdout = self
-        self.log = open(filename, "a")
-
-    def write(self, message):
-        # In the event of an error, "try", to prevent bot crash. If there is an
-        # error, print it
-        try:
-            safe_message = unicode(message).encode('utf8', 'ignore')
-            self.terminal.write(safe_message)
-            self.log.write(safe_message)
-        except Exception as err:
-            # Uncomment line below the print error to console when it occurs
-            #self.log.write("Unhandled error:\n" + str(err))
-
-            traceback.print_exc(file=self.log)
-        # Log the console output to file as it comes in
-        finally:
-            self.log.flush()

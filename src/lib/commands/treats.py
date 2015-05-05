@@ -3,7 +3,6 @@ import src.lib.twitch as twitch
 from src.lib.queries.points_queries import *
 import globals
 
-
 def cron():
     treatsForAll(1)
 
@@ -12,14 +11,13 @@ def treatsForAll(delta):
         user_dict, all_users = twitch.get_dict_for_users()
         try:
             modify_points_all_users(all_users, 1)
-            print "Treats added to " + str(all_users)
+            #print "Treats added to " + str(all_users)
         except:
             return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
 
     #for user in user_list:
     #    llamadb.newConnection().addPoints(user, delta)
     # return str(delta) + " treats added to everyone in the chat! Raise your Kappas! \Kappa/"
-
 
 def treats(args):
 
@@ -56,7 +54,5 @@ def treats(args):
         
     elif add_remove == "set":
         set_user_points(delta_user, delta)
-
-    
 
     return "{} treats for {}!".format(delta, delta_user)

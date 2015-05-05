@@ -27,7 +27,6 @@ def get_user_command():
     except:
         return "Dude... stop. You don't have a user command... yet. R)"
 
-stream_data = get_stream_status()
 def llama(args):
     grab_user = args[0].lower()
     user_data_name = globals.CURRENT_USER.lower()

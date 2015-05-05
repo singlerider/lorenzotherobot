@@ -10,7 +10,7 @@ user_data_name = globals.CURRENT_USER
 
 def get_dict_for_users():
 
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + globals.channel + '/chatters'
+    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + globals.global_channel + '/chatters'
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     users = json.loads(get_dict_for_users_resp.content)
     user_dict = users
@@ -21,37 +21,24 @@ def get_dict_for_users():
         all_users.append(str(user))
     for user in users['chatters']['staff']:
         all_users.append(str(user))
-    # print "all_users: " + str(all_users)
-    return user_dict, all_users
-
-def shedevil_09_get_dict_for_users():
-
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/shedeviil_09/chatters'
-    get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
-    users = json.loads(get_dict_for_users_resp.content)
-    user_dict = users
-    all_users = []
-    for user in users['chatters']['moderators']:
-        all_users.append(str(user))
-    for user in users['chatters']['viewers']:
+    for user in users['chatters']['admins']:
         all_users.append(str(user))
     # print "all_users: " + str(all_users)
     return user_dict, all_users
 
 def get_stream_status():
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
-        globals.channel
+        globals.global_channel
     get_stream_status_resp = requests.get(url=get_stream_status_url)
     online_data = json.loads(get_stream_status_resp.content)
     if online_data["stream"] != None:
         return True
 
-
 def get_stream_uptime():
     if get_stream_status():
         format = "%Y-%m-%d %H:%M:%S"
         get_stream_uptime_url = 'https://api.twitch.tv/kraken/streams/' + \
-            globals.channel
+            globals.global_channel
         get_stream_uptime_resp = requests.get(url=get_stream_uptime_url)
         uptime_data = json.loads(get_stream_uptime_resp.content)
         start_time = str(uptime_data['stream']['created_at']).replace(
@@ -60,17 +47,15 @@ def get_stream_uptime():
         time_delta = datetime.datetime.utcnow() - stripped_start_time
         return str(time_delta)
     else:
-        return "She's offline, duh."
-
+        return "The streamer is offline, duh."
 
 def get_offline_status():
     get_offline_status_url = 'https://api.twitch.tv/kraken/streams/' + \
-        globals.channel
+        globals.global_channel
     get_offline_status_resp = requests.get(url=get_offline_status_url)
     offline_data = json.loads(get_offline_status_resp.content)
     if offline_data["stream"] != None:
         return True
-
 
 def get_user_command():
     try:
@@ -80,16 +65,15 @@ def get_user_command():
     except:
         return "Dude... stop. You don't have a user command... yet. R)"
 
-
 def get_stream_followers():
-    url = 'https://api.twitch.tv/kraken/channels/' + globals.channel + '/follows?limit=100'
+    url = 'https://api.twitch.tv/kraken/channels/' + globals.global_channel + '/follows?limit=100'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     return data
 
 def random_highlight():
     get_highlight_url = "http://api.twitch.tv/kraken/channels/" + \
-        globals.channel + "/videos?limit=20"
+        globals.global_channel + "/videos?limit=20"
     get_highlight_resp = requests.get(url=get_highlight_url)
     highlights = json.loads(get_highlight_resp.content)
     random_highlight_choice = random.choice(highlights["videos"])

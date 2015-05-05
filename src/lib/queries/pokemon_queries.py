@@ -8,7 +8,6 @@ login = globals.mysql_credentials
 con = mdb.connect(login[0], login[1], login[2], login[3])
 from src.lib.queries.points_queries import *
 
-
 ###TODO: with con.cursor() as cur: 
 
 def get_pokemon_id_from_name(pokemon_name):
@@ -73,7 +72,8 @@ def get_user_party_info(username):
         party_members = cur.fetchall()
         
         if party_members != None:
-            return party_members
+            party_member_comprehension = ["({}) lvl {}, {}".format( x,y,z) for x,y,z in party_members]
+            return " | ".join(party_member_comprehension)
         else:
             return "No Pokemon found. Tell them to use !catch"
 

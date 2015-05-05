@@ -9,7 +9,7 @@ def stream():
     
 
     get_offline_status_url = 'https://api.twitch.tv/kraken/channels/' + \
-        globals.channel
+        globals.global_channel
     get_offline_status_resp = requests.get(url=get_offline_status_url)
     offline_data = json.loads(get_offline_status_resp.content)
 
