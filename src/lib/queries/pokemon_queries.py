@@ -149,7 +149,7 @@ def get_battle_stats(username, position):
         where username = %s and userpokemon.position = %s""", [username, position])
         
         battle_stats = cur.fetchone()
-        print battle_stats
+        #print battle_stats
         
         nickname = battle_stats[1]
         level = battle_stats[2]
