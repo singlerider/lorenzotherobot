@@ -21,13 +21,13 @@ def catch():
             print pokemon_id
             if len(open_position) > 0:
                 globals.lycomedesgames_CAUGHT = True
-                return insert_user_pokemon(pokemon_trainer, pokemon_trainer, open_position[0], pokemon_id, desired_level, globals.shedeviil_09_POKEMON, None, None)
+                return insert_user_pokemon(pokemon_trainer, pokemon_trainer, open_position[0], pokemon_id, desired_level, globals.lycomedesgames_POKEMON, None, None)
             else:
                 return "No open slots in your party."
         else:
             return "Too slow!"
     
-    if globals.global_channel == "shedeviil_09":
+    elif globals.global_channel == "shedeviil_09":
         #print "globals.global_channel == shedeviil_09"
         
         if globals.shedeviil_09_CAUGHT == False:
