@@ -124,8 +124,8 @@ class Roboraj(object):
                     self.irc.send_message(channel, resp)
                     return
                 
-        if globals.global_channel == "shedeviil_09" or globals.global_channel == "lycomedesgames":
-            prevented_list = ['songrequest', 'request', 'llama', 'shots', 'treats']
+        if globals.global_channel != "curvyllama" or globals.global_channel != "lorenzotherobot":
+            prevented_list = ['songrequest', 'request', 'llama', 'shots', 'treats', 'welcome', 'rules']
             #print command
             if command.replace("!","") in prevented_list:
                 return
@@ -133,7 +133,7 @@ class Roboraj(object):
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
 
-        pbot("Command %s(%s) had a result of %s" % (command, args, result), channel)
+        #pbot("Command %s(%s) had a result of %s" % (command, args, result), channel)
         if result:
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
