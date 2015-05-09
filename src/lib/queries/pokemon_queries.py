@@ -547,17 +547,11 @@ def gift_items(id, username):
             print "ID FOUND TO MATCH ITEMS AVAILABLE"
             points = int(get_user_points(username))
             value = int(get_item_value(id))
-            print value
-            print type(value)
-            if points >= value:
-                print "POINTS ARE HIGHER THAN ITEM VALUE"
-                with con:
-                    cur = con.cursor()
-                    cur.execute("""INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 1) ON
+            with con:
+                cur = con.cursor()
+                cur.execute("""INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 1) ON
                     DUPLICATE KEY UPDATE quantity = quantity + 1""", [username, id])
-                    return "Gift successful."
-            else:
-                return "You need more points for that!"
+                return "Gift successful."
         else:
             return "That is not a valid item position."
     except:
