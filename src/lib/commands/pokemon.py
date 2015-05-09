@@ -10,8 +10,6 @@ from src.lib.commands.pokedex.pokedata import *
 from src.lib.commands.pokedex import pokedex
 from src.lib.queries.pokemon_queries import *
 
-usage = '!pokemon <action (battle/me)>'
-
 def randomPokemon():
     rarity_list = []
     for poke in master_pokemon_dict:
@@ -19,16 +17,11 @@ def randomPokemon():
             rarity_list.append(poke)
     return rarity_list
 
-def cron(a=None): #todo remove this arg requirement.
-    globals.CAUGHT = False
+def cron(channel): #todo remove this arg requirement.
+    channel = channel.lstrip('#')
+    globals.channel_info[channel]['caught'] = False
     pocket_monster = random.choice(randomPokemon())
-    globals.POKEMON = pocket_monster
-    return "A wild " + pocket_monster + " appeared!"
-
-def shedeviil_09_cron(a=None): #todo remove this arg requirement.
-    globals.shedeviil_09_CAUGHT = False
-    pocket_monster = random.choice(randomPokemon())
-    globals.shedeviil_09_POKEMON = pocket_monster
+    globals.channel_info[channel]['pokemon'] = pocket_monster
     print "trying"
     return "A wild " + pocket_monster + " appeared!"
 

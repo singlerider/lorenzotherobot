@@ -7,7 +7,7 @@ def reset_timestamp():
     reset_countdown = now - timedelta(minutes=1440)
     reset_trade_timestamp(reset_countdown)
 
-def cron():
+def cron(a=None):
     reset_timestamp()
 
 def trade(args):

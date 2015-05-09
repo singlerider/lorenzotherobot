@@ -3,7 +3,7 @@ import globals
 
 usage = "!party [position/'members']"
 
-def cron():
+def cron(a=None):
     return "New to the channel? Use '!catch', then '!battle' one of my party members: " + str(get_user_party_info("lorenzotherobot"))
 
 def party(args):

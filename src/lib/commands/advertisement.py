@@ -1,6 +1,6 @@
-def cron():
+def cron(a=None):
     return advertisement()
-def cron2():
+def cron2(a=None):
     return updates()
 
 def advertisement():

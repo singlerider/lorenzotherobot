@@ -3,7 +3,7 @@ import src.lib.twitch as twitch
 from src.lib.queries.points_queries import *
 import globals
 
-def cron():
+def cron(a=None):
     treatsForAll(1)
 
 def treatsForAll(delta):
