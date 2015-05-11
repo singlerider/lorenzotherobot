@@ -3,14 +3,14 @@ import src.lib.twitch as twitch
 from src.lib.queries.points_queries import *
 import globals
 
-def cron(a=None):
-    treatsForAll(1)
+def cron(channel):
+    treatsForAll(channel,1)
 
-def treatsForAll(delta):
-    if get_stream_status():
-        user_dict, all_users = twitch.get_dict_for_users()
+def treatsForAll(channel, delta):
+    if get_stream_status(channel):
+        user_dict, all_users = twitch.get_dict_for_users(channel)
         try:
-            modify_points_all_users(all_users, 1)
+            modify_points_all_users(all_users, delta)
             #print "Treats added to " + str(all_users)
         except:
             return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."

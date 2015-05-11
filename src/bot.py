@@ -124,11 +124,13 @@ class Roboraj(object):
                     self.irc.send_message(channel, resp)
                     return
                 
-        if globals.global_channel != "curvyllama" or globals.global_channel != "lorenzotherobot":
-            prevented_list = ['songrequest', 'request', 'llama', 'shots', 'treats', 'welcome', 'rules']
+        if globals.global_channel != "curvyllama":
+            if globals.global_channel != "lorenzotherobot":
+                print globals.global_channel
+                prevented_list = ['songrequest', 'request', 'llama', 'shots', 'treats', 'welcome', 'rules']
             #print command
-            if command.replace("!","") in prevented_list:
-                return
+                if command.replace("!","") in prevented_list:
+                    return
             
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)

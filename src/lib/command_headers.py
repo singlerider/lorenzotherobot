@@ -238,7 +238,7 @@ commands = {
 
     '!help': {
         'limit': 15,
-        'return': 'There is a super useful README for lorenzo at http://www.github.com/singlerider/lorenzotherobot',
+        'return': 'There is a super useful README for lorenzo at http://www.twitch.tv/lorenzotherobot',
         'usage': '!help'
 
     },
