@@ -6,8 +6,8 @@ import src.lib.commands.pokemon as pokemon_import
 usage = "!tallgrass [treatsamount]"
 
 def tallgrass_release(generated_pokemon):
-    globals.CAUGHT = False
-    globals.POKEMON = generated_pokemon
+    globals.channel_info[globals.global_channel]['caught'] = False
+    globals.channel_info[globals.global_channel]['pokemon'] = generated_pokemon
     return "A wild " + generated_pokemon + " appeared!"
 
 def tallgrass(args):
