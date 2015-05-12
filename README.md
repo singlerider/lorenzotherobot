@@ -24,31 +24,31 @@ Commands
 ========
 
 So, what can the bot do? Here are a list of current commands in no particular order with a description of each (if one is needed):
-* marks a moderator-only command
+An asterisk (*) marks a moderator-only command
+
     '!report'* [insert bug report text here]
     '!commands'* - has different results, depending on whether or not a moderator sent the command
     '!opinion' - acts as a magic 8 ball
-	'!chair'
-	'!randomnumber' - returns a random number between 1 and 100
+    '!chair'
+    '!randomnumber' - returns a random number between 1 and 100
     '!randomemote' - returns a random emote from Twitch's standard emotes library
-	'!carlpoppa'
-	'!hookah'
-	'!maggie'
+    '!carlpoppa'
+    '!hookah'
+    '!maggie'
     '!fb' - Link to Streamer's Faceook
     '!ig' - Link to Streamer's Instagram
-    '!twitter' - Link to Streamer'sTwitter
+    '!twitter' - Link to Streamer's Twitter
     '!vine' - Link to Streamer's Vine
-	'!yt' - Link to Streamer's YouTube
+    '!yt' - Link to Streamer's YouTube
     '!gt' - Displays Streamer's Gamertag
-	'!rules' - Shows the Rules
-	'!welcome' - Welcome Message to Newbies
-	'!pwv' - Play with Viewers
-	'!daddy'
+    '!rules' - Shows the Rules
+    '!welcome' - Welcome Message to Newbies
+    '!pwv' - Play with Viewers
+    '!daddy'
     '!cry' - BibleThump times a bunch
     '!maggie' - Personalized message about a streamer
-    
     '!buyprints' - Link to Streamer's Posters for Sale
-    '!playlist' - depracated spotify playlist
+    '!playlist' - deprecated spotify playlist
     '!flip' - show a table flip ASCII image
     '!request' ['artist name and song title'] - adds requested search query result to a youtube playlist, specified by bot admin
     '!songrequest' - Same as '!request'
@@ -110,7 +110,6 @@ Pokemon
 
 Built in are several work-in-progress functions for returning "random battles" of the first generation of Pokemon. The idea, in the end is that a user will have a Pokemon assigned to them that they would catch as one is released randomly in the chat. Users will compete to be the first to catch the Pokemon with a separate command.
 
-    
     '!check' ['trades'/'market'/'items'/'inventory'/username] - shows pertinent information related to the argument passed
     '!buy' [item_number] - allows you to apply an item to a Pokemon (Rare candies level you up 10 levels/Stones evolve eligible pokemon)
     '!evolve' [position_number] - evolves a Pokemon if a non-item evolution condition is required and met
