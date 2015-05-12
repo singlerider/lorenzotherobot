@@ -454,7 +454,7 @@ commands = {
     '!urban': {
         'limit': 0,
         'argc': 1,
-        'space_case' = True,
+        'space_case' : True,
         'return': 'command',
         'usage': '!urban [insert_word_here]'
             
