@@ -340,7 +340,7 @@ commands = {
     },
             
     '!battle': {
-        'limit': 0,
+        'limit': 180,
         'argc': 2,
         'return': 'command',
         'usage': "!battle [position_to_battle_with] [opponent_username]"
