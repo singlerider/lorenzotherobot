@@ -451,12 +451,12 @@ commands = {
                    
     },
     
-    '!urban': {
-        'limit': 0,
+    '!define': {
+        'limit': 300,
         'argc': 1,
         'space_case' : True,
         'return': 'command',
-        'usage': '!urban [insert_word_here]'
+        'usage': '!define [insert_word_here]'
             
     }
         

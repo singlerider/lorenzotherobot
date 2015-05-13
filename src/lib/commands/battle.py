@@ -11,7 +11,7 @@ def battle(args):
     user_dict, all_users = get_dict_for_users()
     
     now = datetime.utcnow()
-    cooldown_time = 1
+    cooldown_time = 3
     required_cooldown =  datetime.utcnow() - timedelta(minutes=cooldown_time)
     last_battle_time = get_last_battle(globals.CURRENT_USER)
     
