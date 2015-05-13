@@ -66,7 +66,7 @@ def get_user_party_info(username):
 
         cur = con.cursor()
         cur.execute("""SELECT userpokemon.position, userpokemon.level, userpokemon.nickname
-        FROM userpokemon WHERE username = %s ORDER BY userpokemon.position;""", [username])
+        FROM userpokemon WHERE username = %s ORDER BY userpokemon.position""", [username])
         
         
         party_members = cur.fetchall()
@@ -76,6 +76,19 @@ def get_user_party_info(username):
             return " | ".join(party_member_comprehension)
         else:
             return "No Pokemon found. Tell them to use !catch"
+        
+def get_user_battle_info(username):
+    #broken
+    with con: 
+
+        cur = con.cursor()
+        cur.execute("""SELECT userpokemon.position, userpokemon.level
+        FROM userpokemon WHERE username = %s ORDER BY userpokemon.position""", [username])
+        
+        
+        party_members = cur.fetchall()
+        
+        return party_members
 
 def user_pokemon_types_summary(username, position):
     with con: 

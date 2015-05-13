@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 def battle(args):
     
     position = int(args[0])
-    opponent = args[1].lower()
+    opponent = args[1].lower().replace('@','')
     
     user_dict, all_users = get_dict_for_users()
     
@@ -32,7 +32,18 @@ def battle(args):
                             if len(eligible_positions) > 0:
                                 random_opponent_position = random.choice(eligible_positions)
                             else:
-                                return "You can only battle an opponent with a Pokemon within five levels of your attacker! Try using "
+                                recommended_fighters = []
+                                them = get_user_battle_info(opponent)
+                                you = get_user_battle_info(globals.CURRENT_USER)
+                                for __, defender in them:
+                                    for pos, attacker in you:
+                                        if attacker - defender < 5:
+                                            if attacker - defender > - 5:
+                                                recommended_fighters.append(pos)
+                                if len(recommended_fighters) > 0:
+                                    return "You can only battle an opponent with a Pokemon within 5 levels of your attacker! Try using your position {}!".format(random.choice(recommended_fighters))
+                                else:
+                                    return "Either you are too high of a level or not high enough to battle anything {} has! Try someone else?".format(opponent)
                             nickname_1, pokemon_type1_id_1, pokemon_type2_id_1, pokemon_name_1, pokemon_type1_1, pokemon_type2_1 = user_pokemon_types_summary(globals.CURRENT_USER, position)
                             nickname_2, pokemon_type1_id_2, pokemon_type2_id_2, pokemon_name_2, pokemon_type1_2, pokemon_type2_2 = user_pokemon_types_summary(opponent, random_opponent_position)
                             defender_stats = get_battle_stats(opponent, random_opponent_position)
