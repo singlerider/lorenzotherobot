@@ -260,7 +260,7 @@ commands = {
     },
 
     '!viewers': {
-        'limit': 0,
+        'limit': 15,
         'return': 'command',
         'argc': 0,
         'usage': '!viewers'
@@ -268,7 +268,7 @@ commands = {
     },
 
     '!highlight': {
-        'limit': 0,
+        'limit': 15,
         'return': 'command',
         'argc': 0,
         'usage': '!highlight'
@@ -276,7 +276,7 @@ commands = {
     },
 
     '!followers': {
-        'limit': 0,
+        'limit': 30,
         'return': 'command',
         'argc': 0,
         'usage': '!followers'
@@ -284,7 +284,7 @@ commands = {
     },
 
     '!uptime': {
-        'limit': 0,
+        'limit': 15,
         'return': 'command',
         'argc': 0,
         'usage': '!uptime'
@@ -292,7 +292,7 @@ commands = {
     },
 
     '!stream': {
-        'limit': 0,
+        'limit': 60,
         'return': 'command',
         'argc': 0,
         'usage': '!stream'
@@ -381,7 +381,7 @@ commands = {
     },
             
     '!popularity': {
-        'limit': 0,
+        'limit': 60,
         'argc': 1,
         'return': 'command',
         'space_case': True,
@@ -420,7 +420,7 @@ commands = {
     },
             
     '!check': {
-        'limit': 0,
+        'limit': 10,
         'argc': 1,
         'return': 'command',
         'usage': "!check ['trades'/'market'/'items'/'inventory'/username]"
@@ -444,7 +444,7 @@ commands = {
     },
             
     '!leaderboard': {
-        'limit': 0,
+        'limit': 300,
         'argc': 0,
         'return': 'command',
         'usage': '!leaderboard'
