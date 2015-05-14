@@ -20,45 +20,48 @@ def tallgrass(args):
     if globals.global_channel == "shedeviil_09":
         return "This only works in Curvyllama's chat. Excuse my dust as I upgrade my systems!"
     
-    if abs(points_to_sacrifice) >= 1000:
-        print "abs(points_to_sacrifice) > 1000:", abs(points_to_sacrifice)
-        if actual_points >= abs(points_to_sacrifice):
-            generated_pokemon = spawn_tallgrass(0)
-            modify_user_points(username, points_to_sacrifice)
-            return tallgrass_release(generated_pokemon) + treats_removed
-        else:
-            return "Sorry, but you need more treats to do that."
-    elif abs(points_to_sacrifice) >= 100:
-        print "abs(points_to_sacrifice) > 100:", abs(points_to_sacrifice)
-        if abs(points_to_sacrifice) <= 500:
-            print "abs(points_to_sacrifice) <= 500:", abs(points_to_sacrifice)
+    if type(actual_points) is long:
+        if abs(points_to_sacrifice) >= 1000:
+            print "abs(points_to_sacrifice) > 1000:", abs(points_to_sacrifice)
             if actual_points >= abs(points_to_sacrifice):
-                generated_pokemon = spawn_tallgrass(1)
+                generated_pokemon = spawn_tallgrass(0)
                 modify_user_points(username, points_to_sacrifice)
                 return tallgrass_release(generated_pokemon) + treats_removed
             else:
                 return "Sorry, but you need more treats to do that."
-        else:
-            return "You're in an open field. No tall grass between 501 and 999 Treats!"
-    elif abs(points_to_sacrifice) < 100:
-        print "abs(points_to_sacrifice) < 100:", abs(points_to_sacrifice)
-        if abs(points_to_sacrifice) >= 25:
-            "abs(points_to_sacrifice) >= 25:", abs(points_to_sacrifice)
-            if actual_points >= abs(points_to_sacrifice):
-                generated_pokemon = spawn_tallgrass(2)
-                modify_user_points(username, points_to_sacrifice)
-                return tallgrass_release(generated_pokemon) + treats_removed
+        elif abs(points_to_sacrifice) >= 100:
+            print "abs(points_to_sacrifice) > 100:", abs(points_to_sacrifice)
+            if abs(points_to_sacrifice) <= 500:
+                print "abs(points_to_sacrifice) <= 500:", abs(points_to_sacrifice)
+                if actual_points >= abs(points_to_sacrifice):
+                    generated_pokemon = spawn_tallgrass(1)
+                    modify_user_points(username, points_to_sacrifice)
+                    return tallgrass_release(generated_pokemon) + treats_removed
+                else:
+                    return "Sorry, but you need more treats to do that."
             else:
-                return "Sorry, but you need more treats to do that."
-        elif abs(points_to_sacrifice) > 4:
-            "abs(points_to_sacrifice) > 4:", abs(points_to_sacrifice)
-            if actual_points >= abs(points_to_sacrifice):
-                generated_pokemon = spawn_tallgrass(3)
-                modify_user_points(username, points_to_sacrifice)
-                return tallgrass_release(generated_pokemon) + treats_removed
+                return "You're in an open field. No tall grass between 501 and 999 Treats!"
+        elif abs(points_to_sacrifice) < 100:
+            print "abs(points_to_sacrifice) < 100:", abs(points_to_sacrifice)
+            if abs(points_to_sacrifice) >= 25:
+                "abs(points_to_sacrifice) >= 25:", abs(points_to_sacrifice)
+                if actual_points >= abs(points_to_sacrifice):
+                    generated_pokemon = spawn_tallgrass(2)
+                    modify_user_points(username, points_to_sacrifice)
+                    return tallgrass_release(generated_pokemon) + treats_removed
+                else:
+                    return "Sorry, but you need more treats to do that."
+            elif abs(points_to_sacrifice) > 4:
+                "abs(points_to_sacrifice) > 4:", abs(points_to_sacrifice)
+                if actual_points >= abs(points_to_sacrifice):
+                    generated_pokemon = spawn_tallgrass(3)
+                    modify_user_points(username, points_to_sacrifice)
+                    return tallgrass_release(generated_pokemon) + treats_removed
+                else:
+                    return "Sorry, but you need more treats to do that."
             else:
-                return "Sorry, but you need more treats to do that."
+                return "Dude, don't be cheap. Spare 5 treats."
         else:
-            return "Dude, don't be cheap. Spare 5 treats."
-    else:
-        return "Treats to sacrifice must be a number higher than 5."
+            return "Treats to sacrifice must be a number higher than 5."
+    print type(actual_points)
+    return "Sorry. That won't work. You need more treats! Stay tuned!"
