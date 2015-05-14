@@ -9,7 +9,7 @@ def highlight():
     
     uptime = get_stream_uptime()
     form_url = "http://goo.gl/UyWYKg"
-    channel = globals.channel
+    channel = globals.global_channel
     
     if get_stream_status():
         
