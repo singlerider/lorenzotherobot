@@ -458,6 +458,15 @@ commands = {
         'return': 'command',
         'usage': '!define [insert_word_here]'
             
+    },
+            
+    '!caster': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'usage': '!caster [streamer_username]',
+        'ul': 'mod'
+                
     }
         
 }
