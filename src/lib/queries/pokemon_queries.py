@@ -404,7 +404,7 @@ def spawn_tallgrass(rarity_index):
     with con:
         
         cur = con.cursor()
-        cur.execute("""SELECT name FROM pokemon WHERE rarity = %s AND evolution_trigger = 0 AND id != 244 ORDER BY rand() limit 1""", [rarity_index]) #Intentionally excludes Entei
+        cur.execute("""SELECT name FROM pokemon WHERE rarity = %s AND evolution_trigger = 0 AND id != 244 and id != 251 ORDER BY rand() limit 1""", [rarity_index]) #Intentionally excludes Entei
         rare_pokemon = cur.fetchone()
         
         return rare_pokemon[0]
