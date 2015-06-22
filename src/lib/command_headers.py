@@ -232,13 +232,13 @@ commands = {
                 
     },
             
-    #'!nickname': {
-    #    'limit': 0,
-    #    'argc': 2,
-    #    'return': 'command',
-    #    'usage': '!nickname [position_to_update] [nickname(must not contain spaces)]'
-    #              
-    #},
+    '!nickname': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command',
+        'usage': '!nickname [position_to_update] [nickname(must not contain spaces)]'
+                  
+    },
             
     '!popularity': {
         'limit': 60,

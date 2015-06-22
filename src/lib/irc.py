@@ -1,3 +1,4 @@
+# encoding=utf8
 import socket
 import re
 import time
@@ -87,10 +88,10 @@ class irc:
           return
 
         if isinstance(message, basestring):
-          self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message.encode('utf-8')))
+          self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message))
 
         if type(message) == list:
-          for line in message:
+          for line in message.decode("utf8"):
             self.send_message(channel, line)
 
     def connect(self):
