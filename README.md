@@ -13,10 +13,14 @@ This is a Twitch chat/irc bot written in python (2.7).
 Installation
 ============
 * Open up your terminal/shell of choice.
+* You'll need some dependencies, such as Python 2.7 (and I'd recommend installing python-pip), mysql, and mysql for python 
 * Install the [http://docs.python-requests.org/en/latest/](Requests library) if you haven't already using 'pip install requests'. I tested this application on Python 2.7.5.
-* 
 * Clone the Git repository.
 * Move config/config_example.py to config/config.py. Replace all of the placeholders there with your own username/oauth token/channels to join etc (tips are given in the file).
+* Rename globals_example.py to globals.py. Insert your corrected login data to the appropriate fields. Leave 'localhost' as is.
+* You'll need to create a database from mysql's terminal. I highly recommend creating a user as opposed to handling things with root. It's dangerous. To create the database, enter the MySQL console by issuing the command "mysql", then type "CREATE DATABASE twitch;" . Then "quit;" . afterwards, you need to pump the data from the schema to populate the database fields. To do this, from the root project folder (lorenzotherobot), type "mysqldump -u [username] -p twitch > schema.sql" . The password is set upon install of mysql.
+* If the distro requires it, you'll need to run the mysql daemon by typing "mysqld" whenever the host machine is restarted.
+* Read below to see how to get YouTube things going.
 * Type 'chmod +x /serve.py'. To run, you simply need to execute the file by typing './serve.py'.
 
 
