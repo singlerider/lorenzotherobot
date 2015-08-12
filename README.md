@@ -135,7 +135,7 @@ Built in are several work-in-progress functions for returning "random battles" o
 Llama
 =====
 
-The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a SQLite3 database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
+The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a MySQL database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
 
 'list' - shows a list in descending order of users with most treats
 'treats' - shows the user that types the command's treat amount
