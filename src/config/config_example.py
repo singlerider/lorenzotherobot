@@ -1,28 +1,37 @@
-global config
+﻿global config
 
+import src.lib.commands.poll as poll
+import src.lib.commands.trade as trade
+import src.lib.commands.advertisement as advertisement
+import src.lib.commands.party as party
 import src.lib.commands.pokemon as pokemon
 import src.lib.commands.treats as treats
+import globals
+
+channels_to_join= ['#acarlton5']
+
+for channel in channels_to_join:
+    channel = channel.lstrip('#')
+    globals.channel_info[channel] = {'caught': True, 'pokemon': ''}
 
 config = {
     # details required to login to twitch IRC server
     'server': 'irc.twitch.tv',
     'port': 6667,
-    'username': 'YourUsername',
-    'oauth_password': 'YourOauthToken',# get this from http://twitchapps.com/tmi/
+    'username': 'Pikachu__bot',
+    'oauth_password': 'oauth:6yc3lsd1ho0jmw52vr58udcy2mqe32',# get this from http://twitchapps.com/tmi/
 
     'debug': True,
     'log_messages': True,
-
-    # channel to join
-    'channels': ['#lorenzotherobot'],
-
+    
+    'channels': channels_to_join,
+    
     # Cron jobs.
     'cron': {
-        '#lorenzotherobot': [
+        '#acarlton5': [
             #time, run, callback
-            (120, True, pokemon.cron), # pokemon released every 2 minutes
-            (300, True, treats.cron), # treat handed out every 5 minutes
-            (3600, True, advertisement.cron), # advertisement for streamer choice every hour
-        ],
+            (60, True, pokemon.cron), # pokemon released every 20 minutes
+            (600, True, treats.cron), # treat handed out every 10 minutes
+            ],
     },
 }
