@@ -13,7 +13,10 @@ def get_dict_for_users(channel=None):
         globals.global_channel = channel.lstrip('#')
     get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + globals.global_channel + '/chatters'
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
-    users = json.loads(get_dict_for_users_resp.content)
+    try:
+        users = json.loads(get_dict_for_users_resp.content)
+    except:
+        return "Twitch's backend is down. Sorry, dawg. Treats will return once that gets fixed."
     user_dict = users
     all_users = []
     for user in users['chatters']['moderators']:
