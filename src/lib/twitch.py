@@ -6,6 +6,8 @@ import datetime
 from src.bot import *
 import src.lib.user_commands as user_commands_import
 
+# making this comment from Github's Oval Office
+
 user_data_name = globals.CURRENT_USER
 
 def get_dict_for_users(channel=None):
