@@ -10,6 +10,7 @@ import src.lib.queries.points_queries as points_import
 
 usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"
 
+
 def random_highlight():
     get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
         globals.channel + "/videos?limit=20"
@@ -20,12 +21,15 @@ def random_highlight():
     random_highlight_choice = random.choice(highlights["videos"])
     return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n", " ").replace("\r", " ")
 
+
 def get_user_command():
     try:
-        user_command = user_commands_import.user_command_dict[user_data_name]["return"]
+        user_command = user_commands_import.user_command_dict[
+            user_data_name]["return"]
         return user_command
     except:
         return "Dude... stop. You don't have a user command... yet. R)"
+
 
 def llama(args):
     grab_user = args[0].lower()

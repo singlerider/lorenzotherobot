@@ -8,6 +8,7 @@ import thread
 
 threshold = 5 * 60  # five minutes, make this whatever you want
 
+
 class irc:
 
     def __init__(self, config):
@@ -85,14 +86,14 @@ class irc:
         #  -- technically since this is recursive you can have a tree of messages
         #  -- [["1", ["2", "3"]], "4"] will send "1", "2", "3", "4".
         if not message:
-          return
+            return
 
         if isinstance(message, basestring):
-          self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message))
+            self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message))
 
         if type(message) == list:
-          for line in message.decode("utf8"):
-            self.send_message(channel, line)
+            for line in message.decode("utf8"):
+                self.send_message(channel, line)
 
     def connect(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -27,6 +27,7 @@ import globals
 
 END = False
 
+
 class Roboraj(object):
 
     def __init__(self, config):
@@ -79,14 +80,15 @@ class Roboraj(object):
         # print("Inputs:", command, channel, username, message)
         if command == message:
             args = []
-            
-        ######TEMPORARY COMMAND IGNORES FOR shedeviil_09
-        
+
+        # TEMPORARY COMMAND IGNORES FOR shedeviil_09
+
         elif command == message and command in commands.keys():
             print "Yes, it is in commands"
-            
+
         else:
-            args = [message[len(command)+1:]] # default to args = ["bar baz"]
+            # default to args = ["bar baz"]
+            args = [message[len(command) + 1:]]
 
         if not commands.check_is_space_case(command) and args:
             # if it's not space case, break the arg apart
@@ -102,7 +104,7 @@ class Roboraj(object):
             )
             return
         pbot('Command is valid and not on cooldown. (%s) (%s)' %
-                (command, username) ,channel)
+             (command, username), channel)
 
         # Check for and handle the simple non-command case.
         cmd_return = commands.get_return(command)
@@ -123,16 +125,17 @@ class Roboraj(object):
                     pbot(resp, channel)
                     self.irc.send_message(channel, resp)
                     return
-                
+
         if globals.global_channel != "curvyllama":
             if globals.global_channel != "lorenzotherobot":
                 print globals.global_channel
-                prevented_list = ['songrequest', 'request', 'llama', 'shots', 'treats', 'welcome', 'rules', 'poll', 'vote', 'gt']
+                prevented_list = ['songrequest', 'request', 'llama', 'shots',
+                                  'treats', 'welcome', 'rules', 'poll', 'vote', 'gt']
                 print command.lstrip("!")
                 if command.lstrip("!") in prevented_list:
                     print "matched"
                     return
-            
+
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
 

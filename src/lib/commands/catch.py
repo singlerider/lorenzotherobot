@@ -4,14 +4,19 @@ from src.lib.commands.pokedex import pokedex
 from src.lib.queries.pokemon_queries import *
 from src.lib.queries.points_queries import *
 
+
 def catch():
     print globals.channel_info[globals.global_channel]['pokemon']
     if globals.channel_info[globals.global_channel]['caught'] == False:
         pokemon_trainer = globals.CURRENT_USER
-        modify_user_points(globals.CURRENT_USER, 0) # This is here for if the user is brand new. This creates an entry in the users table, which userpokemon is dependent on
-        open_position, occupied_positions = find_open_party_positions(pokemon_trainer)
+        # This is here for if the user is brand new. This creates an entry in
+        # the users table, which userpokemon is dependent on
+        modify_user_points(globals.CURRENT_USER, 0)
+        open_position, occupied_positions = find_open_party_positions(
+            pokemon_trainer)
         desired_level = 5
-        pokemon_id = get_pokemon_id_from_name(globals.channel_info[globals.global_channel]['pokemon'])
+        pokemon_id = get_pokemon_id_from_name(
+            globals.channel_info[globals.global_channel]['pokemon'])
         print pokemon_id
         if len(open_position) > 0:
             globals.channel_info[globals.global_channel]['caught'] = True

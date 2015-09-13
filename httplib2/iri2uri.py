@@ -50,6 +50,7 @@ escape_range = [
     (0x100000, 0x10FFFD),
 ]
 
+
 def encode(c):
     retval = c
     i = ord(c)
@@ -66,7 +67,7 @@ def iri2uri(uri):
     """Convert an IRI to a URI. Note that IRIs must be
     passed in a unicode strings. That is, do not utf-8 encode
     the IRI before passing it into the function."""
-    if isinstance(uri ,unicode):
+    if isinstance(uri, unicode):
         (scheme, authority, path, query, fragment) = urlparse.urlsplit(uri)
         authority = authority.encode('idna')
         # For each character in 'ucschar' or 'iprivate'
@@ -91,20 +92,24 @@ if __name__ == "__main__":
                 u"news:comp.infosystems.www.servers.unix",
                 u"tel:+1-816-555-1212",
                 u"telnet://192.0.2.16:80/",
-                u"urn:oasis:names:specification:docbook:dtd:xml:4.1.2" ]
+                u"urn:oasis:names:specification:docbook:dtd:xml:4.1.2"]
             for uri in invariant:
                 self.assertEqual(uri, iri2uri(uri))
 
         def test_iri(self):
             """ Test that the right type of escaping is done for each part of the URI."""
-            self.assertEqual("http://xn--o3h.com/%E2%98%84", iri2uri(u"http://\N{COMET}.com/\N{COMET}"))
-            self.assertEqual("http://bitworking.org/?fred=%E2%98%84", iri2uri(u"http://bitworking.org/?fred=\N{COMET}"))
-            self.assertEqual("http://bitworking.org/#%E2%98%84", iri2uri(u"http://bitworking.org/#\N{COMET}"))
+            self.assertEqual("http://xn--o3h.com/%E2%98%84",
+                             iri2uri(u"http://\N{COMET}.com/\N{COMET}"))
+            self.assertEqual("http://bitworking.org/?fred=%E2%98%84",
+                             iri2uri(u"http://bitworking.org/?fred=\N{COMET}"))
+            self.assertEqual("http://bitworking.org/#%E2%98%84",
+                             iri2uri(u"http://bitworking.org/#\N{COMET}"))
             self.assertEqual("#%E2%98%84", iri2uri(u"#\N{COMET}"))
-            self.assertEqual("/fred?bar=%E2%98%9A#%E2%98%84", iri2uri(u"/fred?bar=\N{BLACK LEFT POINTING INDEX}#\N{COMET}"))
-            self.assertEqual("/fred?bar=%E2%98%9A#%E2%98%84", iri2uri(iri2uri(u"/fred?bar=\N{BLACK LEFT POINTING INDEX}#\N{COMET}")))
-            self.assertNotEqual("/fred?bar=%E2%98%9A#%E2%98%84", iri2uri(u"/fred?bar=\N{BLACK LEFT POINTING INDEX}#\N{COMET}".encode('utf-8')))
+            self.assertEqual("/fred?bar=%E2%98%9A#%E2%98%84",
+                             iri2uri(u"/fred?bar=\N{BLACK LEFT POINTING INDEX}#\N{COMET}"))
+            self.assertEqual("/fred?bar=%E2%98%9A#%E2%98%84", iri2uri(
+                iri2uri(u"/fred?bar=\N{BLACK LEFT POINTING INDEX}#\N{COMET}")))
+            self.assertNotEqual("/fred?bar=%E2%98%9A#%E2%98%84", iri2uri(
+                u"/fred?bar=\N{BLACK LEFT POINTING INDEX}#\N{COMET}".encode('utf-8')))
 
     unittest.main()
-
-

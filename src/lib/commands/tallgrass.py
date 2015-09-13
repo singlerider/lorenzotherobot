@@ -5,21 +5,24 @@ import src.lib.commands.pokemon as pokemon_import
 
 usage = "!tallgrass [treatsamount]"
 
+
 def tallgrass_release(generated_pokemon):
     globals.channel_info[globals.global_channel]['caught'] = False
     globals.channel_info[globals.global_channel]['pokemon'] = generated_pokemon
     return "A wild " + generated_pokemon + " appeared!"
 
+
 def tallgrass(args):
     points_to_sacrifice = abs(int(args[0])) * -1
     username = globals.CURRENT_USER
-    weighted_choices = [(0,1),(1,20),(2,50),(3,100)]
+    weighted_choices = [(0, 1), (1, 20), (2, 50), (3, 100)]
     actual_points = get_user_points(username)
-    treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
-    
+    treats_removed = " " + str(points_to_sacrifice) + \
+        " treats from " + str(username) + "!"
+
     if globals.global_channel == "shedeviil_09":
         return "This only works in Curvyllama's chat. Excuse my dust as I upgrade my systems!"
-    
+
     if type(actual_points) is long:
         if abs(points_to_sacrifice) >= 1000:
             print "abs(points_to_sacrifice) > 1000:", abs(points_to_sacrifice)

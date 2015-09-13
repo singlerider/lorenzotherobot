@@ -2299,5 +2299,3 @@ multipliers = {
         'Dark': 0.5
     }
 }
-
-

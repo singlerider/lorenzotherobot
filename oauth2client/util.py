@@ -19,12 +19,12 @@
 
 __author__ = ['rafek@google.com (Rafe Kaplan)',
               'guido@google.com (Guido van Rossum)',
-]
+              ]
 __all__ = [
-  'positional',
-  'POSITIONAL_WARNING',
-  'POSITIONAL_EXCEPTION',
-  'POSITIONAL_IGNORE',
+    'positional',
+    'POSITIONAL_WARNING',
+    'POSITIONAL_EXCEPTION',
+    'POSITIONAL_IGNORE',
 ]
 
 import inspect
@@ -34,9 +34,9 @@ import urllib
 import urlparse
 
 try:
-  from urlparse import parse_qsl
+    from urlparse import parse_qsl
 except ImportError:
-  from cgi import parse_qsl
+    from cgi import parse_qsl
 
 logger = logging.getLogger(__name__)
 
@@ -48,149 +48,150 @@ POSITIONAL_SET = frozenset([POSITIONAL_WARNING, POSITIONAL_EXCEPTION,
 
 positional_parameters_enforcement = POSITIONAL_WARNING
 
+
 def positional(max_positional_args):
-  """A decorator to declare that only the first N arguments my be positional.
+    """A decorator to declare that only the first N arguments my be positional.
 
-  This decorator makes it easy to support Python 3 style key-word only
-  parameters. For example, in Python 3 it is possible to write:
+    This decorator makes it easy to support Python 3 style key-word only
+    parameters. For example, in Python 3 it is possible to write:
 
-    def fn(pos1, *, kwonly1=None, kwonly1=None):
-      ...
-
-  All named parameters after * must be a keyword:
-
-    fn(10, 'kw1', 'kw2')  # Raises exception.
-    fn(10, kwonly1='kw1')  # Ok.
-
-  Example:
-    To define a function like above, do:
-
-      @positional(1)
-      def fn(pos1, kwonly1=None, kwonly2=None):
+      def fn(pos1, *, kwonly1=None, kwonly1=None):
         ...
 
-    If no default value is provided to a keyword argument, it becomes a required
-    keyword argument:
+    All named parameters after * must be a keyword:
 
-      @positional(0)
-      def fn(required_kw):
-        ...
+      fn(10, 'kw1', 'kw2')  # Raises exception.
+      fn(10, kwonly1='kw1')  # Ok.
 
-    This must be called with the keyword parameter:
+    Example:
+      To define a function like above, do:
 
-      fn()  # Raises exception.
-      fn(10)  # Raises exception.
-      fn(required_kw=10)  # Ok.
-
-    When defining instance or class methods always remember to account for
-    'self' and 'cls':
-
-      class MyClass(object):
-
-        @positional(2)
-        def my_method(self, pos1, kwonly1=None):
+        @positional(1)
+        def fn(pos1, kwonly1=None, kwonly2=None):
           ...
 
-        @classmethod
-        @positional(2)
-        def my_method(cls, pos1, kwonly1=None):
+      If no default value is provided to a keyword argument, it becomes a required
+      keyword argument:
+
+        @positional(0)
+        def fn(required_kw):
           ...
 
-  The positional decorator behavior is controlled by
-  util.positional_parameters_enforcement, which may be set to
-  POSITIONAL_EXCEPTION, POSITIONAL_WARNING or POSITIONAL_IGNORE to raise an
-  exception, log a warning, or do nothing, respectively, if a declaration is
-  violated.
+      This must be called with the keyword parameter:
 
-  Args:
-    max_positional_arguments: Maximum number of positional arguments. All
-      parameters after the this index must be keyword only.
+        fn()  # Raises exception.
+        fn(10)  # Raises exception.
+        fn(required_kw=10)  # Ok.
 
-  Returns:
-    A decorator that prevents using arguments after max_positional_args from
-    being used as positional parameters.
+      When defining instance or class methods always remember to account for
+      'self' and 'cls':
 
-  Raises:
-    TypeError if a key-word only argument is provided as a positional
-    parameter, but only if util.positional_parameters_enforcement is set to
-    POSITIONAL_EXCEPTION.
-  """
-  def positional_decorator(wrapped):
-    def positional_wrapper(*args, **kwargs):
-      if len(args) > max_positional_args:
-        plural_s = ''
-        if max_positional_args != 1:
-          plural_s = 's'
-        message = '%s() takes at most %d positional argument%s (%d given)' % (
-            wrapped.__name__, max_positional_args, plural_s, len(args))
-        if positional_parameters_enforcement == POSITIONAL_EXCEPTION:
-          raise TypeError(message)
-        elif positional_parameters_enforcement == POSITIONAL_WARNING:
-          logger.warning(message)
-        else: # IGNORE
-          pass
-      return wrapped(*args, **kwargs)
-    return positional_wrapper
+        class MyClass(object):
 
-  if isinstance(max_positional_args, (int, long)):
-    return positional_decorator
-  else:
-    args, _, _, defaults = inspect.getargspec(max_positional_args)
-    return positional(len(args) - len(defaults))(max_positional_args)
+          @positional(2)
+          def my_method(self, pos1, kwonly1=None):
+            ...
+
+          @classmethod
+          @positional(2)
+          def my_method(cls, pos1, kwonly1=None):
+            ...
+
+    The positional decorator behavior is controlled by
+    util.positional_parameters_enforcement, which may be set to
+    POSITIONAL_EXCEPTION, POSITIONAL_WARNING or POSITIONAL_IGNORE to raise an
+    exception, log a warning, or do nothing, respectively, if a declaration is
+    violated.
+
+    Args:
+      max_positional_arguments: Maximum number of positional arguments. All
+        parameters after the this index must be keyword only.
+
+    Returns:
+      A decorator that prevents using arguments after max_positional_args from
+      being used as positional parameters.
+
+    Raises:
+      TypeError if a key-word only argument is provided as a positional
+      parameter, but only if util.positional_parameters_enforcement is set to
+      POSITIONAL_EXCEPTION.
+    """
+    def positional_decorator(wrapped):
+        def positional_wrapper(*args, **kwargs):
+            if len(args) > max_positional_args:
+                plural_s = ''
+                if max_positional_args != 1:
+                    plural_s = 's'
+                message = '%s() takes at most %d positional argument%s (%d given)' % (
+                    wrapped.__name__, max_positional_args, plural_s, len(args))
+                if positional_parameters_enforcement == POSITIONAL_EXCEPTION:
+                    raise TypeError(message)
+                elif positional_parameters_enforcement == POSITIONAL_WARNING:
+                    logger.warning(message)
+                else:  # IGNORE
+                    pass
+            return wrapped(*args, **kwargs)
+        return positional_wrapper
+
+    if isinstance(max_positional_args, (int, long)):
+        return positional_decorator
+    else:
+        args, _, _, defaults = inspect.getargspec(max_positional_args)
+        return positional(len(args) - len(defaults))(max_positional_args)
 
 
 def scopes_to_string(scopes):
-  """Converts scope value to a string.
+    """Converts scope value to a string.
 
-  If scopes is a string then it is simply passed through. If scopes is an
-  iterable then a string is returned that is all the individual scopes
-  concatenated with spaces.
+    If scopes is a string then it is simply passed through. If scopes is an
+    iterable then a string is returned that is all the individual scopes
+    concatenated with spaces.
 
-  Args:
-    scopes: string or iterable of strings, the scopes.
+    Args:
+      scopes: string or iterable of strings, the scopes.
 
-  Returns:
-    The scopes formatted as a single string.
-  """
-  if isinstance(scopes, types.StringTypes):
-    return scopes
-  else:
-    return ' '.join(scopes)
+    Returns:
+      The scopes formatted as a single string.
+    """
+    if isinstance(scopes, types.StringTypes):
+        return scopes
+    else:
+        return ' '.join(scopes)
 
 
 def dict_to_tuple_key(dictionary):
-  """Converts a dictionary to a tuple that can be used as an immutable key.
+    """Converts a dictionary to a tuple that can be used as an immutable key.
 
-  The resulting key is always sorted so that logically equivalent dictionaries
-  always produce an identical tuple for a key.
+    The resulting key is always sorted so that logically equivalent dictionaries
+    always produce an identical tuple for a key.
 
-  Args:
-    dictionary: the dictionary to use as the key.
+    Args:
+      dictionary: the dictionary to use as the key.
 
-  Returns:
-    A tuple representing the dictionary in it's naturally sorted ordering.
-  """
-  return tuple(sorted(dictionary.items()))
+    Returns:
+      A tuple representing the dictionary in it's naturally sorted ordering.
+    """
+    return tuple(sorted(dictionary.items()))
 
 
 def _add_query_parameter(url, name, value):
-  """Adds a query parameter to a url.
+    """Adds a query parameter to a url.
 
-  Replaces the current value if it already exists in the URL.
+    Replaces the current value if it already exists in the URL.
 
-  Args:
-    url: string, url to add the query parameter to.
-    name: string, query parameter name.
-    value: string, query parameter value.
+    Args:
+      url: string, url to add the query parameter to.
+      name: string, query parameter name.
+      value: string, query parameter value.
 
-  Returns:
-    Updated query parameter. Does not update the url if value is None.
-  """
-  if value is None:
-    return url
-  else:
-    parsed = list(urlparse.urlparse(url))
-    q = dict(parse_qsl(parsed[4]))
-    q[name] = value
-    parsed[4] = urllib.urlencode(q)
-    return urlparse.urlunparse(parsed)
+    Returns:
+      Updated query parameter. Does not update the url if value is None.
+    """
+    if value is None:
+        return url
+    else:
+        parsed = list(urlparse.urlparse(url))
+        q = dict(parse_qsl(parsed[4]))
+        q[name] = value
+        parsed[4] = urllib.urlencode(q)
+        return urlparse.urlunparse(parsed)

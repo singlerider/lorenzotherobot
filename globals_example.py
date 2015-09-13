@@ -1,4 +1,4 @@
-email_credentials = ["toaddr","fromaddr","fromaddrlogin"]
+email_credentials = ["toaddr", "fromaddr", "fromaddrlogin"]
 mysql_credentials = ['localhost', 'username', 'password', 'twitch']
 global_channel = ""
 YOUTUBE_DEVELOPER_KEY = "hkjashdjkHJKHJKDHJKHjkahdjkahk"

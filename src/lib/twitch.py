@@ -10,10 +10,12 @@ import src.lib.user_commands as user_commands_import
 
 user_data_name = globals.CURRENT_USER
 
+
 def get_dict_for_users(channel=None):
     if channel != None:
         globals.global_channel = channel.lstrip('#')
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + globals.global_channel + '/chatters'
+    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
+        globals.global_channel + '/chatters'
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     try:
         users = json.loads(get_dict_for_users_resp.content)
@@ -32,6 +34,7 @@ def get_dict_for_users(channel=None):
     # print "all_users: " + str(all_users)
     return user_dict, all_users
 
+
 def get_stream_status(channel=None):
     if channel != None:
         globals.global_channel = channel.lstrip('#')
@@ -41,6 +44,7 @@ def get_stream_status(channel=None):
     online_data = json.loads(get_stream_status_resp.content)
     if online_data["stream"] != None:
         return True
+
 
 def get_stream_uptime():
     if get_stream_status():
@@ -57,6 +61,7 @@ def get_stream_uptime():
     else:
         return "The streamer is offline, duh."
 
+
 def get_offline_status():
     get_offline_status_url = 'https://api.twitch.tv/kraken/streams/' + \
         globals.global_channel
@@ -64,6 +69,7 @@ def get_offline_status():
     offline_data = json.loads(get_offline_status_resp.content)
     if offline_data["stream"] != None:
         return True
+
 
 def get_user_command():
     try:
@@ -73,11 +79,14 @@ def get_user_command():
     except:
         return "Dude... stop. You don't have a user command... yet. R)"
 
+
 def get_stream_followers():
-    url = 'https://api.twitch.tv/kraken/channels/' + globals.global_channel + '/follows?limit=100'
+    url = 'https://api.twitch.tv/kraken/channels/' + \
+        globals.global_channel + '/follows?limit=100'
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     return data
+
 
 def random_highlight():
     get_highlight_url = "http://api.twitch.tv/kraken/channels/" + \
@@ -85,28 +94,30 @@ def random_highlight():
     get_highlight_resp = requests.get(url=get_highlight_url)
     highlights = json.loads(get_highlight_resp.content)
     random_highlight_choice = random.choice(highlights["videos"])
-    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n"," ").replace("\r", " ")
+    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n", " ").replace("\r", " ")
+
 
 def get_game_popularity(game):
-    
+
     try:
         game_http_request = game.replace(' ', '%20')
-        
-        url = 'https://api.twitch.tv/kraken/search/streams?q=' + game_http_request + '&limit=100'
+
+        url = 'https://api.twitch.tv/kraken/search/streams?q=' + \
+            game_http_request + '&limit=100'
         resp = requests.get(url=url)
         data = json.loads(resp.content)
-        
+
         first_streamer = str(data["streams"][0]["channel"]["display_name"])
         second_streamer = str(data["streams"][1]["channel"]["display_name"])
         third_streamer = str(data["streams"][2]["channel"]["display_name"])
-        
+
         first_viewers = str(data["streams"][0]["viewers"])
         second_viewers = str(data["streams"][1]["viewers"])
         third_viewers = str(data["streams"][2]["viewers"])
-        
+
         top_three = first_streamer + ": " + first_viewers + ", " + second_streamer + \
-        ": " + second_viewers + ", " + third_streamer + ": " + third_viewers
+            ": " + second_viewers + ", " + third_streamer + ": " + third_viewers
         return "The top three streamers playing " + game + " are: " + top_three
-    
+
     except:
         return "Avoid using special characters and check your spelling."

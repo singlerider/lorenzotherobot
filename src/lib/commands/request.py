@@ -33,6 +33,7 @@ YOUTUBE_API_VERSION = "v3"
 
 usage = "!request artist name and song title"
 
+
 def request(args):
     if globals.global_channel == "shedeviil_09":
         return None

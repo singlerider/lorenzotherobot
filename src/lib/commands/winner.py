@@ -3,6 +3,7 @@ import random
 
 usage = "!winner"
 
+
 def winner():
     if globals.global_channel == 'shedeviil_09':
         return None

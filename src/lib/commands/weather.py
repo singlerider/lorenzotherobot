@@ -9,8 +9,8 @@ import pywapi
 
 usage = "!weather [zipcode]"
 
+
 def weather(args):
-    
 
     try:
         result = pywapi.get_weather_from_yahoo(
@@ -32,6 +32,6 @@ def weather(args):
         forecasts = forecast_1 + forecast_2 + \
             forecast_3 + forecast_4 + forecast_5
 
-        return current_conditions # + " | Forecasts: " + forecasts
+        return current_conditions  # + " | Forecasts: " + forecasts
     except:
         return "Zip codes only, at the moment, plz."

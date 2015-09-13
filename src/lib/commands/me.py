@@ -3,11 +3,12 @@ from src.lib.queries.points_queries import *
 import globals
 from datetime import *
 
+
 def me():
     usage = "!me"
-    
+
     now = datetime.utcnow()
-    
+
     start_time = get_last_battle(globals.CURRENT_USER)
     print start_time
     print now
@@ -31,7 +32,7 @@ def me():
     # return user_pokemon_types_summary()
     # return user_pokemon_types_summary(globals.CURRENT_USER, 1)
     # return "use '!party members' instead"
-    
+
 
 def get_stream_uptime():
     if get_stream_status():
@@ -47,4 +48,3 @@ def get_stream_uptime():
         return "The stream has been live for EXACTLY " + str(time_delta) + "!"
     else:
         return "She's offline, duh."
-    

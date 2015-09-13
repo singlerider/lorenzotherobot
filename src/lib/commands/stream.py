@@ -5,8 +5,8 @@ import json
 
 usage = '!stream'
 
+
 def stream():
-    
 
     get_offline_status_url = 'https://api.twitch.tv/kraken/channels/' + \
         globals.global_channel
