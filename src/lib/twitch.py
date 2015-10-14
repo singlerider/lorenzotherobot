@@ -128,7 +128,14 @@ def get_follower_status(user):
         resp = requests.get(url=url)
         data = json.loads(resp.content)
 
-        follower_since = data["created_at"][:10]
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                  "Sep". "Oct", "Nov", "Dec"]
+
+        date_split = data["created_at"][:10].split("-")
+        year = date_split[0]
+        month = months[int(date_split[1]) - 1]
+        day = date_split[2]
+        follower_since = "{} {}, {}".format(month, day, year)
         notifications = data["notifications"]
         followers = data["channel"]["followers"]
 
