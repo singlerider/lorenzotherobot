@@ -143,6 +143,14 @@ commands = {
 
     },
 
+    '!follower': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 1,
+        'usage': '!follower [username]'
+
+    },
+
     '!uptime': {
         'limit': 15,
         'return': 'command',

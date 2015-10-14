@@ -121,3 +121,17 @@ def get_game_popularity(game):
 
     except:
         return "Avoid using special characters and check your spelling."
+
+def get_follower_status(user):
+    try:
+        url = "https://api.twitch.tv/kraken/users/{}/follows/channels/{}".format(user.lower().lstrip("@"), globals.global_channel)
+        resp = requests.get(url=url)
+        data = json.loads(resp.content)
+
+        follower_since = data["created_at"][:10]
+        notifications = data["notifications"]
+        followers = data["channel"]["followers"]
+
+        return "{} has been following {} since {}.".format(user, globals.global_channel, follower_since)
+    except:
+        return "{} doesn't follow {}.".format(user, globals.global_channel)
