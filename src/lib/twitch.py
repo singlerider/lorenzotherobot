@@ -130,11 +130,22 @@ def get_follower_status(user):
 
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
                   "Sep". "Oct", "Nov", "Dec"]
+        suffixes = ["st", "nd", "rd", "th",]
 
         date_split = data["created_at"][:10].split("-")
         year = date_split[0]
         month = months[int(date_split[1]) - 1]
         day = date_split[2]
+        if day[0] == "1":
+            day = day + suffixes[3]
+        elif day[1] == "1":
+            day = day + suffixes[0]
+        elif day[1] == "2":
+            day = day + suffixes[1]
+        elif day[1] == "3":
+            day = day + suffixes[2]
+        else:
+            day = day + suffixes[3]
         follower_since = "{} {}, {}".format(month, day, year)
         notifications = data["notifications"]
         followers = data["channel"]["followers"]
