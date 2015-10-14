@@ -129,7 +129,7 @@ def get_follower_status(user):
         data = json.loads(resp.content)
 
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-                  "Sep". "Oct", "Nov", "Dec"]
+                  "Sep", "Oct", "Nov", "Dec"]
 
         date_split = data["created_at"][:10].split("-")
         year = date_split[0]
