@@ -29,9 +29,6 @@ def treats(args):
 
     usage = "!treats (add/remove [username] [amount])"
 
-    approved_list = [
-        'curvyllama', 'peligrosocortez', 'singlerider', 'newyork_triforce', 'agathos1337', 'undurfuzz69', 'jazzofrazz', 'eskimobros', 'joecow']
-
     add_remove = args[0]
     delta_user = args[1].lower()
 
@@ -41,9 +38,10 @@ def treats(args):
         return "amount has to be a number, ya dingus!"
 
     mod_name = globals.CURRENT_USER
+    user_dict, __ = get_dict_for_users(None)
 
-    if mod_name not in approved_list:
-        return "Only " + ", ".join(approved_list) + " are allowed to do that!"
+    if mod_name not in user_dict["chatters"]["moderators"]:
+        return "Only " + ", ".join(user_dict["chatters"]["moderators"]) + " are allowed to do that!"
 
     elif add_remove == "add":
 
@@ -60,3 +58,4 @@ def treats(args):
         set_user_points(delta_user, delta)
 
     return "{} treats for {}!".format(delta, delta_user)
+

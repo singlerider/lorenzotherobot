@@ -147,7 +147,8 @@ commands = {
         'limit': 0,
         'return': 'command',
         'argc': 1,
-        'usage': '!follower [username]'
+        'usage': '!follower [username]',
+        'ul': 'mod'
 
     },
 
