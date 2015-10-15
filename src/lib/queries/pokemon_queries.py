@@ -192,22 +192,6 @@ def get_battle_stats(username, position):
         return level, nickname, hp, speed, attack, defense, special_attack, special_defense
 
 
-def broken_get_damage_multiplier(attacking_type, defending_type):
-    with con:
-
-        cur = con.cursor()
-        cur.execute("SET @attacking_type = %s", [attacking_type])
-        cur.execute("SET @defending_type = %s", [defending_type])
-        cur.execute("""SET @query = CONCAT('SELECT ',@table,'.',@defending_type,'
-        as "Damage Multiplier" FROM types WHERE id = ', @attacking_type)""")
-        cur.execute("PREPARE stmt FROM @query")
-        cur.execute("EXECUTE stmt")
-
-        damage_multiplier = cur.fetchone()
-
-        return damage_multiplier
-
-
 def get_attacker_multiplier(attacker_type, defender_type):
     with con:
         cur = con.cursor()
