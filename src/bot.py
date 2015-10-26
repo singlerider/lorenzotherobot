@@ -129,8 +129,8 @@ class Roboraj(object):
         if globals.global_channel != "curvyllama":
             if globals.global_channel != "lorenzotherobot":
                 print globals.global_channel
-                prevented_list = ['songrequest', 'request', 'llama', 'shots',
-                                  'treats', 'welcome', 'rules', 'poll', 'vote', 'gt']
+                prevented_list = ['songrequest', 'request', 'shots',
+                                  'welcome', 'rules', 'poll', 'vote', 'gt']
                 print command.lstrip("!")
                 if command.lstrip("!") in prevented_list:
                     print "matched"
