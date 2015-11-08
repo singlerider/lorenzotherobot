@@ -119,13 +119,6 @@ commands = {
 
     },
 
-    '!viewers': {
-        'limit': 15,
-        'return': 'command',
-        'argc': 0,
-        'usage': '!viewers'
-
-    },
 
     '!highlight': {
         'limit': 15,
