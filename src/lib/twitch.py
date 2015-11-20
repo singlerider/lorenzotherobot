@@ -32,7 +32,7 @@ def get_dict_for_users(channel=None):
     for user in users['chatters']['admins']:
         all_users.append(str(user))
     # print "all_users: " + str(all_users)
-    return user_dict, all_users
+    return user_dict, list(set(all_users))
 
 
 def get_stream_status(channel=None):

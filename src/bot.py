@@ -23,10 +23,27 @@ import traceback
 import sched
 import time
 import threading
+import os
 import globals
 
 END = False
 
+def write_to_log(channel, username, message):
+    date = time.strftime('%Y_%m_%d', time.gmtime())
+    filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
+    timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
+    message = "".join(i for i in message if ord(i)<128) # fix up non ascii chars
+    try:
+        pass
+        with open(filename, 'a') as f:
+            f.write("{} | {} : {}\n".format(username,
+                timestamp, str(message)))
+    except Exception as error:
+        foldername = 'src/logs/{}_{}'.format(channel.lstrip("#"),
+            time.strftime('%Y_%m_%d'))
+        os.system("mkdir src/logs/{}".format(date))
+        print str(error) + ": Creating new folder: " + str(date)
+        write_to_log(channel, username, message)
 
 class Roboraj(object):
 
@@ -53,7 +70,8 @@ class Roboraj(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-
+		if channel == "#curvyllama":
+			write_to_log(channel, username, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
                 valid = False
@@ -63,8 +81,10 @@ class Roboraj(object):
                     valid = True
                 if not valid:
                     continue
-
-                self.handleCommand(part, channel, username, message)
+                try:
+                    self.handleCommand(part, channel, username, message)
+                except Exception as error:
+                    return error
             except Exception as err:
                 raise
                 traceback.print_exc(file=self.log)
