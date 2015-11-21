@@ -1,5 +1,6 @@
-﻿global config
+global config
 
+import src.lib.save_to_drive as save_to_drive
 import src.lib.commands.poll as poll
 import src.lib.commands.trade as trade
 import src.lib.commands.advertisement as advertisement
@@ -7,6 +8,8 @@ import src.lib.commands.party as party
 import src.lib.commands.pokemon as pokemon
 import src.lib.commands.treats as treats
 import globals
+
+save_to_drive.get_credentials()
 
 channels_to_join = ['#acarlton5']
 
