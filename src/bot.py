@@ -81,10 +81,7 @@ class Roboraj(object):
                     valid = True
                 if not valid:
                     continue
-                try:
-                    self.handleCommand(part, channel, username, message)
-                except Exception as error:
-                    return error
+                self.handleCommand(part, channel, username, message)
             except Exception as err:
                 raise
                 traceback.print_exc(file=self.log)
