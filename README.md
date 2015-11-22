@@ -59,23 +59,28 @@ virtualenv), run:
 
 ### Further Steps
 
+Make a copy of the example config file
+
 `cp src/config/config_example.py src/config/config.py`
 
-`cp globals_example.py gloabals.py`
+Make a copy of the example globals file
+`cp globals_example.py globals.py`
 
-* Rename globals_example.py to globals.py. Insert your corrected login data to the appropriate fields. Leave 'localhost' as is.
-* ```mysql -u root
+#### MySQL Installation
 
-CREATE DATABASE 'databasename';
+Depending on your distribution, starting the server will be different, on a mac, this is accomplished by doing
 
-CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+`brew install mysql`
 
-GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
+`mysql.server start`
 
-mysql -u newuser -ppassword```
-* Read below to see how to get YouTube things going.
-* Type 'chmod +x /serve.py'. To run, you simply need to execute the file by typing './serve.py'.
+`mysql -u root`
 
+`CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';`
+
+`GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';`
+
+`mysql -u newuser -ppassword`
 
 ## Commands
 
@@ -183,3 +188,9 @@ username - shows number of treats a user has and if they have a user command, it
 IMPORTANT: The first time running the bot when this command is used, serve.py MUST be run as './serve --noauth_local_webserver' to be able to properly authenticate
 
 Built with YouTube API integration. If a user types "!request [anything you can imagine]", a YouTube video with its associated title will appear in the chat and the result will append to an existing YouTube playlist. This allows a streamer to have a completely automated listening experience as determined by users and mods.
+
+## Finally
+
+### To run:
+
+`./serve.py`
