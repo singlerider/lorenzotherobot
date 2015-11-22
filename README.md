@@ -2,30 +2,82 @@ Try it out! Code is live at
 http://www.twitch.tv/curvyllama
 ===============================
 
-Roboraj
-=======
+# Lorenzotherobot
 
-Lorenzotherobot
-===============
+This is a Twitch chat/irc bot written in Python (2.6 / 2.7).
 
-This is a Twitch chat/irc bot written in python (2.7).
+## Installation
 
-Installation
-============
-* Open up your terminal/shell of choice.
-* You'll need some dependencies, such as Python 2.7 (and I'd recommend installing python-pip), mysql, and mysql for python 
-* Install the [http://docs.python-requests.org/en/latest/](Requests library) if you haven't already using 'pip install requests'. I tested this application on Python 2.7.5.
-* Clone the Git repository.
-* Move config/config_example.py to config/config.py. Replace all of the placeholders there with your own username/oauth token/channels to join etc (tips are given in the file).
+### Google API
+
+#### Python Quickstart
+
+Use the wizard at:
+
+https://console.developers.google.com/flows/enableapi?apiid=drive
+
+to get started creating your application and managing your auth flow.
+
+Once the Google Drive API is enabled, go the the "Credentials" tab in the
+Developer's Console.
+
+#### Add Credentials
+
+Click "Add Credentials" and generate an API Key (Server Key) and an OAuth
+2.0 Client ID (Other)
+
+Download your generated client_secret json file and rename it to
+"client_secrets.json" then place it in your project's root directory - PyDrive
+looks for this specific file in this specific place.
+
+### Virtual Environment
+
+I would recommend running this in a virtual environment to keep your
+dependencies in check. If you'd like to do that, run:
+
+`sudo pip install virtualenv`
+
+Followed by:
+
+`virtualenv venv`
+
+This will create an empty virtualenv in your project directory in a folder
+called "venv." To enable it, run:
+
+`source venv/bin/activate`
+
+and your console window will be in that virtualenv state. To deactivate, run:
+
+`deactivate`
+
+### Dependencies
+
+To install all dependencies locally (preferably inside your activated
+virtualenv), run:
+
+`pip install -r requirements.txt`
+
+### Further Steps
+
+`cp src/config/config_example.py src/config/config.py`
+
+`cp globals_example.py gloabals.py`
+
 * Rename globals_example.py to globals.py. Insert your corrected login data to the appropriate fields. Leave 'localhost' as is.
-* You'll need to create a database from mysql's terminal. I highly recommend creating a user as opposed to handling things with root. It's dangerous. To create the database, enter the MySQL console by issuing the command "mysql", then type "CREATE DATABASE twitch;" . Then "quit;" . afterwards, you need to pump the data from the schema to populate the database fields. To do this, from the root project folder (lorenzotherobot), type "mysql -u [username] -p twitch < schema.sql" . The password is set upon install of mysql.
-* If the distro requires it, you'll need to run the mysql daemon by typing "mysqld" whenever the host machine is restarted.
+* ```mysql -u root
+
+CREATE DATABASE 'databasename';
+
+CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
+
+mysql -u newuser -ppassword```
 * Read below to see how to get YouTube things going.
 * Type 'chmod +x /serve.py'. To run, you simply need to execute the file by typing './serve.py'.
 
 
-Commands
-========
+## Commands
 
 So, what can the bot do? Here are a list of current commands in no particular order with a description of each (if one is needed):
 An asterisk (*) marks a moderator-only command
@@ -36,24 +88,9 @@ An asterisk (*) marks a moderator-only command
     '!chair'
     '!randomnumber' - returns a random number between 1 and 100
     '!randomemote' - returns a random emote from Twitch's standard emotes library
-    '!carlpoppa'
-    '!hookah'
-    '!maggie'
-    '!fb' - Link to Streamer's Faceook
-    '!ig' - Link to Streamer's Instagram
-    '!twitter' - Link to Streamer's Twitter
-    '!vine' - Link to Streamer's Vine
-    '!yt' - Link to Streamer's YouTube
-    '!gt' - Displays Streamer's Gamertag
-    '!rules' - Shows the Rules
-    '!welcome' - Welcome Message to Newbies
-    '!pwv' - Play with Viewers
-    '!daddy'
     '!cry' - BibleThump times a bunch
-    '!maggie' - Personalized message about a streamer
     '!buyprints' - Link to Streamer's Posters for Sale
-    '!playlist' - deprecated spotify playlist
-    '!flip' - show a table flip ASCII image
+    '!playlist' - YouTube playlist
     '!request' ['artist name and song title'] - adds requested search query result to a youtube playlist, specified by bot admin
     '!songrequest' - Same as '!request'
     '!poll'* ['choice 1/choice 2/choice 3'] - mod can establish things for users to vote on from within the chat window
@@ -70,19 +107,20 @@ An asterisk (*) marks a moderator-only command
     '!uptime' - Time Stream has been Online, if it is in fact Online
     '!stream' - Shows Streamer's Current Stream Title
 
-Adding your own commands
-========================
+## Make It Do
+
+### Adding your own commands
 
 You're going to need to know basic Python if you want to add your own commands. Open up 'lib/command_headers.py'. There are examples of pre-made commands in there as examples. The limit parameter is the amount of times a command can be used in seconds, if you don't want a limit to be enforced put in 0.
 
 If your command is only going to return a string, ex - '!hello' returns 'Welcome!', don't include the 'argc' parameter. Place the string you wish to be returned to the user in the 'return' parameter. For example, if you wanted to create a command such as this and limit it to being used ever 30 seconds, you would add in:
 
-'''python
+```python
 '!hello': {
 		'limit': 10,
 		'return': 'Welcome!'
 }
-'''
+```
 
 However, if your command has to have some logic implemented and if the command is just going to return whatever a function returns, set the 'return' parameter on the command to 'command', and set 'argc' to '0'. If your command is going to take arguments, ex '!hello <name>', set argc to '1' or however many arguments the command is going to take in.
 
@@ -94,7 +132,7 @@ Let's say we want to add a command which will take two arguments, we will call i
 
 Add the following to the 'commands' dictionary:
 
-'''python
+```python
 '!random': {
 		'limit': 20,
 		'argc': 2,
@@ -102,15 +140,14 @@ Add the following to the 'commands' dictionary:
 		'ul': 'mod',
 		'space_case': True
 }
-'''
+```
 
 'limit' refers to the cooldown. The cooldown is only active per separate channel
 'argc' refers to the number of arguments a command accepts, separated by spaces. If the command does not have 'command' as its 'return' value, this is not necessary. However, even if there are no arguments and 'command' is listed, 0 should be used.
 If a command is not intended for use by moderators, there is no need for 'ul' to be included
 a 'space_case' is a special scenario where you would like a command to have a single argument, but no limits to the number of separate strings you can input, such as '!requests', wherein directly after you would type an entire set of search items, but they should not be counted as arguments. Normally, arguments are separated by spaces.
 
-Pokemon
-=======
+### Pokemon
 
 Built in are several work-in-progress functions for returning "random battles" of the first generation of Pokemon. The idea, in the end is that a user will have a Pokemon assigned to them that they would catch as one is released randomly in the chat. Users will compete to be the first to catch the Pokemon with a separate command.
 
@@ -119,7 +156,7 @@ Built in are several work-in-progress functions for returning "random battles" o
     '!evolve' [position_number] - evolves a Pokemon if a non-item evolution condition is required and met
     '!use' [item_id] [pokemon_party_position]
         '!use 1 3' - user uses an item with the id of 1 (Fire Stone) on their position 3 Pokemon (Eevee), resulting in an evolution (to Flareon)
-        '!use 11 6' - user uses 
+        '!use 11 6' - user uses
     '!catch'* - Adds Pokemon to Party if Conditions (if Pokemon is Released / An Empty Slot is Available) are Met
     '!nickname' [position] [nickname_to_give_pokemon(no spaces allowed)
         '!nickname 2 Iggy' - user nicknamed their position 2 pokemon 'Iggy'
@@ -132,8 +169,7 @@ Built in are several work-in-progress functions for returning "random battles" o
     '!redeem [party_position_to_trade] [username_to_trade] [party_position_to_redeem_from_user]
         '!redeem 2 singlerider 6' - user chooses to redeem their position 2 Pokemon (the one being requested by the trader) for the user, 'singlerider' 's position 6 (the position number listed in the trade) - if all conditions are met, the trade will go through. Traded Pokemon have a flag attached so if there are trade-specific evolution requirements, the Pokemon will then be allowed to evolve
 
-Llama
-=====
+### Llama
 
 The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a MySQL database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
 
@@ -142,8 +178,7 @@ The Llama family of features is associated with tracking user activity and retur
 'shots' - shows how many shots she has left
 username - shows number of treats a user has and if they have a user command, it displays that, too
 
-Requests
-========
+### Requests (Songs)
 
 IMPORTANT: The first time running the bot when this command is used, serve.py MUST be run as './serve --noauth_local_webserver' to be able to properly authenticate
 
