@@ -70,8 +70,8 @@ class Roboraj(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-		if channel == "#singlerider":
-			write_to_log(channel, username, message)
+                if channel == "#curvyllama":
+                    write_to_log(channel, username, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
                 valid = False
@@ -168,5 +168,5 @@ class Roboraj(object):
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
             self.irc.send_message(channel, resp)
-            if channel == "#singlerider":
-    			write_to_log(channel, "[BOT]", resp)
+            if channel == "#curvyllama":
+                write_to_log(channel, "[BOT]", resp)
