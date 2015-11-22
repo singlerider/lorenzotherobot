@@ -135,13 +135,20 @@ class Roboraj(object):
         # if there's a required userlevel, validate it.
         if commands.check_has_ul(username, command):
             user_data = twitch.get_dict_for_users_mods_hack(channel)
-            if username not in user_data["chatters"]["moderators"]:
-                if username != 'singlerider':
-                    resp = '(%s) : %s' % (
-                        username, "This is a moderator-only command!")
-                    pbot(resp, channel)
-                    self.irc.send_message(channel, resp)
-                    return
+            print user_data, command
+            try:
+                if username not in user_data["chatters"]["moderators"]:
+                    if username != 'singlerider':
+                        resp = '(%s) : %s' % (
+                            username, "This is a moderator-only command!")
+                        pbot(resp, channel)
+                        self.irc.send_message(channel, resp)
+                        return
+            except Exception as error:
+                with open("errors.txt", "a") as f:
+                    error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
+                        username, channel, command, user_data, error)
+                    f.write(error_message)
 
         if globals.global_channel != "curvyllama":
             if globals.global_channel != "lorenzotherobot":
