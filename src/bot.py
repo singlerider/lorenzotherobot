@@ -134,8 +134,8 @@ class Roboraj(object):
 
         # if there's a required userlevel, validate it.
         if commands.check_has_ul(username, command):
-            user_dict, all_users = twitch.get_dict_for_users()
-            if username not in user_dict["chatters"]["moderators"]:
+            user_data = twitch.get_dict_for_users_mods_hack(channel)
+            if username not in user_data["chatters"]["moderators"]:
                 if username != 'singlerider':
                     resp = '(%s) : %s' % (
                         username, "This is a moderator-only command!")

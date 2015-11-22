@@ -34,6 +34,19 @@ def get_dict_for_users(channel=None):
     # print "all_users: " + str(all_users)
     return user_dict, list(set(all_users))
 
+def get_dict_for_users_mods_hack(channel):
+    if channel is not None:
+        channel = channel.lstrip('#')
+    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
+        channel + '/chatters'
+    get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
+    try:
+        users = json.loads(get_dict_for_users_resp.content)
+    except:
+        return "Twitch's backend is down. Sorry, dawg. Treats will return once that gets fixed."
+    user_dict = users
+    return user_dict
+
 
 def get_stream_status(channel=None):
     if channel != None:
