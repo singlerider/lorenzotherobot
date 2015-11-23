@@ -74,13 +74,38 @@ Depending on your distribution, starting the server will be different, on a mac,
 
 `mysql.server start`
 
+From here, you need to enter the mysql console as root:
+
 `mysql -u root`
+
+Create your database and name it whatever you want:
+
+`CREATE DATABASE databasename;`
+
+Create a user that you will use to connect with the database with (you do not
+want to connect as root for security reasons) - replace "newuser" and
+"password" with whatever you'd like:
 
 `CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';`
 
+Grant the appropriate privileges for your databases(s) to your new user:
+
 `GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';`
 
-`mysql -u newuser -ppassword`
+Exit out of the console with:
+
+`\q`
+
+Create your schema from my blank template:
+
+`mysql -u lorenzo -ppassword* databasename < schema.sql `
+
+#### Globals and Config Files
+
+Head into src/config/config.py and enter the correct channels and cron jobs
+you'd like to run, then go into globals.py and at the very least replace the
+mysql credentials. Leave global_channel, CURRENT_USER, VARIABLE, channel_info
+alone.
 
 ## Commands
 

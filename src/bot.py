@@ -82,9 +82,12 @@ class Roboraj(object):
                 if not valid:
                     continue
                 self.handleCommand(part, channel, username, message)
-            except Exception as err:
+            except Exception as error:
+                with open("errors.txt", "a") as f:
+                    error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
+                        username, channel, command, user_data, error)
+                    f.write(error_message)
                 raise
-                traceback.print_exc(file=self.log)
 
     def handleCommand(self, command, channel, username, message):
         # parse arguments
