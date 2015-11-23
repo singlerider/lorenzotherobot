@@ -59,11 +59,12 @@ virtualenv), run:
 
 ### Further Steps
 
-Make a copy of the example config file
+Make a copy of the example config file:
 
 `cp src/config/config_example.py src/config/config.py`
 
-Make a copy of the example globals file
+Make a copy of the example globals file:
+
 `cp globals_example.py globals.py`
 
 #### MySQL Installation
@@ -104,12 +105,13 @@ Create your schema from my blank template:
 
 Head into src/config/config.py and enter the correct channels and cron jobs
 you'd like to run, then go into globals.py and at the very least replace the
-mysql credentials. Leave global_channel, CURRENT_USER, VARIABLE, channel_info
-alone.
+mysql credentials. Leave global_channel, CURRENT_USER, VARIABLE, and 
+channel_info alone.
 
 ## Commands
 
-So, what can the bot do? Here are a list of current commands in no particular order with a description of each (if one is needed):
+So, what can the bot do? Here are a list of current commands in no particular
+order with a description of each (if one is needed):
 An asterisk (*) marks a moderator-only command
 
     '!report'* [insert bug report text here]
