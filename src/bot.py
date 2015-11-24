@@ -28,22 +28,24 @@ import globals
 
 END = False
 
+
 def write_to_log(channel, username, message):
     date = time.strftime('%Y_%m_%d', time.gmtime())
     filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
     timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
-    message = "".join(i for i in message if ord(i)<128) # fix up non ascii chars
+    message = "".join(i for i in message if ord(i) < 128)  # fix up non ascii
     try:
         pass
         with open(filename, 'a') as f:
-            f.write("{} | {} : {}\n".format(username,
-                timestamp, str(message)))
+            f.write("{} | {} : {}\n".format(
+                username, timestamp, str(message)))
     except Exception as error:
-        foldername = 'src/logs/{}_{}'.format(channel.lstrip("#"),
-            time.strftime('%Y_%m_%d'))
+        foldername = 'src/logs/{}_{}'.format(
+            channel.lstrip("#"), time.strftime('%Y_%m_%d'))
         os.system("mkdir src/logs/{}".format(date))
         print str(error) + ": Creating new folder: " + str(date)
         write_to_log(channel, username, message)
+
 
 class Roboraj(object):
 
@@ -101,8 +103,6 @@ class Roboraj(object):
         if command == message:
             args = []
 
-        # TEMPORARY COMMAND IGNORES FOR shedeviil_09
-
         elif command == message and command in commands.keys():
             print "Yes, it is in commands"
 
@@ -113,15 +113,10 @@ class Roboraj(object):
         if not commands.check_is_space_case(command) and args:
             # if it's not space case, break the arg apart
             args = args[0].split(" ")
-
-        # print("Command:", command, "args", args)
-
-        # check cooldown.
         if commands.is_on_cooldown(command, channel):
             pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
-                command, username, commands.get_cooldown_remaining(command, channel)),
-                channel
-            )
+                command, username, commands.get_cooldown_remaining(
+                    command, channel)), channel)
             return
         pbot('Command is valid and not on cooldown. (%s) (%s)' %
              (command, username), channel)
@@ -166,7 +161,8 @@ class Roboraj(object):
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
 
-        #pbot("Command %s(%s) had a result of %s" % (command, args, result), channel)
+        # pbot("Command %s(%s) had a result of %s" % (
+        #         command, args, result), channel)
         if result:
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)

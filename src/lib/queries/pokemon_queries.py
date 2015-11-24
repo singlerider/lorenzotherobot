@@ -1,18 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import MySQLdb as mdb
-import sys
-import globals
-login = globals.mysql_credentials
-con = mdb.connect(login[0], login[1], login[2], login[3])
-from src.lib.queries.points_queries import *
-
-# TODO: with con.cursor() as cur:
+from src.lib.queries.connection import *
 
 
 def get_pokemon_id_from_name(pokemon_name):
-
+    con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute(
@@ -27,6 +20,7 @@ def get_pokemon_id_from_name(pokemon_name):
 
 
 def find_open_party_positions(username):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -42,6 +36,7 @@ def find_open_party_positions(username):
 
 
 def insert_user_pokemon(username, caught_by, position, id, level, nickname, for_trade, for_sale):
+    con = get_connection()
     try:
         with con:
 
@@ -58,7 +53,7 @@ def insert_user_pokemon(username, caught_by, position, id, level, nickname, for_
 
 
 def remove_user_pokemon(username, position):
-
+    con = get_connection()
     with con:
         cur = con.cursor()
         success = cur.execute(
@@ -70,7 +65,7 @@ def remove_user_pokemon(username, position):
 
 
 def get_user_party_info(username):
-    # broken
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -88,7 +83,7 @@ def get_user_party_info(username):
 
 
 def get_user_battle_info(username):
-    # broken
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -101,6 +96,7 @@ def get_user_battle_info(username):
 
 
 def user_pokemon_types_summary(username, position):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -129,6 +125,7 @@ def user_pokemon_types_summary(username, position):
 
 
 def level_up_user_pokemon(username, position):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -138,17 +135,18 @@ def level_up_user_pokemon(username, position):
 
 
 def get_last_battle(username):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
         cur.execute(
             """SELECT lastbattle from users WHERE username = %s""", [username])
         last_battle = cur.fetchone()
-
         return last_battle[0]
 
 
 def set_battle_timestamp(username, datetime):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -158,6 +156,7 @@ def set_battle_timestamp(username, datetime):
 
 
 def get_battle_stats(username, position):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -193,6 +192,7 @@ def get_battle_stats(username, position):
 
 
 def get_attacker_multiplier(attacker_type, defender_type):
+    con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""SELECT * from types WHERE id = %s""", [attacker_type])
@@ -204,6 +204,7 @@ def get_attacker_multiplier(attacker_type, defender_type):
 
 
 def get_defender_multiplier(attacker_type, defender_type):
+    con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""SELECT * from types WHERE id = %s""", [defender_type])
@@ -220,6 +221,7 @@ party_position = 1
 
 
 def get_pokemon_id(username, position):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -231,6 +233,7 @@ def get_pokemon_id(username, position):
 
 
 def reset_trade_timestamp(time):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -239,6 +242,7 @@ def reset_trade_timestamp(time):
 
 
 def set_pokemon_trade_status(time, asking_pokemon_id, minimum_level, username, party_position):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -248,6 +252,7 @@ def set_pokemon_trade_status(time, asking_pokemon_id, minimum_level, username, p
 
 
 def get_receiver_trade_status(position, receiver):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -260,6 +265,7 @@ def get_receiver_trade_status(position, receiver):
 
 
 def get_giver_trade_status(position, giver):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -272,6 +278,7 @@ def get_giver_trade_status(position, giver):
 
 
 def show_all_tradable_pokemon():
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -295,6 +302,7 @@ def show_all_tradable_pokemon():
 
 
 def show_user_tradable_pokemon(username):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -316,6 +324,7 @@ def show_user_tradable_pokemon(username):
 
 
 def add_win(username):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -324,6 +333,7 @@ def add_win(username):
 
 
 def add_loss(username):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -332,6 +342,7 @@ def add_loss(username):
 
 
 def trade_transaction(giver, giver_position, receiver, receiver_position):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -348,6 +359,7 @@ def trade_transaction(giver, giver_position, receiver, receiver_position):
 
 
 def show_all_pokemon_for_sale():
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -358,6 +370,7 @@ def show_all_pokemon_for_sale():
 
 
 def show_user_pokemon_for_sale():
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -368,6 +381,7 @@ def show_user_pokemon_for_sale():
 
 
 def check_for_pokemon_for_sale():
+    con = get_connection()
     pokemon_query = "Mewtwo"
     with con:
 
@@ -379,6 +393,7 @@ def check_for_pokemon_for_sale():
 
 
 def set_pokemon_as_for_sale():
+    con = get_connection()
     for_sale = 1
     asking_price = 5000
     with con:
@@ -390,6 +405,7 @@ def set_pokemon_as_for_sale():
 
 
 def update_asking_price():
+    con = get_connection()
     asking_price = 4000
     with con:
 
@@ -400,6 +416,7 @@ def update_asking_price():
 
 
 def sell_transaction():
+    con = get_connection()
     seller = 'lorenzotherobot'
     buyer = globals.CURRENT_USER
     open_position = 5
@@ -422,6 +439,7 @@ def sell_transaction():
 
 
 def spawn_tallgrass(rarity_index):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -433,6 +451,7 @@ def spawn_tallgrass(rarity_index):
 
 
 def check_evolution_eligibility(username, position):
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -452,7 +471,7 @@ def check_evolution_eligibility(username, position):
 
 
 def check_trade_evolution_eligibility(username, position):
-
+    con = get_connection()
     with con:
 
         cur = con.cursor()
@@ -476,6 +495,7 @@ def check_trade_evolution_eligibility(username, position):
 
 
 def apply_evolution(username, position):
+    con = get_connection()
     evolution_result = check_evolution_eligibility(username, position)
     trade_evolution_result = check_trade_evolution_eligibility(
         username, position)
@@ -499,6 +519,7 @@ def apply_evolution(username, position):
             return nickname + " has evolved! Raise your Kappa s!!!"
 
     elif trade_evolution_result is not None:
+        con = get_connection()
 
         nickname = trade_evolution_result[0]
         id = trade_evolution_result[3]
@@ -519,8 +540,8 @@ def apply_evolution(username, position):
 
 
 def update_nickname(nickname, username, position):
-
-    # todo - error message on no entry
+    con = get_connection()
+    # TODO - error message on no entry
     with con:
 
         cur = con.cursor()
@@ -529,7 +550,7 @@ def update_nickname(nickname, username, position):
 
 
 def check_items():
-
+    con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute(
@@ -540,7 +561,7 @@ def check_items():
 
 
 def get_item_value(id):
-
+    con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""SELECT value FROM items WHERE id = %s""", [id])
@@ -550,7 +571,7 @@ def get_item_value(id):
 
 
 def check_inventory(username):
-
+    con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""SELECT items.id, items.name, useritems.quantity
@@ -563,6 +584,7 @@ def check_inventory(username):
 
 
 def buy_items(id, username):
+    con = get_connection()
     try:
         if int(id) in (1, 2, 3, 4, 5, 11):
             print "ID FOUND TO MATCH ITEMS AVAILABLE"
@@ -584,11 +606,12 @@ def buy_items(id, username):
                 return "You need more points for that!"
         else:
             return "That is not a valid item position."
-    except:
+    except Exception as error:
         return "Item ID must be a number"
 
 
 def gift_items(id, username):
+    con = get_connection()
     try:
         if int(id) in (1, 2, 3, 4, 5, 11):
             print "ID FOUND TO MATCH ITEMS AVAILABLE"
@@ -606,6 +629,7 @@ def gift_items(id, username):
 
 
 def use_item(username, item, position):
+    con = get_connection()
     try:
         if int(item) == 11:
             item_in_stock = False
@@ -686,6 +710,7 @@ def use_item(username, item, position):
 
 
 def get_leaderboard():
+    con = get_connection()
     with con:
 
         cur = con.cursor()
