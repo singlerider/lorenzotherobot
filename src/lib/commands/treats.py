@@ -5,7 +5,10 @@ import globals
 
 
 def cron(channel):
-    treatsForAll(channel, 1)
+    try:
+        treatsForAll(channel, 1)
+    except:
+        pass
 
 
 def treatsForAll(channel, delta):
@@ -58,4 +61,3 @@ def treats(args):
         set_user_points(delta_user, delta)
 
     return "{} treats for {}!".format(delta, delta_user)
-
