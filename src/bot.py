@@ -167,4 +167,4 @@ class Roboraj(object):
             self.irc.send_message(channel, resp)
             if channel == "#curvyllama":
                 write_to_log(channel, "[BOT]", resp)
-            save_message(username, channel, message)
+            save_message("lorenzotherobot", channel, resp)
