@@ -14,6 +14,7 @@ def stream():
     offline_data = json.loads(get_offline_status_resp.content)
 
     try:
-        return str(offline_data["status"]) + " | " + str(offline_data["display_name"]) + " playing " + str(offline_data["game"])
-    except:
+        return str("".join(i for i in offline_data["status"] if ord(i) < 128)) + " | " + str(offline_data["display_name"]) + " playing " + str(offline_data["game"])
+    except Exception as error:
+        print error
         return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"
