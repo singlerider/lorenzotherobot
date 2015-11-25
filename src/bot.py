@@ -10,6 +10,7 @@ Contributions from dustinbcox
 Rekt by theepicsnail
 """
 
+from src.lib.queries.message_queries import save_message
 import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
@@ -74,6 +75,7 @@ class Roboraj(object):
                 globals.CURRENT_USER = username
                 if channel == "#curvyllama":
                     write_to_log(channel, username, message)
+                save_message(username, channel, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
                 valid = False
@@ -85,11 +87,7 @@ class Roboraj(object):
                     continue
                 self.handleCommand(part, channel, username, message)
             except Exception as error:
-                with open("errors.txt", "a") as f:
-                    error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
-                        username, channel, command, user_data, error)
-                    f.write(error_message)
-                raise
+                print error
 
     def handleCommand(self, command, channel, username, message):
         # parse arguments
@@ -169,3 +167,4 @@ class Roboraj(object):
             self.irc.send_message(channel, resp)
             if channel == "#curvyllama":
                 write_to_log(channel, "[BOT]", resp)
+            save_message(username, channel, message)

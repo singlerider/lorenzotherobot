@@ -3,7 +3,6 @@ import requests
 import json
 import random
 import datetime
-from src.bot import *
 import src.lib.user_commands as user_commands_import
 
 # making this comment from Github's Oval Office
