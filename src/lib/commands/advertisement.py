@@ -7,7 +7,7 @@ def cron2(a=None):
 
 
 def advertisement():
-    return "If you like the designs and layouts, check out Percy's work at http://pixelwinkel.com/"
+    return "If you like the designs and layouts, check out Nerdettedesigns's work at http://nerdettedesigns.com/"
 
 
 def updates():

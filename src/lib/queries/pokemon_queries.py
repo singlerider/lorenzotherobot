@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from src.lib.queries.points_queries import *
 from src.lib.queries.connection import *
 
 
@@ -607,7 +608,7 @@ def buy_items(id, username):
         else:
             return "That is not a valid item position."
     except Exception as error:
-        return "Item ID must be a number"
+        return "item ID must be a number"
 
 
 def gift_items(id, username):
@@ -624,7 +625,8 @@ def gift_items(id, username):
                 return "Gift successful."
         else:
             return "That is not a valid item position."
-    except:
+    except Exception as error:
+        print error
         return "Item ID must be a number"
 
 
