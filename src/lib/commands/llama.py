@@ -39,7 +39,6 @@ def llama(args):
         return points_import.get_points_list()
     elif grab_user == "treats":
         return points_import.get_user_points(globals.CURRENT_USER)
-
     elif grab_user == "me":
         return get_user_command()
     elif grab_user == "stream":
@@ -72,22 +71,18 @@ def llama(args):
         return "In case you missed them, here are the five most recent Llamas: " + follower_list + " HeyGuys"
     elif grab_user == "uptime":
         return get_stream_uptime()
-
     elif grab_user == "usage":
         return usage
-
     elif grab_user == "shots":
         if shots_import.shot_count != 0:
             return str(shots_import.shot_count) + " shots left. She's already dru... ResidentSleeper"
         else:
-            return "No shots found. Donate before she goes crazy! Kreygasm"
+            return "No shots found. Donate before she goes crazy! DansGame"
     elif points_import.get_user_points(grab_user) != None:
-
         if grab_user in user_commands_import.user_command_dict:
             return user_commands_import.user_command_dict[grab_user]["return"] + " | " + str(points_import.get_user_points(grab_user))
         else:
             return points_import.get_user_points(grab_user)
-
     else:
         print get_stream_status()
         return "No entry found for " + str(args[0])

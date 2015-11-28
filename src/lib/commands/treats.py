@@ -6,7 +6,7 @@ import globals
 
 def cron(channel):
     try:
-        treatsForAll(channel, 1)
+        treatsForAllTimer(channel, 1)
     except:
         pass
 
@@ -24,6 +24,15 @@ def treatsForAll(channel, delta):
     #    llamadb.newConnection().addPoints(user, delta)
     # return str(delta) + " treats added to everyone in the chat! Raise your
     # Kappas! \Kappa/"
+
+def treatsForAllTimer(channel, delta):
+    if not get_stream_status(channel):
+        user_dict, all_users = twitch.get_dict_for_users(channel)
+        try:
+            modify_points_all_users_timer(all_users, delta)
+            # print "Treats added to " + str(all_users)
+        except:
+            return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
 
 
 def treats(args):
