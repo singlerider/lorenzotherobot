@@ -316,6 +316,14 @@ commands = {
         'usage': '!caster [streamer_username]',
         'ul': 'mod'
 
+    },
+
+    '!donation': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command',
+        'usage': '!donation [username] [dollar_amount]',
+        'ul': 'mod'
     }
 
 }
