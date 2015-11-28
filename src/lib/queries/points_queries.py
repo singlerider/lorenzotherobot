@@ -55,7 +55,7 @@ def modify_user_points(delta_user, delta):
     with con:
 
         cur = con.cursor()
-        cur.execute("""INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + %s""",
+        cur.execute("""INSERT INTO users (username, donation_points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE donation_points = donation_points + %s""",
                     [delta_user, delta, delta])
 
 
@@ -70,11 +70,11 @@ def modify_points_all_users(all_users, points_to_increment=1):
 
             sql = """
             INSERT INTO users
-              (username, points)
+              (username, donation_points)
             VALUES
               (%s, %s)
             ON DUPLICATE KEY UPDATE
-              points = points + """ + str(points_to_increment)
+              donation_points = donation_points + """ + str(points_to_increment)
             cur.executemany(sql, ((user, points) for user, points in dData))
             return "success"
 

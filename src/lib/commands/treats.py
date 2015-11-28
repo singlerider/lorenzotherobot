@@ -26,7 +26,7 @@ def treatsForAll(channel, delta):
     # Kappas! \Kappa/"
 
 def treatsForAllTimer(channel, delta):
-    if not get_stream_status(channel):
+    if get_stream_status(channel):
         user_dict, all_users = twitch.get_dict_for_users(channel)
         try:
             modify_points_all_users_timer(all_users, delta)
