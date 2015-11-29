@@ -38,7 +38,7 @@ def llama(args):
     if grab_user == "list":
         return points_import.get_points_list()
     elif grab_user == "treats":
-        return points_import.get_user_points(globals.CURRENT_USER)
+        return points_import.get_all_user_points(globals.CURRENT_USER)
     elif grab_user == "me":
         return get_user_command()
     elif grab_user == "stream":
@@ -51,7 +51,6 @@ def llama(args):
         except Exception as error:
             print error
             return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"
-
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
         # if user_data_name in user_dict["chatters"]["moderators"]:
@@ -80,9 +79,9 @@ def llama(args):
             return "No shots found. Donate before she goes crazy! DansGame"
     elif points_import.get_user_points(grab_user) != None:
         if grab_user in user_commands_import.user_command_dict:
-            return user_commands_import.user_command_dict[grab_user]["return"] + " | " + str(points_import.get_user_points(grab_user))
+            return user_commands_import.user_command_dict[grab_user]["return"] + " | " + str(points_import.get_all_user_points(grab_user))
         else:
-            return points_import.get_user_points(grab_user)
+            return points_import.get_all_user_points(grab_user)
     else:
         print get_stream_status()
         return "No entry found for " + str(args[0])

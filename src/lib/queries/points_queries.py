@@ -25,7 +25,7 @@ def get_points_list():
         return " | ".join(user_data_comprehension)
 
 
-def get_user_points(username):
+def get_user_points(username):  # only gets donation_points
     con = get_connection()
     with con:
 
@@ -38,6 +38,26 @@ def get_user_points(username):
             else:
                 return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
         except:
+            return "User not found. Check your spelling."
+
+def get_all_user_points(username):  # gets all of a single user's points
+    con = get_connection()
+    with con:
+
+        cur = con.cursor()
+        cur.execute("select donation_points, time_points from users where username = %s", [username])
+        try:
+            points = cur.fetchone()
+            donation_points = points
+            time_points = points
+            print cur.fetchone()#, donation_points, time_points
+            if time_points > 0 or donation_points > 0:
+                return "Treats from donations, time: {0}, {1}".format(
+                    donation_points[0], time_points[1])
+            else:
+                return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
+        except Exception as error:
+            print error
             return "User not found. Check your spelling."
 
 
