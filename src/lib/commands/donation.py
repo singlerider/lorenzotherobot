@@ -5,7 +5,7 @@ import globals
 
 
 def donation(args):
-    user = args[0]
+    user = args[0].lower()
     amount = args[1]
     try:
         amount = int(float(amount.lstrip("$")))
@@ -18,5 +18,5 @@ def donation(args):
         user_dict, __ = get_dict_for_users(None)
         treats_to_add = int(amount/10) * 750
         modify_user_points(user, treats_to_add)
-        thanks_message = "Let's get some curvyHype in the chat for {0}'s ${1} donation!".format(user, amount)
+        thanks_message = "Let's get some curvyFireball in the chat for {0}'s ${1} donation!".format(user, amount)
         return "{} treats for {}! {}".format(treats_to_add, user, thanks_message)
