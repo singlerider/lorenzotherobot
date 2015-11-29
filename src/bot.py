@@ -11,6 +11,7 @@ Rekt by theepicsnail
 """
 
 from src.lib.queries.message_queries import save_message
+from src.lib.queries.points_queries import *
 import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
@@ -58,7 +59,29 @@ class Roboraj(object):
         # start threads for channels that have cron messages to run
         cron.initialize(self.irc, self.config.get("cron", {}))
 
+
     def run(self):
+
+        def check_for_sub(channel, username, message):
+            # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder subscribed for 5 months in a row!
+            # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder has just subscribed!
+            # first sub points = 100
+            # resub = 50
+            try:
+                message_split = message.rstrip("!").split()
+                subbed_user = message_split[0]
+                if message_split[1] == "has":
+                    modify_user_points(subbed_user, 100)
+                    resp = "{0} has just subscribed for the first time!".format(subbed_user)
+                    self.irc.send_message(channel, resp)
+                elif message_split[1] == "subscribed":
+                    months_subbed = message_split[3]
+                    modify_user_points(subbed_user, int(months_subbed) * 50)
+                    resp = "{0} has just resubscribed for {1} months straight!".format(subbed_user, months_subbed)
+                    self.irc.send_message(channel, resp)
+            except Exception as error:
+                print error
+
 
         config = self.config
         while True:
@@ -66,7 +89,6 @@ class Roboraj(object):
                 data = self.irc.nextMessage()
                 if not self.irc.check_for_message(data):
                     continue
-
                 message_dict = self.irc.get_message(data)
                 channel = message_dict['channel']
                 globals.global_channel = channel.lstrip('#')
@@ -75,7 +97,10 @@ class Roboraj(object):
                 globals.CURRENT_USER = username
                 if channel == "#curvyllama":
                     write_to_log(channel, username, message)
+                    if username == "twitchalerts":  # check for sub message
+                        check_for_sub(channel, username, message)
                 save_message(username, channel, message)
+                check_for_sub(channel, username, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
                 valid = False
