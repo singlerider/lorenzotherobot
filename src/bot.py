@@ -108,7 +108,7 @@ class Roboraj(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-                if channel == "#curvyllama" or channel == "#singlerider":
+                if channel == "#curvyllama":
                     write_to_log(channel, username, message)
                     fetch_command = get_custom_command(message)
                     if len(fetch_command) > 0:
@@ -187,12 +187,12 @@ class Roboraj(object):
                         username, channel, command, user_data, error)
                     f.write(error_message)
 
-        approved_channels = ["singlerider", "lorenzotherobot", "singlerider"]
+        approved_channels = ["curvyllama", "lorenzotherobot", "singlerider"]
         if globals.global_channel not in approved_channels:
             print globals.global_channel
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
                               'welcome', 'rules', 'poll', 'vote', 'gt',
-                              'add', 'rem']
+                              'add', 'rm']
             if command.lstrip("!") in prevented_list:
                 return
 
