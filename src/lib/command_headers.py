@@ -330,7 +330,7 @@ commands = {
         'limit': 0,
         'argc': 4,
         'return': 'command',
-        'usage': '!add [!command_name] [user_level (reg/mod)] [response (to add a custom user, use {{}})]',
+        'usage': '!add [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}")]',
         'ul': 'mod'
     },
 
