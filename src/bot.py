@@ -98,7 +98,7 @@ class Roboraj(object):
                 globals.CURRENT_USER = username
                 if channel == "#curvyllama":
                     write_to_log(channel, username, message)
-                    if username == "singlerider":  # check for sub message
+                    if username == "twitchnotify":  # check for sub message
                         check_for_sub(channel, username, message)
                 save_message(username, channel, message)
                 # check if message is a command with no arguments
