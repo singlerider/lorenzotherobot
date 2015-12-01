@@ -30,7 +30,9 @@ def get_user_points(username):  # only gets donation_points
     with con:
 
         cur = con.cursor()
-        cur.execute("select donation_points from users where username = %s", [username])
+        cur.execute(
+            "select donation_points from users where username = %s",
+            [username])
         try:
             points = cur.fetchone()
             if points[0] > 0:
@@ -39,6 +41,21 @@ def get_user_points(username):  # only gets donation_points
                 return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
         except:
             return "User not found. Check your spelling."
+
+
+def get_user_time_points(username):  # only gets donation_points
+    con = get_connection()
+    with con:
+
+        cur = con.cursor()
+        cur.execute(
+            "select time_points from users where username = %s", [username])
+        points = cur.fetchone()
+        if len(points) > 0:
+            return points[0]
+        else:
+            return 0
+
 
 def get_all_user_points(username):  # gets all of a single user's points
     con = get_connection()

@@ -1,13 +1,9 @@
 """
-Simple IRC Bot for Twitch.tv
+Intricate Chat Bot for Twitch.tv
 
-Originally developed by Aidan Thomson <aidraj0@gmail.com>
+By Shane Engelman <me@5h4n3.com>
 
-Forked and modified by Shane Engelman <me@5h4n3.com>
-
-Contributions from dustinbcox
-
-Rekt by theepicsnail
+Contributions from dustinbcox and theepicsnail
 """
 
 from src.lib.queries.message_queries import save_message
@@ -15,6 +11,7 @@ from src.lib.queries.points_queries import *
 from src.lib.queries.command_queries import *
 from lib.functions_general import *
 from src.lib.twitch import get_dict_for_users
+from src.lib.spam_detector import spam_detector
 import lib.irc as irc_
 import lib.functions_commands as commands
 import src.lib.command_headers
@@ -33,24 +30,6 @@ import globals
 END = False
 
 
-def write_to_log(channel, username, message):
-    date = time.strftime('%Y_%m_%d', time.gmtime())
-    filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
-    timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
-    message = "".join(i for i in message if ord(i) < 128)  # fix up non ascii
-    try:
-        pass
-        with open(filename, 'a') as f:
-            f.write("{} | {} : {}\n".format(
-                username, timestamp, str(message)))
-    except Exception as error:
-        foldername = 'src/logs/{}_{}'.format(
-            channel.lstrip("#"), time.strftime('%Y_%m_%d'))
-        os.system("mkdir src/logs/{}".format(date))
-        print str(error) + ": Creating new folder: " + str(date)
-        write_to_log(channel, username, message)
-
-
 class Roboraj(object):
 
     def __init__(self, config):
@@ -59,7 +38,6 @@ class Roboraj(object):
         self.irc = irc_.irc(config)
         # start threads for channels that have cron messages to run
         cron.initialize(self.irc, self.config.get("cron", {}))
-
 
     def run(self):
 
@@ -73,7 +51,8 @@ class Roboraj(object):
                 subbed_user = message_split[0]
                 if message_split[1] == "has":
                     modify_user_points(subbed_user, 100)
-                    resp = "{0} has just subscribed for the first time!".format(subbed_user)
+                    resp = "{0} has just subscribed for the first time!".format(
+                        subbed_user)
                     self.irc.send_message(channel, resp)
                 elif message_split[1] == "subscribed":
                     months_subbed = message_split[3]
@@ -95,6 +74,30 @@ class Roboraj(object):
                 self.irc.send_message(channel, resp)
                 increment_command_counter(message)
 
+        def ban_for_spam(channel, user):
+            ban = "/ban {0}".format(user)
+            unban = "/unban {0}".format(user)
+            print ban, unban
+            self.irc.send_message(channel, ban)
+            self.irc.send_message(channel, unban)
+
+        def write_to_log(channel, username, message):
+            date = time.strftime('%Y_%m_%d', time.gmtime())
+            filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
+            timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
+            message = "".join(i for i in message if ord(i) < 128)  # fix up non ascii
+            try:
+                pass
+                with open(filename, 'a') as f:
+                    f.write("{} | {} : {}\n".format(
+                        username, timestamp, str(message)))
+            except Exception as error:
+                foldername = 'src/logs/{}_{}'.format(
+                    channel.lstrip("#"), time.strftime('%Y_%m_%d'))
+                os.system("mkdir src/logs/{}".format(date))
+                print str(error) + ": Creating new folder: " + str(date)
+                write_to_log(channel, username, message)
+
         config = self.config
 
         while True:
@@ -108,17 +111,20 @@ class Roboraj(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-                if channel == "#curvyllama" or channel == "#singlerier":
+                if channel == "#curvyllama" or channel == "#singlerider":
                     write_to_log(channel, username, message)
                     if message[0] == "!":
-                        fetch_command = get_custom_command(message)
-                        if len(fetch_command) > 0:
-                            if message == fetch_command[0][1]:
-                                return_custom_command(
-                                    channel, message, username)
+                        print message
+                    fetch_command = get_custom_command(message)
+                    if len(fetch_command) > 0:
+                        if message == fetch_command[0][1]:
+                            return_custom_command(
+                                channel, message, username)
                     # check for sub message
                     if username == "twitchnotify":
                         check_for_sub(channel, username, message)
+                    if spam_detector(username, message) == True:
+                        ban_for_spam(channel, user)
                 save_message(username, channel, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
