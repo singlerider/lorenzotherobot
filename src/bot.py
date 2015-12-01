@@ -30,6 +30,24 @@ import globals
 END = False
 
 
+def write_to_log(channel, username, message):
+    date = time.strftime('%Y_%m_%d', time.gmtime())
+    filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
+    timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
+    message = "".join(i for i in message if ord(i) < 128)  # fix up non ascii
+    try:
+        pass
+        with open(filename, 'a') as f:
+             f.write("{} | {} : {}\n".format(
+                username, timestamp, str(message)))
+    except Exception as error:
+        foldername = 'src/logs/{}_{}'.format(
+            channel.lstrip("#"), time.strftime('%Y_%m_%d'))
+        os.system("mkdir src/logs/{}".format(date))
+        print str(error) + ": Creating new folder: " + str(date)
+        write_to_log(channel, username, message)
+
+
 class Roboraj(object):
 
     def __init__(self, config):
@@ -81,22 +99,6 @@ class Roboraj(object):
             self.irc.send_message(channel, ban)
             self.irc.send_message(channel, unban)
 
-        def write_to_log(channel, username, message):
-            date = time.strftime('%Y_%m_%d', time.gmtime())
-            filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
-            timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
-            message = "".join(i for i in message if ord(i) < 128)  # fix up non ascii
-            try:
-                pass
-                with open(filename, 'a') as f:
-                    f.write("{} | {} : {}\n".format(
-                        username, timestamp, str(message)))
-            except Exception as error:
-                foldername = 'src/logs/{}_{}'.format(
-                    channel.lstrip("#"), time.strftime('%Y_%m_%d'))
-                os.system("mkdir src/logs/{}".format(date))
-                print str(error) + ": Creating new folder: " + str(date)
-                write_to_log(channel, username, message)
 
         config = self.config
 
