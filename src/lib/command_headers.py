@@ -324,7 +324,23 @@ commands = {
         'return': 'command',
         'usage': '!donation [username] [dollar_amount]',
         'ul': 'mod'
-    }
+    },
+
+    '!add': {
+        'limit': 0,
+        'argc': 4,
+        'return': 'command',
+        'usage': '!add [!command_name] [user_level (reg/mod)] [response (to add a custom user, use {{}})]',
+        'ul': 'mod'
+    },
+
+    '!rem': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'usage': '!rem [!command_name]',
+        'ul': 'mod'
+    },
 
 }
 
