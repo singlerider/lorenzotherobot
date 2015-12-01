@@ -21,7 +21,7 @@ def get_custom_commands():  # only gets donation_points
     with con:
         cur = con.cursor()
         cur.execute("""SELECT channel, command, creator, user_level,
-            time, response, custom_use FROM custom_commands""")
+            time, response, times_used FROM custom_commands""")
         commands = cur.fetchall()
         return commands
 
@@ -35,6 +35,28 @@ def get_custom_command(command):
                 command, globals.global_channel])
         commands = cur.fetchall()
         return commands
+
+
+def get_custom_command_elements(command):
+    con = get_connection()
+    with con:
+        cur = con.cursor()
+        cur.execute("""SELECT user_level, response FROM custom_commands
+            WHERE command = %s AND channel = %s""", [
+                command, globals.global_channel])
+        elements = cur.fetchone()
+        return elements
+
+
+def increment_command_counter(command):
+    con = get_connection()
+    with con:
+        cur = con.cursor()
+        cur.execute("""UPDATE custom_commands set times_used = times_used + 1
+                    WHERE command = %s and channel = %s""", [
+                command, globals.global_channel])
+        elements = cur.fetchone()
+        return elements
 
 
 def save_command(command, creator, user_level, response):
@@ -62,7 +84,7 @@ def delete_command(command):
     command_fetch = get_custom_command(command)
     if len(command_fetch) > 0:
         if command_fetch[0][0] != globals.global_channel and command_fetch[0][1] != command:
-            return "{0} not found as a command in {1}'s channel!".format(
+            return "{0} not found as a unique command in {1}'s channel!".format(
                 command, globals.global_channel)
         else:
             with con:

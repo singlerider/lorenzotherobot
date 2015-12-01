@@ -4,5 +4,5 @@ import globals
 
 
 def rem(args):
-    command = args[0]
+    command = args[0].lower()
     return delete_command(command)

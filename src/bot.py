@@ -12,8 +12,10 @@ Rekt by theepicsnail
 
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.points_queries import *
-import lib.irc as irc_
+from src.lib.queries.command_queries import *
 from lib.functions_general import *
+from src.lib.twitch import get_dict_for_users
+import lib.irc as irc_
 import lib.functions_commands as commands
 import src.lib.command_headers
 import src.lib.twitch as twitch
@@ -55,7 +57,6 @@ class Roboraj(object):
         self.config = config
         src.lib.command_headers.initalizeCommands(config)
         self.irc = irc_.irc(config)
-
         # start threads for channels that have cron messages to run
         cron.initialize(self.irc, self.config.get("cron", {}))
 
@@ -82,6 +83,17 @@ class Roboraj(object):
             except Exception as error:
                 print error
 
+        def return_custom_command(channel, message, username):
+            elements = get_custom_command_elements(message)
+            resp = elements[1].replace("{}", username)
+            if elements[0] == "mod":
+                user_dict, __ = get_dict_for_users()
+                if username in user_dict["chatters"]["moderators"]:
+                    self.irc.send_message(channel, resp)
+                    increment_command_counter(message)
+            elif elements[0] == "reg":
+                self.irc.send_message(channel, resp)
+                increment_command_counter(message)
 
         config = self.config
 
@@ -96,10 +108,14 @@ class Roboraj(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-                if channel == "#curvyllama":
+                if channel == "#curvyllama" or channel == "#singlerider":
                     write_to_log(channel, username, message)
-                    if username == "twitchnotify":  # check for sub message
-                        check_for_sub(channel, username, message)
+                    fetch_command = get_custom_command(message)
+                    if len(fetch_command) > 0:
+                        if message == fetch_command[0][1]:
+                            return_custom_command(channel, message, username)
+                        if username == "twitchnotify":  # check for sub message
+                            check_for_sub(channel, username, message)
                 save_message(username, channel, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
@@ -171,11 +187,14 @@ class Roboraj(object):
                         username, channel, command, user_data, error)
                     f.write(error_message)
 
-        if globals.global_channel != "curvyllama" or globals.global_channel != "lorenzotherobot":
-                prevented_list = ['songrequest', 'request', 'shots', 'donation',
-                                  'welcome', 'rules', 'poll', 'vote', 'gt']
-                if command.lstrip("!") in prevented_list:
-                    return
+        approved_channels = ["singlerider", "lorenzotherobot", "singlerider"]
+        if globals.global_channel not in approved_channels:
+            print globals.global_channel
+            prevented_list = ['songrequest', 'request', 'shots', 'donation',
+                              'welcome', 'rules', 'poll', 'vote', 'gt',
+                              'add', 'rem']
+            if command.lstrip("!") in prevented_list:
+                return
 
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
