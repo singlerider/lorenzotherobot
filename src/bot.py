@@ -110,12 +110,15 @@ class Roboraj(object):
                 globals.CURRENT_USER = username
                 if channel == "#curvyllama" or channel == "#singlerier":
                     write_to_log(channel, username, message)
-                    fetch_command = get_custom_command(message)
-                    if len(fetch_command) > 0:
-                        if message == fetch_command[0][1]:
-                            return_custom_command(channel, message, username)
-                        if username == "twitchnotify":  # check for sub message
-                            check_for_sub(channel, username, message)
+                    if message[0] == "!":
+                        fetch_command = get_custom_command(message)
+                        if len(fetch_command) > 0:
+                            if message == fetch_command[0][1]:
+                                return_custom_command(
+                                    channel, message, username)
+                    # check for sub message
+                    if username == "twitchnotify":
+                        check_for_sub(channel, username, message)
                 save_message(username, channel, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
@@ -172,7 +175,6 @@ class Roboraj(object):
         # if there's a required userlevel, validate it.
         if commands.check_has_ul(username, command):
             user_data = twitch.get_dict_for_users_mods_hack(channel)
-            print user_data, command
             try:
                 if username not in user_data["chatters"]["moderators"]:
                     if username != 'singlerider':
