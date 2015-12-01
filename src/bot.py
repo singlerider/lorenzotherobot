@@ -61,13 +61,13 @@ class Roboraj(object):
 
         def check_for_sub(channel, username, message):
             # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder subscribed for 5 months in a row!
-            # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder has just subscribed!
+            # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder just subscribed!
             # first sub points = 100
             # resub = 50
             try:
                 message_split = message.rstrip("!").split()
                 subbed_user = message_split[0]
-                if message_split[1] == "has":
+                if message_split[1] == "just":
                     modify_user_points(subbed_user, 100)
                     resp = "{0} has just subscribed for the first time!".format(
                         subbed_user)
