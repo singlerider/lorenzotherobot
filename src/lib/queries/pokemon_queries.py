@@ -616,8 +616,6 @@ def gift_items(id, username):
     try:
         if int(id) in (1, 2, 3, 4, 5, 11):
             print "ID FOUND TO MATCH ITEMS AVAILABLE"
-            points = int(get_user_points(username))
-            value = int(get_item_value(id))
             with con:
                 cur = con.cursor()
                 cur.execute("""INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 1) ON
@@ -633,28 +631,28 @@ def gift_items(id, username):
 def use_item(username, item, position):
     con = get_connection()
     try:
-        if int(item) == 11:
-            item_in_stock = False
-            inventory = check_inventory(username)
-            for id, __, __ in inventory:
-                if int(id) == int(item):
-                    item_in_stock = True
-            if item_in_stock == True:
+        item = int(item)
+        item_in_stock = False
+        inventory = check_inventory(username)
+        for id, __, __ in inventory:
+            if int(id) == int(item):
+                item_in_stock = True
+        if item == 11 and item_in_stock:
+            with con:
+
                 cur = con.cursor()
                 cur.execute("""UPDATE userpokemon SET level = level + 10
-                WHERE username = %s AND position = %s
-                """, [username, position])
-                cur = con.cursor()
+                    WHERE username = %s AND position = %s""", [
+                        username, position])
                 cur.execute("""UPDATE userpokemon SET level = 100
-                WHERE username = %s AND position = %s AND level > 100
+                    WHERE username = %s AND position = %s AND level > 100
                 """, [username, position])
-                cur.execute("""UPDATE useritems SET quantity = quantity - 1 WHERE username = %s AND item_id = %s
-                        """, [username, item])
+                cur.execute("""UPDATE useritems SET quantity = quantity - 1
+                    WHERE username = %s AND item_id = %s
+                """, [username, item])
                 cur.execute(
                     """DELETE FROM useritems WHERE username = %s AND quantity <= 0""", [username])
-                return "Level up!!! RARE CANDY HYPE!!!!!!!!!!!!!!!!!!!!! GET SOME kappas IN THE CHAT!!!! \ Kappa /"
-            else:
-                return "You don't have any more!"
+                return "LEVEL UP!!!"
 
         else:
 
@@ -707,7 +705,8 @@ def use_item(username, item, position):
             else:
                 return "No Pokemon eligible for evolution."
 
-    except:
+    except Exception as error:
+        print error
         return "Well, that didn't work. Did you pick the right items? Do you actually have those items? Kappa"
 
 

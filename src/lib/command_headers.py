@@ -287,7 +287,7 @@ commands = {
         'limit': 0,
         'argc': 2,
         #'return': 'command',
-        'return': 'this command is getting fixed',
+        'return': 'command',
         'usage': '!use [item_position] [party_position]'
 
     },

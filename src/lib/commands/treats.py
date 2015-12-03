@@ -52,10 +52,7 @@ def treats(args):
     mod_name = globals.CURRENT_USER
     user_dict, __ = get_dict_for_users(None)
 
-    if mod_name not in user_dict["chatters"]["moderators"]:
-        return "Only " + ", ".join(user_dict["chatters"]["moderators"]) + " are allowed to do that!"
-
-    elif add_remove == "add":
+    if add_remove == "add":
 
         if delta_user == "all":
             modify_points_all_users(all_users, delta)
