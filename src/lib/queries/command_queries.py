@@ -16,52 +16,54 @@ CREATE TABLE custom_commands(
 """
 
 
-def get_custom_commands():  # only gets donation_points
+def get_custom_commands(channel):  # only gets donation_points
     con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""SELECT channel, command, creator, user_level,
-            time, response, times_used FROM custom_commands""")
+            time, response, times_used FROM custom_commands
+            WHERE channel = %s""", [channel])
         commands = cur.fetchall()
         return commands
 
 
-def get_custom_command(command):
+def get_custom_command(channel, command):
     con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""SELECT channel, command FROM custom_commands
             WHERE command = %s AND channel = %s""", [
-                command, globals.global_channel])
+                command, channel])
+        print command, channel
         commands = cur.fetchall()
         return commands
 
 
-def get_custom_command_elements(command):
+def get_custom_command_elements(channel, command):
     con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""SELECT user_level, response FROM custom_commands
             WHERE command = %s AND channel = %s""", [
-                command, globals.global_channel])
+                command, channel])
         elements = cur.fetchone()
         return elements
 
 
-def increment_command_counter(command):
+def increment_command_counter(channel, command):
     con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute("""UPDATE custom_commands set times_used = times_used + 1
                     WHERE command = %s and channel = %s""", [
-                command, globals.global_channel])
+                command, channel])
         elements = cur.fetchone()
         return elements
 
 
 def save_command(command, creator, user_level, response):
     con = get_connection()
-    command_fetch = get_custom_command(command)
+    command_fetch = get_custom_command(globals.global_channel, command)
     if len(command_fetch) > 0:
         # print get_custom_command(command)[0], get_custom_command(command)[1]
         if command_fetch[0][0] == globals.global_channel and command_fetch[0][1] == command:
@@ -81,7 +83,7 @@ def save_command(command, creator, user_level, response):
 
 def delete_command(command):
     con = get_connection()
-    command_fetch = get_custom_command(command)
+    command_fetch = get_custom_command(globals.global_channel, command)
     if len(command_fetch) > 0:
         if command_fetch[0][0] != globals.global_channel and command_fetch[0][1] != command:
             return "{0} not found as a unique command in {1}'s channel!".format(

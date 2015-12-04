@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS `custom_commands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `custom_commands` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `channel` varchar(20) NOT NULL,
   `command` varchar(20) NOT NULL,
   `creator` varchar(20) NOT NULL,
@@ -30,7 +31,7 @@ CREATE TABLE `custom_commands` (
   `time` datetime DEFAULT NULL,
   `response` varchar(200) NOT NULL,
   `times_used` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`command`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
