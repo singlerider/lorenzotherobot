@@ -34,7 +34,6 @@ def get_custom_command(channel, command):
         cur.execute("""SELECT channel, command FROM custom_commands
             WHERE command = %s AND channel = %s""", [
                 command, channel])
-        print command, channel
         commands = cur.fetchall()
         return commands
 

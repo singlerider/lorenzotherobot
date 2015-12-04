@@ -82,20 +82,22 @@ class Roboraj(object):
 
         def return_custom_command(channel, message, username):
             chan = channel.lstrip("#")
-            elements = get_custom_command_elements(chan, message)
-            print elements
-            resp = elements[1].replace("{}", username)
-            print resp
+            elements = get_custom_command_elements(
+                chan, message[0])
+            replacement_user = username
+            if len(message) > 1:
+                replacement_user = message[1]
+            resp = elements[1].replace("{}", replacement_user)
             if elements[0] == "mod":
                 user_dict, __ = get_dict_for_users()
                 if username in user_dict["chatters"]["moderators"]:
                     self.irc.send_message(channel, resp)
-                    increment_command_counter(chan, message)
-                    save_message("lorenzotherobot", channel, message)
+                    increment_command_counter(chan, message[0])
+                    save_message("lorenzotherobot", channel, resp)
             elif elements[0] == "reg":
                 self.irc.send_message(channel, resp)
-                increment_command_counter(chan, message)
-                save_message("lorenzotherobot", channel, message)
+                increment_command_counter(chan, message[0])
+                save_message("lorenzotherobot", channel, resp)
 
         def ban_for_spam(channel, user):
             ban = "/ban {0}".format(user)
@@ -121,23 +123,20 @@ class Roboraj(object):
                 globals.CURRENT_USER = username
                 if channel == "#curvyllama" or channel == "#singlerider":
                     write_to_log(channel, username, message)
-                    if message[0] == "!":
-                        print message
+
                     # check for sub message
                     if username == "twitchnotify":
                         check_for_sub(channel, username, message)
                     if spam_detector(username, message) == True:
                         ban_for_spam(channel, user)
                 chan = channel.lstrip("#")
-                fetch_command = get_custom_command(chan, message)
-                print fetch_command
-                if len(fetch_command) > 0:
-                    print 0
-                    print len(fetch_command)
-                    if message == fetch_command[0][1]:
-                        print 1
-                        return_custom_command(
-                            channel, message, username)
+                if message[0] == "!":
+                    message_split = message.split()
+                    fetch_command = get_custom_command(chan, message_split[0])
+                    if len(fetch_command) > 0:
+                        if message_split[0] == fetch_command[0][1]:
+                            return_custom_command(
+                                channel, message_split, username)
                 save_message(username, channel, message)
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
