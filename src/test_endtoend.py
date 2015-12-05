@@ -14,7 +14,7 @@ twitch.get_dict_for_users = lambda: (
         {'moderators': ["theepicsnail_", "singlerider"],
          'global_mods': [],
          'admins': [],
-         'viewers': [],
+         'viewers': ["randomUser"],
          'staff': []
          },
      '_links': {},
@@ -112,19 +112,19 @@ class TestPokemon(unittest.TestCase):
         simulateMessage("randomUser", "!pokemon battle")
         self.assertIn("randomUser", server.getOutput())
 
-    def test_capture_and_me(self):
-        simulateMessage("randomUser", "!pokemon me")
+    def test_catch_and_partymembers(self):
+        simulateMessage("randomUser", "!party members")
         original = server.getOutput()
 
-        simulateMessage("randomUser", "!capture")
+        simulateMessage("randomUser", "!catch")
         self.assertIn("Somebody else beat you to it", server.getOutput())
         # release a pokemon
         pokemon = pokemon_lib.cron()[7:-10]
 
-        simulateMessage("randomUser", "!capture")
+        simulateMessage("randomUser", "!catch")
         self.assertIn("caught it", server.getOutput())
 
-        simulateMessage("randomUser", "!pokemon me")
+        simulateMessage("randomUser", "!party members")
         self.assertNotEqual(original, server.getOutput(),
                             "Pokemon didn't change")
 
@@ -148,6 +148,8 @@ class TestTreats(unittest.TestCase):
 
         simulateMessage("randomUser",  "!llama treats")
         new_treats = int(server.getOutput().split(" ")[10])
+
+        print old_treats, new_treats
 
         self.assertEqual(old_treats + 1000, new_treats)
 

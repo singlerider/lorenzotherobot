@@ -9,6 +9,7 @@ This is a Twitch chat/irc bot written in Python (2.6 / 2.7).
 ## Installation
 
 ### Google API
+This is for saving logs to your Google Drive directory
 
 #### Python Quickstart
 
@@ -99,13 +100,13 @@ Exit out of the console with:
 
 Create your schema from my blank template:
 
-`mysql -u lorenzo -ppassword* databasename < schema.sql `
+`mysql -u newuser -ppassword databasename < schema.sql`
 
 #### Globals and Config Files
 
 Head into src/config/config.py and enter the correct channels and cron jobs
 you'd like to run, then go into globals.py and at the very least replace the
-mysql credentials. Leave global_channel, CURRENT_USER, VARIABLE, and 
+mysql credentials. Leave global_channel, CURRENT_USER, VARIABLE, and
 channel_info alone.
 
 ## Commands
