@@ -27,21 +27,6 @@ commands = {
 
     },
 
-    '!request': {
-        'limit': 0,
-        'argc': 1,
-        'return': 'command',
-        'space_case': True,
-        'usage': '!request [insert artist name and song title here]'
-    },
-
-    '!songrequest': {
-        'limit': 0,
-        'argc': 1,
-        'return': 'command',
-        'space_case': True,
-        'usage': '!songrequest [insert artist name and song title here]'
-    },
 
     '!poll': {
         'limit': 0,
@@ -70,13 +55,6 @@ commands = {
 
     },
 
-    '!weather': {
-        'limit': 0,
-        'return': 'command',
-        'argc': 1,
-        'usage': '!weather [zip_code]'
-
-    },
 
     '!treats': {
         'limit': 0,
