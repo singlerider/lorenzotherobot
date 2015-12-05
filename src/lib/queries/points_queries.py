@@ -69,8 +69,8 @@ def get_all_user_points(username):  # gets all of a single user's points
             time_points = points
             print cur.fetchone()#, donation_points, time_points
             if time_points > 0 or donation_points > 0:
-                return "Treats from donations, time: {0}, {1}".format(
-                    donation_points[0], time_points[1])
+                return "All {0} your treats are belong to me".format(
+                    donation_points[0] + time_points[1])
             else:
                 return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
         except Exception as error:
