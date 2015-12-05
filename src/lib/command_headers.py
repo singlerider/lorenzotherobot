@@ -320,6 +320,14 @@ commands = {
         'ul': 'mod'
     },
 
+    '!edit': {
+        'limit': 0,
+        'arc': 4,
+        'return': 'command',
+        'usage': '!edit [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}")]',
+        'ul': 'mod'
+    }
+
 }
 
 

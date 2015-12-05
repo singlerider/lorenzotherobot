@@ -53,8 +53,8 @@ def increment_command_counter(channel, command):
     con = get_connection()
     with con:
         cur = con.cursor()
-        cur.execute("""UPDATE custom_commands set times_used = times_used + 1
-                    WHERE command = %s and channel = %s""", [
+        cur.execute("""UPDATE custom_commands SET times_used = times_used + 1
+                    WHERE command = %s AND channel = %s""", [
                 command, channel])
         elements = cur.fetchone()
         return elements
@@ -64,7 +64,6 @@ def save_command(command, creator, user_level, response):
     con = get_connection()
     command_fetch = get_custom_command(globals.global_channel, command)
     if len(command_fetch) > 0:
-        # print get_custom_command(command)[0], get_custom_command(command)[1]
         if command_fetch[0][0] == globals.global_channel and command_fetch[0][1] == command:
             return "{0} already exists in {1}'s channel!".format(
                 command, globals.global_channel)
@@ -80,6 +79,24 @@ def save_command(command, creator, user_level, response):
             return "{0} successfully added".format(command)
 
 
+def edit_command(command, creator, user_level, response):
+    con = get_connection()
+    command_fetch = get_custom_command(globals.global_channel, command)
+    if len(command_fetch) > 0:
+        if command_fetch[0][0] == globals.global_channel and command_fetch[0][1] == command:
+            with con:
+                cur = con.cursor()
+                cur.execute(
+                    """UPDATE custom_commands
+                        SET response = %s, user_level = %s
+                        WHERE command = %s AND channel = %s""", [
+                        response, user_level, command, globals.global_channel])
+                return "{0} successfully changed".format(command)
+    else:
+        return "{0} already exists in {1}'s channel!".format(
+            command, globals.global_channel)
+
+
 def delete_command(command):
     con = get_connection()
     command_fetch = get_custom_command(globals.global_channel, command)
@@ -92,7 +109,7 @@ def delete_command(command):
                 cur = con.cursor()
                 cur.execute(
                     """DELETE FROM custom_commands
-                        WHERE command = %s and channel = %s""", [
+                        WHERE command = %s AND channel = %s""", [
                             command, globals.global_channel])
                 return "{0} successfully removed".format(command)
     else:
