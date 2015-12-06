@@ -5,7 +5,7 @@ import globals
 
 
 def donation(args):
-    user = args[0].lower()
+    user = args[0].lower().lstrip("@")
     amount = args[1]
     try:
         amount = int(float(amount.lstrip("$")))
