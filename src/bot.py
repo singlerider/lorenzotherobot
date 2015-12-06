@@ -63,6 +63,7 @@ class Roboraj(object):
             # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder subscribed for 5 months in a row!
             # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder just subscribed!
             # Photo_phocus just subscribed to jonsandman!
+            # HermanNugent subscribed to JonSandman for 7 months in a row!
             # first sub points = 100
             # resub = 50
             try:
@@ -74,7 +75,7 @@ class Roboraj(object):
                         subbed_user)
                     self.irc.send_message(channel, resp)
                     save_message("lorenzotherobot", channel, resp)
-                elif message_split[1] == "subscribed":
+                elif message_split[1] == "subscribed" and len(message_split) < 9:
                     months_subbed = message_split[3]
                     modify_user_points(subbed_user, int(months_subbed) * 100)
                     resp = "/me {0} has just resubscribed for {1} months straight!".format(subbed_user, months_subbed)
