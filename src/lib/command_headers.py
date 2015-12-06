@@ -81,13 +81,6 @@ commands = {
 
     },
 
-    '!me': {
-        'limit': 0,
-        'return': 'command',
-        'argc': 0,
-        'usage': '!me (this is a test command)'
-
-    },
 
     '!test': {
         'limit': 0,
