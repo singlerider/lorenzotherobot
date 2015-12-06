@@ -78,7 +78,23 @@ def get_all_user_points(username):  # gets all of a single user's points
                     total),
                 "{0} - the answer to the meaning of life.".format(total),
                 "{0} - treats game on fleek".format(total),
-                "{0} - very impressi - ResidentSleeper".format(total)
+                "{0} - very impressi - ResidentSleeper".format(total),
+                "{0} bottles of treats on the wall. Take one down, pass it around, {1} bottles of treats on the wall".format(
+                    total, (total - 1)),
+                "If I had a treat for every time you asked me that, I'd have {0} treats".format(
+                    total),
+                "You've got {0}, okay? Stop nagging me! BibleThump".format(total),
+                "Is that all I'm good for? Telling you that {0} has {1} treats?".format(
+                    username, total),
+                "{0}. You're basically rich".format(total),
+                "When I was a young bot, we had to count our treats by hand - {0}".format(total),
+                "{0}, but only {1} are from donations Kappa".format(
+                    total, (donation_points)),
+                "I give {0} f***s about you <3".format(total),
+                "{0} treats in yo' face. Now watchu go'n do with it?".format(total),
+                "a squared plus b squared equals {0}".format(total),
+                "{0} - that's {1} papa john number 1 pizzas".format(
+                    total, (float(total) / 15))
                 ]
 
             print cur.fetchone()#, donation_points, time_points
