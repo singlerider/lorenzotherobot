@@ -315,9 +315,17 @@ commands = {
 
     '!edit': {
         'limit': 0,
-        'arc': 4,
+        'argc': 4,
         'return': 'command',
         'usage': '!edit [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}")]',
+        'ul': 'mod'
+    },
+
+    '!weather': {
+        'limit': 0,
+        'argc': 2,
+        'return': 'command',
+        'usage': '!weather [units (metric/imperial)] [location (any format)]',
         'ul': 'mod'
     }
 
