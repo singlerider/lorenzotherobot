@@ -432,9 +432,9 @@ def sell_transaction():
             """set @price = (select asking_price from userpokemon where username = @owner and position = @position)""")
         cur.execute("""update userpokemon set username = @buyer, for_sale = 0, position = @position_free
         where username = @seller and position = @position""")
-        cur.execute("""update users set points = points + @price
+        cur.execute("""update users set donation_points = donation_points + @price
         where username = @seller""")
-        cur.execute("""update users set points = points - @price
+        cur.execute("""update users set donation_points = donation_points - @price
         where username = @buyer""")
         cur.execute("""COMMIT""")
 
@@ -586,29 +586,29 @@ def check_inventory(username):
 
 def buy_items(id, username):
     con = get_connection()
-    try:
-        if int(id) in (1, 2, 3, 4, 5, 11):
-            print "ID FOUND TO MATCH ITEMS AVAILABLE"
-            points = int(get_user_points(username))
-            value = int(get_item_value(id))
-            print value
-            print type(value)
-            if points >= value:
-                print "POINTS ARE HIGHER THAN ITEM VALUE"
-                with con:
+    with con:
+        try:
+            if int(id) in (1, 2, 3, 4, 5, 11):
+                print "ID FOUND TO MATCH ITEMS AVAILABLE"
+                points = int(get_user_points(username))
+                value = int(get_item_value(id))
+                print value
+                print type(value)
+                if points >= value:
+                    print "POINTS ARE HIGHER THAN ITEM VALUE"
                     cur = con.cursor()
                     cur.execute("""INSERT INTO useritems (username, item_id, quantity) VALUES (%s, %s, 1) ON
                     DUPLICATE KEY UPDATE quantity = quantity + 1""", [username, id])
                     cur.execute(
-                        """UPDATE users SET points = points - %s WHERE username = %s""", [value, username])
-
+                        """UPDATE users SET donation_points = donation_points - %s WHERE username = %s""", [value, username])
                     return "Transaction successful."
+                else:
+                    return "You need more points for that!"
             else:
-                return "You need more points for that!"
-        else:
-            return "That is not a valid item position."
-    except Exception as error:
-        return "item ID must be a number"
+                return "That is not a valid item position."
+        except Exception as error:
+            print error
+            return "item ID must be a number"
 
 
 def gift_items(id, username):
