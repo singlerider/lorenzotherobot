@@ -71,14 +71,15 @@ class Roboraj(object):
                 subbed_user = message_split[0]
                 if message_split[1] == "just" and len(message_split) < 4:
                     modify_user_points(subbed_user, 100)
-                    resp = "/me {0} has just subscribed for the first time!".format(
-                        subbed_user)
+                    resp = "/me {0} treats for {1} for a first time subscription!".format(
+                        100, subbed_user)
                     self.irc.send_message(channel, resp)
                     save_message("lorenzotherobot", channel, resp)
                 elif message_split[1] == "subscribed" and len(message_split) < 9:
                     months_subbed = message_split[3]
                     modify_user_points(subbed_user, int(months_subbed) * 100)
-                    resp = "/me {0} has just resubscribed for {1} months straight!".format(subbed_user, months_subbed)
+                    resp = "/me {0} has just resubscribed for {1} months straight and is getting {2} treats for loyalty!".format(
+                        subbed_user, months_subbed, int(months_subbed) * 100)
                     self.irc.send_message(channel, resp)
                     save_message("lorenzotherobot", channel, resp)
             except Exception as error:
