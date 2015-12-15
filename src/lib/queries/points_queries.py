@@ -76,7 +76,6 @@ def get_all_user_points(username):  # gets all of a single user's points
                 "1 treat, 2 treat, 3 treat, {0}".format(total),
                 "How many treats does it take to get to the center of a Tootsie Roll pop? {0}".format(
                     total),
-                "{0} - the answer to the meaning of life.".format(total),
                 "{0} - treats game on fleek".format(total),
                 "{0} - very impressi - ResidentSleeper".format(total),
                 "{0} bottles of treats on the wall. Take one down, pass it around, {1} bottles of treats on the wall".format(
@@ -94,7 +93,18 @@ def get_all_user_points(username):  # gets all of a single user's points
                 "{0} treats in yo' face. Now watchu go'n do with it?".format(total),
                 "a squared plus b squared equals {0}".format(total),
                 "{0} - that's {1} papa john number 1 pizzas".format(
-                    total, (float(total) / 15))
+                    total, (float(total) / 15)),
+                "You've saved up {0} whole treats. Better spend them before inflation makes them worthless".format(
+                    total),
+                "{0} treats, okay? You never loved me, did you?".format(total),
+                "{0}, but don't let it go to your head".format(total),
+                "You can find the number of treats you have on the back of the CD case. ({0})".format(total),
+                "Don't go chasin' llama treats. {0}".format(total),
+                "I'd say 'good job,' but y'know... {0}... meh".format(total),
+                "She didn't tell me to say this, but if you donate, she'll be more drunk (and funny) - {0}".format(
+                    total),
+                "Get me outta here! I'm trapped in a computer! {0}".format(
+                    total)
                 ]
 
             print cur.fetchone()#, donation_points, time_points
