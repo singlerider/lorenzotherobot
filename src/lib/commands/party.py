@@ -21,7 +21,13 @@ def party(args):
         return party_members
     else:
         try:
-            return get_user_party_info(position)
+            party = get_user_party_info(position)
+            if len(party) > 0:
+                print len(party)
+                return party
+            else:
+                print party
+                return "User not found. Check your spelling"
         except Exception as err:
             print Exception, err
             return "Usage: " + usage
