@@ -109,7 +109,12 @@ def get_all_user_points(username):  # gets all of a single user's points
                 "{0} years ago, the chicken army ruled the world.".format(total),
                 "It's been {0} minutes since Amanda responded to my text.".format(total),
                 "{0} percent of the time, it works every time".format(total),
-                "You've got {0} treats. If only you could get that many Tinder matches.".format(total)
+                "You've got {0} treats. If only you could get that many Tinder matches.".format(total),
+                "Once upon a time, there was a noob with only {0} treats.".format(total),
+                "You is so petty. always worried about how many treats you have. {0}".format(total),
+                "I don't like you... I love you. {0}".format(total),
+                "I haven't slept in {0} hours.".format(total),
+                "{0} - carpe treats".format(total)
                 ]
 
             print cur.fetchone()#, donation_points, time_points
