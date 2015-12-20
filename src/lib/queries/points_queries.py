@@ -216,12 +216,12 @@ def get_time_in_chat(user):
     with con:
 
         cur = con.cursor()
-        cur.execute("select time_in_chat from users where username = %s", [username])
+        cur.execute("select time_in_chat from users where username = %s", [user])
         try:
             points = cur.fetchone()
             if points[0] > 0:
                 return points[0]
             else:
-                return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
+                return 0
         except:
             return "User not found. Check your spelling."

@@ -8,9 +8,6 @@ import src.lib.llama as llamadb
 import src.lib.user_commands as user_commands_import
 import src.lib.queries.points_queries as points_import
 
-usage = "!llama (list, treats, me, stream, [username], highlight, viewers, followers, usage, uptime, shots)"
-
-
 def random_highlight():
     get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
         globals.channel + "/videos?limit=20"

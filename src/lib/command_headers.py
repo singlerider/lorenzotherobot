@@ -327,6 +327,14 @@ commands = {
         'return': 'command',
         'usage': '!weather [units (metric/imperial)] [location (any format)]',
         'ul': 'mod'
+    },
+
+    '!loyalty': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'usage': '!loyalty [username]',
+        'ul': 'mod'
     }
 
 }
