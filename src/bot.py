@@ -217,7 +217,7 @@ class Roboraj(object):
             print globals.global_channel
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
                               'welcome', 'rules', 'poll', 'vote', 'gt',
-                              'llama']
+                              'llama', 'loyalty']
             if command.lstrip("!") in prevented_list:
                 return
 
