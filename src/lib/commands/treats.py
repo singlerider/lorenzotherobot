@@ -36,8 +36,6 @@ def treatsForAllTimer(channel, delta):
 
 def treats(args):
 
-    user_dict, all_users = twitch.get_dict_for_users()
-
     usage = "!treats (add/remove [username] [amount])"
 
     add_remove = args[0]
@@ -49,7 +47,7 @@ def treats(args):
         return "amount has to be a number, ya dingus!"
 
     mod_name = globals.CURRENT_USER
-    user_dict, __ = get_dict_for_users(None)
+    user_dict, all_users = get_dict_for_users()
 
     if add_remove == "add":
 

@@ -7,7 +7,6 @@ import random
 def mysql_ping():
     con = get_connection()
     with con:
-
         con.ping()
         print "pinging database"
 
@@ -15,7 +14,6 @@ def mysql_ping():
 def get_points_list():
     con = get_connection()
     with con:
-
         cur = con.cursor()
         cur.execute(
             """SELECT username, donation_points FROM users ORDER BY points * 1 DESC""")
@@ -28,7 +26,6 @@ def get_points_list():
 def get_user_points(username):  # only gets donation_points
     con = get_connection()
     with con:
-
         cur = con.cursor()
         cur.execute(
             "select donation_points from users where username = %s",
@@ -46,12 +43,13 @@ def get_user_points(username):  # only gets donation_points
 def get_user_time_points(username):  # only gets donation_points
     con = get_connection()
     with con:
-
         cur = con.cursor()
         cur.execute(
             "select time_points from users where username = %s", [username])
         points = cur.fetchone()
-        if len(points) > 0:
+        if points is None:
+            return 0
+        elif len(points) > 0:
             return points[0]
         else:
             return 0
@@ -60,7 +58,6 @@ def get_user_time_points(username):  # only gets donation_points
 def get_all_user_points(username):  # gets all of a single user's points
     con = get_connection()
     with con:
-
         cur = con.cursor()
         cur.execute("select donation_points, time_points from users where username = %s", [username])
         try:
@@ -130,19 +127,37 @@ def get_all_user_points(username):  # gets all of a single user's points
 def set_user_points(delta_user, delta):
     con = get_connection()
     with con:
-
         cur = con.cursor()
-        cur.execute("update users set donation_points = %s where username = %s", [
-                    delta, delta_user])
+        cur.execute("""UPDATE users SET donation_points = %s
+                        WHERE username = %s""", [delta, delta_user])
 
 
-def modify_user_points(delta_user, delta):
+def modify_user_points(username, delta):
+    donation_points = get_user_points(username)
+    if type(donation_points) == str:
+        donation_points = 0
+    time_points = get_user_time_points(username)
+    if type(time_points) == str:
+        time_points = 0
+    total = donation_points + time_points
     con = get_connection()
     with con:
-
         cur = con.cursor()
-        cur.execute("""INSERT INTO users (username, donation_points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE donation_points = donation_points + %s""",
-                    [delta_user, delta, delta])
+        if abs(delta) > donation_points and delta <= 0:
+            time_points_to_remove = abs(donation_points - abs(delta))
+            cur.execute(
+                """INSERT INTO users (username, donation_points)
+                    VALUES (%s, %s) ON DUPLICATE KEY
+                    UPDATE donation_points = %s,
+                    time_points = time_points - %s""", [
+                        username, 0, 0, time_points_to_remove])
+        else:  # standard for removal
+            print delta
+            cur.execute(
+                """INSERT INTO users (username, donation_points)
+                    VALUES (%s, %s) ON DUPLICATE KEY
+                    UPDATE donation_points = donation_points + %s""", [
+                        username, delta, delta])
 
 
 def modify_points_all_users(all_users, points_to_increment=1):
@@ -214,7 +229,6 @@ def modify_points_all_users_hack(points_to_increment=1):
 def get_time_in_chat(user):
     con = get_connection()
     with con:
-
         cur = con.cursor()
         cur.execute("select time_in_chat from users where username = %s", [user])
         try:

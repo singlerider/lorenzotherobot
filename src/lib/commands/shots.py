@@ -17,10 +17,6 @@ def readShots():
     except:
         return 0
 
-shot_count = readShots()
-usage = "!shots (add/remove/set [amount])"
-
-
 def shots(args):
     global shot_count
 

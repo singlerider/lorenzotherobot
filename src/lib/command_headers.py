@@ -214,7 +214,7 @@ commands = {
     },
 
     '!popularity': {
-        'limit': 60,
+        'limit': 0,
         'argc': 1,
         'return': 'command',
         'space_case': True,

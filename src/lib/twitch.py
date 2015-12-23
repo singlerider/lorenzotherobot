@@ -10,14 +10,12 @@ import src.lib.user_commands as user_commands_import
 
 def get_dict_for_users(channel=None):
     users = {}
-    channel = globals.global_channel
-    if channel is not None:
-        channel = channel.lstrip('#')
+    if channel is None:
+        channel = globals.global_channel
+    channel = channel.lstrip('#')
     if 'viewers' in globals.channel_info[channel] and channel == "curvyllama":
-            print "'viewers' in globals.channel_info[channel]"
             users = globals.channel_info[channel]['viewers']  # cached users
     else:
-        print "'viewers' NOT in globals.channel_info[channel]"
         try:
             get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
                 channel + '/chatters'
@@ -148,7 +146,6 @@ def get_game_popularity(game):
         top_three = first_streamer + ": " + first_viewers + ", " + second_streamer + \
             ": " + second_viewers + ", " + third_streamer + ": " + third_viewers
         return "The top three streamers playing " + game + " are: " + top_three
-
     except:
         return "Avoid using special characters and check your spelling."
 
