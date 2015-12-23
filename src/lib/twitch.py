@@ -50,8 +50,8 @@ def curvyllama_user_cron(a=None):
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     try:
         users = json.loads(get_dict_for_users_resp.content)
-    except:
-        return "Twitch's backend is down. Sorry, dawg. Treats will return once that gets fixed."
+    except Exception as error:
+        print "error getting response:", error
     globals.channel_info[channel]['viewers'] = users
 
 
