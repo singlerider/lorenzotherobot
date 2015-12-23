@@ -50,9 +50,9 @@ def curvyllama_user_cron(a=None):
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     try:
         users = json.loads(get_dict_for_users_resp.content)
+        globals.channel_info[channel]['viewers'] = users
     except Exception as error:
         print "error getting response:", error
-    globals.channel_info[channel]['viewers'] = users
 
 
 def get_dict_for_users_mods_hack(channel):
