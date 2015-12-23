@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.42, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.28, for Linux (x86_64)
 --
 -- Host: localhost    Database: twitchcurvyllama
 -- ------------------------------------------------------
--- Server version	5.5.42
+-- Server version	5.6.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +32,7 @@ CREATE TABLE `custom_commands` (
   `response` varchar(200) NOT NULL,
   `times_used` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `evolutiontriggers` (
   `id` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `condition` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `items` (
   `name` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `value` int(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +78,7 @@ CREATE TABLE `messages` (
   `message` varchar(2000) NOT NULL,
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42246 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +113,7 @@ CREATE TABLE `pokemon` (
   CONSTRAINT `pokemon_ibfk_1` FOREIGN KEY (`type_primary`) REFERENCES `types` (`id`),
   CONSTRAINT `pokemon_ibfk_2` FOREIGN KEY (`type_secondary`) REFERENCES `types` (`id`),
   CONSTRAINT `pokemon_ibfk_3` FOREIGN KEY (`evolution_trigger`) REFERENCES `evolutiontriggers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=252 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +210,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `username` varchar(50) NOT NULL DEFAULT '',
   `donation_points` int(11) DEFAULT '0',
-  `lastbattle` datetime DEFAULT NULL,
+  `lastbattle` datetime DEFAULT CURRENT_TIMESTAMP,
   `wins` int(11) DEFAULT '0',
   `losses` int(11) DEFAULT '0',
   `time_in_chat` int(11) DEFAULT '0',
@@ -229,4 +229,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-05 19:06:32
+-- Dump completed on 2015-12-23 11:38:29

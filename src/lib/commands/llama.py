@@ -4,7 +4,6 @@ Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 
 import src.lib.commands.shots as shots_import
 from src.lib.twitch import *
-import src.lib.llama as llamadb
 import src.lib.user_commands as user_commands_import
 import src.lib.queries.points_queries as points_import
 
