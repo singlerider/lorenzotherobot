@@ -7,19 +7,24 @@ import src.lib.user_commands as user_commands_import
 
 # making this comment from Github's Oval Office
 
-user_data_name = globals.CURRENT_USER
-
 
 def get_dict_for_users(channel=None):
-    if channel != None:
-        globals.global_channel = channel.lstrip('#')
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
-        globals.global_channel + '/chatters'
-    get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
-    try:
-        users = json.loads(get_dict_for_users_resp.content)
-    except:
-        return "Twitch's backend is down. Sorry, dawg. Treats will return once that gets fixed."
+    users = {}
+    channel = globals.global_channel
+    if channel is not None:
+        channel = channel.lstrip('#')
+    if 'viewers' in globals.channel_info[channel] and channel == "curvyllama":
+            print "'viewers' in globals.channel_info[channel]"
+            users = globals.channel_info[channel]['viewers']  # cached users
+    else:
+        print "'viewers' NOT in globals.channel_info[channel]"
+        try:
+            get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
+                channel + '/chatters'
+            get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
+            users = json.loads(get_dict_for_users_resp.content)
+        except:
+            return "Twitch's backend is down. Sorry, dawg."
     user_dict = users
     all_users = []
     for user in users['chatters']['moderators']:
@@ -30,8 +35,25 @@ def get_dict_for_users(channel=None):
         all_users.append(str(user))
     for user in users['chatters']['admins']:
         all_users.append(str(user))
-    # print "all_users: " + str(all_users)
+    globals.channel_info[channel]['viewers'] = user_dict  # cache values
+    print globals.channel_info[channel]['viewers']
     return user_dict, list(set(all_users))
+
+
+def curvyllama_user_cron(a=None):
+    import requests
+    import json
+    import globals
+    channel = "curvyllama"
+    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
+        channel + '/chatters'
+    get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
+    try:
+        users = json.loads(get_dict_for_users_resp.content)
+    except:
+        return "Twitch's backend is down. Sorry, dawg. Treats will return once that gets fixed."
+    globals.channel_info[channel]['viewers'] = users
+
 
 def get_dict_for_users_mods_hack(channel):
     if channel is not None:
@@ -86,7 +108,7 @@ def get_offline_status():
 def get_user_command():
     try:
         user_command = user_commands_import.user_command_dict[
-            user_data_name]["return"]
+            globals.CURRENT_USER]["return"]
         return user_command
     except:
         return "Dude... stop. You don't have a user command... yet. R)"
@@ -113,20 +135,16 @@ def get_game_popularity(game):
 
     try:
         game_http_request = game.replace(' ', '%20')
-
         url = 'https://api.twitch.tv/kraken/search/streams?q=' + \
             game_http_request + '&limit=100'
         resp = requests.get(url=url)
         data = json.loads(resp.content)
-
         first_streamer = str(data["streams"][0]["channel"]["display_name"])
         second_streamer = str(data["streams"][1]["channel"]["display_name"])
         third_streamer = str(data["streams"][2]["channel"]["display_name"])
-
         first_viewers = str(data["streams"][0]["viewers"])
         second_viewers = str(data["streams"][1]["viewers"])
         third_viewers = str(data["streams"][2]["viewers"])
-
         top_three = first_streamer + ": " + first_viewers + ", " + second_streamer + \
             ": " + second_viewers + ", " + third_streamer + ": " + third_viewers
         return "The top three streamers playing " + game + " are: " + top_three
@@ -134,16 +152,15 @@ def get_game_popularity(game):
     except:
         return "Avoid using special characters and check your spelling."
 
+
 def get_follower_status(user):
     try:
         url = "https://api.twitch.tv/kraken/users/{}/follows/channels/{}".format(user.lower().lstrip("@"), globals.global_channel)
         resp = requests.get(url=url)
         data = json.loads(resp.content)
-
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
                   "Sep", "Oct", "Nov", "Dec"]
         suffixes = ["st", "nd", "rd", "th",]
-
         date_split = data["created_at"][:10].split("-")
         year = date_split[0]
         month = months[int(date_split[1]) - 1]
@@ -161,7 +178,6 @@ def get_follower_status(user):
         follower_since = "{} {}, {}".format(month, day, year)
         notifications = data["notifications"]
         followers = data["channel"]["followers"]
-
         return "{} has been following {} since {}.".format(user, globals.global_channel, follower_since)
     except:
         return "{} doesn't follow {}.".format(user, globals.global_channel)
