@@ -112,7 +112,6 @@ class Roboraj(object):
             self.irc.send_message(channel, unban)
             save_message("lorenzotherobot", channel, message)
 
-
         config = self.config
 
         while True:
@@ -128,7 +127,6 @@ class Roboraj(object):
                 globals.CURRENT_USER = username
                 if channel == "#curvyllama" or channel == "#singlerider":
                     write_to_log(channel, username, message)
-
                     # check for sub message
                     if username == "twitchnotify":
                         check_for_sub(channel, username, message)
@@ -167,14 +165,11 @@ class Roboraj(object):
         # print("Inputs:", command, channel, username, message)
         if command == message:
             args = []
-
         elif command == message and command in commands.keys():
             print "Yes, it is in commands"
-
         else:
             # default to args = ["bar baz"]
             args = [message[len(command) + 1:]]
-
         if not commands.check_is_space_case(command) and args:
             # if it's not space case, break the arg apart
             args = args[0].split(" ")
@@ -185,7 +180,6 @@ class Roboraj(object):
             return
         pbot('Command is valid and not on cooldown. (%s) (%s)' %
              (command, username), channel)
-
         # Check for and handle the simple non-command case.
         cmd_return = commands.get_return(command)
         if cmd_return != "command":
@@ -194,10 +188,9 @@ class Roboraj(object):
             commands.update_last_used(command, channel)
             self.irc.send_message(channel, resp)
             return
-
         # if there's a required userlevel, validate it.
         if commands.check_has_ul(username, command):
-            user_data = twitch.get_dict_for_users_mods_hack(channel)
+            user_data, __ = twitch.get_dict_for_users(channel)
             try:
                 if username not in user_data["chatters"]["moderators"]:
                     if username != 'singlerider':
@@ -211,7 +204,6 @@ class Roboraj(object):
                     error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
                         username, channel, command, user_data, error)
                     f.write(error_message)
-
         approved_channels = ["curvyllama", "lorenzotherobot", "singlerider"]
         if globals.global_channel not in approved_channels:
             print globals.global_channel
@@ -221,10 +213,8 @@ class Roboraj(object):
                               'weather', 'poll', 'treats', 'vote']
             if command.lstrip("!") in prevented_list:
                 return
-
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
-
         # pbot("Command %s(%s) had a result of %s" % (
         #         command, args, result), channel)
         if result:

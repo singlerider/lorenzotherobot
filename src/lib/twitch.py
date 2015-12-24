@@ -34,37 +34,22 @@ def get_dict_for_users(channel=None):
     for user in users['chatters']['admins']:
         all_users.append(str(user))
     globals.channel_info[channel]['viewers'] = user_dict  # cache values
-    print globals.channel_info[channel]['viewers']
     return user_dict, list(set(all_users))
 
 
-def curvyllama_user_cron(a=None):
+def user_cron(channel):
     import requests
     import json
     import globals
-    channel = "curvyllama"
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
-        channel + '/chatters'
+    channel = channel.lstrip("#")
+    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/{0}/chatters'.format(
+        channel)
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     try:
         users = json.loads(get_dict_for_users_resp.content)
         globals.channel_info[channel]['viewers'] = users
     except Exception as error:
-        print "error getting response:", error
-
-
-def get_dict_for_users_mods_hack(channel):
-    if channel is not None:
-        channel = channel.lstrip('#')
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
-        channel + '/chatters'
-    get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
-    try:
-        users = json.loads(get_dict_for_users_resp.content)
-    except:
-        return "Twitch's backend is down. Sorry, dawg. Treats will return once that gets fixed."
-    user_dict = users
-    return user_dict
+        pass
 
 
 def get_stream_status(channel=None):
