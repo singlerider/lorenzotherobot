@@ -90,9 +90,11 @@ class Roboraj(object):
             elements = get_custom_command_elements(
                 chan, message[0])
             replacement_user = username
+            print elements
             if len(message) > 1:
                 replacement_user = message[1]
             resp = elements[1].replace("{}", replacement_user)
+            resp = elements[1].replace("[]", str(elements[2] + 1))
             if elements[0] == "mod":
                 user_dict, __ = get_dict_for_users()
                 if username in user_dict["chatters"]["moderators"]:

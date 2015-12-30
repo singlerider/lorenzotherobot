@@ -56,7 +56,7 @@ def get_stream_status(channel=None):
     if channel != None:
         globals.global_channel = channel.lstrip('#')
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
-        globals.global_channel
+        channel
     get_stream_status_resp = requests.get(url=get_stream_status_url)
     online_data = json.loads(get_stream_status_resp.content)
     if online_data["stream"] != None:

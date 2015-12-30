@@ -5,12 +5,9 @@ from datetime import datetime, timedelta
 
 
 def battle(args):
-
     position = int(args[0])
     opponent = args[1].lower().replace('@', '')
-
     user_dict, all_users = get_dict_for_users()
-
     now = datetime.utcnow()
     cooldown_time = 3
     required_cooldown = datetime.utcnow() - timedelta(minutes=cooldown_time)
@@ -65,11 +62,6 @@ def battle(args):
                             attacker_stats[2:7]) * attacker_multiplier
                         total_defender = sum(
                             defender_stats[2:7]) * defender_multiplier
-                        # print "opponent ", opponent, ", random opponent position ", random_opponent_position, ", attacker types ", user_pokemon_types_summary(globals.CURRENT_USER, position), ", defender types ", user_pokemon_types_summary(opponent, random_opponent_position), ", attacker_stats ", attacker_stats, ", defender_stats ", defender_stats
-                        # print "attacker_modifier ", attacker_modifier, ",
-                        # defender_modifier ", defender_modifier, ",
-                        # attacker_multiplier ", attacker_multiplier, ",
-                        # defender_multiplier ", defender_multiplier
                         set_battle_timestamp(globals.CURRENT_USER, now)
                         if total_attacker == total_defender:
                             return globals.CURRENT_USER + "'s " + nickname_1 + " and " + opponent + "'s " + nickname_2 + " had a draw."
@@ -86,15 +78,8 @@ def battle(args):
                         return opponent + " has nothing to battle with. Tell them to use !catch"
                 else:
                     return "You can't battle yourself."
-                return "total attacker ", total_attacker, "total defender ", total_defender
             else:
                 return "Your opponent must be in this channel."
         else:
             return "It takes " + str(cooldown_time) + " minutes for your Pokemon to heal!"
-
-    if get_last_battle(globals.CURRENT_USER) == None:
-        set_initial_timestamp = now - timedelta(minutes=15)
-        set_battle_timestamp(globals.CURRENT_USER, set_initial_timestamp)
-        return battle_logic()
-    else:
-        return battle_logic()
+    return battle_logic()

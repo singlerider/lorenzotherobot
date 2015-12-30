@@ -42,7 +42,7 @@ def get_custom_command_elements(channel, command):
     con = get_connection()
     with con:
         cur = con.cursor()
-        cur.execute("""SELECT user_level, response FROM custom_commands
+        cur.execute("""SELECT user_level, response, times_used FROM custom_commands
             WHERE command = %s AND channel = %s""", [
                 command, channel])
         elements = cur.fetchone()
