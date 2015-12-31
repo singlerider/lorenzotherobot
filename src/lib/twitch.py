@@ -9,32 +9,36 @@ import src.lib.user_commands as user_commands_import
 
 
 def get_dict_for_users(channel=None):
-    users = {}
+    n = 0
     if channel is None:
-        channel = globals.global_channel
-    channel = channel.lstrip('#')
-    if 'viewers' in globals.channel_info[channel] and channel == "curvyllama":
-            users = globals.channel_info[channel]['viewers']  # cached users
-    else:
+        channel = globals.global_channel.lstrip("#")
+    dummy = {  # in case the endpoint fails (can be as often as 1:8)
+        "_links": {}, "chatters_count": 0, "chatters": {
+            "staff": [], "admin": [], "global_mods": [],
+            "viewers": [], "moderators": []}}
+    while n < 3:
         try:
-            get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' + \
-                channel + '/chatters'
-            get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
-            users = json.loads(get_dict_for_users_resp.content)
-        except:
-            return "Twitch's backend is down. Sorry, dawg."
-    user_dict = users
-    all_users = []
-    for user in users['chatters']['moderators']:
-        all_users.append(str(user))
-    for user in users['chatters']['viewers']:
-        all_users.append(str(user))
-    for user in users['chatters']['staff']:
-        all_users.append(str(user))
-    for user in users['chatters']['admins']:
-        all_users.append(str(user))
-    globals.channel_info[channel]['viewers'] = user_dict  # cache values
-    return user_dict, list(set(all_users))
+            url = "https://tmi.twitch.tv/group/user/" + channel \
+                + "/chatters"
+            resp = requests.get(url=url)
+            data = json.loads(resp.content)
+            all_users = []
+            for user in data['chatters']['moderators']:
+                all_users.append(str(user))
+            for user in data['chatters']['viewers']:
+                all_users.append(str(user))
+            for user in data['chatters']['staff']:
+                all_users.append(str(user))
+            for user in data['chatters']['admins']:
+                all_users.append(str(user))
+            return data, list(set(all_users))
+        except ValueError:  # "No JSON object could be decoded"
+            n += 1  # make sure n increases value by one on each loop
+            if n < 3:  # if it's not, it will exit the loop
+                continue  # go back to the beginning of the loop
+        except Exception as error:  # in case of an unexpected error
+            return dummy, []
+    return dummy, []  # will only happen after three ValueErrors in a row
 
 
 def user_cron(channel):
@@ -53,14 +57,17 @@ def user_cron(channel):
 
 
 def get_stream_status(channel=None):
-    if channel != None:
-        globals.global_channel = channel.lstrip('#')
+    if channel is None:
+        channel = globals.global_channel.lstrip('#')
+    print channel
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
         channel
     get_stream_status_resp = requests.get(url=get_stream_status_url)
     online_data = json.loads(get_stream_status_resp.content)
-    if online_data["stream"] != None:
+    if online_data["stream"] is not None:
         return True
+    else:
+        print online_data
 
 
 def get_stream_uptime():

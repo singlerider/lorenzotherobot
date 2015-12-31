@@ -174,8 +174,7 @@ def modify_points_all_users(all_users, points_to_increment=1):
               (username, donation_points)
             VALUES
               (%s, %s)
-            ON DUPLICATE KEY UPDATE
-              donation_points = donation_points + """ + str(points_to_increment)
+            ON DUPLICATE KEY UPDATE donation_points = donation_points + """ + str(points_to_increment)
             cur.executemany(sql, ((user, points) for user, points in dData))
             return "success"
 
@@ -198,16 +197,14 @@ def modify_points_all_users_timer(all_users, points_to_increment=1):
               (username, time_points)
             VALUES
               (%s, %s)
-            ON DUPLICATE KEY
-                UPDATE time_points = time_points + """ + str(points_to_increment)
+            ON DUPLICATE KEY UPDATE time_points = time_points + """ + str(points_to_increment)
             cur.executemany(sql, ((user, points) for user, points in dData))
             sql = """
             INSERT INTO users
               (username, time_in_chat)
             VALUES
               (%s, %s)
-            ON DUPLICATE KEY
-                UPDATE time_in_chat = time_in_chat + """ + str(5)
+            ON DUPLICATE KEY UPDATE time_in_chat = time_in_chat + """ + str(5)
             cur.executemany(sql, ((user, points) for user, points in dData))
             return "success"
 

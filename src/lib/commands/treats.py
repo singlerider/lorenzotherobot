@@ -5,25 +5,26 @@ import globals
 
 def cron(channel):
     try:
+        channel = channel.lstrip("#")
         treatsForAllTimer(channel, 1)
     except:
         pass
 
 
 def treatsForAll(channel, delta):
-    if get_stream_status(channel):
-        user_dict, all_users = twitch.get_dict_for_users(channel)
-        try:
-            modify_points_all_users(all_users, delta)
-        except:
-            return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
+    user_dict, all_users = twitch.get_dict_for_users(channel)
+    try:
+        modify_points_all_users(all_users, delta)
+        return "{0} treats for everyone!".format(delta)
+    except:
+        return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
 
 
 def treatsForAllTimer(channel, delta):
-    if get_stream_status(channel):
+    if twitch.get_stream_status(channel):
         user_dict, all_users = twitch.get_dict_for_users(channel)
         try:
-            modify_points_all_users_timer(all_users, delta)
+            modify_points_all_users(all_users, delta)
             # print "Treats added to " + str(all_users)
         except:
             return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
