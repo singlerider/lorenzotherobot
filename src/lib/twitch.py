@@ -59,7 +59,6 @@ def user_cron(channel):
 def get_stream_status(channel=None):
     if channel is None:
         channel = globals.global_channel.lstrip('#')
-    print channel
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
         channel
     get_stream_status_resp = requests.get(url=get_stream_status_url)
@@ -67,7 +66,7 @@ def get_stream_status(channel=None):
     if online_data["stream"] is not None:
         return True
     else:
-        print online_data
+        return False
 
 
 def get_stream_uptime():
