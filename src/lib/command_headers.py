@@ -1,3 +1,5 @@
+import globals
+
 commands = {
 
     '!report': {
@@ -83,9 +85,10 @@ commands = {
 
 
     '!test': {
-        'limit': 0,
+        'limit': 5,
+        'user_limit': 30,
         'argc': 0,
-        'return': 'command',
+        'return': 'Not on cooldown, apparently',
         'usage': '!test (this is a test command)'
 
     },
@@ -272,7 +275,8 @@ commands = {
     },
 
     '!define': {
-        'limit': 300,
+        'limit': 30,
+        'user_limit': 300,
         'argc': 1,
         'space_case': True,
         'return': 'command',
@@ -339,9 +343,17 @@ commands = {
 
 }
 
+user_cooldowns = {"channels": {}}
+
 
 def initalizeCommands(config):
     for channel in config['channels']:
+        globals.channel_info[channel.lstrip("#")] = {
+            "gamble": {"time": None, "users": {}}}
+        user_cooldowns["channels"][channel] = {"commands": {}}
         for command in commands:
             commands[command][channel] = {}
             commands[command][channel]['last_used'] = 0
+            if "user_limit" in commands[command]:
+                user_cooldowns["channels"][channel]["commands"][command] = {
+                    "users": {}}
