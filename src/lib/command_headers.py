@@ -348,8 +348,6 @@ user_cooldowns = {"channels": {}}
 
 def initalizeCommands(config):
     for channel in config['channels']:
-        globals.channel_info[channel.lstrip("#")] = {
-            "gamble": {"time": None, "users": {}}}
         user_cooldowns["channels"][channel] = {"commands": {}}
         for command in commands:
             commands[command][channel] = {}
@@ -357,3 +355,4 @@ def initalizeCommands(config):
             if "user_limit" in commands[command]:
                 user_cooldowns["channels"][channel]["commands"][command] = {
                     "users": {}}
+    print globals.channel_info

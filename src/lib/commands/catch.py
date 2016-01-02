@@ -6,7 +6,6 @@ from src.lib.queries.points_queries import *
 
 
 def catch():
-    print globals.channel_info[globals.global_channel]['pokemon']
     if globals.channel_info[globals.global_channel]['caught'] == False:
         pokemon_trainer = globals.CURRENT_USER
         # This is here for if the user is brand new. This creates an entry in
