@@ -372,4 +372,3 @@ def initalizeCommands(config):
             if "user_limit" in commands[command]:
                 user_cooldowns["channels"][channel]["commands"][command] = {
                     "users": {}}
-    print globals.channel_info

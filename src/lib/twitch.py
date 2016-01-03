@@ -10,7 +10,6 @@ import src.lib.user_commands as user_commands_import
 
 def get_dict_for_users(channel=None):
     n = 0
-    print 0
     if channel is None:
         channel = globals.global_channel
     channel = channel.lstrip("#")
@@ -18,15 +17,12 @@ def get_dict_for_users(channel=None):
         "_links": {}, "chatters_count": 0, "chatters": {
             "staff": [], "admin": [], "global_mods": [],
             "viewers": [], "moderators": []}}
-    print 2
     while n < 3:
-        print 3
         try:
             url = "http://tmi.twitch.tv/group/user/" + channel \
                 + "/chatters"
             resp = requests.get(url=url)
             data = json.loads(resp.content)
-            print data
             all_users = []
             for user in data['chatters']['moderators']:
                 all_users.append(str(user))
@@ -36,18 +32,15 @@ def get_dict_for_users(channel=None):
                 all_users.append(str(user))
             for user in data['chatters']['admins']:
                 all_users.append(str(user))
-            print data
             return data, list(set(all_users))
         except ValueError as error:  # "No JSON object could be decoded"
             print error
-            print 4
             n += 1  # make sure n increases value by one on each loop
             if n < 3:  # if it's not, it will exit the loop
                 continue  # go back to the beginning of the loop
         except Exception as error:  # in case of an unexpected error
-            print 5, error
+            print error
             return dummy, []
-    print 6
     return dummy, []  # will only happen after three ValueErrors in a row
 
 
