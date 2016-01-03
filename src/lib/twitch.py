@@ -95,6 +95,16 @@ def get_stream_uptime():
         return "The streamer is offline, duh."
 
 
+def get_stream_game(channel):
+    url = 'https://api.twitch.tv/kraken/streams/' + channel
+    resp = requests.get(url=url)
+    data = json.loads(resp.content)
+    if data["stream"] is not None:
+        return data["stream"]["game"]
+    else:
+        return "Offline"
+
+
 def get_offline_status():
     get_offline_status_url = 'https://api.twitch.tv/kraken/streams/' + \
         globals.global_channel

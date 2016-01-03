@@ -26,6 +26,8 @@ import time
 import threading
 import os
 import globals
+reload(sys)
+sys.setdefaultencoding("utf8")
 
 END = False
 

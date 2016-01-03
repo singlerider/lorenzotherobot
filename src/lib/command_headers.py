@@ -339,7 +339,24 @@ commands = {
         'return': 'command',
         'usage': '!loyalty [username]',
         'ul': 'mod'
-    }
+    },
+
+    '!addquote': {
+        'limit': 0,
+        'argc': 1,
+        'user_limit': 15,
+        'return': 'command',
+        'usage': '!addquote [quote]',
+        'space_case': True
+    },
+
+    '!quote': {
+        'limit': 0,
+        'argc': 0,
+        'user_limit': 5,
+        'return': 'command',
+        'usage': '!quote'
+    },
 
 }
 
