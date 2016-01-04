@@ -185,11 +185,11 @@ class Roboraj(object):
              (command, username), channel)
         if commands.check_has_user_cooldown(command):
             if commands.is_on_user_cooldown(command, channel, username):
-                resp = "Chill out! You've got " + str(
-                    commands.get_user_cooldown_remaining(
-                        command, channel, username)) + \
-                    " seconds before you can do that again, " + username + "!"
-                self.irc.send_message(channel, resp)
+                #resp = "Chill out! You've got " + str(
+                #    commands.get_user_cooldown_remaining(
+                #        command, channel, username)) + \
+                #    " seconds before you can do that again, " + username + "!"
+                #self.irc.send_message(channel, resp)
                 return
             commands.update_user_last_used(command, channel, username)
         pbot('Command is valid and not on cooldown. (%s) (%s)' %

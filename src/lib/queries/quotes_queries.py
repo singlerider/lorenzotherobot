@@ -34,8 +34,11 @@ class Quotes:
         with self.con:
             cur = self.con.cursor()
             cur.execute("""
-                SELECT * FROM quotes WHERE channel = %s
-                    ORDER BY RAND() LIMIT 1;
+                SELECT count(0) FROM quotes WHERE channel = %s;
                 """, [channel])
-            quote = cur.fetchone()
+            random_quote = random.choice(range(cur.fetchone()[0]))
+            cur.execute("""
+                SELECT * FROM quotes WHERE channel = %s;
+                """, [channel])
+            quote = cur.fetchall()[random_quote - 1]
             return quote
