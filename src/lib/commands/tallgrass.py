@@ -16,7 +16,9 @@ def tallgrass(args):
     points_to_sacrifice = abs(int(args[0])) * -1
     username = globals.CURRENT_USER
     weighted_choices = [(0, 1), (1, 20), (2, 50), (3, 100)]
-    actual_points = get_all_user_points(username)
+    donation_points = get_user_points(username)
+    time_points = get_user_time_points(username)
+    actual_points = donation_points + time_points
     treats_removed = " " + str(points_to_sacrifice) + \
         " treats from " + str(username) + "!"
 
