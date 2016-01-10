@@ -181,8 +181,6 @@ class Roboraj(object):
                 command, username, commands.get_cooldown_remaining(
                     command, channel)), channel)
             return
-        pbot('Command is valid and not on cooldown. (%s) (%s)' %
-             (command, username), channel)
         if commands.check_has_user_cooldown(command):
             if commands.is_on_user_cooldown(command, channel, username):
                 #resp = "Chill out! You've got " + str(
