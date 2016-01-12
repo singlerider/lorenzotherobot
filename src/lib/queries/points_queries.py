@@ -128,7 +128,7 @@ def set_user_points(delta_user, delta):
     con = get_connection()
     with con:
         cur = con.cursor()
-        cur.execute("""UPDATE users SET donation_points = %s
+        cur.execute("""UPDATE users SET donation_points = %s, time_points = 0
                         WHERE username = %s""", [delta, delta_user])
 
 

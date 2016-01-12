@@ -183,11 +183,6 @@ class Roboraj(object):
             return
         if commands.check_has_user_cooldown(command):
             if commands.is_on_user_cooldown(command, channel, username):
-                #resp = "Chill out! You've got " + str(
-                #    commands.get_user_cooldown_remaining(
-                #        command, channel, username)) + \
-                #    " seconds before you can do that again, " + username + "!"
-                #self.irc.send_message(channel, resp)
                 return
             commands.update_user_last_used(command, channel, username)
         pbot('Command is valid and not on cooldown. (%s) (%s)' %
@@ -205,12 +200,13 @@ class Roboraj(object):
             user_data, __ = twitch.get_dict_for_users(channel)
             try:
                 if username not in user_data["chatters"]["moderators"]:
-                    #if username != 'singlerider':
-                    resp = '(%s) : %s' % (
-                        username, "This is a moderator-only command!")
-                    pbot(resp, channel)
-                    self.irc.send_message(channel, resp)
-                    return
+                    if username != "singlerider":
+                        #if username != 'singlerider':
+                        resp = '(%s) : %s' % (
+                            username, "This is a moderator-only command!")
+                        pbot(resp, channel)
+                        self.irc.send_message(channel, resp)
+                        return
             except Exception as error:
                 with open("errors.txt", "a") as f:
                     error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
@@ -227,8 +223,6 @@ class Roboraj(object):
                 return
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
-        # pbot("Command %s(%s) had a result of %s" % (
-        #         command, args, result), channel)
         if result:
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
