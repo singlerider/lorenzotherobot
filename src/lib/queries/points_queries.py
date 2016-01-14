@@ -16,7 +16,7 @@ def get_points_list():
     with con:
         cur = con.cursor()
         cur.execute(
-            """SELECT username, donation_points FROM users ORDER BY points * 1 DESC""")
+            """SELECT username, donation_points FROM users ORDER BY donation_points * 1 DESC""")
         user_data = cur.fetchall()
         user_data_comprehension = [
             "{}: {}".format(x, y) for x, y in user_data[0:9]]
