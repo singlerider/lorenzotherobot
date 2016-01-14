@@ -23,6 +23,25 @@ def get_points_list():
         return " | ".join(user_data_comprehension)
 
 
+def get_points_rank(username):
+    con = get_connection()
+    with con:
+        cur = con.cursor()
+        cur.execute("""
+            SELECT a1.username, a1.donation_points,
+                    COUNT(a2.donation_points) points_rank
+                FROM users a1, users a2
+                WHERE a1.donation_points < a2.donation_points
+                    OR (a1.donation_points=a2.donation_points
+                        AND a1.username = a2.username)
+                GROUP BY a1.username, a1.donation_points
+                HAVING a1.username = %s
+                ORDER BY a1.donation_points DESC, a1.username DESC;
+            """, [username])
+        rank_data = cur.fetchone()
+        return rank_data
+
+
 def get_user_points(username):  # only gets donation_points
     con = get_connection()
     with con:

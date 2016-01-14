@@ -73,11 +73,13 @@ def llama(args):
             return str(shots_import.shot_count) + " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! DansGame"
-    elif points_import.get_user_points(grab_user) != None:
-        if grab_user in user_commands_import.user_command_dict:
-            return user_commands_import.user_command_dict[grab_user]["return"] + " | " + str(points_import.get_all_user_points(grab_user))
-        else:
-            return points_import.get_all_user_points(grab_user)
+    elif points_import.get_user_points(grab_user) is not None:
+        rank_data = points_import.get_points_rank(user_data_name)
+        donation_points = rank_data[1]
+        rank = rank_data[2]
+        resp = "With {0} treats, {1} is ranked number {2}!".format(
+            user_data_name, donation_points, rank)
+        return resp
     else:
         print get_stream_status()
         return "No entry found for " + str(args[0])
