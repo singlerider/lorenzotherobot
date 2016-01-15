@@ -24,6 +24,7 @@ def get_custom_commands(channel):  # only gets donation_points
             time, response, times_used FROM custom_commands
             WHERE channel = %s""", [channel])
         commands = cur.fetchall()
+        cur.close()
         return commands
 
 
@@ -35,6 +36,7 @@ def get_custom_command(channel, command):
             WHERE command = %s AND channel = %s""", [
                 command, channel])
         commands = cur.fetchall()
+        cur.close()
         return commands
 
 
@@ -46,6 +48,7 @@ def get_custom_command_elements(channel, command):
             WHERE command = %s AND channel = %s""", [
                 command, channel])
         elements = cur.fetchone()
+        cur.close()
         return elements
 
 
@@ -57,6 +60,7 @@ def increment_command_counter(channel, command):
                     WHERE command = %s AND channel = %s""", [
                 command, channel])
         elements = cur.fetchone()
+        cur.close()
         return elements
 
 
@@ -76,6 +80,7 @@ def save_command(command, creator, user_level, response):
                     ) VALUES (%s, %s, %s, %s, %s, %s, 0)""", [
                         globals.global_channel, command, creator, user_level,
                         str(datetime.datetime.now()), response])
+            cur.close()
             return "{0} successfully added".format(command)
 
 
@@ -91,6 +96,7 @@ def edit_command(command, creator, user_level, response):
                         SET response = %s, user_level = %s
                         WHERE command = %s AND channel = %s""", [
                         response, user_level, command, globals.global_channel])
+                cur.close()
                 return "{0} successfully changed".format(command)
     else:
         return "{0} already exists in {1}'s channel!".format(
@@ -111,6 +117,7 @@ def delete_command(command):
                     """DELETE FROM custom_commands
                         WHERE command = %s AND channel = %s""", [
                             command, globals.global_channel])
+                cur.close()
                 return "{0} successfully removed".format(command)
     else:
         return "{0} not found as a command in {1}'s channel!".format(

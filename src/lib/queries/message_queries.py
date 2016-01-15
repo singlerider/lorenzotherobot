@@ -15,3 +15,4 @@ def save_message(username, channel, message):
                 ) VALUES (%s, %s, %s, %s)""", [
                     username, channel.lstrip("#"),
                     message, str(datetime.datetime.now())])
+        cur.close()

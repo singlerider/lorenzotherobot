@@ -25,7 +25,8 @@ def gift(args):
                         id_from_name = get_pokemon_id_from_name(name)
                         globals.CAUGHT = True
                         return insert_user_pokemon(username, username, open_position[0], id_from_name, level, id_from_name, None, None)
-                    except:
+                    except Exception as error:
+                        print error
                         return "Check your spelling and capitalization!"
                 else:
                     return "There is a level cap of 100"

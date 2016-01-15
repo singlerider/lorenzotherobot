@@ -8,6 +8,7 @@ def mysql_ping():
     con = get_connection()
     with con:
         con.ping()
+        cur.close()
         print "pinging database"
 
 
@@ -20,6 +21,7 @@ def get_points_list():
         user_data = cur.fetchall()
         user_data_comprehension = [
             "{}: {}".format(x, y) for x, y in user_data[0:9]]
+        cur.close()
         return " | ".join(user_data_comprehension)
 
 
@@ -39,6 +41,7 @@ def get_points_rank(username):
                 ORDER BY a1.donation_points DESC, a1.username DESC;
             """, [username])
         rank_data = cur.fetchone()
+        cur.close()
         return rank_data
 
 
@@ -51,11 +54,13 @@ def get_user_points(username):  # only gets donation_points
             [username])
         try:
             points = cur.fetchone()
+            cur.close()
             if points[0] > 0:
                 return points[0]
             else:
                 return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
         except:
+            cur.close()
             return "User not found. Check your spelling."
 
 
@@ -66,6 +71,7 @@ def get_user_time_points(username):  # only gets donation_points
         cur.execute(
             "select time_points from users where username = %s", [username])
         points = cur.fetchone()
+        cur.close()
         if points is None:
             return 0
         elif len(points) > 0:
@@ -81,6 +87,7 @@ def get_all_user_points(username):  # gets all of a single user's points
         cur.execute("select donation_points, time_points from users where username = %s", [username])
         try:
             points = cur.fetchone()
+            cur.close()
             donation_points = points[0]
             time_points = points[1]
             total = donation_points + time_points
@@ -139,6 +146,7 @@ def get_all_user_points(username):  # gets all of a single user's points
             else:
                 return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
         except Exception as error:
+            cur.close()
             print error
             return "User not found. Check your spelling."
 
@@ -149,6 +157,7 @@ def set_user_points(delta_user, delta):
         cur = con.cursor()
         cur.execute("""UPDATE users SET donation_points = %s, time_points = 0
                         WHERE username = %s""", [delta, delta_user])
+        cur.close()
 
 
 def modify_user_points(username, delta):
@@ -177,6 +186,7 @@ def modify_user_points(username, delta):
                     VALUES (%s, %s) ON DUPLICATE KEY
                     UPDATE donation_points = donation_points + %s""", [
                         username, delta, delta])
+        cur.close()
 
 
 def modify_points_all_users(all_users, points_to_increment=1):
@@ -185,9 +195,7 @@ def modify_points_all_users(all_users, points_to_increment=1):
     try:
         with con:
             cur = con.cursor()
-
             dData = user_list_for_query  # exact input you gave
-
             sql = """
             INSERT INTO users
               (username, donation_points)
@@ -195,9 +203,11 @@ def modify_points_all_users(all_users, points_to_increment=1):
               (%s, %s)
             ON DUPLICATE KEY UPDATE donation_points = donation_points + """ + str(points_to_increment)
             cur.executemany(sql, ((user, points) for user, points in dData))
+            cur.close()
             return "success"
 
     except Exception, error:
+        cur.close()
         print "ERROR", error
         return "Error incrementing points:" + str(error)
 
@@ -208,9 +218,7 @@ def modify_points_all_users_timer(all_users, points_to_increment=1):
     try:
         with con:
             cur = con.cursor()
-
             dData = user_list_for_query  # exact input you gave
-
             sql = """
             INSERT INTO users
               (username, time_points)
@@ -225,9 +233,11 @@ def modify_points_all_users_timer(all_users, points_to_increment=1):
               (%s, %s)
             ON DUPLICATE KEY UPDATE time_in_chat = time_in_chat + """ + str(5)
             cur.executemany(sql, ((user, points) for user, points in dData))
+            cur.close()
             return "success"
 
     except Exception, error:
+        cur.close()
         print "ERROR", error
         return "Error incrementing points:" + str(error)
 
@@ -237,8 +247,10 @@ def modify_points_all_users_hack(points_to_increment=1):
     with con:
         print unicode(all_users)
         cur = con.cursor()
-        cur.execute("INSERT INTO users (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + " +
+        cur.execute("""INSERT INTO users (username, points) VALUES (%s, %s)
+                        ON DUPLICATE KEY UPDATE points = points + """ +
                     str(points_to_increment), user)
+        cur.close()
         return "success"
 
 
@@ -249,6 +261,7 @@ def get_time_in_chat(user):
         cur.execute("select time_in_chat from users where username = %s", [user])
         try:
             points = cur.fetchone()
+            cur.close()
             if points[0] > 0:
                 return points[0]
             else:

@@ -22,6 +22,7 @@ class Quotes:
             cur.execute("""
                 INSERT INTO quotes VALUES (NULL, %s, %s, %s, %s, %s)
                 """, [channel, user, quote, count + 1, game])
+            cur.close()
 
     def remove_quotes(self, channel="testchannel"):
         with self.con:
@@ -29,6 +30,7 @@ class Quotes:
             cur.execute("""
                 DELETE FROM quotes WHERE channel = %s
                 """, [channel])
+            cur.close()
 
     def get_quote(self, channel="testchannel"):
         with self.con:
@@ -41,4 +43,5 @@ class Quotes:
                 SELECT * FROM quotes WHERE channel = %s;
                 """, [channel])
             quote = cur.fetchall()[random_quote - 1]
+            cur.close()
             return quote
