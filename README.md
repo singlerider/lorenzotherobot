@@ -108,13 +108,60 @@ Head into `src/config/config.py` and enter the correct channels and cron jobs
 you'd like to run, then go into globals.py. Leave `global_channel`, `CURRENT_USER`, `VARIABLE`, and
 `channel_info` alone.
 
+## Finally
+
+### To run:
+
+`./serve.py`
+
 ## Commands
 
 So, what can the bot do? Here are a list of current commands in no particular
 order with a description of each (if one is needed):
 An asterisk (*) marks a moderator-only command
 
-    WILL UPDATE SOON
+    !follower: !follower [username]
+    !quote: !quote
+    !opinion: !opinion
+    !llama: !llama [treats/shots/username]
+    !test: !test (this is a test command)
+    !commands: !commands
+    !arbitrary: !arbitrary ['number'/'emote']
+    !addquote: !addquote [quote]
+    !check: !check ['trades'/'market'/'items'/'inventory'/username]
+    !caster: !caster [streamer_username]
+    !define: !define [insert_word_here]
+    !tallgrass: !tallgrass [number_of_treats_to_sacrifice]
+    !nickname: !nickname [position_to_update] [nickname(must not contain spaces)]
+    !winner: !winner
+    !help: !help
+    !popularity: !popularity [name_of_game]
+    !followers: !followers
+    !trade: !trade [party_position] [requested_pokemon] [minimum_asking_level]
+    !catch: !catch
+    !stream: !stream
+    !buy: !buy [item_number]
+    !edit: !edit [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}")]
+    !uptime: !uptime
+    !poll: !poll ['option A'/'option B'/'option C']
+    !release: !release [party_position_number_to_be_released] [your_username]
+    !add: !add [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}") (to include message count, use "[]")]
+    !donation: !donation [username] [dollar_amount]
+    !party: !party [position_to_check(1-6)/'members'/username]
+    !battle: !battle [position_to_battle_with] [opponent_username]
+    !gift: !gift [username] [Pokemon_name/'item'] [starting_level/'item_number']
+    !rem: !rem [!command_name]
+    !vote: !vote [option_number]
+    !leaderboard: !leaderboard
+    !weather: !weather [units (metric/imperial)] [location (any format)]
+    !treats: !treats [add/remove/set] [username] [number]
+    !use: !use [item_position] [party_position]
+    !shots: !shots [add/remove/set] [number]
+    !evolve: !evolve [position_to_evolve]
+    !report: !report [insert bug report text here]
+    !highlight: !highlight
+    !redeem: !redeem [party_position_to_trade] [username_to_trade] [party_position_to_redeem_from_user]
+    !loyalty: !loyalty [username]
 
 ## Make It Do
 
@@ -172,9 +219,3 @@ Built in are several work-in-progress functions for returning "random battles" o
 The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a MySQL database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
 
     WILL UPDATE SOON
-
-## Finally
-
-### To run:
-
-`./serve.py`
