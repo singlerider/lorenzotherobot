@@ -1,5 +1,3 @@
-import globals
-
 commands = {
 
     '!report': {
@@ -372,3 +370,7 @@ def initalizeCommands(config):
             if "user_limit" in commands[command]:
                 user_cooldowns["channels"][channel]["commands"][command] = {
                     "users": {}}
+
+if __name__ == "__main__":
+    print "\n".join(["    " + key + ": " +  commands[key][
+        "usage"] for key in commands])
