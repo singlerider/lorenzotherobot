@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from src.lib.queries.connection import *
+import warnings
 import random
 
 def mysql_ping():
@@ -30,17 +31,39 @@ def get_points_rank(username):
     with con:
         cur = con.cursor()
         cur.execute("""
-            SELECT a1.username, a1.donation_points,
-                    COUNT(a2.donation_points) points_rank
-                FROM users a1, users a2
-                WHERE a1.donation_points < a2.donation_points
-                    OR (a1.donation_points=a2.donation_points
-                        AND a1.username = a2.username)
-                GROUP BY a1.username, a1.donation_points
-                HAVING a1.username = %s
-                ORDER BY a1.donation_points DESC, a1.username DESC;
+            CREATE TABLE IF NOT EXISTS `tblRnk`
+            	(donation_points int PRIMARY KEY, intCount int, dRnk int
+            	, Rnk int)
+            """)
+        cur.close()
+        cur = con.cursor()
+        cur.execute("""
+            INSERT INTO tblRnk
+            	(donation_points, intCount, dRnk)
+            SELECT donation_points, intCount, @curRank := @curRank + 1 AS rank
+            FROM (
+    			SELECT donation_points, COUNT(*) AS intCount
+    			FROM users
+    			GROUP BY donation_points
+                ) u, (SELECT @curRank := 0) r
+                    ORDER BY donation_points DESC
+            """)
+        cur.close()
+        cur = con.cursor()
+        cur.execute("""
+            SELECT u.username ,u.donation_points,tR.dRnk,COALESCE(
+                (SELECT SUM(intCount) FROM tblRnk tR1 WHERE
+                    tR.donation_points < tR1.donation_points), 0) + 1 AS Rank
+            FROM users u
+            JOIN tblRnk tR ON u.donation_points = tR.donation_points
+            WHERE u.username = %s
             """, [username])
         rank_data = cur.fetchone()
+        cur.close()
+        cur = con.cursor()
+        cur.execute("""
+            DROP TABLE `tblRnk`
+            """)
         cur.close()
         return rank_data
 
