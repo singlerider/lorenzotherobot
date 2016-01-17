@@ -19,19 +19,18 @@ def get_dict_for_users(channel=None):
             "viewers": [], "moderators": []}}
     while n < 3:
         try:
-            url = "http://tmi.twitch.tv/group/user/" + channel \
-                + "/chatters"
-            resp = requests.get(url=url)
-            data = json.loads(resp.content)
+            if "viewers" in globals.channel_info[channel]:
+                data = globals.channel_info[channel]['viewers']
+            else:
+                url = "http://tmi.twitch.tv/group/user/" + channel \
+                    + "/chatters"
+                resp = requests.get(url=url)
+                data = json.loads(resp.content)
+                globals.channel_info[channel]['viewers'] = data
             all_users = []
-            for user in data['chatters']['moderators']:
-                all_users.append(str(user))
-            for user in data['chatters']['viewers']:
-                all_users.append(str(user))
-            for user in data['chatters']['staff']:
-                all_users.append(str(user))
-            for user in data['chatters']['admins']:
-                all_users.append(str(user))
+            for user_type in data['chatters']:
+                [all_users.append(str(user)) for user in data[
+                    "chatters"][user_type]]
             return data, list(set(all_users))
         except ValueError as error:  # "No JSON object could be decoded"
             print error
@@ -49,14 +48,14 @@ def user_cron(channel):
     import json
     import globals
     channel = channel.lstrip("#")
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/{0}/chatters'.format(
-        channel)
+    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' \
+        + '{0}/chatters'.format(channel)
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     try:
         users = json.loads(get_dict_for_users_resp.content)
         globals.channel_info[channel]['viewers'] = users
     except Exception as error:
-        pass
+        print error
 
 
 def get_stream_status(channel=None):
