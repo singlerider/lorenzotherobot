@@ -69,8 +69,9 @@ def llama(args):
     elif grab_user == "usage":
         return usage
     elif grab_user == "shots":
-        if shots_import.shot_count != 0:
-            return str(shots_import.shot_count) + " shots left. She's already dru... ResidentSleeper"
+        shot_count = shots_import.readShots()
+        if shot_count != 0:
+            return str(shots_import.readShots()) + " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! DansGame"
     elif points_import.get_user_points(grab_user) is not None:

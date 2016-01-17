@@ -1,39 +1,42 @@
 """
 Developed Shane Engelman <me@5h4n3.com>
 """
-# IN ORDER FOR THIS TO RUN CORRECTLY
-# run '!shots init 0' the first time
-import globals
-import pickle
-
-
-def writeShots():
-    pickle.dump(shot_count, open("shots.pkl", "wb"))
-
-
 def readShots():
     try:
-        return pickle.load(open("shots.pkl", "rb"))
-    except:
-        return 0
+        with open("shots.txt", "r+") as f:  # read changes.json
+            try:
+                count = int(f.read())
+            except Exception as error:
+                print error
+                count = 0
+            return count
+    except Exception as error:
+        print error
+        with open("shots.txt", "w") as f:
+            f.write(str(0))
+            return 0
+
+
+def writeShots(count):
+    previous_count = readShots()
+    with open("shots.txt", "w") as f:  # save words json file
+        f.write(count)
+
 
 def shots(args):
-    global shot_count
-
     action = args[0]
-
+    shots_count = readShots()
     try:
         delta = int(args[1])
     except:
         return "I need a number for the amount. idiot."
+    print delta
 
     if action == "add":
-        shot_count += delta
+        writeShots(str(shots_count + delta))
     elif action == "remove":
-        shot_count -= delta
+        writeShots(str(shots_count - delta))
     elif action == "set":
-        shot_count = delta
+        writeShots(str(delta))
 
-    writeShots()
-
-    return "Alright! Now there's {} left".format(shot_count)
+    return "Alright! Now there's {} left".format(readShots())
