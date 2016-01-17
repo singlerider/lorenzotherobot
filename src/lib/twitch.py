@@ -33,7 +33,6 @@ def get_dict_for_users(channel=None):
                     "chatters"][user_type]]
             return data, list(set(all_users))
         except ValueError as error:  # "No JSON object could be decoded"
-            print error
             n += 1  # make sure n increases value by one on each loop
             if n < 3:  # if it's not, it will exit the loop
                 continue  # go back to the beginning of the loop
