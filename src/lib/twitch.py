@@ -37,7 +37,6 @@ def get_dict_for_users(channel=None):
             if n < 3:  # if it's not, it will exit the loop
                 continue  # go back to the beginning of the loop
         except Exception as error:  # in case of an unexpected error
-            print error
             return dummy, []
     return dummy, []  # will only happen after three ValueErrors in a row
 
@@ -54,7 +53,7 @@ def user_cron(channel):
         users = json.loads(get_dict_for_users_resp.content)
         globals.channel_info[channel]['viewers'] = users
     except Exception as error:
-        print error
+        pass
 
 
 def get_stream_status(channel=None):

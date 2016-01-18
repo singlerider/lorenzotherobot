@@ -126,7 +126,7 @@ commands = {
     },
 
     '!stream': {
-        'limit': 60,
+        'limit': 10,
         'return': 'command',
         'argc': 0,
         'usage': '!stream'
