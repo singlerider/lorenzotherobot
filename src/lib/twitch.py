@@ -31,6 +31,7 @@ def get_dict_for_users(channel=None):
             for user_type in data['chatters']:
                 [all_users.append(str(user)) for user in data[
                     "chatters"][user_type]]
+            print all_users
             return data, list(set(all_users))
         except ValueError as error:  # "No JSON object could be decoded"
             n += 1  # make sure n increases value by one on each loop
@@ -48,8 +49,8 @@ def user_cron(channel):
     channel = channel.lstrip("#")
     get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' \
         + '{0}/chatters'.format(channel)
-    get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     try:
+        get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
         users = json.loads(get_dict_for_users_resp.content)
         globals.channel_info[channel]['viewers'] = users
     except Exception as error:
