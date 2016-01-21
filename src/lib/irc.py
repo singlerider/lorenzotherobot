@@ -1,10 +1,11 @@
 # encoding=utf8
-import socket
 import re
-import time
+import socket
 import sys
-from functions_general import *
 import thread
+import time
+
+from functions_general import *
 
 threshold = 5 * 60  # five minutes, make this whatever you want
 
@@ -34,15 +35,21 @@ class irc:
         return line
 
     def check_for_message(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
+        if re.match(
+                r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$',
+                data):
             return True
 
     def check_for_join(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
+        if re.match(
+                r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]',
+                data):
             return True
 
     def check_for_part(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
+        if re.match(
+                r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PART #[a-zA-Z0-9_]',
+                data):
             return True
 
     def check_is_command(self, message, valid_commands):
@@ -70,10 +77,14 @@ class irc:
             sys.exit()
 
     def get_message(self, data):
-        return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
+        return re.match(
+            r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)',
+            data).groupdict()
 
     def check_login_status(self, data):
-        if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
+        if re.match(
+                r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$',
+                data):
             return False
         else:
             return True
@@ -91,7 +102,7 @@ class irc:
         if isinstance(message, basestring):
             self.sock.send('PRIVMSG %s :%s\r\n' % (channel, message))
 
-        if type(message) == list:
+        if isinstance(message, list):
             for line in message.decode("utf8"):
                 self.send_message(channel, line)
 

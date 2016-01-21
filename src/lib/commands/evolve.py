@@ -1,5 +1,5 @@
-from src.lib.queries.pokemon_queries import *
 import globals
+from src.lib.queries.pokemon_queries import *
 
 
 def evolve(args):

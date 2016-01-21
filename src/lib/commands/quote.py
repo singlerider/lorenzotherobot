@@ -1,5 +1,5 @@
-from src.lib.queries.quotes_queries import *
 import globals
+from src.lib.queries.quotes_queries import *
 
 
 def quote():

@@ -1,6 +1,5 @@
 import src.lib.commands.arbitrary as arbitrary_import
 
-
 user_command_dict = {
 
     'aaronlovesanime': {

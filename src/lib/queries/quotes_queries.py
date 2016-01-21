@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from src.lib.queries.connection import *
 import random
+
+from src.lib.queries.connection import *
 
 
 class Quotes:

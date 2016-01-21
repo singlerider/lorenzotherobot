@@ -1,5 +1,5 @@
-from src.lib.queries.points_queries import *
 import globals
+from src.lib.queries.points_queries import *
 
 
 def loyalty(args):

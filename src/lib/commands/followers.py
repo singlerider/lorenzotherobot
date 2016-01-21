@@ -1,13 +1,17 @@
-from src.lib.twitch import *
 import globals
+from src.lib.twitch import *
 
 
 def followers():
     usage = "!followers"
 
     stream_followers = get_stream_followers()
-    follower_list = str(stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(stream_followers[
-        "follows"][2]["user"]["display_name"]) + ", " + str(stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(stream_followers["follows"][4]["user"]["display_name"])
+    follower_list = str(
+        stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(
+        stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(
+            stream_followers["follows"][2]["user"]["display_name"]) + ", " + str(
+                stream_followers["follows"][3]["user"]["display_name"]) + ", " + str(
+                    stream_followers["follows"][4]["user"]["display_name"])
 
     full_follower_list = stream_followers['follows'][0:99]
     appended_list = []

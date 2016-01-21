@@ -2,12 +2,13 @@
 
 # channel/channel_year_month_day.txt
 
+import json
+import os
+import time
+
+from apiclient.discovery import build
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-from apiclient.discovery import build
-import time
-import os
-import json
 
 with open("src/lib/date.txt", "w") as f:  # save current date when app starts
     f.write(time.strftime("%Y_%m_%d", time.gmtime()))
@@ -56,7 +57,7 @@ def create_logs_folder_in_root(drive):  # checks to see if a logs folder exists
     # return the id of the folder
     root_files = drive.ListFile(
         {'q': "'root' in parents and trashed=false"}
-        ).GetList()
+    ).GetList()
     logs_folder_id = ""
     if len([x["id"] for x in root_files if x["title"] == "logs"]) == 0:
         folder = drive.CreateFile(  # Will always save to the first result of
@@ -77,12 +78,12 @@ def create_folders(drive, logs_folder_id, previous_date):
     folders = {}  # Will store pre-existing folders on Google Drive
     folder_list = drive.ListFile(
         {'q': "'{0}' in parents and trashed=false".format(logs_folder_id)}
-        ).GetList()
+    ).GetList()
     for entry in folder_list:
         if entry["mimeType"] == "application/vnd.google-apps.folder":
             print "title: {0}, id: {1}, mimetype: {2}".format(
-                                                entry['title'], entry['id'],
-                                                entry["mimeType"])
+                entry['title'], entry['id'],
+                entry["mimeType"])
             folders[entry["title"]] = entry["id"]  # channel = id
     print "folders", folders  # For debugging
     path = "src/logs/{0}/".format(previous_date.rstrip("\n"))
@@ -93,7 +94,7 @@ def create_folders(drive, logs_folder_id, previous_date):
                 if channel not in folders:  # If it's a new folder
                     folder = drive.CreateFile(  # Make one on Google Drive
                         {'title': channel,
-                            "parents":  [{"id": logs_folder_id}],
+                            "parents": [{"id": logs_folder_id}],
                             "mimeType": "application/vnd.google-apps.folder"})
                     folder.Upload()  # Send it up!
                     print "Creating folder for {0}...".format(channel)
@@ -108,7 +109,7 @@ def create_folders(drive, logs_folder_id, previous_date):
 def save_file_to_drive(drive, log, channel, data, folders, previous_date):
     title = "{0}_{1}.txt".format(channel, previous_date)
     log = drive.CreateFile({"title": title,
-                            "parents":  [{"id": folders[channel]}]
+                            "parents": [{"id": folders[channel]}]
                             })
     log["title"] = title  # Change title of the file
     log.SetContentFile(  # File is empty until here

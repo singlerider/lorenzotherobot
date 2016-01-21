@@ -3,8 +3,8 @@ Developed by Shane Engelman <me@5h4n3.com>
 '''
 
 import random
-import time
 import re
+import time
 
 
 def streetfighter():

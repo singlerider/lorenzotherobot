@@ -1,14 +1,16 @@
-from testing.TwitchIrc import TwitchIrc
-import unittest
 import threading
-from bot import Roboraj
+import unittest
 
+import src.lib.commands.pokemon as pokemon_lib
+import src.lib.functions_commands
+import src.lib.twitch as twitch
+from bot import Roboraj
+from testing.TwitchIrc import TwitchIrc
 
 TEST_CHANNEL = "#theepicsnail_"
 
 # Replace the get_dict_for_users function with something that returns
 # the right users.
-import src.lib.twitch as twitch
 twitch.get_dict_for_users = lambda: (
     {'chatters':
         {'moderators': ["theepicsnail_", "singlerider"],
@@ -21,7 +23,6 @@ twitch.get_dict_for_users = lambda: (
      'chatter_count': 0},
     ['', ''])
 
-import src.lib.functions_commands
 src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 
 server, client = None, None
@@ -72,9 +73,6 @@ class TestCommands(unittest.TestCase):
 
                 # validate
                 self.assertEqual(out, expected)
-
-
-import src.lib.commands.pokemon as pokemon_lib
 
 
 class TestPokemon(unittest.TestCase):
@@ -146,7 +144,7 @@ class TestTreats(unittest.TestCase):
         simulateMessage("singlerider", "!treats add randomUser 1000")
         server.getOutput()  # ignore the bot response
 
-        simulateMessage("randomUser",  "!llama treats")
+        simulateMessage("randomUser", "!llama treats")
         new_treats = int(server.getOutput().split(" ")[10])
 
         print old_treats, new_treats
@@ -174,7 +172,7 @@ class TestPoll(unittest.TestCase):
 
     def test_poll(self):
         simulateMessage("singlerider", "!poll opt1 / opt2 / opt3")
-        self.assertIn("!vote",  server.getOutput())
+        self.assertIn("!vote", server.getOutput())
 
         simulateMessage("user1", "!vote 1")
         self.assertIn("Vote counted", server.getOutput())

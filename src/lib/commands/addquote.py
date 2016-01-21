@@ -1,6 +1,6 @@
+import globals
 from src.lib.queries.quotes_queries import *
 from src.lib.twitch import *
-import globals
 
 
 def addquote(args):

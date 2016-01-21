@@ -1,5 +1,5 @@
-from src.lib.twitch import *
 import globals
+from src.lib.twitch import *
 
 
 def uptime():

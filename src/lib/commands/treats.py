@@ -1,6 +1,6 @@
+import globals
 import src.lib.twitch as twitch
 from src.lib.queries.points_queries import *
-import globals
 
 
 def cron(channel):

@@ -1,5 +1,5 @@
 import MySQLdb as mdb
-import sys
+
 import globals
 from src.lib.twitch import *
 

@@ -1,7 +1,6 @@
-from src.lib.queries.pokemon_queries import *
-from src.lib.queries.points_queries import *
 import globals
-import src.lib.commands.pokemon as pokemon_import
+from src.lib.queries.points_queries import *
+from src.lib.queries.pokemon_queries import *
 
 usage = "!tallgrass [treatsamount]"
 
@@ -25,7 +24,7 @@ def tallgrass(args):
     if globals.global_channel == "shedeviil_09":
         return "This only works in Curvyllama's chat. Excuse my dust as I upgrade my systems!"
 
-    if type(actual_points) is long:
+    if isinstance(actual_points, long):
         if abs(points_to_sacrifice) >= 1000:
             print "abs(points_to_sacrifice) > 1000:", abs(points_to_sacrifice)
             if actual_points >= abs(points_to_sacrifice):
@@ -41,7 +40,8 @@ def tallgrass(args):
                 if actual_points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(1)
                     modify_user_points(username, points_to_sacrifice)
-                    return tallgrass_release(generated_pokemon) + treats_removed
+                    return tallgrass_release(
+                        generated_pokemon) + treats_removed
                 else:
                     return "Sorry, but you need more treats to do that."
             else:
@@ -53,7 +53,8 @@ def tallgrass(args):
                 if actual_points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(2)
                     modify_user_points(username, points_to_sacrifice)
-                    return tallgrass_release(generated_pokemon) + treats_removed
+                    return tallgrass_release(
+                        generated_pokemon) + treats_removed
                 else:
                     return "Sorry, but you need more treats to do that."
             elif abs(points_to_sacrifice) > 4:
@@ -61,7 +62,8 @@ def tallgrass(args):
                 if actual_points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(3)
                     modify_user_points(username, points_to_sacrifice)
-                    return tallgrass_release(generated_pokemon) + treats_removed
+                    return tallgrass_release(
+                        generated_pokemon) + treats_removed
                 else:
                     return "Sorry, but you need more treats to do that."
             else:

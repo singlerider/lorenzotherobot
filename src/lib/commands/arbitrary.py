@@ -1,10 +1,10 @@
 # coding: utf8
 
-import random
 import json
-import requests
+import random
 import time
 
+import requests
 
 usage = "!arbitrary [emote/number]"
 

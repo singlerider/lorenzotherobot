@@ -1,6 +1,8 @@
 """
 Developed Shane Engelman <me@5h4n3.com>
 """
+
+
 def readShots():
     try:
         with open("shots.txt", "r+") as f:  # read changes.json

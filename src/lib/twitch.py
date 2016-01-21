@@ -1,9 +1,12 @@
-import globals
-import requests
+import datetime
 import json
 import random
-import datetime
+
+import requests
+
+import globals
 import src.lib.user_commands as user_commands_import
+
 
 # making this comment from Github's Oval Office
 
@@ -101,7 +104,7 @@ def get_offline_status():
         globals.global_channel
     get_offline_status_resp = requests.get(url=get_offline_status_url)
     offline_data = json.loads(get_offline_status_resp.content)
-    if offline_data["stream"] != None:
+    if offline_data["stream"] is not None:
         return True
 
 
@@ -128,7 +131,8 @@ def random_highlight():
     get_highlight_resp = requests.get(url=get_highlight_url)
     highlights = json.loads(get_highlight_resp.content)
     random_highlight_choice = random.choice(highlights["videos"])
-    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n", " ").replace("\r", " ")
+    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(
+        **random_highlight_choice).replace("\n", " ").replace("\r", " ")
 
 
 def get_game_popularity(game):
@@ -154,12 +158,13 @@ def get_game_popularity(game):
 
 def get_follower_status(user):
     try:
-        url = "https://api.twitch.tv/kraken/users/{}/follows/channels/{}".format(user.lower().lstrip("@"), globals.global_channel)
+        url = "https://api.twitch.tv/kraken/users/{}/follows/channels/{}".format(
+            user.lower().lstrip("@"), globals.global_channel)
         resp = requests.get(url=url)
         data = json.loads(resp.content)
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
                   "Sep", "Oct", "Nov", "Dec"]
-        suffixes = ["st", "nd", "rd", "th",]
+        suffixes = ["st", "nd", "rd", "th", ]
         date_split = data["created_at"][:10].split("-")
         year = date_split[0]
         month = months[int(date_split[1]) - 1]
@@ -177,6 +182,7 @@ def get_follower_status(user):
         follower_since = "{} {}, {}".format(month, day, year)
         notifications = data["notifications"]
         followers = data["channel"]["followers"]
-        return "{} has been following {} since {}.".format(user, globals.global_channel, follower_since)
+        return "{} has been following {} since {}.".format(
+            user, globals.global_channel, follower_since)
     except:
         return "{} doesn't follow {}.".format(user, globals.global_channel)

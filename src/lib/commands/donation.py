@@ -1,6 +1,6 @@
+import globals
 import src.lib.twitch as twitch
 from src.lib.queries.points_queries import *
-import globals
 
 
 def donation(args):
@@ -13,10 +13,12 @@ def donation(args):
         print error
         return "amount has to be a number, ya dingus!"
     user_dict, __ = get_dict_for_users(None)
-    treats_to_add = int(amount/10) * 750
+    treats_to_add = int(amount / 10) * 750
     modify_user_points(user, treats_to_add)
-    thanks_message = "Let's get some curvyFireball in the chat for {0}'s ${1} donation!".format(user, amount)
+    thanks_message = "Let's get some curvyFireball in the chat for {0}'s ${1} donation!".format(
+        user, amount)
     return "{} treats for {}! {}".format(treats_to_add, user, thanks_message)
+
 
 def cron(a=None):
     import requests
@@ -33,29 +35,29 @@ def cron(a=None):
             amount = int(float(amount.lstrip("$")))
         except Exception as error:
             print error
-        treats_to_add = int(amount/10) * 750
+        treats_to_add = int(amount / 10) * 750
         modify_user_points(user, treats_to_add)
 
     def get_donations():
         {
-          "data":[
-            {
-              "donation_id":"80179029",
-              "created_at":"1438576556",
-              "currency":"USD",
-              "amount":"50",
-              "name":"Thomas",
-              "message":"nice!"
-            },
-            {
-              "donation_id":"80179019",
-              "created_at":"1438576521",
-              "currency":"USD",
-              "amount":"15.50",
-              "name":"JoeGamer",
-              "message":None
-            }
-          ]
+            "data": [
+                {
+                    "donation_id": "80179029",
+                    "created_at": "1438576556",
+                    "currency": "USD",
+                    "amount": "50",
+                    "name": "Thomas",
+                    "message": "nice!"
+                },
+                {
+                    "donation_id": "80179019",
+                    "created_at": "1438576521",
+                    "currency": "USD",
+                    "amount": "15.50",
+                    "name": "JoeGamer",
+                    "message": None
+                }
+            ]
         }
         token = globals.twitchalerts_token
         # only get donations from the past 20 seconds

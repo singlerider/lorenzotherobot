@@ -1,7 +1,8 @@
-import src.lib.command_headers as headers
-import urllib2
 import ast
+import urllib2
+
 import globals
+import src.lib.command_headers as headers
 
 
 def commands():

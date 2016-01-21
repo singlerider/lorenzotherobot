@@ -1,10 +1,12 @@
-from src.lib.queries.pokemon_queries import *
+from datetime import timedelta
+import datetime
+
 import globals
-from datetime import datetime, timedelta
+from src.lib.queries.pokemon_queries import *
 
 
 def reset_timestamp():
-    now = datetime.utcnow()
+    now = datetime.datetime.utcnow()
     reset_countdown = now - timedelta(minutes=1440)
     reset_trade_timestamp(reset_countdown)
 
@@ -15,7 +17,7 @@ def cron(a=None):
 
 def trade(args):
 
-    trade_set_time = str(datetime.utcnow())
+    trade_set_time = str(datetime.datetime.utcnow())
 
     party_position = args[0]
     pokemon_to_trade = args[1]
@@ -30,7 +32,11 @@ def trade(args):
                             pokemon_to_trade)
                         if asking_pokemon_id != "Error":
                             set_pokemon_trade_status(
-                                trade_set_time, asking_pokemon_id, asking_level, globals.CURRENT_USER, party_position)
+                                trade_set_time,
+                                asking_pokemon_id,
+                                asking_level,
+                                globals.CURRENT_USER,
+                                party_position)
                             return "Success. Your Pokemon has been set to 'tradable' for the next 24 hours. Use !check [username] to view your listing!"
                         else:
                             return "spelling error"
@@ -40,5 +46,5 @@ def trade(args):
                     return "The requested level must be lower than 100."
         except:
             return "Position and requested level must be numbers!"
-    except Exception, error:
+    except Exception as error:
         return "FailFish: " + str(error)

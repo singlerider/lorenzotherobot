@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from src.lib.queries.connection import *
-import time
 
 
 def save_message(username, channel, message):
@@ -13,6 +12,6 @@ def save_message(username, channel, message):
             """INSERT INTO messages (
                 username, channel, message, time
                 ) VALUES (%s, %s, %s, %s)""", [
-                    username, channel.lstrip("#"),
-                    message, str(datetime.datetime.now())])
+                username, channel.lstrip("#"),
+                message, str(datetime.datetime.now())])
         cur.close()

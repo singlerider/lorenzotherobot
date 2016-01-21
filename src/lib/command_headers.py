@@ -28,25 +28,6 @@ commands = {
     },
 
 
-    '!poll': {
-        'limit': 0,
-        'argc': 1,
-        'return': 'command',
-        'ul': 'mod',
-        'space_case': True,
-        'usage': "!poll ['option A'/'option B'/'option C']"
-
-    },
-
-    '!vote': {
-        'limit': 0,
-        'argc': 1,
-        'return': 'command',
-        'usage': '!vote [option_number]'
-
-    },
-
-
     '!llama': {
         'limit': 0,
         'argc': 1,
@@ -372,5 +353,5 @@ def initalizeCommands(config):
                     "users": {}}
 
 if __name__ == "__main__":
-    print "\n".join(["    " + key + ": " +  commands[key][
+    print "\n".join(["    " + key + ": " + commands[key][
         "usage"] for key in commands])

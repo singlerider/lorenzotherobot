@@ -6,26 +6,23 @@ By Shane Engelman <me@5h4n3.com>
 Contributions from dustinbcox and theepicsnail
 """
 
+import os
+import sys
+import time
+
+import globals
+import lib.functions_commands as commands
+import lib.irc as irc_
+import src.lib.command_headers
+import src.lib.cron as cron
+import src.lib.twitch as twitch
+from lib.functions_general import *
+from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.points_queries import *
-from src.lib.queries.command_queries import *
-from lib.functions_general import *
-from src.lib.twitch import get_dict_for_users
 from src.lib.spam_detector import spam_detector
-import lib.irc as irc_
-import lib.functions_commands as commands
-import src.lib.command_headers
-import src.lib.twitch as twitch
-import src.lib.user_data as info
-import src.lib.cron as cron
-import sys
-import datetime
-import traceback
-import sched
-import time
-import threading
-import os
-import globals
+from src.lib.twitch import get_dict_for_users
+
 reload(sys)
 sys.setdefaultencoding("utf8")
 
@@ -40,11 +37,9 @@ def write_to_log(channel, username, message):
     try:
         pass
         with open(filename, 'a') as f:
-             f.write("{} | {} : {}\n".format(
+            f.write("{} | {} : {}\n".format(
                 username, timestamp, str(message)))
     except Exception as error:
-        foldername = 'src/logs/{}_{}'.format(
-            channel.lstrip("#"), time.strftime('%Y_%m_%d'))
         os.system("mkdir src/logs/{}".format(date))
         print str(error) + ": Creating new folder: " + str(date)
         write_to_log(channel, username, message)
@@ -62,12 +57,6 @@ class Roboraj(object):
     def run(self):
 
         def check_for_sub(channel, username, message):
-            # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder subscribed for 5 months in a row!
-            # >> :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #curvyllama :KiefyWonder just subscribed!
-            # Photo_phocus just subscribed to jonsandman!
-            # HermanNugent subscribed to JonSandman for 7 months in a row!
-            # first sub points = 100
-            # resub = 50
             try:
                 message_split = message.rstrip("!").split()
                 subbed_user = message_split[0]
@@ -115,8 +104,6 @@ class Roboraj(object):
             self.irc.send_message(channel, unban)
             save_message("lorenzotherobot", channel, message)
 
-        config = self.config
-
         while True:
             try:
                 data = self.irc.nextMessage()
@@ -133,7 +120,7 @@ class Roboraj(object):
                     # check for sub message
                     if username == "twitchnotify":
                         check_for_sub(channel, username, message)
-                    if spam_detector(username, message) == True:
+                    if spam_detector(username, message) is True:
                         ban_for_spam(channel, user)
                 chan = channel.lstrip("#")
                 if message[0] == "!":
@@ -201,7 +188,6 @@ class Roboraj(object):
             try:
                 if username not in user_data["chatters"]["moderators"]:
                     if username != "singlerider":
-                        #if username != 'singlerider':
                         resp = '(%s) : %s' % (
                             username, "This is a moderator-only command!")
                         pbot(resp, channel)

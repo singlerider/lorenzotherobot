@@ -1,6 +1,6 @@
-import globals
-
 import smtplib
+
+import globals
 
 
 def report(args):

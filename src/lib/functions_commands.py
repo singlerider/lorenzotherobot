@@ -1,10 +1,10 @@
+import sys
 import time
+import traceback
+from commands import *
 
 import src.lib.commands
-from commands import *
 from command_headers import *
-import sys
-import traceback
 
 
 def is_valid_command(command):
@@ -21,13 +21,15 @@ def get_command_limit(command):
 
 
 def is_on_cooldown(command, channel):
-    if time.time() - commands[command][channel]["last_used"] < commands[command]["limit"]:
+    if time.time() - \
+            commands[command][channel]["last_used"] < commands[command]["limit"]:
         return True
     return False
 
 
 def get_cooldown_remaining(command, channel):
-    return round(commands[command]["limit"] - (time.time() - commands[command][channel]["last_used"]))
+    return round(commands[command]["limit"] -
+                 (time.time() - commands[command][channel]["last_used"]))
 
 
 def check_has_user_cooldown(command):
@@ -50,13 +52,14 @@ def is_on_user_cooldown(command, channel, username):
 def get_user_cooldown_remaining(command, channel, username):
     time_remaining = int(round(commands[command]["user_limit"] - (
         time.time() - user_cooldowns["channels"][channel]["commands"][
-                command]["users"][username])))
+            command]["users"][username])))
     return time_remaining
 
 
 def update_user_last_used(command, channel, username):
     user_cooldowns["channels"][channel]["commands"][
-            command]["users"][username] = time.time()
+        command]["users"][username] = time.time()
+
 
 def command_user_level(command):
     if commands[command]["ul"]:
@@ -64,7 +67,8 @@ def command_user_level(command):
 
 
 def check_has_return(command):
-    if commands[command]["return"] and commands[command]["return"] != "command":
+    if commands[command]["return"] and commands[
+            command]["return"] != "command":
         return True
     return False
 

@@ -1,5 +1,6 @@
-import llama as llama_import
 import random
+
+import llama as llama_import
 
 usage = "!winner"
 

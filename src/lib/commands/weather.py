@@ -1,7 +1,9 @@
-from globals import weather_key
-import requests
 import json
 import random
+
+import requests
+
+from globals import weather_key
 
 
 def weather(args):

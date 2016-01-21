@@ -1,5 +1,6 @@
 from src.lib.twitch import *
 
+
 def follower(args):
     user = args[0]
     try:

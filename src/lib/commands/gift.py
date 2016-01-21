@@ -1,5 +1,5 @@
-from src.lib.queries.pokemon_queries import *
 from src.lib.queries.points_queries import *
+from src.lib.queries.pokemon_queries import *
 
 usage = '!gift [username] [pokemon_name] [level]'
 
@@ -24,7 +24,15 @@ def gift(args):
                         get_pokemon_id_from_name(name)
                         id_from_name = get_pokemon_id_from_name(name)
                         globals.CAUGHT = True
-                        return insert_user_pokemon(username, username, open_position[0], id_from_name, level, id_from_name, None, None)
+                        return insert_user_pokemon(
+                            username,
+                            username,
+                            open_position[0],
+                            id_from_name,
+                            level,
+                            id_from_name,
+                            None,
+                            None)
                     except Exception as error:
                         print error
                         return "Check your spelling and capitalization!"

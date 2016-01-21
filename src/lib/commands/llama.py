@@ -3,9 +3,10 @@ Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 """
 
 import src.lib.commands.shots as shots_import
-from src.lib.twitch import *
-import src.lib.user_commands as user_commands_import
 import src.lib.queries.points_queries as points_import
+import src.lib.user_commands as user_commands_import
+from src.lib.twitch import *
+
 
 def random_highlight():
     get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
@@ -15,7 +16,8 @@ def random_highlight():
     if len(highlights["videos"]) == 0:
         return "No videos yet!"
     random_highlight_choice = random.choice(highlights["videos"])
-    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(**random_highlight_choice).replace("\n", " ").replace("\r", " ")
+    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(
+        **random_highlight_choice).replace("\n", " ").replace("\r", " ")
 
 
 def get_user_command():
@@ -43,14 +45,16 @@ def llama(args):
         get_offline_status_resp = requests.get(url=get_offline_status_url)
         offline_data = json.loads(get_offline_status_resp.content)
         try:
-            return str("".join(i for i in offline_data["status"] if ord(i) < 128)) + " | " + str(offline_data["display_name"]) + " playing " + str(offline_data["game"])
+            return str("".join(i for i in offline_data["status"] if ord(i) < 128)) + " | " + str(
+                offline_data["display_name"]) + " playing " + str(offline_data["game"])
         except Exception as error:
             print error
             return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
         # if user_data_name in user_dict["chatters"]["moderators"]:
-        return str(int(len(user_dict["chatters"]["moderators"])) + int(len(user_dict["chatters"]["viewers"]))) + " viewers are in here. That's it?! Kreygasm"
+        return str(int(len(user_dict["chatters"]["moderators"])) + int(len(user_dict[
+                   "chatters"]["viewers"]))) + " viewers are in here. That's it?! Kreygasm"
         # return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
         # else:
         # return "Only moderators can flood the chat window with a bunch of
@@ -63,7 +67,8 @@ def llama(args):
         for follower in stream_followers["follows"][:5]:
             followers.append(str(follower["user"]["display_name"]))
         follower_list = ", ".join(followers)
-        return "In case you missed them, here are the five most recent Llamas: " + follower_list + " HeyGuys"
+        return "In case you missed them, here are the five most recent Llamas: " + \
+            follower_list + " HeyGuys"
     elif grab_user == "uptime":
         return get_stream_uptime()
     elif grab_user == "usage":
@@ -71,7 +76,8 @@ def llama(args):
     elif grab_user == "shots":
         shot_count = shots_import.readShots()
         if shot_count != 0:
-            return str(shots_import.readShots()) + " shots left. She's already dru... ResidentSleeper"
+            return str(shots_import.readShots()) + \
+                " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! DansGame"
     elif points_import.get_user_points(grab_user) is not None:
