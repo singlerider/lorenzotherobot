@@ -8,6 +8,7 @@ import random
 
 import globals
 from src.lib.queries.pokemon_queries import *
+from src.lib.commands.pokedex.pokedata import *
 
 
 def randomPokemon():
