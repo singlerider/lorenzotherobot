@@ -20,8 +20,6 @@ def weather(args):
         resp = requests.get(url)
         data = json.loads(resp.content)
         current_temp = data["main"]["temp"]
-        high_temp = data["main"]["temp_max"]
-        low_temp = data["main"]["temp_min"]
         condition = (data["weather"][0]["description"]).lower()
         place = data["name"]
         statement = "Dude, it's {0} in {1} right now and the conditions are {2}. {3}".format(

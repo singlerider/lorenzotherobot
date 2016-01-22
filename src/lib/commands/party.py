@@ -1,8 +1,6 @@
 import globals
 from src.lib.queries.pokemon_queries import *
 
-usage = "!party [position/'members']"
-
 
 def cron(a=None):
     return "New to the channel? Use '!catch', then '!battle' one of my party members: " + \

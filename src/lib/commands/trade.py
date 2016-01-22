@@ -16,13 +16,10 @@ def cron(a=None):
 
 
 def trade(args):
-
     trade_set_time = str(datetime.datetime.utcnow())
-
     party_position = args[0]
     pokemon_to_trade = args[1]
     asking_level = args[2]
-    #trade_transaction(giver, giver_position, receiver, receiver_position)
     try:
         try:
             if int(args[0]) and int(args[2]):

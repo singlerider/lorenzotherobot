@@ -3,7 +3,6 @@ from src.lib.queries.pokemon_queries import *
 
 
 def redeem(args):
-
     position_to_trade = args[0]
     username_to_trade = args[1]
     position_to_redeem = args[2]

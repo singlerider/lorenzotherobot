@@ -4,7 +4,6 @@ import random
 def opinion():
     usage = '!opinion'
     '''Return a random entry from the shuffled list'''
-
     answers = [
         'It is certain',
         'It is decidedly so',
@@ -27,7 +26,5 @@ def opinion():
         'Outlook not so good',
         'Very doubtful']
     response = 'Lorenzo says: ' + random.choice(answers) + ", dude"
-
     random.shuffle(answers)
-
     return response

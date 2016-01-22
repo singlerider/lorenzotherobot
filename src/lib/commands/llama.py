@@ -1,7 +1,3 @@
-"""
-Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
-"""
-
 import src.lib.commands.shots as shots_import
 import src.lib.queries.points_queries as points_import
 from src.lib.twitch import *
@@ -20,7 +16,6 @@ def random_highlight():
 
 
 def llama(args):
-
     if len(args) < 1:
         return points_import.get_all_user_points(globals.CURRENT_USER)
     grab_user = args[0].lower()
@@ -42,13 +37,8 @@ def llama(args):
             return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"
     elif grab_user == "viewers":
         user_dict, user_list = get_dict_for_users()
-        # if user_data_name in user_dict["chatters"]["moderators"]:
         return str(int(len(user_dict["chatters"]["moderators"])) + int(len(user_dict[
                    "chatters"]["viewers"]))) + " viewers are in here. That's it?! Kreygasm"
-        # return str(str(user_dict["chatters"]["moderators"]) + ", " + str(user_dict["chatters"]["viewers"])).replace("[", "").replace("]", "").replace("'", "")
-        # else:
-        # return "Only moderators can flood the chat window with a bunch of
-        # text :/"
     elif grab_user == "highlight":
         return random_highlight()
     elif grab_user == "followers":

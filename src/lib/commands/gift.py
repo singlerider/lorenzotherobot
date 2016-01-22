@@ -5,15 +5,12 @@ usage = '!gift [username] [pokemon_name] [level]'
 
 
 def gift(args):
-
     username = str(args[0].lower())
     open_position, occupied_positions = find_open_party_positions(username)
     name = args[1]
     level = abs(int(args[2]))
-
     try:
         get_user_points(username)
-
         if name == "item":
             id = args[2]
             return gift_items(id, username)

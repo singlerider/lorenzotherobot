@@ -2,8 +2,6 @@ import globals
 from src.lib.queries.points_queries import *
 from src.lib.queries.pokemon_queries import *
 
-usage = "!tallgrass [treatsamount]"
-
 
 def tallgrass_release(generated_pokemon):
     globals.channel_info[globals.global_channel]['caught'] = False

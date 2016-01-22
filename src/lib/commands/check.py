@@ -3,7 +3,6 @@ from src.lib.queries.pokemon_queries import *
 
 
 def check(args):
-
     if args[0] == 'trades':
         all_tradable_pokemon = show_all_tradable_pokemon()
         all_tradable_pokemon_comprehension = [

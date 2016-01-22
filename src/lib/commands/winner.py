@@ -1,15 +1,10 @@
 import random
 
-import llama as llama_import
-
-usage = "!winner"
+import src.lib.twitch as twitch
 
 
 def winner():
-    if globals.global_channel == 'shedeviil_09':
-        return None
-    user_dict, all_users = llama_import.get_dict_for_users()
+    user_dict, all_users = twitch.get_dict_for_users()
     stream_winner = random.choice(all_users)
     random.shuffle(all_users)
-
     return stream_winner

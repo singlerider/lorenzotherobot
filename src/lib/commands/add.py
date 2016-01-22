@@ -12,8 +12,6 @@ def add(args):
         if command not in command_headers.commands:
             if user_level == "reg" or user_level == "mod":
                 return save_command(command, creator, user_level, response)
-                # if "{{}}" in response:
-                #    return response.replace("{{}}", globals.CURRENT_USER)
             else:
                 return "User level must be 'reg' or 'mod'"
         else:

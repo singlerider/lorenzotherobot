@@ -36,7 +36,6 @@ def treats(args):
         delta = int(args[2])
     except:
         return "amount has to be a number, ya dingus!"
-    mod_name = globals.CURRENT_USER
     user_dict, all_users = get_dict_for_users()
     if add_remove == "add":
         if delta_user == "all":
