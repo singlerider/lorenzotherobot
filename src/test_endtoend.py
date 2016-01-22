@@ -1,27 +1,32 @@
 import threading
 import unittest
 
-import src.lib.commands.pokemon as pokemon_lib
+import src.lib.commands.pokemon as pokemon
 import src.lib.functions_commands
-import src.lib.twitch as twitch
+from src.lib.twitch import get_dict_for_users
 from bot import Roboraj
 from testing.TwitchIrc import TwitchIrc
 
 TEST_CHANNEL = "#theepicsnail_"
 
+
 # Replace the get_dict_for_users function with something that returns
 # the right users.
-twitch.get_dict_for_users = lambda: (
-    {'chatters':
-        {'moderators': ["theepicsnail_", "singlerider"],
-         'global_mods': [],
-         'admins': [],
-         'viewers': ["randomUser"],
-         'staff': []
-         },
-     '_links': {},
-     'chatter_count': 0},
-    ['', ''])
+
+
+def get_dict_for_users(a=None):
+    return {'chatters':
+            {'moderators': ["theepicsnail_", "singlerider"],
+             'global_mods': [],
+             'admins': [],
+             'viewers': ["randomUser"],
+             'staff': []
+             },
+            '_links': {},
+            'chatter_count': 3},
+    ["theepicsnail_", "singlerider", "randomUser"]
+
+print get_dict_for_users()
 
 src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 
@@ -75,58 +80,6 @@ class TestCommands(unittest.TestCase):
                 self.assertEqual(out, expected)
 
 
-class TestPokemon(unittest.TestCase):
-
-    def setUp(self):
-        # Save a copy of the methods we (possibly) modify
-        self.initials = {
-            "randomPokemon": pokemon_lib.randomPokemon
-        }
-
-    def tearDown(self):
-        for name, val in self.initials.items():
-            setattr(pokemon_lib, name, val)  # Restore each.
-
-    def test_pokemon_battle(self):
-        # These tests don't have any sensible asserts, but do exercise the code.
-        # if the code is broken these tests should crash
-
-        # bulbasaur vs ivysaur, they both have mods.
-        pokemon_lib.randomPokemon = ["Bulbasaur", "Ivysaur"].pop
-        simulateMessage("randomUser", "!pokemon battle")
-        self.assertIn("randomUser", server.getOutput())
-
-        # neither affects the other.
-        pokemon_lib.randomPokemon = ["Bulbasaur", "Missingno"].pop
-        simulateMessage("randomUser", "!pokemon battle")
-        self.assertIn("randomUser", server.getOutput())
-
-        # both first and second has a mod while the other doesn't
-        pokemon_lib.randomPokemon = ["Omastar", "Golbat"].pop
-        simulateMessage("randomUser", "!pokemon battle")
-        self.assertIn("randomUser", server.getOutput())
-
-        pokemon_lib.randomPokemon = ["Golbat", "Omastar"].pop
-        simulateMessage("randomUser", "!pokemon battle")
-        self.assertIn("randomUser", server.getOutput())
-
-    def test_catch_and_partymembers(self):
-        simulateMessage("randomUser", "!party members")
-        original = server.getOutput()
-
-        simulateMessage("randomUser", "!catch")
-        self.assertIn("Somebody else beat you to it", server.getOutput())
-        # release a pokemon
-        pokemon = pokemon_lib.cron()[7:-10]
-
-        simulateMessage("randomUser", "!catch")
-        self.assertIn("caught it", server.getOutput())
-
-        simulateMessage("randomUser", "!party members")
-        self.assertNotEqual(original, server.getOutput(),
-                            "Pokemon didn't change")
-
-
 class TestTreats(unittest.TestCase):
 
     def test_normal_cant_add_treats(self):
@@ -134,7 +87,7 @@ class TestTreats(unittest.TestCase):
         self.assertIn("This is a moderator-only command!", server.getOutput())
 
     def test_mod_can_add_treats(self):
-        # singlerider has permission to add treats but theepicsnail doesnt, even in '#theepicsnail'
+        # singlerider has permission to add treats but theepicsnail_ doesnt, even in '#theepicsnail_'
         # this is weird.
         simulateMessage("randomUser", "!llama treats")
 
@@ -143,6 +96,7 @@ class TestTreats(unittest.TestCase):
 
         simulateMessage("singlerider", "!treats add randomUser 1000")
         server.getOutput()  # ignore the bot response
+        print "server.getOutput()", server.getOutput()
 
         simulateMessage("randomUser", "!llama treats")
         new_treats = int(server.getOutput().split(" ")[10])
@@ -166,25 +120,3 @@ class TestShots(unittest.TestCase):
         simulateMessage("randomUser", "!llama shots")
         after = server.getOutput()
         self.assertNotEqual(before, after)
-
-
-class TestPoll(unittest.TestCase):
-
-    def test_poll(self):
-        simulateMessage("singlerider", "!poll opt1 / opt2 / opt3")
-        self.assertIn("!vote", server.getOutput())
-
-        simulateMessage("user1", "!vote 1")
-        self.assertIn("Vote counted", server.getOutput())
-
-        simulateMessage("user1", "!vote 1")
-        self.assertIn("already voted", server.getOutput())
-
-        simulateMessage("user2", "!vote cat")
-        self.assertIn("not a valid option", server.getOutput())
-
-        simulateMessage("user2", "!vote 2")
-        self.assertIn("Vote counted", server.getOutput())
-
-        simulateMessage("singlerider", "!poll end")
-        self.assertIn("Tie", server.getOutput())
