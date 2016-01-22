@@ -214,11 +214,10 @@ Built in are several work-in-progress functions for returning "random battles" o
 
     !catch
     !tallgrass [amount] (!tallgrass 1000)
-    !party members
-    !party [username] (!party singlerider)
+    !party ['members'/ username] (!party singlerider)
     !battle [party position] (!battle 1 lorenzotherobot)
     !leaderboard
-    !check [trades/items/inventory] (!check inventory)
+    !check ['trades'/'items'/'inventory'] (!check inventory)
     !use [item position] [party position] (!use 11 4)
     !trade [party position] [desired pokemon] [desired level] (!trade 1 Bulbasaur 5)
     !redeem [party_position_to_trade] [username_to_trade] [party_position_to_redeem_from_user] (!redeem 2 singlerider 6)
@@ -228,4 +227,5 @@ Built in are several work-in-progress functions for returning "random battles" o
 
 The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a MySQL database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
 
-    WILL UPDATE SOON
+    !llama
+    !llama ['treats'/username/'shots'/'list']
