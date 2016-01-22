@@ -2,7 +2,6 @@
 import re
 import socket
 import sys
-import thread
 import time
 
 from functions_general import *
@@ -126,7 +125,7 @@ class irc:
         self.sock = sock
 
         loginMsg = self.nextMessage()
-        #:tmi.twitch.tv NOTICE * :Login unsuccessful
+        # :tmi.twitch.tv NOTICE * :Login unsuccessful
         # or
         # :tmi.twitch.tv 001 theepicsnail :Welcome, GLHF!
         if "unsuccessful" in loginMsg:

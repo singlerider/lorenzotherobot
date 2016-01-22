@@ -2,11 +2,9 @@
 
 # channel/channel_year_month_day.txt
 
-import json
 import os
 import time
 
-from apiclient.discovery import build
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 

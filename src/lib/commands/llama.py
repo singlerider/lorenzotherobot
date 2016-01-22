@@ -4,7 +4,6 @@ Developed by dustinbcox and Shane Engelman <me@5h4n3.com>
 
 import src.lib.commands.shots as shots_import
 import src.lib.queries.points_queries as points_import
-import src.lib.user_commands as user_commands_import
 from src.lib.twitch import *
 
 
@@ -20,25 +19,16 @@ def random_highlight():
         **random_highlight_choice).replace("\n", " ").replace("\r", " ")
 
 
-def get_user_command():
-    try:
-        user_command = user_commands_import.user_command_dict[
-            user_data_name]["return"]
-        return user_command
-    except:
-        return "Dude... stop. You don't have a user command... yet. R)"
-
-
 def llama(args):
+
+    if len(args) < 1:
+        return points_import.get_all_user_points(globals.CURRENT_USER)
     grab_user = args[0].lower()
     user_data_name = globals.CURRENT_USER.lower()
-
     if grab_user == "list":
         return points_import.get_points_list()
     elif grab_user == "treats":
         return points_import.get_all_user_points(globals.CURRENT_USER)
-    elif grab_user == "me":
-        return get_user_command()
     elif grab_user == "stream":
         get_offline_status_url = 'https://api.twitch.tv/kraken/channels/' + \
             globals.channel
