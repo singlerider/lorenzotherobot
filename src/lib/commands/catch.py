@@ -20,7 +20,7 @@ def catch():
                 pokemon_trainer, pokemon_trainer, open_position[0],
                 pokemon_id, desired_level,
                 globals.channel_info[globals.global_channel]['pokemon'],
-                sNone, None)
+                None, None)
         else:
             return "No open slots in your party."
     else:

@@ -212,7 +212,17 @@ a `'space_case'` is a special scenario where you would like a command to have a 
 
 Built in are several work-in-progress functions for returning "random battles" of the first generation of Pokemon. The idea, in the end is that a user will have a Pokemon assigned to them that they would catch as one is released randomly in the chat. Users will compete to be the first to catch the Pokemon with a separate command.
 
-    WILL UPDATE SOON
+    !catch
+    !tallgrass [amount] (!tallgrass 1000)
+    !party members
+    !party [username] (!party singlerider)
+    !battle [party position] (!battle 1 lorenzotherobot)
+    !leaderboard
+    !check [trades/items/inventory] (!check inventory)
+    !use [item position] [party position] (!use 11 4)
+    !trade [party position] [desired pokemon] [desired level] (!trade 1 Bulbasaur 5)
+    !redeem [party_position_to_trade] [username_to_trade] [party_position_to_redeem_from_user] (!redeem 2 singlerider 6)
+
 
 ### Llama
 
