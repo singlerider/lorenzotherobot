@@ -89,5 +89,4 @@ def llama(args):
         else:
             return "User not found. That makes them the biggest loser!"
     else:
-        print get_stream_status()
         return "No entry found for " + str(args[0])

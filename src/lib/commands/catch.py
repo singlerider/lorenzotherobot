@@ -14,10 +14,8 @@ def catch():
         desired_level = 5
         pokemon_id = get_pokemon_id_from_name(
             globals.channel_info[globals.global_channel]['pokemon'])
-        print pokemon_id
         if len(open_position) > 0:
             globals.channel_info[globals.global_channel]['caught'] = True
-            print globals.channel_info[globals.global_channel]
             return insert_user_pokemon(
                 pokemon_trainer, pokemon_trainer, open_position[0],
                 pokemon_id, desired_level,

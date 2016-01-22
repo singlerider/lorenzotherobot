@@ -194,7 +194,6 @@ def get_battle_stats(username, position):
             WHERE username = %s AND userpokemon.position = %s
         """, [username, position])
         battle_stats = cur.fetchone()
-        # print battle_stats
         nickname = battle_stats[1]
         level = battle_stats[2]
         hp = int(round(battle_stats[6]))

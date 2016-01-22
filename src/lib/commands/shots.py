@@ -32,7 +32,6 @@ def shots(args):
         delta = int(args[1])
     except:
         return "I need a number for the amount. idiot."
-    print delta
 
     if action == "add":
         writeShots(str(shots_count + delta))

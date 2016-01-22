@@ -7,8 +7,8 @@ Pokemon Intellectual Property owned by Nintendo and Game Freak <3
 import random
 
 import globals
+from src.lib.commands.pokedex.pokedata import master_pokemon_dict
 from src.lib.queries.pokemon_queries import *
-from src.lib.commands.pokedex.pokedata import *
 
 
 def randomPokemon():

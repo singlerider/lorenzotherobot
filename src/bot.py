@@ -156,7 +156,7 @@ class Roboraj(object):
         if command == message:
             args = []
         elif command == message and command in commands.keys():
-            print "Yes, it is in commands"
+            pass
         else:
             # default to args = ["bar baz"]
             args = [message[len(command) + 1:]]

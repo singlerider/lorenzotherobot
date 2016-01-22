@@ -17,7 +17,6 @@ def followers():
     appended_list = []
     for follower in full_follower_list:
         appended_list.append(follower['notifications'])
-    print appended_list.count(True)
 
     mod_return = str(appended_list.count(True)) + \
         "% of the last 100 followers have opted for notifications."

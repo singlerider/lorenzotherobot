@@ -25,7 +25,6 @@ def treatsForAllTimer(channel, delta):
         user_dict, all_users = twitch.get_dict_for_users(channel)
         try:
             modify_points_all_users_timer(all_users, delta)
-            # print "Treats added to " + str(all_users)
         except:
             return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
 

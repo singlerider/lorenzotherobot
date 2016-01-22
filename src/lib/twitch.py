@@ -34,7 +34,6 @@ def get_dict_for_users(channel=None):
             for user_type in data['chatters']:
                 [all_users.append(str(user)) for user in data[
                     "chatters"][user_type]]
-            print all_users
             return data, list(set(all_users))
         except ValueError as error:  # "No JSON object could be decoded"
             n += 1  # make sure n increases value by one on each loop

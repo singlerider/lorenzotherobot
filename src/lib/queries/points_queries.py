@@ -12,7 +12,6 @@ def mysql_ping():
     with con:
         con.ping()
         cur.close()
-        print "pinging database"
 
 
 def get_points_list():
@@ -183,7 +182,6 @@ def get_all_user_points(username):  # gets all of a single user's points
                 return "No treats found, but don't worry. You can earn them by watching the stream when it's live!"
         except Exception as error:
             cur.close()
-            print error
             return "User not found. Check your spelling."
 
 
@@ -217,7 +215,6 @@ def modify_user_points(username, delta):
                     time_points = time_points - %s""", [
                     username, 0, 0, time_points_to_remove])
         else:  # standard for removal
-            print delta
             cur.execute(
                 """INSERT INTO users (username, donation_points)
                     VALUES (%s, %s) ON DUPLICATE KEY
@@ -277,7 +274,6 @@ def modify_points_all_users_timer(all_users, points_to_increment=1):
 def modify_points_all_users_hack(points_to_increment=1):
     con = get_connection()
     with con:
-        print unicode(all_users)
         cur = con.cursor()
         cur.execute("""
             INSERT INTO users (username, points) VALUES (%s, %s)
