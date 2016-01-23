@@ -198,7 +198,7 @@ class Roboraj(object):
                     error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
                         username, channel, command, user_data, error)
                     f.write(error_message)
-        approved_channels = ["curvyllama", "lorenzotherobot", "singlerider"]
+        approved_channels = ["curvyllama", "lorenzotherobot", "singlerider", 'theepicsnail_']
         if globals.global_channel not in approved_channels:
             print globals.global_channel
             prevented_list = ['songrequest', 'request', 'shots', 'donation',

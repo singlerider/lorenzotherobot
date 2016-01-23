@@ -3,14 +3,16 @@ import threading
 
 import globals
 
+MOD_USER = "singlerider"
+REG_USER = "randomuser"
 TEST_CHANNEL = "#theepicsnail_"
 TEST_CHAN = 'theepicsnail_'
 USERS = {
     'chatters': {
-        'moderators': ["theepicsnail_", "singlerider"],
+        'moderators': [TEST_CHAN, MOD_USER],
         'global_mods': [],
         'admins': [],
-        'viewers': ["randomUser"],
+        'viewers': [REG_USER],
         'staff': []
          },
     '_links': {},

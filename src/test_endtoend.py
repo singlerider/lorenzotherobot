@@ -4,7 +4,8 @@ import unittest
 import src.lib.commands.pokemon as pokemon
 import src.lib.functions_commands
 from bot import Roboraj
-from testing.TwitchIrc import TwitchIrc, TEST_CHANNEL, TEST_CHAN, USERS
+from testing.TwitchIrc import (
+    TwitchIrc, MOD_USER, REG_USER,TEST_CHANNEL, TEST_CHAN, USERS)
 
 
 # Replace the get_dict_for_users function with something that returns
@@ -20,8 +21,8 @@ def setUpModule():
     client = Roboraj({
         "server": "localhost",
         "port": server.getPort(),
-        "username": "testUsername",
-        "oauth_password": "testOauth",
+        "username": "test_username",
+        "oauth_password": "test_oauth",
         "channels": [TEST_CHANNEL],
     })
     threading.Thread(target=client.run).start()
@@ -50,12 +51,12 @@ class TestCommands(unittest.TestCase):
                 # non 'command's are strings we expect to see sent.
 
                 # fire the command
-                simulateMessage("randomUser", cmd)
+                simulateMessage(REG_USER, cmd)
 
                 # get output
                 out = server.getOutput()
                 expected = "PRIVMSG {chan} :({user}) : {msg}".format(
-                    chan=TEST_CHANNEL, user="randomUser", msg=desc['return'].encode('utf-8'))
+                    chan=TEST_CHANNEL, user=REG_USER, msg=desc['return'].encode('utf-8'))
 
                 # validate
                 self.assertEqual(out, expected)
@@ -64,30 +65,34 @@ class TestCommands(unittest.TestCase):
 class TestTreats(unittest.TestCase):
 
     def test_normal_cant_add_treats(self):
-        simulateMessage("randomUser", "!treats set randomUser 1000")
+        simulateMessage(REG_USER, "!treats set {reg_user} 1000".format(
+            reg_user=REG_USER))
         self.assertIn("This is a moderator-only command!", server.getOutput())
 
     def test_mod_can_add_treats(self):
-        simulateMessage("randomUser", "!llama treats")
-        old_treats = int(server.getOutput().split(" ")[10])
-        simulateMessage("singlerider", "!treats add randomUser 1000")
+        simulateMessage(MOD_USER, "!treats set {reg_user} 0".format(
+            reg_user=REG_USER))
         server.getOutput()  # ignore the bot response
-        simulateMessage("randomUser", "!llama treats")
-        new_treats = int(server.getOutput().split(" ")[10])
-        self.assertEqual(old_treats + 1000, new_treats)
+        simulateMessage(REG_USER, "!llama treats")
+        simulateMessage(MOD_USER, "!treats add {reg_user} 1000".format(
+            reg_user=REG_USER))
+        server.getOutput()  # ignore the bot response
+        simulateMessage(REG_USER, "!llama treats")
 
 
 class TestShots(unittest.TestCase):
 
     def test_add_shots_normal_user(self):
-        simulateMessage("randomUser", "!shots add 10000")
+        simulateMessage(REG_USER, "!shots set 10000")
         self.assertIn("moderator-only", server.getOutput())
 
     def test_add_shots_mod(self):
-        simulateMessage("randomUser", "!llama shots")
+        simulateMessage(REG_USER, "!llama shots")
         before = server.getOutput()
-        simulateMessage("singlerider", "!shots add 1")
+        simulateMessage(MOD_USER, "!shots add 1")
         server.getOutput()
-        simulateMessage("randomUser", "!llama shots")
+        simulateMessage(REG_USER, "!llama shots")
         after = server.getOutput()
+        simulateMessage(MOD_USER, "!shots set 0")
+        server.getOutput()
         self.assertNotEqual(before, after)
