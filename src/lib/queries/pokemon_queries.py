@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
-from src.lib.queries.connection import *
+from src.lib.queries.connection import get_connection
 from src.lib.queries.points_queries import *
 
 

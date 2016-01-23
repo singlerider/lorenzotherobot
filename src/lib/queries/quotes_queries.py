@@ -3,7 +3,7 @@
 
 import random
 
-from src.lib.queries.connection import *
+from src.lib.queries.connection import get_connection
 
 
 class Quotes:

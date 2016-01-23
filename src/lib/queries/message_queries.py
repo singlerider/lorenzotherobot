@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from src.lib.queries.connection import *
+from datetime import datetime
+
+from src.lib.queries.connection import get_connection
 
 
 def save_message(username, channel, message):
@@ -13,5 +15,5 @@ def save_message(username, channel, message):
                 username, channel, message, time
                 ) VALUES (%s, %s, %s, %s)""", [
                 username, channel.lstrip("#"),
-                message, str(datetime.datetime.now())])
+                message, str(datetime.now())])
         cur.close()

@@ -36,7 +36,7 @@ def treats(args):
         delta = int(args[2])
     except:
         return "amount has to be a number, ya dingus!"
-    user_dict, all_users = get_dict_for_users()
+    user_dict, all_users = twitch.get_dict_for_users()
     if add_remove == "add":
         if delta_user == "all":
             modify_points_all_users(all_users, abs(delta))

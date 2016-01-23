@@ -4,7 +4,7 @@
 import random
 import warnings
 
-from src.lib.queries.connection import *
+from src.lib.queries.connection import get_connection
 
 
 def mysql_ping():

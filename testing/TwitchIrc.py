@@ -1,6 +1,24 @@
 import socket
 import threading
 
+import globals
+
+TEST_CHANNEL = "#theepicsnail_"
+TEST_CHAN = 'theepicsnail_'
+USERS = {
+    'chatters': {
+        'moderators': ["theepicsnail_", "singlerider"],
+        'global_mods': [],
+        'admins': [],
+        'viewers': ["randomUser"],
+        'staff': []
+         },
+    '_links': {},
+    'chatter_count': 3
+}
+globals.channel_info[TEST_CHAN] = {
+    'caught': True, 'pokemon': '', 'viewers': USERS
+}
 
 class TwitchIrc:
 
@@ -52,11 +70,13 @@ class TwitchIrc:
             self.cv.wait(timeout)
         assert self.lines, "Failed to get output after " + \
             str(timeout) + " seconds."
+        print self.lines[0]
         val = self.lines.pop(0)
         self.cv.release()
         return val
 
     def simulateMessage(self, user, chan, line):
-        #>> :singlerider!singlerider@singlerider.tmi.twitch.tv PRIVMSG #theepicsnail_ :!pokemon me
+        globals.CURRENT_USER = user
+        globals.global_channel = chan.lstrip("#")
         self.client.send(":{user}!{user}@{user}.tmi.twitch.tv PRIVMSG {chan} :{line}\r\n".format(
             user=user, chan=chan, line=line))

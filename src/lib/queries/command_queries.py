@@ -1,4 +1,6 @@
-from src.lib.queries.connection import *
+from datetime import datetime
+
+from src.lib.queries.connection import get_connection
 
 
 def get_custom_commands(channel):  # only gets donation_points

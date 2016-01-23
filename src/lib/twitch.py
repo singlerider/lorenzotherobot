@@ -15,6 +15,7 @@ def get_dict_for_users(channel=None):
     n = 0
     if channel is None:
         channel = globals.global_channel
+        print "channel", channel
     channel = channel.lstrip("#")
     dummy = {  # in case the endpoint fails (can be as often as 1:8)
         "_links": {}, "chatters_count": 0, "chatters": {

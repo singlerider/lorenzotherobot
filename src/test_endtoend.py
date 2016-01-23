@@ -3,31 +3,12 @@ import unittest
 
 import src.lib.commands.pokemon as pokemon
 import src.lib.functions_commands
-from src.lib.twitch import get_dict_for_users
 from bot import Roboraj
-from testing.TwitchIrc import TwitchIrc
-
-TEST_CHANNEL = "#theepicsnail_"
+from testing.TwitchIrc import TwitchIrc, TEST_CHANNEL, TEST_CHAN, USERS
 
 
 # Replace the get_dict_for_users function with something that returns
 # the right users.
-
-
-def get_dict_for_users(a=None):
-    return {'chatters':
-            {'moderators': ["theepicsnail_", "singlerider"],
-             'global_mods': [],
-             'admins': [],
-             'viewers': ["randomUser"],
-             'staff': []
-             },
-            '_links': {},
-            'chatter_count': 3},
-    ["theepicsnail_", "singlerider", "randomUser"]
-
-print get_dict_for_users()
-
 src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 
 server, client = None, None
@@ -87,22 +68,12 @@ class TestTreats(unittest.TestCase):
         self.assertIn("This is a moderator-only command!", server.getOutput())
 
     def test_mod_can_add_treats(self):
-        # singlerider has permission to add treats but theepicsnail_ doesnt, even in '#theepicsnail_'
-        # this is weird.
         simulateMessage("randomUser", "!llama treats")
-
-        # position 10 is where the number of treats are.
         old_treats = int(server.getOutput().split(" ")[10])
-
         simulateMessage("singlerider", "!treats add randomUser 1000")
         server.getOutput()  # ignore the bot response
-        print "server.getOutput()", server.getOutput()
-
         simulateMessage("randomUser", "!llama treats")
         new_treats = int(server.getOutput().split(" ")[10])
-
-        print old_treats, new_treats
-
         self.assertEqual(old_treats + 1000, new_treats)
 
 
