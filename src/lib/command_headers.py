@@ -278,6 +278,6 @@ def initalizeCommands(config):
                 user_cooldowns["channels"][channel]["commands"][command] = {
                     "users": {}}
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     print "\n".join(["    " + key + ": " + commands[key][
         "usage"] for key in commands])

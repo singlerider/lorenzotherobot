@@ -15,12 +15,11 @@ def tallgrass(args):
     weighted_choices = [(0, 1), (1, 20), (2, 50), (3, 100)]
     donation_points = get_user_points(username)
     time_points = get_user_time_points(username)
-    actual_points = donation_points + time_points
-    treats_removed = " " + str(points_to_sacrifice) + \
-        " treats from " + str(username) + "!"
-
-    if globals.CURRENT_CHANNEL == "shedeviil_09":
-        return "This only works in Curvyllama's chat. Excuse my dust as I upgrade my systems!"
+    if type(donation_points) != str:
+        actual_points = donation_points + time_points
+        treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
+    else:
+        actual_points = ""
 
     if isinstance(actual_points, long):
         if abs(points_to_sacrifice) >= 1000:

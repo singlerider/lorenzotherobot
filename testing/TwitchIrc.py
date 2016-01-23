@@ -7,6 +7,7 @@ MOD_USER = "singlerider"
 REG_USER = "randomuser"
 TEST_CHANNEL = "#theepicsnail_"
 TEST_CHAN = TEST_CHANNEL.lstrip("#")
+ALT_USER = "curvyllama"  # should be an actual streamer
 USERS = {
     "chatters": {
         "moderators": [TEST_CHAN, MOD_USER],
@@ -35,7 +36,7 @@ class TwitchIrc:
         self.cv = threading.Condition()
         threading.Thread(target=self.run).start()
 
-    def getPort(self):
+    def get_port(self):
         return self.sock.getsockname()[1]
 
     def run(self):
@@ -66,17 +67,17 @@ class TwitchIrc:
         self.client.close()
         self.sock.close()
 
-    def getOutput(self, timeout=1):
+    def get_output(self, timeout=1):
         self.cv.acquire()
         if not self.lines:
             self.cv.wait(timeout)
         assert self.lines, "Failed to get output after " + \
             str(timeout) + " seconds."
-        # print self.lines[0]
+        print self.lines[0]
         val = self.lines.pop(0)
         self.cv.release()
         return val
 
-    def simulateMessage(self, user, chan, line):
+    def simulate_message(self, user, chan, line):
         self.client.send(":{user}!{user}@{user}.tmi.twitch.tv PRIVMSG {chan} :{line}\r\n".format(
             user=user, chan=chan, line=line))

@@ -42,7 +42,7 @@ def write_to_log(channel, username, message):
         with open(filename, 'a') as f:
             f.write("{} | {} : {}\n".format(
                 username, timestamp, str(message)))
-    except Exception as error:
+    except Exception as error:  # pragma: no cover
         os.system("mkdir src/logs/{}".format(date))
         print str(error) + ": Creating new folder: " + str(date)
         write_to_log(channel, username, message)
@@ -76,7 +76,7 @@ class Roboraj(object):
                         subbed_user, months_subbed, int(months_subbed) * 100)
                     self.irc.send_message(channel, resp)
                     save_message(BOT_USER, channel, resp)
-            except Exception as error:
+            except Exception as error:  # pragma: no cover
                 print error
 
         def return_custom_command(channel, message, username):

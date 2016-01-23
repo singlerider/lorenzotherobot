@@ -9,7 +9,7 @@ from functions_general import *
 threshold = 5 * 60  # five minutes, make this whatever you want
 
 
-class irc:
+class irc: # pragma: no cover
 
     def __init__(self, config):
         self.config = config

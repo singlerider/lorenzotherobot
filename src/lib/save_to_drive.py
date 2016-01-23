@@ -146,7 +146,7 @@ def cron(channel):  # TODO remove this arg requirement.
         return
 
 
-if __name__ == "__main__":  # Run this file as python src/lib/save_to_drive.py
+if __name__ == "__main__":  # pragma: no cover
     # in order to test any saved message logs' ability to upload to drive
     with open("src/lib/date.txt", "r") as f:
         previous_date = f.read()

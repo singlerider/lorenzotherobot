@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import globals
 from src.lib.queries.connection import get_connection
 
 
@@ -72,7 +73,7 @@ def save_command(command, creator, user_level, response):
                     channel, command, creator, user_level, time, response, times_used
                     ) VALUES (%s, %s, %s, %s, %s, %s, 0)
                     """, [globals.CURRENT_CHANNEL, command, creator, user_level,
-                          str(datetime.datetime.now()), response])
+                          str(datetime.now()), response])
             cur.close()
             return "{0} successfully added".format(command)
 

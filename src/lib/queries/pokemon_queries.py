@@ -16,7 +16,7 @@ def get_pokemon_id_from_name(pokemon_name):
         if int(pokemon_id[0]) != 0:
             return pokemon_id[0]
         else:
-            return "Error"
+            raise ValueError
 
 
 def find_open_party_positions(username):
