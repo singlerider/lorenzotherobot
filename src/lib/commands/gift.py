@@ -1,7 +1,6 @@
+import globals
 from src.lib.queries.points_queries import *
 from src.lib.queries.pokemon_queries import *
-
-usage = '!gift [username] [pokemon_name] [level]'
 
 
 def gift(args):
