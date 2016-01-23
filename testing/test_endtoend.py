@@ -4,7 +4,7 @@ import unittest
 import globals
 import src.lib.commands.pokemon as pokemon
 import src.lib.functions_commands
-from bot import Roboraj
+from src.bot import Roboraj
 from testing.TwitchIrc import (MOD_USER, REG_USER, TEST_CHAN, TEST_CHANNEL,
                                USERS, TwitchIrc)
 
