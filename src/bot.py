@@ -31,6 +31,7 @@ BOT_USER = "lorenzotherobot"
 SUPERUSER = "singlerider"
 TEST_USER = "theepicsnail_"
 
+
 def write_to_log(channel, username, message):
     date = time.strftime('%Y_%m_%d', time.gmtime())
     filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
@@ -62,14 +63,14 @@ class Roboraj(object):
             try:
                 message_split = message.rstrip("!").split()
                 subbed_user = message_split[0]
-                if message_split[1] == "just" and len(message_split) < 4:
+                if message_split[1] == "just":
                     modify_user_points(subbed_user, 100)
                     resp = "/me {0} treats for {1} for a first time subscription!".format(
                         100, subbed_user)
                     self.irc.send_message(channel, resp)
                     save_message(BOT_USER, channel, resp)
-                elif message_split[1] == "subscribed" and len(message_split) < 9:
-                    months_subbed = message_split[3]
+                elif message_split[1] == "subscribed":
+                    months_subbed = message_split[5]
                     modify_user_points(subbed_user, int(months_subbed) * 100)
                     resp = "/me {0} has just resubscribed for {1} months straight and is getting {2} treats for loyalty!".format(
                         subbed_user, months_subbed, int(months_subbed) * 100)
@@ -101,7 +102,6 @@ class Roboraj(object):
         def ban_for_spam(channel, user):
             ban = "/ban {0}".format(user)
             unban = "/unban {0}".format(user)
-            print ban, unban
             self.irc.send_message(channel, ban)
             self.irc.send_message(channel, unban)
             save_message(BOT_USER, channel, message)
@@ -117,7 +117,7 @@ class Roboraj(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-                if channel == "#" + PRIMARY_CHANNEL or channel == "#" + SUPERUSER:
+                if channel == "#" + PRIMARY_CHANNEL or channel == "#" + SUPERUSER or channel == "#" + TEST_USER:
                     write_to_log(channel, username, message)
                     # check for sub message
                     if username == "twitchnotify":
