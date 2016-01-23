@@ -1,2 +1,3 @@
 clear
-python2.7 -u -m unittest discover
+coverage run -m unittest discover
+coverage report --omit=venv/*,**__init__.py,src/test_endtoend.py,testing/TwitchIrc.py

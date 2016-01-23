@@ -26,8 +26,6 @@ from src.lib.twitch import get_dict_for_users
 reload(sys)
 sys.setdefaultencoding("utf8")
 
-END = False
-
 PRIMARY_CHANNEL = "curvyllama"
 BOT_USER = "lorenzotherobot"
 SUPERUSER = "singlerider"

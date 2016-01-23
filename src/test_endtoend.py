@@ -94,3 +94,53 @@ class TestShots(unittest.TestCase):
         simulateMessage(MOD_USER, "!shots set 0")
         server.getOutput()
         self.assertNotEqual(before, after)
+
+
+class TestPokemon(unittest.TestCase):
+
+    def test_release_pokemon(self):
+        globals.channel_info[TEST_CHAN]["caught"] = False
+        globals.channel_info[TEST_CHAN]["pokemon"] = "Bulbasaur"
+        self.assertEqual(globals.channel_info[TEST_CHAN]["caught"], False)
+        self.assertEqual(globals.channel_info[TEST_CHAN]["pokemon"], "Bulbasaur")
+
+    def test_user_catch_pokemon(self):
+        simulateMessage(REG_USER, "!catch")
+        caught = server.getOutput()
+        self.assertIn("was caught", caught)
+
+    def test_normal_cant_gift_pokemon(self):
+        simulateMessage(REG_USER, "!gift {reg_user} Bulbasaur 10".format(
+            reg_user=REG_USER))
+        resp = server.getOutput()
+        self.assertIn("moderator-only", resp)
+
+    def test_mod_can_gift_pokemon(self):
+        simulateMessage(MOD_USER, "!release 1 {mod_user}".format(
+            mod_user=MOD_USER))
+        server.getOutput()
+        simulateMessage(MOD_USER, "!gift {mod_user} Bulbasaur 10".format(
+            mod_user=MOD_USER))
+        resp = server.getOutput()
+        self.assertIn("was caught", resp)
+
+    def test_user_release_pokemon(self):
+        simulateMessage(REG_USER, "!release 1 {reg_user}".format(
+            reg_user=REG_USER))
+        released = server.getOutput()
+        self.assertIn("Released", released)
+
+
+class TestDonation(unittest.TestCase):
+
+    def test_normal_cant_add_donation(self):
+        simulateMessage(REG_USER, "!donation {reg_user} 10".format(
+            reg_user=REG_USER))
+        resp = server.getOutput()
+        self.assertIn("moderator-only", resp)
+
+    def test_mod_can_add_donation(self):
+        simulateMessage(REG_USER, "!donation {reg_user} 10".format(
+            reg_user=REG_USER))
+        resp = server.getOutput()
+        self.assertIn("moderator-only", resp)

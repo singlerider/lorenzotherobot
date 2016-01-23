@@ -5,9 +5,6 @@ import random
 import requests
 
 import globals
-import src.lib.user_commands as user_commands_import
-
-
 # making this comment from Github's Oval Office
 
 
