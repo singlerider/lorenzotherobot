@@ -112,7 +112,8 @@ commands = {
         'limit': 0,
         'argc': 1,
         'return': 'command',
-        'usage': "!party [position_to_check(1-6)/'members'/username]"
+        'usage': "!party [position_to_check(1-6)/'members'/username]",
+        'optional': True
     },
     '!battle': {
         'limit': 0,
