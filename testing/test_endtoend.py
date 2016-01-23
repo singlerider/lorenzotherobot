@@ -99,10 +99,10 @@ class TestShots(unittest.TestCase):
 class TestPokemon(unittest.TestCase):
 
     def test_release_pokemon(self):
-        globals.channel_info[TEST_CHAN]["caught"] = False
-        globals.channel_info[TEST_CHAN]["pokemon"] = "Bulbasaur"
-        self.assertEqual(globals.channel_info[TEST_CHAN]["caught"], False)
-        self.assertEqual(globals.channel_info[TEST_CHAN]["pokemon"], "Bulbasaur")
+        globals.CHANNEL_INFO[TEST_CHAN]["caught"] = False
+        globals.CHANNEL_INFO[TEST_CHAN]["pokemon"] = "Bulbasaur"
+        self.assertEqual(globals.CHANNEL_INFO[TEST_CHAN]["caught"], False)
+        self.assertEqual(globals.CHANNEL_INFO[TEST_CHAN]["pokemon"], "Bulbasaur")
 
     def test_user_catch_pokemon(self):
         simulateMessage(REG_USER, "!catch")

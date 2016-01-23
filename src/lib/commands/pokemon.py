@@ -21,9 +21,9 @@ def randomPokemon():
 
 def cron(channel):  # todo remove this arg requirement.
     channel = channel.lstrip('#')
-    globals.channel_info[channel]['caught'] = False
+    globals.CHANNEL_INFO[channel]['caught'] = False
     pocket_monster = random.choice(randomPokemon())
-    globals.channel_info[channel]['pokemon'] = pocket_monster
+    globals.CHANNEL_INFO[channel]['pokemon'] = pocket_monster
     return "A wild " + pocket_monster + " appeared!"
 
 

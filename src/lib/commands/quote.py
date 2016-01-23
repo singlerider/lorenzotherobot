@@ -4,7 +4,7 @@ from src.lib.queries.quotes_queries import *
 
 def quote():
     q = Quotes()
-    channel = globals.global_channel
+    channel = globals.CURRENT_CHANNEL
     # (1, u'testchannel', u'testuser', u'quote', 1, u'testgame')
     quote_data = q.get_quote(channel)
     if quote_data is None:

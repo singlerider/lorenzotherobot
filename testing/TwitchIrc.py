@@ -6,27 +6,28 @@ import globals
 MOD_USER = "singlerider"
 REG_USER = "randomuser"
 TEST_CHANNEL = "#theepicsnail_"
-TEST_CHAN = 'theepicsnail_'
+TEST_CHAN = TEST_CHANNEL.lstrip("#")
 USERS = {
-    'chatters': {
-        'moderators': [TEST_CHAN, MOD_USER],
-        'global_mods': [],
-        'admins': [],
-        'viewers': [REG_USER],
-        'staff': []
+    "chatters": {
+        "moderators": [TEST_CHAN, MOD_USER],
+        "global_mods": [],
+        "admins": [],
+        "viewers": [REG_USER],
+        "staff": []
          },
-    '_links': {},
-    'chatter_count': 3
+    "_links": {},
+    "chatter_count": 3
 }
-globals.channel_info[TEST_CHAN] = {
-    'caught': True, 'pokemon': '', 'viewers': USERS
+globals.CHANNEL_INFO[TEST_CHAN] = {
+    "caught": True, "pokemon": "", "viewers": USERS
 }
+
 
 class TwitchIrc:
 
     def __init__(self):
         self.sock = socket.socket()
-        self.sock.bind(('', 0))
+        self.sock.bind(("", 0))
         self.sock.listen(1)
         self.lines = []
         self.client = None
@@ -55,7 +56,6 @@ class TwitchIrc:
                 except:
                     continue
             line, buff = buff.split("\r\n", 1)
-
             self.cv.acquire()
             self.lines.append(line)
             self.cv.notify()

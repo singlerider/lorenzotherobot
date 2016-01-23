@@ -4,8 +4,8 @@ from src.lib.queries.pokemon_queries import *
 
 
 def tallgrass_release(generated_pokemon):
-    globals.channel_info[globals.global_channel]['caught'] = False
-    globals.channel_info[globals.global_channel]['pokemon'] = generated_pokemon
+    globals.CHANNEL_INFO[globals.CURRENT_CHANNEL]['caught'] = False
+    globals.CHANNEL_INFO[globals.CURRENT_CHANNEL]['pokemon'] = generated_pokemon
     return "A wild " + generated_pokemon + " appeared!"
 
 
@@ -19,7 +19,7 @@ def tallgrass(args):
     treats_removed = " " + str(points_to_sacrifice) + \
         " treats from " + str(username) + "!"
 
-    if globals.global_channel == "shedeviil_09":
+    if globals.CURRENT_CHANNEL == "shedeviil_09":
         return "This only works in Curvyllama's chat. Excuse my dust as I upgrade my systems!"
 
     if isinstance(actual_points, long):

@@ -3,11 +3,11 @@ from src.lib.twitch import *
 
 
 def highlight():
-    if globals.global_channel == 'shedeviil_09':
+    if globals.CURRENT_CHANNEL == 'shedeviil_09':
         return None
     uptime = get_stream_uptime()
     form_url = "http://goo.gl/UyWYKg"
-    channel = globals.global_channel
+    channel = globals.CURRENT_CHANNEL
     if get_stream_status():
         return "The current !uptime is '" + \
             str(uptime) + "'. Head to " + form_url + \

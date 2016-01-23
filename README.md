@@ -105,8 +105,8 @@ Create your schema from my blank template:
 #### Globals and Config Files
 
 Head into `src/config/config.py` and enter the correct channels and cron jobs
-you'd like to run, then go into globals.py. Leave `global_channel`, `CURRENT_USER`, `VARIABLE`, and
-`channel_info` alone.
+you'd like to run, then go into globals.py. Leave `CURRENT_CHANNEL`, `CURRENT_USER`, `VARIABLE`, and
+`CHANNEL_INFO` alone.
 
 ## Finally
 
@@ -143,15 +143,13 @@ An asterisk (*) marks a moderator-only command
     !buy: !buy [item_number]
     !edit: !edit [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}")]
     !uptime: !uptime
-    !poll: !poll ['option A'/'option B'/'option C']
     !release: !release [party_position_number_to_be_released] [your_username]
     !add: !add [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}") (to include message count, use "[]")]
     !donation: !donation [username] [dollar_amount]
     !party: !party [position_to_check(1-6)/'members'/username]
     !battle: !battle [position_to_battle_with] [opponent_username]
     !gift: !gift [username] [Pokemon_name/'item'] [starting_level/'item_number']
-    !rem: !rem [!command_name]
-    !vote: !vote [option_number]
+    !rem: !rem [!command_name]]
     !leaderboard: !leaderboard
     !weather: !weather [units (metric/imperial)] [location (any format)]
     !treats: !treats [add/remove/set] [username] [number]

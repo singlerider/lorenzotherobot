@@ -15,7 +15,7 @@ channels_to_join = ['#acarlton5']
 
 for channel in channels_to_join:
     channel = channel.lstrip('#')
-    globals.channel_info[channel] = {'caught': True, 'pokemon': ''}
+    globals.CHANNEL_INFO[channel] = {'caught': True, 'pokemon': ''}
 
 config = {
     # details required to login to twitch IRC server

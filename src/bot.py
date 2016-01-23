@@ -113,7 +113,7 @@ class Roboraj(object):
                     continue
                 message_dict = self.irc.get_message(data)
                 channel = message_dict['channel']
-                globals.global_channel = channel.lstrip('#')
+                globals.CURRENT_CHANNEL = channel.lstrip('#')
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
@@ -201,8 +201,8 @@ class Roboraj(object):
                         username, channel, command, user_data, error)
                     f.write(error_message)
         approved_channels = [PRIMARY_CHANNEL, BOT_USER, SUPERUSER, TEST_USER]
-        if globals.global_channel not in approved_channels:
-            print globals.global_channel
+        if globals.CURRENT_CHANNEL not in approved_channels:
+            print globals.CURRENT_CHANNEL
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
                               'welcome', 'rules', 'poll', 'vote', 'gt',
                               'llama', 'loyalty', 'uptime', 'highlight',
