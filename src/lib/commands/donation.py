@@ -12,7 +12,6 @@ def donation(args):
     except Exception as error:
         print error
         return "amount has to be a number, ya dingus!"
-    user_dict, __ = get_dict_for_users(None)
     treats_to_add = int(amount / 10) * 750
     modify_user_points(user, treats_to_add)
     thanks_message = "Let's get some curvyFireball in the chat for {0}'s ${1} donation!".format(
