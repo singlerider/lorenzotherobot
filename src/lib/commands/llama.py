@@ -3,56 +3,14 @@ import src.lib.queries.points_queries as points_import
 from src.lib.twitch import *
 
 
-def random_highlight():
-    get_highlight_url = "https://api.twitch.tv/kraken/channels/" + \
-        globals.channel + "/videos?limit=20"
-    get_highlight_resp = requests.get(url=get_highlight_url)
-    highlights = json.loads(get_highlight_resp.content)
-    if len(highlights["videos"]) == 0:
-        return "No videos yet!"
-    random_highlight_choice = random.choice(highlights["videos"])
-    return "{title} | {description} | {length} time units | {url} | Tags: {tag_list}".format(
-        **random_highlight_choice).replace("\n", " ").replace("\r", " ")
-
-
 def llama(args):
     if len(args) < 1:
         return points_import.get_all_user_points(globals.CURRENT_USER)
     grab_user = args[0].lower()
-    user_data_name = globals.CURRENT_USER.lower()
     if grab_user == "list":
         return points_import.get_points_list()
     elif grab_user == "treats":
         return points_import.get_all_user_points(globals.CURRENT_USER)
-    elif grab_user == "stream":
-        get_offline_status_url = 'https://api.twitch.tv/kraken/channels/' + \
-            globals.channel
-        get_offline_status_resp = requests.get(url=get_offline_status_url)
-        offline_data = json.loads(get_offline_status_resp.content)
-        try:
-            return str("".join(i for i in offline_data["status"] if ord(i) < 128)) + " | " + str(
-                offline_data["display_name"]) + " playing " + str(offline_data["game"])
-        except Exception as error:
-            print error
-            return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"
-    elif grab_user == "viewers":
-        user_dict, user_list = get_dict_for_users()
-        return str(int(len(user_dict["chatters"]["moderators"])) + int(len(user_dict[
-                   "chatters"]["viewers"]))) + " viewers are in here. That's it?! Kreygasm"
-    elif grab_user == "highlight":
-        return random_highlight()
-    elif grab_user == "followers":
-        stream_followers = get_stream_followers()
-        followers = []
-        for follower in stream_followers["follows"][:5]:
-            followers.append(str(follower["user"]["display_name"]))
-        follower_list = ", ".join(followers)
-        return "In case you missed them, here are the five most recent Llamas: " + \
-            follower_list + " HeyGuys"
-    elif grab_user == "uptime":
-        return get_stream_uptime()
-    elif grab_user == "usage":
-        return usage
     elif grab_user == "shots":
         shot_count = shots_import.readShots()
         if shot_count != 0:

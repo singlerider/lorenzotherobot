@@ -3,8 +3,6 @@ from src.lib.twitch import *
 
 
 def highlight():
-    if globals.CURRENT_CHANNEL == 'shedeviil_09':
-        return None
     uptime = get_stream_uptime()
     form_url = "http://goo.gl/UyWYKg"
     channel = globals.CURRENT_CHANNEL
