@@ -67,17 +67,20 @@ class TestTreats(unittest.TestCase):
     def test_normal_cant_add_treats(self):
         simulateMessage(REG_USER, "!treats set {reg_user} 1000".format(
             reg_user=REG_USER))
-        self.assertIn("This is a moderator-only command!", server.getOutput())
+        output = server.getOutput()
+        self.assertIn("This is a moderator-only command!", output)
 
     def test_mod_can_add_treats(self):
         simulateMessage(MOD_USER, "!treats set {reg_user} 0".format(
             reg_user=REG_USER))
         server.getOutput()  # ignore the bot response
         simulateMessage(REG_USER, "!llama treats")
+        server.getOutput()
         simulateMessage(MOD_USER, "!treats add {reg_user} 1000".format(
             reg_user=REG_USER))
         server.getOutput()  # ignore the bot response
         simulateMessage(REG_USER, "!llama treats")
+        self.assertNotEqual("This is a moderator-only command!", server.getOutput())
 
 
 class TestShots(unittest.TestCase):
