@@ -1,12 +1,12 @@
 import threading
 import unittest
 
+import globals
 import src.lib.commands.pokemon as pokemon
 import src.lib.functions_commands
 from bot import Roboraj
-from testing.TwitchIrc import (
-    TwitchIrc, MOD_USER, REG_USER,TEST_CHANNEL, TEST_CHAN, USERS)
-
+from testing.TwitchIrc import (MOD_USER, REG_USER, TEST_CHAN, TEST_CHANNEL,
+                               USERS, TwitchIrc)
 
 # Replace the get_dict_for_users function with something that returns
 # the right users.
@@ -48,17 +48,10 @@ class TestCommands(unittest.TestCase):
         import src.lib.command_headers as cmds
         for cmd, desc in cmds.commands.items():
             if desc['return'] != 'command':
-                # non 'command's are strings we expect to see sent.
-
-                # fire the command
                 simulateMessage(REG_USER, cmd)
-
-                # get output
                 out = server.getOutput()
                 expected = "PRIVMSG {chan} :({user}) : {msg}".format(
                     chan=TEST_CHANNEL, user=REG_USER, msg=desc['return'].encode('utf-8'))
-
-                # validate
                 self.assertEqual(out, expected)
 
 
@@ -75,19 +68,21 @@ class TestTreats(unittest.TestCase):
             reg_user=REG_USER))
         server.getOutput()  # ignore the bot response
         simulateMessage(REG_USER, "!llama treats")
-        server.getOutput()
+        before = server.getOutput()
         simulateMessage(MOD_USER, "!treats add {reg_user} 1000".format(
             reg_user=REG_USER))
         server.getOutput()  # ignore the bot response
         simulateMessage(REG_USER, "!llama treats")
-        self.assertNotEqual("This is a moderator-only command!", server.getOutput())
+        after = server.getOutput()
+        self.assertNotEqual(before, after)
 
 
 class TestShots(unittest.TestCase):
 
     def test_add_shots_normal_user(self):
         simulateMessage(REG_USER, "!shots set 10000")
-        self.assertIn("moderator-only", server.getOutput())
+        resp = server.getOutput()
+        self.assertIn("moderator-only", resp)
 
     def test_add_shots_mod(self):
         simulateMessage(REG_USER, "!llama shots")

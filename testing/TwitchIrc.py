@@ -72,7 +72,7 @@ class TwitchIrc:
             self.cv.wait(timeout)
         assert self.lines, "Failed to get output after " + \
             str(timeout) + " seconds."
-        print self.lines[0]
+        # print self.lines[0]
         val = self.lines.pop(0)
         self.cv.release()
         return val

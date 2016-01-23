@@ -28,6 +28,10 @@ sys.setdefaultencoding("utf8")
 
 END = False
 
+PRIMARY_CHANNEL = "curvyllama"
+BOT_USER = "lorenzotherobot"
+SUPERUSER = "singlerider"
+TEST_USER = "theepicsnail_"
 
 def write_to_log(channel, username, message):
     date = time.strftime('%Y_%m_%d', time.gmtime())
@@ -65,14 +69,14 @@ class Roboraj(object):
                     resp = "/me {0} treats for {1} for a first time subscription!".format(
                         100, subbed_user)
                     self.irc.send_message(channel, resp)
-                    save_message("lorenzotherobot", channel, resp)
+                    save_message(BOT_USER, channel, resp)
                 elif message_split[1] == "subscribed" and len(message_split) < 9:
                     months_subbed = message_split[3]
                     modify_user_points(subbed_user, int(months_subbed) * 100)
                     resp = "/me {0} has just resubscribed for {1} months straight and is getting {2} treats for loyalty!".format(
                         subbed_user, months_subbed, int(months_subbed) * 100)
                     self.irc.send_message(channel, resp)
-                    save_message("lorenzotherobot", channel, resp)
+                    save_message(BOT_USER, channel, resp)
             except Exception as error:
                 print error
 
@@ -90,11 +94,11 @@ class Roboraj(object):
                 if username in user_dict["chatters"]["moderators"]:
                     self.irc.send_message(channel, resp)
                     increment_command_counter(chan, message[0])
-                    save_message("lorenzotherobot", channel, resp)
+                    save_message(BOT_USER, channel, resp)
             elif elements[0] == "reg":
                 self.irc.send_message(channel, resp)
                 increment_command_counter(chan, message[0])
-                save_message("lorenzotherobot", channel, resp)
+                save_message(BOT_USER, channel, resp)
 
         def ban_for_spam(channel, user):
             ban = "/ban {0}".format(user)
@@ -102,7 +106,7 @@ class Roboraj(object):
             print ban, unban
             self.irc.send_message(channel, ban)
             self.irc.send_message(channel, unban)
-            save_message("lorenzotherobot", channel, message)
+            save_message(BOT_USER, channel, message)
 
         while True:
             try:
@@ -115,7 +119,7 @@ class Roboraj(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
-                if channel == "#curvyllama" or channel == "#singlerider":
+                if channel == "#" + PRIMARY_CHANNEL or channel == "#" + SUPERUSER:
                     write_to_log(channel, username, message)
                     # check for sub message
                     if username == "twitchnotify":
@@ -187,7 +191,7 @@ class Roboraj(object):
             user_data, __ = twitch.get_dict_for_users(channel)
             try:
                 if username not in user_data["chatters"]["moderators"]:
-                    if username != "singlerider":
+                    if username != SUPERUSER:
                         resp = '(%s) : %s' % (
                             username, "This is a moderator-only command!")
                         pbot(resp, channel)
@@ -198,7 +202,7 @@ class Roboraj(object):
                     error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
                         username, channel, command, user_data, error)
                     f.write(error_message)
-        approved_channels = ["curvyllama", "lorenzotherobot", "singlerider", 'theepicsnail_']
+        approved_channels = [PRIMARY_CHANNEL, BOT_USER, SUPERUSER, TEST_USER]
         if globals.global_channel not in approved_channels:
             print globals.global_channel
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
@@ -213,6 +217,6 @@ class Roboraj(object):
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
             self.irc.send_message(channel, resp)
-            if channel == "#curvyllama":
+            if channel == "#" + PRIMARY_CHANNEL:
                 write_to_log(channel, "[BOT]", resp)
-            save_message("lorenzotherobot", channel, resp)
+            save_message(BOT_USER, channel, resp)
