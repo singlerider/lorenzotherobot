@@ -15,6 +15,7 @@ server, client = None, None
 
 now = str(time.time()).replace(".", "")
 
+
 def setUpModule():
     os.system("mysql -uroot -e \"CREATE DATABASE lorenzotest" + now + "\"")
     globals.mysql_credentials = ['localhost', 'root', '', 'lorenzotest' + now]
@@ -227,6 +228,72 @@ class TestPokemon(TestCase):
         released = server.get_output()
         self.assertIn("need more treats", released)
 
+    def test_battle(self):
+        simulate_message(MOD_USER, "!treats add {reg_user} 0".format(
+            reg_user=REG_USER))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!treats add {mod_user} 0".format(
+            mod_user=MOD_USER))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!treats add {alt_user} 0".format(
+            alt_user=ALT_USER))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!treats add {test_chan} 0".format(
+            test_chan=TEST_CHAN))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!gift {reg_user} Bulbasaur 10".format(
+            reg_user=REG_USER))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!gift {mod_user} Bulbasaur 10".format(
+            mod_user=MOD_USER))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!gift {test_chan} Charmander 10".format(
+            test_chan=TEST_CHAN))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!battle 1 {mod_user}".format(
+            mod_user=MOD_USER))
+        results = server.get_output()
+        self.assertIn("You can't battle yourself", results)
+
+        simulate_message(REG_USER, "!battle 1 {alt_user}".format(
+            alt_user=ALT_USER))
+        results = server.get_output()
+        self.assertIn("Your opponent must be in this channel", results)
+
+        simulate_message(MOD_USER, "!battle 1 {reg_user}".format(
+            reg_user=REG_USER))
+        results = server.get_output()
+        self.assertIn("draw", results)
+
+        simulate_message(TEST_CHAN, "!battle 1 {reg_user}".format(
+            reg_user=REG_USER))
+        results = server.get_output()
+        self.assertNotIn("was", results)
+
+        simulate_message(MOD_USER, "!battle 1 {reg_user}".format(
+            reg_user=REG_USER))
+        results = server.get_output()
+        self.assertIn("heal", results)
+
+        simulate_message(MOD_USER, "!release 1 {mod_user} Bulbasaur 10".format(
+            mod_user=MOD_USER))
+        server.get_output()
+
+        simulate_message(TEST_CHAN, "!release 1 {test_chan} Bulbasaur 10".format(
+            test_chan=TEST_CHAN))
+        server.get_output()
+
+        simulate_message(REG_USER, "!release 1 {reg_user} Bulbasaur 10".format(
+            reg_user=REG_USER))
+        server.get_output()
+
 
 class TestDonation(TestCase):
 
@@ -279,7 +346,7 @@ class TestCustomCommands(TestCase):
         message = server.get_output()
         self.assertIn(test_message, message)
 
-        simulate_message(MOD_USER, "!add !test reg {test_message}".format(
+        simulate_message(MOD_USER, "!add !test reg {test_message} []{{}}".format(
             test_message=test_message))
         added = server.get_output()
         self.assertIn("already built in", added)

@@ -4,20 +4,6 @@ import globals
 from src.lib.queries.connection import get_connection
 
 
-def get_custom_commands(channel):  # only gets donation_points
-    con = get_connection()
-    with con:
-        cur = con.cursor()
-        cur.execute("""
-            SELECT channel, command, creator, user_level,
-                TIME, response, times_used FROM custom_commands
-                WHERE channel = %s
-            """, [channel])
-        commands = cur.fetchall()
-        cur.close()
-        return commands
-
-
 def get_custom_command(channel, command):
     con = get_connection()
     with con:
