@@ -64,9 +64,17 @@ class TestCommands(TestCase):
                     msg=desc['return'].encode('utf-8'))
                 self.assertEqual(out, expected)
 
+    def test_winner_command(self):
         simulate_message(REG_USER, '!winner')
         winner = server.get_output()
         self.assertTrue(re.match(r'^[a-zA-Z0-9_]', winner))
+
+    def test_commands_command(self):
+        simulate_message(REG_USER, '!commands')
+        commands = server.get_output()
+        self.assertIn(
+            "A full list of commands can be found at " +
+            "http://www.github.com/singlerider/lorenzotherobot", commands)
 
 
 class TestTreats(TestCase):
@@ -289,3 +297,23 @@ class TestCustomCommands(TestCase):
 
         simulate_message(MOD_USER, "!rem !testcommand2")
         server.get_output()
+
+
+class TestItems(TestCase):
+
+    def test_mod_can_gift_items(self):
+        simulate_message(MOD_USER, "!gift {reg_user} item 11".format(
+            reg_user=REG_USER))
+        successful = server.get_output()
+        self.assertIn("Gift successful", successful)
+
+        simulate_message(REG_USER, "!check inventory")
+        inventory = server.get_output()
+        self.assertIn("(11) Rare Candy, 1", inventory)
+
+    def test_user_can_check_items(self):
+        simulate_message(REG_USER, "!check items")
+        items = server.get_output()
+        self.assertIn("""(1) Fire Stone, 750 | (2) Water Stone, 750 | (3) \
+Thunder Stone, 750 | (4) Leaf Stone, 750 | (5) Moon Stone, 750 | (11) \
+Rare Candy, 1000""", items)
