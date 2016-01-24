@@ -317,14 +317,14 @@ class TestDonation(TestCase):
 class TestSubscriberNotifications(TestCase):
 
     def test_first_time_subscriber(self):
-        simulate_message("twitchnotify", "{reg_user} just subscribed \
-to {test_chan}".format(reg_user=REG_USER, test_chan=TEST_CHAN))
+        simulate_message("twitchnotify", "{reg_user} just subscribed".format(
+            reg_user=REG_USER))
         resp = server.get_output()
         self.assertIn("first time subscription", resp)
 
     def test_repeast_subscriber(self):
-        simulate_message("twitchnotify", "{reg_user} subscribed to {test_chan} \
-for 7 months in a row".format(reg_user=REG_USER, test_chan=TEST_CHAN))
+        simulate_message("twitchnotify", "{reg_user} subscribed for 7 months \
+in a row".format(reg_user=REG_USER))
         resp = server.get_output()
         self.assertIn("months straight", resp)
 
