@@ -63,10 +63,8 @@ class irc: # pragma: no cover
     def get_logged_in_users(self, data):
         if data.find('353'):
             return True
-            #:lorenzotherobot.tmi.twitch.tv 353 lorenzotherobot = #curvyllama :l0rd_bulldog agentsfire workundercover69 the_polite_zombie jalenxweezy13 curvyllama hmichaelh2015 steven0405 armypenguin91 hionas22 prophecymxxm singlerider bentleet tesylesor vipervenom2u zombiesdelux115 lorenzotherobot nerdy0rgyparty michaelcycle gewgled jconnfilm rustemperor frozelio
-
+            
     def check_for_ping(self, data):
-
         last_ping = time.time()
         # if data[0:4] == "PING":
         if data.find('PING') != -1:

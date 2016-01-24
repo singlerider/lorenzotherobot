@@ -2,6 +2,7 @@ import os
 import re
 import threading
 from unittest import TestCase
+import time
 
 import globals
 import src.lib.functions_commands
@@ -12,13 +13,14 @@ from testing.TwitchIrc import (ALT_USER, MOD_USER, REG_USER, TEST_CHAN,
 src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 server, client = None, None
 
+now = str(time.time()).replace(".", "")
 
 def setUpModule():
-    os.system("mysql -uroot -e \"CREATE DATABASE lorenzotest\"")
-    globals.mysql_credentials = ['localhost', 'root', '', 'lorenzotest']
+    os.system("mysql -uroot -e \"CREATE DATABASE lorenzotest" + now + "\"")
+    globals.mysql_credentials = ['localhost', 'root', '', 'lorenzotest' + now]
     print globals.mysql_credentials
-    print "CREATE DATABASE lorenzotest\n\n\n\n\n"
-    os.system('mysql -uroot lorenzotest < schema.sql')
+    print "\"CREATE DATABASE lorenzotest" + now + "\n\n\n\n\n"
+    os.system('mysql -uroot lorenzotest' + now + ' < schema.sql')
     import src.lib.queries.connection as connection
     connection.initialize()
     global server, client
@@ -38,8 +40,8 @@ def setUpModule():
 
 
 def tearDownModule():
-    os.system("mysql -uroot -e \"DROP DATABASE lorenzotest\"")
-    print "\n\n\n\n\nDROP DATABASE lorzenzotest"
+    os.system("mysql -uroot -e \"DROP DATABASE lorenzotest" + now + "\"")
+    print "\n\n\n\n\nDROP DATABASE lorenzotest" + now + "\n\n\n\n\n"
     server.stop()
 
 
@@ -263,7 +265,6 @@ for 7 months in a row".format(reg_user=REG_USER, test_chan=TEST_CHAN))
 class TestCustomCommands(TestCase):
 
     def test_custom_commands(self):
-
         test_message = "Test Message"
         simulate_message(MOD_USER, "!add !testcommand1 mod {test_message}".format(
             test_message=test_message))
