@@ -1,11 +1,7 @@
 import json
 
-import requests
-
 import globals
-import src.lib.commands.llama as llama_import
-
-usage = '!stream'
+import requests
 
 
 def stream():
@@ -17,6 +13,6 @@ def stream():
     try:
         return str("".join(i for i in offline_data["status"] if ord(i) < 128)) + " | " + str(
             offline_data["display_name"]) + " playing " + str(offline_data["game"])
-    except Exception as error:
+    except Exception as error:  # pragma: no cover
         print error
         return "Dude. Either some weird HTTP request error happened, or the letters in the description are in Korean. Kappa"

@@ -2,7 +2,6 @@ import json
 import random
 
 import requests
-
 from globals import weather_key
 
 

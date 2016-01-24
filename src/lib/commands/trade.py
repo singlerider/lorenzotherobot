@@ -1,5 +1,5 @@
-from datetime import timedelta
 import datetime
+from datetime import timedelta
 
 import globals
 from src.lib.queries.pokemon_queries import *
@@ -43,5 +43,5 @@ def trade(args):
                     return "The requested level must be lower than 100."
         except:
             return "Position and requested level must be numbers!"
-    except Exception as error:
+    except Exception as error:  # pragma: no cover
         return "FailFish: " + str(error)

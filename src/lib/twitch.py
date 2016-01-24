@@ -2,9 +2,10 @@ import datetime
 import json
 import random
 
+import globals
 import requests
 
-import globals
+
 # making this comment from Github's Oval Office
 
 
