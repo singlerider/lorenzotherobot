@@ -19,11 +19,3 @@ def cron(channel):  # todo remove this arg requirement.
     pocket_monster = random.choice(random_pokemon())
     globals.CHANNEL_INFO[channel]['pokemon'] = pocket_monster
     return "A wild " + pocket_monster + " appeared!"
-
-
-def pokemon(args):
-    action = args[0]
-    if action == "battle":
-        return battle()
-    else:
-        return get_user_party_info(action)

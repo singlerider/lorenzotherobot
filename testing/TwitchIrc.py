@@ -79,5 +79,6 @@ class TwitchIrc:
         return val
 
     def simulate_message(self, user, chan, line):
-        self.client.send(":{user}!{user}@{user}.tmi.twitch.tv PRIVMSG {chan} :{line}\r\n".format(
-            user=user, chan=chan, line=line))
+        self.client.send(
+            ":{user}!{user}@{user}.tmi.twitch.tv PRIVMSG {chan} \
+:{line}\r\n".format(user=user, chan=chan, line=line))

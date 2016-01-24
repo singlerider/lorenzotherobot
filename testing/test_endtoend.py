@@ -333,7 +333,7 @@ class TestCustomCommands(TestCase):
 
     def test_custom_commands(self):
         test_message = "Test Message"
-        simulate_message(MOD_USER, "!add !testcommand1 mod {test_message}".format(
+        simulate_message(MOD_USER, "!add !testcommand1 mod {test_message} []{{}}".format(
             test_message=test_message))
         added = server.get_output()
         self.assertIn("successfully added", added)
@@ -346,7 +346,7 @@ class TestCustomCommands(TestCase):
         message = server.get_output()
         self.assertIn(test_message, message)
 
-        simulate_message(MOD_USER, "!add !test reg {test_message} []{{}}".format(
+        simulate_message(MOD_USER, "!add !test reg {test_message}".format(
             test_message=test_message))
         added = server.get_output()
         self.assertIn("already built in", added)
@@ -385,3 +385,34 @@ class TestItems(TestCase):
         self.assertIn("""(1) Fire Stone, 750 | (2) Water Stone, 750 | (3) \
 Thunder Stone, 750 | (4) Leaf Stone, 750 | (5) Moon Stone, 750 | (11) \
 Rare Candy, 1000""", items)
+
+    def test_user_can_use_items(self):
+        for i in range(6):
+            simulate_message(REG_USER, "!release {position} {reg_user}".format(
+                position=i + 1, reg_user=REG_USER))
+            server.get_output()
+
+        simulate_message(MOD_USER, "!treats add {reg_user} 0".format(
+            reg_user=REG_USER))
+        server.get_output()
+
+        simulate_message(MOD_USER, "!gift {reg_user} Bulbasaur 10".format(
+            reg_user=REG_USER))
+        server.get_output()
+
+        simulate_message(REG_USER, "!party 1".format(
+            reg_user=REG_USER))
+        before = server.get_output()
+
+        simulate_message(REG_USER, "!use 11 1")
+        inventory = server.get_output()
+        self.assertIn("LEVEL UP", inventory)
+
+        simulate_message(REG_USER, "!party 1".format(
+            reg_user=REG_USER))
+        after = server.get_output()
+        self.assertNotEqual(before, after)
+
+        simulate_message(REG_USER, "!release 1 {reg_user}".format(
+            reg_user=REG_USER))
+        server.get_output()
