@@ -4,9 +4,8 @@ import threading
 from unittest import TestCase
 
 import globals
-import src.lib.commands.pokemon as pokemon
 import src.lib.functions_commands
-from src.bot import Roboraj
+from src.bot import Bot
 from testing.TwitchIrc import (ALT_USER, MOD_USER, REG_USER, TEST_CHAN,
                                TEST_CHANNEL, USERS, TwitchIrc)
 
@@ -18,13 +17,13 @@ def setUpModule():
     os.system("mysql -uroot -e \"CREATE DATABASE lorenzotest\"")
     globals.mysql_credentials = ['localhost', 'root', '', 'lorenzotest']
     print globals.mysql_credentials
-    print "\n\n\n\n\nCREATE DATABASE lorenzotest\n\n\n\n\n"
+    print "CREATE DATABASE lorenzotest\n\n\n\n\n"
     os.system('mysql -uroot lorenzotest < schema.sql')
     import src.lib.queries.connection as connection
     connection.initialize()
     global server, client
     server = TwitchIrc()
-    client = Roboraj({
+    client = Bot({
         "server": "localhost",
         "port": server.get_port(),
         "username": "test_username",
@@ -40,18 +39,16 @@ def setUpModule():
 
 def tearDownModule():
     os.system("mysql -uroot -e \"DROP DATABASE lorenzotest\"")
-    print "\n\n\n\n\nDROP DATABASE lorzenzotest\n\n\n\n\n"
+    print "\n\n\n\n\nDROP DATABASE lorzenzotest"
     server.stop()
 
 
 def simulate_message(sender, message):
-    # defaults to the TEST_CHANNEL since that's the only one we use.
     server.simulate_message(sender, TEST_CHANNEL, message)
 
 
 def alt_simulate_message(sender, message):
     server.simulate_message(sender, ALT_USER, message)
-    globals.CURRENT_CHANNEL = ALT_USER
 
 
 class TestCommands(TestCase):
@@ -279,6 +276,10 @@ class TestCustomCommands(TestCase):
         self.assertIn("already built in", added)
 
         simulate_message(MOD_USER, "!testcommand1")
+        message = server.get_output()
+        self.assertIn(test_message, message)
+
+        simulate_message(REG_USER, "!testcommand2")
         message = server.get_output()
         self.assertIn(test_message, message)
 
