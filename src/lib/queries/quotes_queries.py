@@ -25,7 +25,7 @@ class Quotes:
                 """, [channel, user, quote, count + 1, game])
             cur.close()
 
-    def remove_quotes(self, channel="testchannel"):
+    def remove_quotes(self, channel="testchannel"):  # pragma: no cover
         with self.con:
             cur = self.con.cursor()
             cur.execute("""
@@ -39,7 +39,11 @@ class Quotes:
             cur.execute("""
                 SELECT count(0) FROM quotes WHERE channel = %s;
                 """, [channel])
-            random_quote = random.choice(range(cur.fetchone()[0]))
+            result = cur.fetchone()
+            print result
+            if result[0] == 0:
+                return 0
+            random_quote = random.choice(range(result[0]))
             cur.execute("""
                 SELECT * FROM quotes WHERE channel = %s;
                 """, [channel])

@@ -7,7 +7,7 @@ def quote():
     channel = globals.CURRENT_CHANNEL
     # (1, u'testchannel', u'testuser', u'quote', 1, u'testgame')
     quote_data = q.get_quote(channel)
-    if quote_data is None:
+    if quote_data == 0:
         return "No quotes found. Why not add one with '!addquote [quote]'?"
     else:
         quote = str(quote_data[3])

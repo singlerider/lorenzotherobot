@@ -10,6 +10,8 @@ from src.bot import Bot
 from testing.TwitchIrc import (ALT_USER, MOD_USER, REG_USER, TEST_CHAN,
                                TEST_CHANNEL, USERS, TwitchIrc)
 
+API = True
+
 src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 server, client = None, None
 
@@ -416,3 +418,35 @@ Rare Candy, 1000""", items)
         simulate_message(REG_USER, "!release 1 {reg_user}".format(
             reg_user=REG_USER))
         server.get_output()
+
+
+class TestQuotes(TestCase):
+
+    def test_moderator_can_add_quote(self):
+        if API:
+            simulate_message(REG_USER, "!quote")
+            resp = server.get_output()
+            self.assertIn("No quotes found", resp)
+
+            quote = "HeyGuys Kappa"
+            simulate_message(MOD_USER, "!addquote {quote}".format(
+                quote=quote))
+            resp = server.get_output(timeout=2)
+            self.assertIn(quote, resp)
+
+            simulate_message(MOD_USER, "!quote")
+            resp = server.get_output()
+            self.assertIn(quote, resp)
+
+
+class TestWeather(TestCase):
+
+    def test_weather(self):
+        if API:
+            simulate_message(MOD_USER, "!weather Moscow, Russia")
+            resp = server.get_output()
+            self.assertIn("You must specify 'imperial' or 'metric'", resp)
+
+            simulate_message(MOD_USER, "!weather imperial Moscow, Russia")
+            resp = server.get_output(timeout=2)
+            self.assertIn("neat", resp)
