@@ -8,8 +8,8 @@ def addquote(args):
     user = globals.CURRENT_USER
     channel = globals.CURRENT_CHANNEL
     quote = unicode(args[0].strip().strip("\"").strip("\'"), 'utf-8')
-    if len(quote) > 300:
-        return "Let's keep it below 300 characters?"
+    if len(quote) > 200:
+        return "Let's keep it below 200 characters?"
     game = get_stream_game(channel)
     q.add_quote(channel, user, quote, game)
     return "{0} added!".format(quote)

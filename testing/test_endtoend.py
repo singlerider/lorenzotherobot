@@ -1,8 +1,10 @@
 import os
+import random
 import re
+import string
 import threading
-from unittest import TestCase
 import time
+from unittest import TestCase
 
 import globals
 import src.lib.functions_commands
@@ -10,7 +12,7 @@ from src.bot import Bot
 from testing.TwitchIrc import (ALT_USER, MOD_USER, REG_USER, TEST_CHAN,
                                TEST_CHANNEL, USERS, TwitchIrc)
 
-API = True
+API = False
 
 src.lib.functions_commands.is_on_cooldown = lambda cmd, chn: None
 server, client = None, None
@@ -423,10 +425,19 @@ Rare Candy, 1000""", items)
 class TestQuotes(TestCase):
 
     def test_moderator_can_add_quote(self):
+        def random_word(length=201):
+            return ''.join(random.choice(
+                string.lowercase) for i in range(length))
         if API:
             simulate_message(REG_USER, "!quote")
             resp = server.get_output()
             self.assertIn("No quotes found", resp)
+
+            quote = random_word()
+            simulate_message(TEST_CHAN, "!addquote {quote}".format(
+                quote=random_word()))
+            resp = server.get_output(timeout=2)
+            self.assertIn("Let's keep it below 200 characters?", resp)
 
             quote = "HeyGuys Kappa"
             simulate_message(MOD_USER, "!addquote {quote}".format(
