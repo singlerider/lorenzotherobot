@@ -21,7 +21,7 @@ def initialize():
                 CREATE TABLE IF NOT EXISTS `users` (
                   `username` varchar(50) NOT NULL DEFAULT '',
                   `donation_points` int(11) DEFAULT '0',
-                  `lastbattle` datetime DEFAULT CURRENT_TIMESTAMP,
+                  `lastbattle` datetime DEFAULT '2016-01-01 21:00:00',
                   `wins` int(11) DEFAULT '0',
                   `losses` int(11) DEFAULT '0',
                   `time_in_chat` int(11) DEFAULT '0',
