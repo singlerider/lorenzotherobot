@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/singlerider/lorenzotherobot.svg?branch=master)](https://travis-ci.org/singlerider/lorenzotherobot)
+[![Circle CI](https://circleci.com/gh/singlerider/lorenzotherobot/tree/circle.svg?style=svg)](https://circleci.com/gh/singlerider/lorenzotherobot/tree/circle)
 
 Try it out! Code is live at
 http://www.twitch.tv/curvyllama
