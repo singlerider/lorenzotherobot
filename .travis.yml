@@ -14,7 +14,4 @@ install:
   - pwd
 script: ls
 # whitelist
-branches:
-  only:
-    - travis
 sudo: true

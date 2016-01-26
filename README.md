@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/singlerider/lorenzotherobot.svg?branch=master)](https://travis-ci.org/singlerider/lorenzotherobot)
+
 Try it out! Code is live at
 http://www.twitch.tv/curvyllama
 ===============================
