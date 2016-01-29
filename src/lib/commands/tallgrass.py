@@ -1,12 +1,20 @@
 import globals
 from src.lib.queries.points_queries import *
 from src.lib.queries.pokemon_queries import *
+from src.lib.twitch import get_dict_for_users
 
 
 def tallgrass_release(generated_pokemon):
     globals.CHANNEL_INFO[globals.CURRENT_CHANNEL]['caught'] = False
     globals.CHANNEL_INFO[globals.CURRENT_CHANNEL]['pokemon'] = generated_pokemon
     return "A wild " + generated_pokemon + " appeared!"
+
+
+def user_is_moderator(username):
+    if username in get_dict_for_users()[0]["chatters"]["moderators"]:
+        return True
+    else:
+        return False
 
 
 def tallgrass(args):
@@ -20,12 +28,12 @@ def tallgrass(args):
         treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
     else:
         actual_points = ""
-
     if isinstance(actual_points, long):
         if abs(points_to_sacrifice) >= 1000:
             if actual_points >= abs(points_to_sacrifice):
                 generated_pokemon = spawn_tallgrass(0)
-                modify_user_points(username, points_to_sacrifice)
+                if user_is_moderator(username) is False:
+                    modify_user_points(username, points_to_sacrifice)
                 return tallgrass_release(generated_pokemon) + treats_removed
             else:
                 return "Sorry, but you need more treats to do that."
@@ -33,7 +41,8 @@ def tallgrass(args):
             if abs(points_to_sacrifice) <= 500:
                 if actual_points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(1)
-                    modify_user_points(username, points_to_sacrifice)
+                    if user_is_moderator(username) is False:
+                        modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
                         generated_pokemon) + treats_removed
                 else:
@@ -45,7 +54,8 @@ def tallgrass(args):
                 "abs(points_to_sacrifice) >= 25:", abs(points_to_sacrifice)
                 if actual_points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(2)
-                    modify_user_points(username, points_to_sacrifice)
+                    if user_is_moderator(username) is False:
+                        modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
                         generated_pokemon) + treats_removed
                 else:
@@ -54,7 +64,8 @@ def tallgrass(args):
                 "abs(points_to_sacrifice) > 4:", abs(points_to_sacrifice)
                 if actual_points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(3)
-                    modify_user_points(username, points_to_sacrifice)
+                    if user_is_moderator(username) is False:
+                        modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
                         generated_pokemon) + treats_removed
                 else:
