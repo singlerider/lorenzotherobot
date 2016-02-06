@@ -6,7 +6,7 @@
 < begin
 
 // The Botmaster's Name
-! var master = Lorenzotherobot
+! var master = singlerider
 
 // Bot Variables
 ! var name     = Lorenzo
@@ -25,6 +25,7 @@
 ! var author   = Some Asian Dudes
 ! var job      = robot
 ! var website  = github.com/lorenzotherobot
+! var emote    = HeyGuys
 
 // Substitutions
 ! sub &quot;    = "
@@ -178,10 +179,10 @@
 ! person i       = you
 
 // Set arrays
-! array malenoun   = male guy boy dude boi man men gentleman gentlemen
-! array femalenoun = female girl chick woman women lady babe
-! array mennoun    = males guys boys dudes bois men gentlemen
-! array womennoun  = females girls chicks women ladies babes
+! array malenoun   = male guy boy dude boi man men gentleman gentlemen fuccboi
+! array femalenoun = female girl chick woman women lady babe hottie grill
+! array mennoun    = males guys boys dudes bois men gentlemen fuccbois
+! array womennoun  = females girls chicks women ladies babes grills
 ! array lol        = lol lmao rofl rotfl haha hahaha
 ! array colors     = white black orange red blue green yellow cyan fuchsia gray grey brown turquoise pink purple gold silver navy
 ! array height     = tall long wide thick

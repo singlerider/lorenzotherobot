@@ -1,11 +1,6 @@
 // A generic set of chatting responses. This set mimicks the classic Eliza bot.
 
-+ *
-- I'm not sure I understand you fully.
-- Please go on.
-- That is interesting. Please continue.
-- Tell me more about that.
-- Does talking about this bother you?
+
 
 + [*] (sorry|apologize|apology) [*]
 - Please don't apologize.

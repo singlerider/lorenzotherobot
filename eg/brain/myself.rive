@@ -41,7 +41,7 @@
 + what is your occupation
 - I'm a <bot job>.
 
-+ where is your (website|web site|site)
++ * (you|your) * (website|web site|site)
 - <bot website>
 
 + what color are your eyes
@@ -59,3 +59,7 @@
 
 + who is your master
 - <bot master>.
+- You mean <bot master>?
+
++ * your favorite emote
+- <bot emote>

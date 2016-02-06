@@ -11,8 +11,6 @@ import re
 import sys
 import time
 
-from rivescript import RiveScript
-
 import globals
 import lib.functions_commands as commands
 import lib.irc as irc_
@@ -31,10 +29,6 @@ pattern = re.compile('[\W_]+')
 
 reload(sys)
 sys.setdefaultencoding("utf8")
-
-bot = RiveScript()
-bot.load_directory("./eg/brain")
-bot.sort_replies()
 
 PRIMARY_CHANNEL = "curvyllama"
 BOT_USER = "lorenzotherobot"
@@ -134,7 +128,7 @@ months straight and is getting {2} treats for loyalty!".format(
                             '', message.split()[0]).lower() == BOT_USER and
                         (online_status is False or online_status is None)):
                     rive.Conversation(self.irc, channel).run(
-                        username, message, bot)
+                        username, message)
                     continue
                 if (channel == "#" + PRIMARY_CHANNEL or
                         channel == "#" + SUPERUSER or
