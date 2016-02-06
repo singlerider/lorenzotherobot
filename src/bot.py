@@ -7,6 +7,7 @@ Contributions from dustinbcox and theepicsnail
 """
 
 import os
+import re
 import sys
 import time
 
@@ -17,6 +18,7 @@ import lib.functions_commands as commands
 import lib.irc as irc_
 import src.lib.command_headers
 import src.lib.cron as cron
+import src.lib.rive as rive
 import src.lib.twitch as twitch
 from lib.functions_general import *
 from src.lib.queries.command_queries import *
@@ -24,6 +26,8 @@ from src.lib.queries.message_queries import save_message
 from src.lib.queries.points_queries import *
 from src.lib.spam_detector import spam_detector
 from src.lib.twitch import get_dict_for_users
+
+pattern = re.compile('[\W_]+')
 
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -70,14 +74,15 @@ class Bot(object):
                 subbed_user = message_split[0]
                 if message_split[1] == "just" and len(message_split) < 4:
                     modify_user_points(subbed_user, 100)
-                    resp = "/me {0} treats for {1} for a first time subscription!".format(
-                        100, subbed_user)
+                    resp = "/me {0} treats for {1} for a first \
+time subscription!".format(100, subbed_user)
                     self.irc.send_message(channel, resp)
                     save_message(BOT_USER, channel, resp)
                 elif message_split[1] == "subscribed" and len(message_split) < 9:
                     months_subbed = message_split[3]
                     modify_user_points(subbed_user, int(months_subbed) * 100)
-                    resp = "/me {0} has just resubscribed for {1} months straight and is getting {2} treats for loyalty!".format(
+                    resp = "/me {0} has just resubscribed for {1} \
+months straight and is getting {2} treats for loyalty!".format(
                         subbed_user, months_subbed, int(months_subbed) * 100)
                     self.irc.send_message(channel, resp)
                     save_message(BOT_USER, channel, resp)
@@ -122,15 +127,19 @@ class Bot(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
+                online_status = globals.CHANNEL_INFO[
+                    channel.lstrip("#")].get('online')
+                print online_status
                 if (len(message.split()) > 1 and
-                        message.split()[0].lstrip("@").lower() == BOT_USER):
-                    message = " ".join(message.split()[1:])
-                    reply = bot.reply('localuser', message)
-                    self.irc.send_message(channel, reply)
-                    print message
+                        pattern.sub(
+                            '', message.split()[0]).lower() == BOT_USER and
+                        (online_status is False or online_status is None)):
+                    rive.Conversation(self.irc, channel).run(
+                        username, message, bot)
                     continue
-                    print 'Bot>', reply
-                if channel == "#" + PRIMARY_CHANNEL or channel == "#" + SUPERUSER or channel == "#" + TEST_USER:
+                if (channel == "#" + PRIMARY_CHANNEL or
+                        channel == "#" + SUPERUSER or
+                        channel == "#" + TEST_USER):
                     write_to_log(channel, username, message)
                     if username == "twitchnotify":
                         check_for_sub(channel, username, message)

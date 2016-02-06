@@ -11,7 +11,7 @@ def party(args):
     if len(args) < 1:
         party_members = get_user_party_info(globals.CURRENT_USER)
         return party_members
-    position = args[0]
+    position = args[0].lstrip("@")
     if position in ['1', '2', '3', '4', '5', '6']:
         nickname, pokemon_type1_id, pokemon_type2_id, pokemon_name, pokemon_type1, pokemon_type2 = user_pokemon_types_summary(
             globals.CURRENT_USER, position)

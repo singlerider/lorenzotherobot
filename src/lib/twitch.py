@@ -5,7 +5,6 @@ import random
 import globals
 import requests
 
-
 # making this comment from Github's Oval Office
 
 
@@ -50,10 +49,21 @@ def user_cron(channel):
     channel = channel.lstrip("#")
     get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' \
         + '{0}/chatters'.format(channel)
+    get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
+        channel
     try:
         get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
         users = json.loads(get_dict_for_users_resp.content)
         globals.CHANNEL_INFO[channel]['viewers'] = users
+        get_stream_status_resp = requests.get(url=get_stream_status_url)
+        online_data = json.loads(
+            get_stream_status_resp.content).get("stream", None)
+        if online_data is not None:
+            online = True
+        else:
+            online = False
+        globals.CHANNEL_INFO[channel]['online'] = online
+        print globals.CHANNEL_INFO[channel]['online']
     except Exception as error:
         pass
 
