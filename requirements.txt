@@ -10,6 +10,7 @@ PyDrive==1.0.1
 python-gflags==2.0
 PyYAML==3.11
 requests==2.8.1
+rivescript==1.8.1
 rsa==3.2.3
 simplejson==3.8.1
 six==1.10.0

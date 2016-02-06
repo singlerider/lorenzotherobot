@@ -10,6 +10,8 @@ import os
 import sys
 import time
 
+from rivescript import RiveScript
+
 import globals
 import lib.functions_commands as commands
 import lib.irc as irc_
@@ -25,6 +27,10 @@ from src.lib.twitch import get_dict_for_users
 
 reload(sys)
 sys.setdefaultencoding("utf8")
+
+bot = RiveScript()
+bot.load_directory("./eg/brain")
+bot.sort_replies()
 
 PRIMARY_CHANNEL = "curvyllama"
 BOT_USER = "lorenzotherobot"
@@ -116,6 +122,14 @@ class Bot(object):
                 message = message_dict['message']  # .lower()
                 username = message_dict['username']
                 globals.CURRENT_USER = username
+                if (len(message.split()) > 1 and
+                        message.split()[0].lstrip("@").lower() == BOT_USER):
+                    message = " ".join(message.split()[1:])
+                    reply = bot.reply('localuser', message)
+                    self.irc.send_message(channel, reply)
+                    print message
+                    continue
+                    print 'Bot>', reply
                 if channel == "#" + PRIMARY_CHANNEL or channel == "#" + SUPERUSER or channel == "#" + TEST_USER:
                     write_to_log(channel, username, message)
                     if username == "twitchnotify":

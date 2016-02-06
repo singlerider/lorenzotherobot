@@ -54,6 +54,7 @@ def initialize():
                   `channel` varchar(30) NOT NULL,
                   `message` varchar(2000) NOT NULL,
                   `time` datetime DEFAULT NULL,
+                  `uploaded` bool NOT NULL DEFAULT false,
                   PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
                 """)
