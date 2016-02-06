@@ -12,7 +12,6 @@ def get_dict_for_users(channel=None):
     n = 0
     if channel is None:
         channel = globals.CURRENT_CHANNEL
-        print "channel", channel
     channel = channel.lstrip("#")
     dummy = {  # in case the endpoint fails (can be as often as 1:8)
         "_links": {}, "chatters_count": 0, "chatters": {
@@ -63,7 +62,6 @@ def user_cron(channel):
         else:
             online = False
         globals.CHANNEL_INFO[channel]['online'] = online
-        print globals.CHANNEL_INFO[channel]['online']
     except Exception as error:
         pass
 

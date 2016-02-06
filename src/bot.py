@@ -129,7 +129,6 @@ months straight and is getting {2} treats for loyalty!".format(
                 globals.CURRENT_USER = username
                 online_status = globals.CHANNEL_INFO[
                     channel.lstrip("#")].get('online')
-                print online_status
                 if (len(message.split()) > 1 and
                         pattern.sub(
                             '', message.split()[0]).lower() == BOT_USER and

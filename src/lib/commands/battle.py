@@ -8,7 +8,7 @@ from src.lib.twitch import *
 
 def battle(args):
     position = int(args[0])
-    opponent = args[1].lower().replace('@', '')
+    opponent = args[1].lower().lstrip("@")
     user_dict, all_users = get_dict_for_users()
     now = datetime.datetime.utcnow()
     cooldown_time = 3
