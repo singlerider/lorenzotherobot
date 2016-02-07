@@ -2,7 +2,6 @@ import warnings
 
 import globals
 import MySQLdb as mdb
-from src.lib.twitch import *
 
 
 def get_connection():
@@ -109,6 +108,16 @@ def initialize():
                   CONSTRAINT `userpokemon_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`),
                   CONSTRAINT `userpokemon_ibfk_3` FOREIGN KEY (`asking_trade`) REFERENCES `pokemon` (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
+                """)
+            cur.close()
+            cur = con.cursor()
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS `moderators` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `username` VARCHAR(50) NOT NULL,
+                    `channel` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
                 """)
             cur.close()
 

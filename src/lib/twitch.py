@@ -45,6 +45,7 @@ def user_cron(channel):
     import requests
     import json
     import globals
+    from src.lib.queries.moderator_queries import add_moderator
     channel = channel.lstrip("#")
     get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/' \
         + '{0}/chatters'.format(channel)
@@ -53,6 +54,8 @@ def user_cron(channel):
     try:
         get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
         users = json.loads(get_dict_for_users_resp.content)
+        for user in users['chatters']['moderators']:
+            add_moderator(user, channel)
         globals.CHANNEL_INFO[channel]['viewers'] = users
         get_stream_status_resp = requests.get(url=get_stream_status_url)
         online_data = json.loads(
@@ -63,6 +66,7 @@ def user_cron(channel):
             online = False
         globals.CHANNEL_INFO[channel]['online'] = online
     except Exception as error:
+        print error
         pass
 
 

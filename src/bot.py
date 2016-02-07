@@ -58,6 +58,7 @@ class Bot(object):
         self.config = config
         src.lib.command_headers.initalizeCommands(config)
         self.irc = irc_.irc(config)
+        #self.whisper = irc_.GroupChat(config)
         cron.initialize(self.irc, self.config.get("cron", {}))
 
     def run(self):
