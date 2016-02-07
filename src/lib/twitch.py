@@ -66,7 +66,6 @@ def user_cron(channel):
             online = False
         globals.CHANNEL_INFO[channel]['online'] = online
     except Exception as error:
-        print error
         pass
 
 
@@ -118,15 +117,6 @@ def get_offline_status():
         return True
 
 
-def get_user_command():
-    try:
-        user_command = user_commands_import.user_command_dict[
-            globals.CURRENT_USER]["return"]
-        return user_command
-    except:
-        return "Dude... stop. You don't have a user command... yet. R)"
-
-
 def get_stream_followers():
     url = 'https://api.twitch.tv/kraken/channels/' + \
         globals.CURRENT_CHANNEL + '/follows?limit=100'
@@ -146,7 +136,6 @@ def random_highlight():
 
 
 def get_game_popularity(game):
-
     try:
         game_http_request = game.replace(' ', '%20')
         url = 'https://api.twitch.tv/kraken/search/streams?q=' + \
