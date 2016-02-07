@@ -14,5 +14,7 @@ rivescript==1.8.1
 rsa==3.2.3
 simplejson==3.8.1
 six==1.10.0
+Twisted==15.5.0
 uritemplate==0.6
 wheel==0.24.0
+zope.interface==4.1.3

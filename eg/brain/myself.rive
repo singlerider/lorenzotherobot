@@ -63,3 +63,7 @@
 
 + [*] your favorite emote
 - <bot emote>
+
++ say *
+- Okay. "<star1>"{weight=10}
+- No.

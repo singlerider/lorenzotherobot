@@ -58,7 +58,6 @@ class Bot(object):
         self.config = config
         src.lib.command_headers.initalizeCommands(config)
         self.irc = irc_.irc(config)
-        #self.whisper = irc_.GroupChat(config)
         cron.initialize(self.irc, self.config.get("cron", {}))
 
     def run(self):
@@ -114,7 +113,9 @@ months straight and is getting {2} treats for loyalty!".format(
         while True:
             try:
                 data = self.irc.nextMessage()
-                if not self.irc.check_for_message(data):  # pragma: no cover
+                if not (self.irc.check_for_message(data)):  # pragma: no cover
+                    #if self.irc.check_for_whisper(whisper):
+                    #    print "whisper"
                     continue
                 message_dict = self.irc.get_message(data)
                 channel = message_dict['channel']
