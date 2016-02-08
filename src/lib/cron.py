@@ -35,4 +35,4 @@ class CronJob(Thread):
         while True:
             time.sleep(self.delay)
             # print(self.callback, self.channel)
-            self.irc.send_message(self.channel, self.callback(self.channel))
+            self.irc.sendMsg(self.channel, self.callback(self.channel))
