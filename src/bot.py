@@ -190,7 +190,8 @@ class Bot(irc.IRCClient):
 
     def signedOn(self):
         print("\033[91m\n\nYOLO, I was signed on to the server!!!\n\033[0m")
-        self.joinChannel(self.channel)
+        for channel in channels_to_join:
+            self.joinChannel(channel)
 
     def joinChannel(self, channel):
         self.join(channel)

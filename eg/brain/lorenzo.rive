@@ -1,6 +1,13 @@
 // A generic set of chatting responses. This set mimicks the classic Eliza bot.
 
-
++ *
+- That doesn't make any sense.
+- Are you talking to me?
+- That means literally nothing to me.
+- I don't care.
+- I don't understand.
+- BibleThump
+- Sure.
 
 + [*] (sorry|apologize|apology) [*]
 - Please don't apologize.
