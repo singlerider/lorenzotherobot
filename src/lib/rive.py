@@ -24,5 +24,4 @@ class Conversation(Thread):
             return
         #self.sendLine(line)
         #self.chat.msg(username, reply)
-        print 'Bot>', reply
         return str(reply)
