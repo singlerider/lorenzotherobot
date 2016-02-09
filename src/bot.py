@@ -9,22 +9,22 @@ Contributions from dustinbcox and theepicsnail
 import os
 import re
 import sys
+import thread
 import time
 
 import globals
 import lib.functions_commands as commands
 import src.lib.command_headers
-import src.lib.cron as cron
 import src.lib.rive as rive
 import src.lib.twitch as twitch
 from lib.functions_general import *
-from src.config.config import config, channels_to_join
+from src.config.config import channels_to_join, config
 from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.points_queries import *
 from src.lib.spam_detector import spam_detector
 from src.lib.twitch import get_dict_for_users
-from twisted.internet import reactor
+from twisted.internet import reactor, threads, task
 from twisted.internet.protocol import ClientFactory
 from twisted.words.protocols import irc
 
@@ -179,30 +179,45 @@ class Bot(irc.IRCClient):
     def __init__(self):
         self.nickname = NICKNAME
         self.password = PASSWORD
-        self.channel = CHANNEL
+        self.config = config
+        self.crons = self.config.get("cron", {})
         src.lib.command_headers.initalizeCommands(config)
-        #cron.initialize(self.irc, self.config.get("cron", {}))
 
     def dataReceived(self, data):
         if data.split()[0] != "PING" or data.split()[1] != "PONG":
             print("<<" + data)
+        if data.split()[1] == "WHISPER":
+            user = data.split()[0].lstrip(":")
+            channel = user.split("!")[0]
+            msg = " ".join(data.split()[3:]).lstrip(":")
+            self.whisper(user, channel, msg)
         irc.IRCClient.dataReceived(self, data)
 
     def signedOn(self):
-        print("\033[91m\n\nYOLO, I was signed on to the server!!!\n\033[0m")
-        for channel in channels_to_join:
-            self.joinChannel(channel)
+        print("\033[91mYOLO, I was signed on to the server!!!\033[0m")
+        if self.factory.kind == "whisper":
+            self.sendLine("CAP REQ :twitch.tv/commands")
+        if self.factory.kind == "chat":
+            for channel in channels_to_join:
+                self.joinChannel(channel)
 
     def joinChannel(self, channel):
         self.join(channel)
+        return
+
+    def joined(self, channel):
+        if self.factory.kind == "chat":
+            self.cron_initialize(BOT_USER, channel)
 
     def connectionLost(self, reason):
         irc.IRCClient.connectionLost(self, reason)
         reactor.stop()
 
+    def action(self, user, channel, data):
+        self.msg(channel, "Oh you think you fancy, huh?" + "\r\n")
+
     def privmsg(self, user, channel, message):
         """Called when the bot receives a message."""
-        #self.msg(channel, message + "\r\n")
         username = user.split("!")[0].lstrip(":")
         globals.CURRENT_USER = username
         chan = channel.lstrip("#")
@@ -239,42 +254,50 @@ class Bot(irc.IRCClient):
         if resp:
             self.msg(channel, resp.replace("\n", "").replace("\r", "") + "\r\n")
 
-
-class BotFactory(ClientFactory):
-    protocol = Bot
-
-
-class Whisper(irc.IRCClient):
-
-    def __init__(self):
-        self.nickname = NICKNAME
-        self.password = PASSWORD
-
-    def dataReceived(self, data):
-        if data.split()[0] != "PING" or data.split()[1] != "PONG":
-            print("<<" + data)
-        if data.split()[1] == "WHISPER":
-            user = data.split()[0].lstrip(":")
-            channel = user.split("!")[0]
-            msg = " ".join(data.split()[3:]).lstrip(":")
-            self.privmsg(user, channel, msg)
-        irc.IRCClient.dataReceived(self, data)
-
-    def signedOn(self):
-        print("\033[91m\n\nShhhh!!! Whispers only!\n\033[0m")
-        self.sendLine("CAP REQ :twitch.tv/commands")
-
-    def connectionLost(self, reason):
-        irc.IRCClient.connectionLost(self, reason)
-        reactor.stop()
-
-    def privmsg(self, user, channel, msg):
+    def whisper(self, user, channel, msg):
         username = user.split("!")[0].lstrip(":")
         resp = rive.Conversation(self).run(user, username, msg)
         if resp:
             line = ":%s PRIVMSG #jtv :/w %s %s" % (user, channel, resp)
+            print line
             self.sendLine(line)
 
+    def cron_initialize(self, user, channel):
+        print "knkjbbkjbhjbhjg"
+        for job in self.crons[channel]:
+            kwargs = {"delay": job[0], "callback": job[2], "channel": channel}
+            if job and job[1]:
+                def looping_call():
+                    threads.deferToThread(self.cron_job, kwargs)
+                task.LoopingCall(looping_call).start(kwargs["delay"])
 
-class WhisperFactory(ClientFactory):
-    protocol = Whisper
+    def cron_job(self, kwargs):
+        channel = kwargs["channel"]
+        resp = kwargs["callback"](kwargs["channel"])
+        if resp:
+            user = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
+            line = ":{user} PRIVMSG {channel} :{message}".format(
+                user=user, channel=channel, message=resp)
+            print "<>" +line
+            self.transport.write(line + "\r\n")
+        return
+
+
+class BotFactory(ClientFactory):
+
+    def __init__(self, channel, kind):
+        self.channel = channel
+        self.kind = kind
+
+    def buildProtocol(self, addr):
+        bot = Bot()
+        bot.factory = self
+        return bot
+
+    def clientConnectionLost(self, connector, reason):
+        """If we get disconnected, reconnect to server."""
+        connector.connect()
+
+    def clientConnectionFailed(self, connector, reason):
+        print "connection failed:", reason
+        reactor.stop()
