@@ -260,14 +260,17 @@ class Bot(irc.IRCClient):
             self.sendLine(line)
 
     def cron_initialize(self, user, channel):
-        for job in self.crons[channel]:
-            kwargs = {"delay": job[0], "callback": job[2], "channel": channel}
-            if job and job[1]:
-                def looping_call(kwargs):
-                    time.sleep(kwargs["delay"])
-                    task.LoopingCall(self.cron_job, kwargs).start(kwargs["delay"])
-                threads.deferToThread(looping_call, kwargs)
-                continue
+        crons = self.crons.get(channel, None)
+        if crons:
+            for job in crons:
+                if job[1]:
+                    kwargs = {"delay": job[0], "callback": job[2], "channel": channel}
+
+                    def looping_call(kwargs):
+                        time.sleep(kwargs["delay"])
+                        task.LoopingCall(self.cron_job, kwargs).start(kwargs["delay"])
+                    threads.deferToThread(looping_call, kwargs)
+                    continue
 
     def cron_job(self, kwargs):
         channel = kwargs["channel"]
