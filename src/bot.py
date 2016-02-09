@@ -80,15 +80,12 @@ def handle_command(command, channel, username, message):
         commands.update_user_last_used(command, channel, username)
     pbot('Command is valid and not on cooldown. (%s) (%s)' %
          (command, username), channel)
-    # Check for and handle the simple non-command case.
     cmd_return = commands.get_return(command)
     if cmd_return != "command":
-        # it's a return = "some message here" kind of function
         resp = '(%s) : %s' % (username, cmd_return)
         commands.update_last_used(command, channel)
         self.irc.send_message(channel, resp)
         return
-    # if there's a required userlevel, validate it.
     if commands.check_has_ul(username, command):
         user_data, __ = twitch.get_dict_for_users(channel)
         try:
@@ -185,7 +182,7 @@ class Bot(irc.IRCClient):
 
     def dataReceived(self, data):
         if data.split()[0] != "PING" or data.split()[1] != "PONG":
-            print("<<" + data)
+            print("->*" + data)
         if data.split()[1] == "WHISPER":
             user = data.split()[0].lstrip(":")
             channel = user.split("!")[0]
@@ -259,17 +256,18 @@ class Bot(irc.IRCClient):
         resp = rive.Conversation(self).run(user, username, msg)
         if resp:
             line = ":%s PRIVMSG #jtv :/w %s %s" % (user, channel, resp)
-            print line
+            print "<-*" + line
             self.sendLine(line)
 
     def cron_initialize(self, user, channel):
-        print "knkjbbkjbhjbhjg"
         for job in self.crons[channel]:
             kwargs = {"delay": job[0], "callback": job[2], "channel": channel}
             if job and job[1]:
-                def looping_call():
-                    threads.deferToThread(self.cron_job, kwargs)
-                task.LoopingCall(looping_call).start(kwargs["delay"])
+                def looping_call(kwargs):
+                    time.sleep(kwargs["delay"])
+                    task.LoopingCall(self.cron_job, kwargs).start(kwargs["delay"])
+                threads.deferToThread(looping_call, kwargs)
+                continue
 
     def cron_job(self, kwargs):
         channel = kwargs["channel"]
@@ -278,9 +276,8 @@ class Bot(irc.IRCClient):
             user = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
             line = ":{user} PRIVMSG {channel} :{message}".format(
                 user=user, channel=channel, message=resp)
-            print "<>" +line
+            print "<*>" +line
             self.transport.write(line + "\r\n")
-        return
 
 
 class BotFactory(ClientFactory):
