@@ -9,7 +9,6 @@ Contributions from dustinbcox and theepicsnail
 import os
 import re
 import sys
-import thread
 import time
 
 import globals
@@ -23,7 +22,6 @@ from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.points_queries import *
 from src.lib.queries.moderator_queries import get_moderator
-from src.lib.spam_detector import spam_detector
 from src.lib.twitch import get_dict_for_users
 from twisted.internet import reactor, threads, task
 from twisted.internet.protocol import ClientFactory
@@ -189,8 +187,7 @@ class Bot(irc.IRCClient):
             write_to_log(channel, username, message)
             if username == "twitchnotify":
                 check_for_sub(channel, username, message)
-            if spam_detector(username, message) is True:
-                ban_for_spam(channel, user)
+            # TODO add spam detector here
         chan = channel.lstrip("#")
         if message[0] == "!":
             message_split = message.split()
@@ -218,7 +215,7 @@ class Bot(irc.IRCClient):
         username = user.split("!")[0].lstrip(":")
         resp = rive.Conversation(self).run(BOT_USER, username, msg)
         if resp:
-            sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=user)
+            sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
             line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
             print "<-*" + line
             self.sendLine(line)
