@@ -22,6 +22,7 @@ from src.config.config import channels_to_join, config
 from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.points_queries import *
+from src.lib.queries.moderator_queries import get_moderator
 from src.lib.spam_detector import spam_detector
 from src.lib.twitch import get_dict_for_users
 from twisted.internet import reactor, threads, task
@@ -84,18 +85,18 @@ def handle_command(command, channel, username, message):
     if cmd_return != "command":
         resp = '(%s) : %s' % (username, cmd_return)
         commands.update_last_used(command, channel)
-        self.irc.send_message(channel, resp)
+        self.msg(channel, resp)
         return
     if commands.check_has_ul(username, command):
         user_data, __ = twitch.get_dict_for_users(channel)
         try:
-            if username not in user_data["chatters"]["moderators"]:
-                if username != SUPERUSER:
-                    resp = '(%s) : %s' % (
-                        username, "This is a moderator-only command!")
-                    pbot(resp, channel)
-                    self.irc.send_message(channel, resp)
-                    return
+            moderator = get_moderator(username, channel.lstrip("#"))
+            if not moderator and username != SUPERUSER:
+                resp = '(%s) : %s' % (
+                    username, "This is a moderator-only command!")
+                pbot(resp, channel)
+                self.msg(channel, resp)
+                return
         except Exception as error:  # pragma: no cover
             with open("errors.txt", "a") as f:
                 error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
@@ -120,54 +121,11 @@ def handle_command(command, channel, username, message):
         save_message(BOT_USER, channel, resp)  # pragma: no cover
 
 
-def check_for_sub(channel, username, message):
-    try:
-        message_split = message.rstrip("!").split()
-        subbed_user = message_split[0]
-        if message_split[1] == "just" and len(message_split) < 4:
-            modify_user_points(subbed_user, 100)
-            resp = "/me {0} treats for {1} for a first \
-time subscription!".format(100, subbed_user)
-            self.irc.send_message(channel, resp)
-            save_message(BOT_USER, channel, resp)
-        elif message_split[1] == "subscribed" and len(message_split) < 9:
-            months_subbed = message_split[3]
-            modify_user_points(subbed_user, int(months_subbed) * 100)
-            resp = "/me {0} has just resubscribed for {1} \
-months straight and is getting {2} treats for loyalty!".format(
-                subbed_user, months_subbed, int(months_subbed) * 100)
-            self.irc.send_message(channel, resp)
-            save_message(BOT_USER, channel, resp)
-    except Exception as error:  # pragma: no cover
-        print error
-
-
-def return_custom_command(channel, message, username):
-    chan = channel.lstrip("#")
-    elements = get_custom_command_elements(
-        chan, message[0])
-    replacement_user = username
-    if len(message) > 1:
-        replacement_user = message[1]
-    resp = elements[1].replace(
-        "{}", replacement_user).replace("[]", str(elements[2] + 1))
-    if elements[0] == "mod":
-        user_dict, __ = get_dict_for_users()
-        if username in user_dict["chatters"]["moderators"]:
-            self.irc.send_message(channel, resp)
-            increment_command_counter(chan, message[0])
-            save_message(BOT_USER, channel, resp)
-    elif elements[0] == "reg":
-        self.irc.send_message(channel, resp)
-        increment_command_counter(chan, message[0])
-        save_message(BOT_USER, channel, resp)
-
-
 def ban_for_spam(channel, user):
     ban = "/ban {0}".format(user)
     unban = "/unban {0}".format(user)
-    self.irc.send_message(channel, ban)
-    self.irc.send_message(channel, unban)
+    self.msg(channel, ban)
+    self.msg(channel, unban)
     save_message(BOT_USER, channel, message)
 
 
@@ -206,8 +164,12 @@ class Bot(irc.IRCClient):
         if self.factory.kind == "chat":
             self.cron_initialize(BOT_USER, channel)
 
-    def connectionLost(self, reason):
-        irc.IRCClient.connectionLost(self, reason)
+    def clientConnectionLost(self, connector, reason):
+        """If we get disconnected, reconnect to server."""
+        connector.connect()
+
+    def clientConnectionFailed(self, connector, reason):
+        print "connection failed:", reason
         reactor.stop()
 
     def action(self, user, channel, data):
@@ -235,8 +197,9 @@ class Bot(irc.IRCClient):
             fetch_command = get_custom_command(chan, message_split[0])
             if len(fetch_command) > 0:
                 if message_split[0] == fetch_command[0][1]:
-                    return_custom_command(
+                    self.return_custom_command(
                         channel, message_split, username)
+                    return
         save_message(username, channel, message)
         part = message.split(' ')[0]
         valid = False
@@ -253,11 +216,54 @@ class Bot(irc.IRCClient):
 
     def whisper(self, user, channel, msg):
         username = user.split("!")[0].lstrip(":")
-        resp = rive.Conversation(self).run(user, username, msg)
+        resp = rive.Conversation(self).run(BOT_USER, username, msg)
         if resp:
-            line = ":%s PRIVMSG #jtv :/w %s %s" % (user, channel, resp)
+            sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=user)
+            line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
             print "<-*" + line
             self.sendLine(line)
+
+    def return_custom_command(self, channel, message, username):
+        chan = channel.lstrip("#")
+        elements = get_custom_command_elements(
+            chan, message[0])
+        replacement_user = username
+        if len(message) > 1:
+            replacement_user = message[1]
+        resp = elements[1].replace(
+            "{}", replacement_user).replace("[]", str(elements[2] + 1))
+        if elements[0] == "mod":
+            user_dict, __ = get_dict_for_users()
+            moderator = get_moderator(username, chan)
+            if moderator:
+                self.msg(channel, resp)
+                increment_command_counter(chan, message[0])
+                save_message(BOT_USER, channel, resp)
+        elif elements[0] == "reg":
+            self.msg(channel, resp)
+            increment_command_counter(chan, message[0])
+            save_message(BOT_USER, channel, resp)
+
+    def check_for_sub(self, channel, username, message):
+        try:
+            message_split = message.rstrip("!").split()
+            subbed_user = message_split[0]
+            if message_split[1] == "just" and len(message_split) < 4:
+                modify_user_points(subbed_user, 100)
+                resp = "/me {0} treats for {1} for a first \
+    time subscription!".format(100, subbed_user)
+                self.msg(channel, resp)
+                save_message(BOT_USER, channel, resp)
+            elif message_split[1] == "subscribed" and len(message_split) < 9:
+                months_subbed = message_split[3]
+                modify_user_points(subbed_user, int(months_subbed) * 100)
+                resp = "/me {0} has just resubscribed for {1} \
+    months straight and is getting {2} treats for loyalty!".format(
+                    subbed_user, months_subbed, int(months_subbed) * 100)
+                self.msg(channel, resp)
+                save_message(BOT_USER, channel, resp)
+        except Exception as error:  # pragma: no cover
+            print error
 
     def cron_initialize(self, user, channel):
         crons = self.crons.get(channel, None)
