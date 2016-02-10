@@ -171,7 +171,7 @@ class Bot(irc.IRCClient):
         reactor.stop()
 
     def action(self, user, channel, data):
-        self.msg(channel, "Oh you think you fancy, huh?" + "\r\n")
+        pass
 
     def privmsg(self, user, channel, message):
         """Called when the bot receives a message."""
@@ -213,8 +213,10 @@ class Bot(irc.IRCClient):
 
     def whisper(self, user, channel, msg):
         username = user.split("!")[0].lstrip(":")
+        save_message(username, "WHISPER", msg)
         resp = rive.Conversation(self).run(BOT_USER, username, msg)
         if resp:
+            save_message(BOT_USER, "WHISPER", resp)
             sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
             line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
             print "<-*" + line
