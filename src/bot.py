@@ -42,6 +42,8 @@ SERVER = config["server"]
 NICKNAME = config["username"]
 PASSWORD = config["oauth_password"]
 
+ECHOERS = []
+
 
 def write_to_log(channel, username, message):
     date = time.strftime('%Y_%m_%d', time.gmtime())
@@ -57,66 +59,6 @@ def write_to_log(channel, username, message):
         os.system("mkdir src/logs/{}".format(date))
         print str(error) + ": Creating new folder: " + str(date)
         write_to_log(channel, username, message)
-
-
-def handle_command(command, channel, username, message):
-    if command == message:
-        args = []
-    elif command == message and command in commands.keys():  # pragma: no cover
-        pass
-    else:
-        args = [message[len(command) + 1:]]
-    if not commands.check_is_space_case(command) and args:
-        args = args[0].split(" ")
-    if commands.is_on_cooldown(command, channel):
-        pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
-            command, username, commands.get_cooldown_remaining(
-                command, channel)), channel)
-        return
-    if commands.check_has_user_cooldown(command):
-        if commands.is_on_user_cooldown(command, channel, username):
-            return
-        commands.update_user_last_used(command, channel, username)
-    pbot('Command is valid and not on cooldown. (%s) (%s)' %
-         (command, username), channel)
-    cmd_return = commands.get_return(command)
-    if cmd_return != "command":
-        resp = '(%s) : %s' % (username, cmd_return)
-        commands.update_last_used(command, channel)
-        self.msg(channel, resp)
-        return
-    if commands.check_has_ul(username, command):
-        user_data, __ = twitch.get_dict_for_users(channel)
-        try:
-            moderator = get_moderator(username, channel.lstrip("#"))
-            if not moderator and username != SUPERUSER:
-                resp = '(%s) : %s' % (
-                    username, "This is a moderator-only command!")
-                pbot(resp, channel)
-                self.msg(channel, resp)
-                return
-        except Exception as error:  # pragma: no cover
-            with open("errors.txt", "a") as f:
-                error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
-                    username, channel, command, user_data, error)
-                f.write(error_message)
-    approved_channels = [PRIMARY_CHANNEL, BOT_USER, SUPERUSER, TEST_USER]
-    if globals.CURRENT_CHANNEL not in approved_channels:
-        prevented_list = ['songrequest', 'request', 'shots', 'donation',
-                          'welcome', 'rules', 'gt',
-                          'llama', 'loyalty', 'uptime', 'highlight',
-                          'weather', 'treats']
-        if command.lstrip("!") in prevented_list:
-            return
-    result = commands.pass_to_function(command, args)
-    commands.update_last_used(command, channel)
-    if result:
-        resp = '(%s) : %s' % (username, result)
-        pbot(resp, channel)
-        return resp[:350]
-        if channel == "#" + PRIMARY_CHANNEL:  # pragma: no cover
-            write_to_log(channel, "[BOT]", resp)
-        save_message(BOT_USER, channel, resp)  # pragma: no cover
 
 
 def ban_for_spam(channel, user):
@@ -153,6 +95,8 @@ class Bot(irc.IRCClient):
         if self.factory.kind == "chat":
             for channel in channels_to_join:
                 self.joinChannel(channel)
+        ECHOERS.append(self)
+        print self.factory.kind
 
     def joinChannel(self, channel):
         self.join(channel)
@@ -206,22 +150,28 @@ class Bot(irc.IRCClient):
             valid = True
         if not valid:
             return
-        resp = handle_command(
+        resp = self.handle_command(
             part, channel, username, message)
         if resp:
             self.msg(channel, resp.replace("\n", "").replace("\r", "") + "\r\n")
 
     def whisper(self, user, channel, msg):
         msg = msg.lstrip("!")
-        username = user.split("!")[0].lstrip(":")
+        if "!" not in user:
+            channel = user
+            resp = msg
+            username = user
+        else:
+            username = user.split("!")[0].lstrip(":")
+            resp = rive.Conversation(self).run(BOT_USER, username, msg)[:350]
         save_message(username, "WHISPER", msg)
-        resp = rive.Conversation(self).run(BOT_USER, username, msg)[:350]
         if resp:
             save_message(BOT_USER, "WHISPER", resp)
             sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
             line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
-            print "<-*" + line
-            self.sendLine(line)
+            for echoer in ECHOERS:
+                if echoer.factory.kind == "whisper":
+                    echoer.sendLine(line)
 
     def return_custom_command(self, channel, message, username):
         chan = channel.lstrip("#")
@@ -288,11 +238,82 @@ class Bot(irc.IRCClient):
             print "<*>" +line
             self.transport.write(line + "\r\n")
 
+    def handle_command(self, command, channel, username, message):
+        if command == message:
+            args = []
+        elif command == message and command in commands.keys():  # pragma: no cover
+            pass
+        else:
+            args = [message[len(command) + 1:]]
+        if not commands.check_is_space_case(command) and args:
+            args = args[0].split(" ")
+        if commands.is_on_cooldown(command, channel):
+            pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
+                command, username, commands.get_cooldown_remaining(
+                    command, channel)), channel)
+            self.whisper(
+                username, channel,  "Sorry! " + command +
+                " is on cooldown for " + str(
+                    commands.get_cooldown_remaining(
+                        command, channel)
+                    ) + " more seconds in " + channel.lstrip("#") +
+                        ". Can I help you?")
+            return
+        if commands.check_has_user_cooldown(command):
+            if commands.is_on_user_cooldown(command, channel, username):
+                self.whisper(
+                    username, channel, "Slow down! Try " + command +
+                    " in " + channel.lstrip("#") + " in another " + str(
+                        commands.get_user_cooldown_remaining(
+                            command, channel, username)) + " seconds or just \
+ask me directly?")
+                return
+            commands.update_user_last_used(command, channel, username)
+        pbot('Command is valid and not on cooldown. (%s) (%s)' %
+             (command, username), channel)
+        cmd_return = commands.get_return(command)
+        if cmd_return != "command":
+            resp = '(%s) : %s' % (username, cmd_return)
+            commands.update_last_used(command, channel)
+            self.msg(channel, resp)
+            return
+        if commands.check_has_ul(username, command):
+            user_data, __ = twitch.get_dict_for_users(channel)
+            try:
+                moderator = get_moderator(username, channel.lstrip("#"))
+                if not moderator and username != SUPERUSER:
+                    resp = '(%s) : %s' % (
+                        username, "This is a moderator-only command!")
+                    pbot(resp, channel)
+                    self.msg(channel, resp)
+                    return
+            except Exception as error:  # pragma: no cover
+                with open("errors.txt", "a") as f:
+                    error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
+                        username, channel, command, user_data, error)
+                    f.write(error_message)
+        approved_channels = [PRIMARY_CHANNEL, BOT_USER, SUPERUSER, TEST_USER]
+        if globals.CURRENT_CHANNEL not in approved_channels:
+            prevented_list = ['songrequest', 'request', 'shots', 'donation',
+                              'welcome', 'rules', 'gt',
+                              'llama', 'loyalty', 'uptime', 'highlight',
+                              'weather', 'treats']
+            if command.lstrip("!") in prevented_list:
+                return
+        result = commands.pass_to_function(command, args)
+        commands.update_last_used(command, channel)
+        if result:
+            resp = '(%s) : %s' % (username, result)
+            pbot(resp, channel)
+            return resp[:350]
+            if channel == "#" + PRIMARY_CHANNEL:  # pragma: no cover
+                write_to_log(channel, "[BOT]", resp)
+            save_message(BOT_USER, channel, resp)  # pragma: no cover
+
 
 class BotFactory(ClientFactory):
 
-    def __init__(self, channel, kind):
-        self.channel = channel
+    def __init__(self, kind):
         self.kind = kind
 
     def buildProtocol(self, addr):
