@@ -215,7 +215,7 @@ class Bot(irc.IRCClient):
         msg = msg.lstrip("!")
         username = user.split("!")[0].lstrip(":")
         save_message(username, "WHISPER", msg)
-        resp = rive.Conversation(self).run(BOT_USER, username, msg)
+        resp = rive.Conversation(self).run(BOT_USER, username, msg)[:350]
         if resp:
             save_message(BOT_USER, "WHISPER", resp)
             sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
