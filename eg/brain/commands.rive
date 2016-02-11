@@ -2,7 +2,7 @@
 
 > object whisper_weather python
     from src.lib.commands.weather import weather
-    query = args[0]
+    query = " ".join(args)
     return weather(["imperial", query])
 < object
 
