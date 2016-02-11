@@ -18,14 +18,16 @@ commands = {
         'argc': 0,
         'return': 'command',
         'ul': 'reg',
-        'usage': '!opinion'
+        'usage': '!opinion',
+        'user_limit': 30
     },
     '!llama': {
         'limit': 0,
         'argc': 1,
         'return': 'command',
         'usage': "!llama ['treats'/'shots'/username/'list']",
-        'optional': True
+        'optional': True,
+        'user_limit': 30
     },
     '!treats': {
         'limit': 0,
@@ -44,14 +46,8 @@ commands = {
     '!help': {
         'limit': 15,
         'return': 'There is a super useful README for lorenzo at http://www.twitch.tv/lorenzotherobot',
-        'usage': '!help'
-    },
-    '!test': {
-        'limit': 5,
-        'user_limit': 30,
-        'argc': 0,
-        'return': 'Not on cooldown, apparently',
-        'usage': '!test (this is a test command)'
+        'usage': '!help',
+        'user_limit': 30
     },
     '!highlight': {
         'limit': 15,
@@ -63,7 +59,8 @@ commands = {
         'limit': 30,
         'return': 'command',
         'argc': 0,
-        'usage': '!followers'
+        'usage': '!followers',
+        'user_limit': 30,
     },
     '!follower': {
         'limit': 0,
@@ -76,19 +73,22 @@ commands = {
         'limit': 15,
         'return': 'command',
         'argc': 0,
-        'usage': '!uptime'
+        'usage': '!uptime',
+        'user_limit': 30,
     },
     '!stream': {
         'limit': 10,
         'return': 'command',
         'argc': 0,
-        'usage': '!stream'
+        'usage': '!stream',
+        'user_limit': 30,
     },
     '!winner': {
         'limit': 0,
         'argc': 0,
         'return': 'command',
-        'usage': '!winner'
+        'usage': '!winner',
+        'user_limit': 30,
     },
     '!catch': {
         'limit': 0,
@@ -113,13 +113,15 @@ commands = {
         'argc': 1,
         'return': 'command',
         'usage': "!party [position_to_check(1-6)/'members'/username]",
-        'optional': True
+        'optional': True,
+        'user_limit': 30,
     },
     '!battle': {
         'limit': 0,
         'argc': 2,
         'return': 'command',
-        'usage': "!battle [position_to_battle_with] [opponent_username]"
+        'usage': "!battle [position_to_battle_with] [opponent_username]",
+        'user_limit': 180,
     },
     '!tallgrass': {
         'limit': 0,
@@ -151,7 +153,6 @@ commands = {
         'argc': 1,
         'return': 'command',
         'space_case': True,
-        #'ul': 'mod',
         'usage': '!popularity [name_of_game]'
     },
     '!trade': {
@@ -160,7 +161,6 @@ commands = {
         'return': 'command',
         'usage': "!trade [party_position] [requested_pokemon] [minimum_asking_level]"
     },
-
     '!redeem': {
         'limit': 0,
         'argc': 3,
@@ -171,7 +171,8 @@ commands = {
         'limit': 10,
         'argc': 1,
         'return': 'command',
-        'usage': "!check ['trades'/'market'/'items'/'inventory'/username]"
+        'usage': "!check ['trades'/'market'/'items'/'inventory'/username]",
+        'user_limit': 30
     },
     '!buy': {
         'limit': 0,
@@ -189,7 +190,8 @@ commands = {
         'limit': 300,
         'argc': 0,
         'return': 'command',
-        'usage': '!leaderboard'
+        'usage': '!leaderboard',
+        'user_limit': 300,
     },
     '!define': {
         'limit': 30,
