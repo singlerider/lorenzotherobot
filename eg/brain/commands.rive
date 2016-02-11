@@ -2,8 +2,8 @@
 
 > object whisper_weather python
     from src.lib.commands.weather import weather
-    query = args[0]
-    return weather(["imperial", query])
+    query = " ".join(args)
+    return weather(["imperial", query]).replace("\n", " ")
 < object
 
 > object treats python
@@ -11,13 +11,13 @@
     username = rs.current_user()
     if len(args) > 0:
         username = args[0]
-    return whisper_llama([username])
+    return whisper_llama([username]).replace("\n", " ")
 < object
 
 > object whisper_define python
     from src.lib.commands.define import define
     query = "".join(args[0:])
-    return define([query])
+    return define([query]).replace("\n", " ")
 < object
 
 > object whisper_battle python
@@ -27,20 +27,20 @@
     position = args[0]
     opponent = args[1]
     username = rs.current_user()
-    return battle([position, opponent], username=username)
+    return battle([position, opponent], username=username).replace("\n", " ")
 < object
 
 > object party_no_args python
     from src.lib.commands.party import party
     username = rs.current_user()
-    return party([], username=username)
+    return party([], username=username).replace("\n", " ")
 < object
 
 > object party_with_args python
     from src.lib.commands.party import party
     username = rs.current_user()
     query = args[0]
-    return party([query], username=username)
+    return party([query], username=username).replace("\n", " ")
 < object
 
 + weather *
