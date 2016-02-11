@@ -28,3 +28,8 @@ def llama(args):
             return "User not found. That makes them the biggest loser!"
     else:
         return "No entry found for " + str(args[0])
+
+
+def whisper_llama(args):
+    username = args[0]
+    return points_import.get_all_user_points(username)
