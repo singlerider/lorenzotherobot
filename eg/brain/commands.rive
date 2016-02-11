@@ -9,6 +9,8 @@
 > object treats python
     from src.lib.commands.llama import whisper_llama
     username = rs.current_user()
+    if len(args) > 0:
+        username = args[0]
     return whisper_llama([username])
 < object
 
@@ -49,6 +51,9 @@
 
 + llama
 - <call>treats</call>
+
++ llama *
+- <call>treats <star></call>
 
 + define *
 - <call>whisper_define <star1></call>
