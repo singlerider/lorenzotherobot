@@ -212,6 +212,7 @@ class Bot(irc.IRCClient):
             self.msg(channel, resp.replace("\n", "").replace("\r", "") + "\r\n")
 
     def whisper(self, user, channel, msg):
+        msg = msg.lstrip("!")
         username = user.split("!")[0].lstrip(":")
         save_message(username, "WHISPER", msg)
         resp = rive.Conversation(self).run(BOT_USER, username, msg)

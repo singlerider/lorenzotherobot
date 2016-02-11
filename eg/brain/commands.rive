@@ -1,0 +1,63 @@
+! version = 2.0
+
+> object whisper_weather python
+    from src.lib.commands.weather import weather
+    query = args[0]
+    return weather(["imperial", query])
+< object
+
+> object treats python
+    from src.lib.commands.llama import whisper_llama
+    username = rs.current_user()
+    return whisper_llama([username])
+< object
+
+> object whisper_define python
+    from src.lib.commands.define import define
+    query = "".join(args[0:])
+    return define([query])
+< object
+
+> object whisper_battle python
+    from src.lib.commands.battle import battle
+    if len(args) < 2:
+        return "You didn't type it in correctly."
+    position = args[0]
+    opponent = args[1]
+    username = rs.current_user()
+    return battle([position, opponent], username=username)
+< object
+
+> object party_no_args python
+    from src.lib.commands.party import party
+    username = rs.current_user()
+    return party([], username=username)
+< object
+
+> object party_with_args python
+    from src.lib.commands.party import party
+    username = rs.current_user()
+    query = args[0]
+    return party([query], username=username)
+< object
+
++ weather *
+- <call>whisper_weather <star1></call>
+
++ [*] treats [*]
+- <call>treats</call>
+
++ llama
+- <call>treats</call>
+
++ define *
+- <call>whisper_define <star1></call>
+
++ battle *
+- <call>whisper_battle <star></call>
+
++ party
+- <call>party_no_args</call>
+
++ party *
+- <call>party_with_args <star1></call>

@@ -11,7 +11,7 @@
 - <set name=<bot name>>What a coincidence! That's my name too!
 - <set name=<bot name>>That's my name too!
 
-+ call me *
++ [*] call me *
 - <set name=<formal>><get name>, I will call you that from now on.
 
 + i am * years old

@@ -6,26 +6,29 @@ from src.lib.queries.pokemon_queries import *
 from src.lib.twitch import *
 
 
-def battle(args):
+def battle(args, username=None):
     position = int(args[0])
     opponent = args[1].lower().lstrip("@")
-    user_dict, all_users = get_dict_for_users()
+    all_users = []
+    WHISPER = True
+    if not username:
+        username = globals.CURRENT_USER
+        WHISPER = False
+        user_dict, all_users = get_dict_for_users()
     now = datetime.datetime.utcnow()
     cooldown_time = 3
-    required_cooldown = datetime.datetime.utcnow() - timedelta(minutes=cooldown_time)
-    last_battle_time = get_last_battle(globals.CURRENT_USER)
+    last_battle_time = get_last_battle(username)
 
     def battle_logic():
         if last_battle_time < now - timedelta(minutes=cooldown_time):
-            time_delta = now - last_battle_time
-            if opponent in all_users:
-                if opponent != globals.CURRENT_USER:
+            if opponent in all_users or WHISPER is True:
+                if opponent != username:
                     available_positions, occupied_positions = find_open_party_positions(
                         opponent)
                     if len(occupied_positions) > 0:
                         eligible_positions = []
                         attacker_stats = get_battle_stats(
-                            globals.CURRENT_USER, position)
+                            username, position)
                         for spot in occupied_positions:
                             all_defender_stats = get_battle_stats(
                                 opponent, int(spot[0]))
@@ -39,7 +42,7 @@ def battle(args):
                         else:
                             recommended_fighters = []
                             them = get_user_battle_info(opponent)
-                            you = get_user_battle_info(globals.CURRENT_USER)
+                            you = get_user_battle_info(username)
                             for __, defender in them:
                                 for pos, attacker in you:
                                     if attacker - defender < 5:
@@ -52,7 +55,7 @@ def battle(args):
                                 return "Either you are too high of a level or not high enough to battle anything {} has! Try someone else?".format(
                                     opponent)
                         nickname_1, pokemon_type1_id_1, pokemon_type2_id_1, pokemon_name_1, pokemon_type1_1, pokemon_type2_1 = user_pokemon_types_summary(
-                            globals.CURRENT_USER, position)
+                            username, position)
                         nickname_2, pokemon_type1_id_2, pokemon_type2_id_2, pokemon_name_2, pokemon_type1_2, pokemon_type2_2 = user_pokemon_types_summary(
                             opponent, random_opponent_position)
                         defender_stats = get_battle_stats(
@@ -67,20 +70,20 @@ def battle(args):
                             attacker_stats[2:7]) * attacker_multiplier
                         total_defender = sum(
                             defender_stats[2:7]) * defender_multiplier
-                        set_battle_timestamp(globals.CURRENT_USER, now)
+                        set_battle_timestamp(username, now)
                         if total_attacker == total_defender:
-                            return globals.CURRENT_USER + "'s " + nickname_1 + \
+                            return username + "'s " + nickname_1 + \
                                 " and " + opponent + "'s " + nickname_2 + " had a draw."
                         elif total_attacker > total_defender:
                             if attacker_stats[0] < 100:  # attacker's level
                                 level_up_user_pokemon(
-                                    globals.CURRENT_USER, position)
-                            add_win(globals.CURRENT_USER)
-                            return globals.CURRENT_USER + "'s " + nickname_1 + \
+                                    username, position)
+                            add_win(username)
+                            return username + "'s " + nickname_1 + \
                                 " defeated " + opponent + "'s " + nickname_2 + "."
                         elif total_attacker < total_defender:
-                            add_loss(globals.CURRENT_USER)
-                            return globals.CURRENT_USER + "'s " + nickname_1 + \
+                            add_loss(username)
+                            return username + "'s " + nickname_1 + \
                                 " was defeated by " + opponent + "'s " + nickname_2 + "."
                     else:
                         return opponent + " has nothing to battle with. Tell them to use !catch"

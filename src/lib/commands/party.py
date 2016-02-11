@@ -7,21 +7,23 @@ def cron(a=None):
         str(get_user_party_info("lorenzotherobot"))
 
 
-def party(args):
+def party(args, username=None):
+    if not username:
+        username = globals.CURRENT_USER
     if len(args) < 1:
-        party_members = get_user_party_info(globals.CURRENT_USER)
+        party_members = get_user_party_info(username)
         return party_members
     position = args[0].lstrip("@")
     if position in ['1', '2', '3', '4', '5', '6']:
         nickname, pokemon_type1_id, pokemon_type2_id, pokemon_name, pokemon_type1, pokemon_type2 = user_pokemon_types_summary(
-            globals.CURRENT_USER, position)
+            username, position)
         level, nickname, hp, speed, attack, defense, special_attack, special_defense = get_battle_stats(
-            globals.CURRENT_USER, position)
+            username, position)
         return "lvl " + str(level) + " " + pokemon_name.decode("utf8") + ": HP " + str(hp) + ", Att " + str(attack) + ", Spd " + str(speed) + \
             ", Def " + str(defense) + ", SpAtt " + str(special_attack) + ", SpDef " + \
             str(special_defense) + ", " + pokemon_type1 + ", " + pokemon_type2
     elif args[0] == 'members':
-        party_members = get_user_party_info(globals.CURRENT_USER)
+        party_members = get_user_party_info(username)
         return party_members
     else:
         try:
