@@ -1,12 +1,11 @@
 """
-Intricate Chat Bot for Twitch.tv
+Intricate Chat Bot for Twitch.tv with Whispers
 
 By Shane Engelman <me@5h4n3.com>
 
 Contributions from dustinbcox and theepicsnail
 """
 
-import os
 import re
 import sys
 import time
@@ -20,10 +19,10 @@ from lib.functions_general import *
 from src.config.config import channels_to_join, config
 from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
-from src.lib.queries.points_queries import *
 from src.lib.queries.moderator_queries import get_moderator
+from src.lib.queries.points_queries import *
 from src.lib.twitch import get_dict_for_users
-from twisted.internet import reactor, threads, task
+from twisted.internet import reactor, task, threads
 from twisted.internet.protocol import ClientFactory
 from twisted.words.protocols import irc
 
@@ -42,23 +41,7 @@ SERVER = config["server"]
 NICKNAME = config["username"]
 PASSWORD = config["oauth_password"]
 
-ECHOERS = []
-
-
-def write_to_log(channel, username, message):
-    date = time.strftime('%Y_%m_%d', time.gmtime())
-    filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
-    timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
-    message = "".join(i for i in message if ord(i) < 128)  # fix up non ascii
-    try:
-        pass
-        with open(filename, 'a') as f:
-            f.write("{} | {} : {}\n".format(
-                username, timestamp, str(message)))
-    except Exception as error:  # pragma: no cover
-        os.system("mkdir src/logs/{}".format(date))
-        print str(error) + ": Creating new folder: " + str(date)
-        write_to_log(channel, username, message)
+ECHOERS = {}
 
 
 def ban_for_spam(channel, user):
@@ -95,8 +78,7 @@ class Bot(irc.IRCClient):
         if self.factory.kind == "chat":
             for channel in channels_to_join:
                 self.joinChannel(channel)
-        ECHOERS.append(self)
-        print self.factory.kind
+        ECHOERS[self.factory.kind] = self
 
     def joinChannel(self, channel):
         self.join(channel)
@@ -128,7 +110,6 @@ class Bot(irc.IRCClient):
         if (channel == "#" + PRIMARY_CHANNEL or
                 channel == "#" + SUPERUSER or
                 channel == "#" + TEST_USER):
-            write_to_log(channel, username, message)
             if username == "twitchnotify":
                 check_for_sub(channel, username, message)
             # TODO add spam detector here
@@ -169,9 +150,8 @@ class Bot(irc.IRCClient):
             save_message(BOT_USER, "WHISPER", resp)
             sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
             line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
-            for echoer in ECHOERS:
-                if echoer.factory.kind == "whisper":
-                    echoer.sendLine(line)
+            echoer = ECHOERS["whisper"]
+            echoer.sendLine(line)
 
     def return_custom_command(self, channel, message, username):
         chan = channel.lstrip("#")
@@ -235,7 +215,7 @@ class Bot(irc.IRCClient):
             user = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
             line = ":{user} PRIVMSG {channel} :{message}".format(
                 user=user, channel=channel, message=resp)
-            print "<*>" +line
+            print "<*>" + line
             self.transport.write(line + "\r\n")
 
     def handle_command(self, command, channel, username, message):
@@ -306,8 +286,6 @@ ask me directly?")
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
             return resp[:350]
-            if channel == "#" + PRIMARY_CHANNEL:  # pragma: no cover
-                write_to_log(channel, "[BOT]", resp)
             save_message(BOT_USER, channel, resp)  # pragma: no cover
 
 

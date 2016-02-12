@@ -1,37 +1,15 @@
 [![Build Status](https://travis-ci.org/singlerider/lorenzotherobot.svg?branch=master)](https://travis-ci.org/singlerider/lorenzotherobot) [![Circle CI](https://circleci.com/gh/singlerider/lorenzotherobot/tree/master.svg?style=svg)](https://circleci.com/gh/singlerider/lorenzotherobot/tree/master)
 
-Try it out! Code is live at
-http://www.twitch.tv/curvyllama
+Try it out! The Code is live at http://www.twitch.tv/curvyllama
 ===============================
+You can send a whisper by typing `/w Lorenzotherobot hi` into the chat!
+
 
 # Lorenzotherobot
 
 Introducing Lorenzo - a Twitch chat/irc bot written in Python (2.6 / 2.7) with **FULL WHISPER SUPPORT** and more features than I care to count at this point. This implementation relies on the wonderful `twisted` (https://twistedmatrix.com/) package that allows for hot event-driven bot action over multiple sockets at once.
 
 ## Installation
-
-### Google API
-This is for saving logs to your Google Drive directory
-
-#### Python Quickstart
-
-Use the wizard at:
-
-https://console.developers.google.com/flows/enableapi?apiid=drive
-
-to get started creating your application and managing your auth flow.
-
-Once the Google Drive API is enabled, go the the "Credentials" tab in the
-Developer's Console.
-
-#### Add Credentials
-
-Click "Add Credentials" and generate an API Key (Server Key) and an OAuth
-2.0 Client ID (Other)
-
-Download your generated client_secret json file and rename it to
-"client_secrets.json" then place it in your project's root directory - PyDrive
-looks for this specific file in this specific place.
 
 ### Virtual Environment
 
