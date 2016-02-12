@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/singlerider/lorenzotherobot.svg?branch=master)](https://travis-ci.org/singlerider/lorenzotherobot) [![Circle CI](https://circleci.com/gh/singlerider/lorenzotherobot/tree/circle.svg?style=svg)](https://circleci.com/gh/singlerider/lorenzotherobot/tree/circle)
+[![Build Status](https://travis-ci.org/singlerider/lorenzotherobot.svg?branch=master)](https://travis-ci.org/singlerider/lorenzotherobot) [![Circle CI](https://circleci.com/gh/singlerider/lorenzotherobot/tree/master.svg?style=svg)](https://circleci.com/gh/singlerider/lorenzotherobot/tree/master)
 
 Try it out! Code is live at
 http://www.twitch.tv/curvyllama
@@ -6,7 +6,7 @@ http://www.twitch.tv/curvyllama
 
 # Lorenzotherobot
 
-This is a Twitch chat/irc bot written in Python (2.6 / 2.7).
+Introducing Lorenzo - a Twitch chat/irc bot written in Python (2.6 / 2.7) with **FULL WHISPER SUPPORT** and more features than I care to count at this point. This implementation relies on the wonderful `twisted` (https://twistedmatrix.com/) package that allows for hot event-driven bot action over multiple sockets at once.
 
 ## Installation
 
@@ -120,13 +120,13 @@ you'd like to run, then go into globals.py. Leave `CURRENT_CHANNEL`, `CURRENT_US
 
 So, what can the bot do? Here are a list of current commands in no particular
 order with a description of each (if one is needed):
-An asterisk (*) marks a moderator-only command
+An asterisk (\*) marks a moderator-only command
 
     !follower: !follower [username]
     !quote: !quote
     !opinion: !opinion
-    !llama: !llama [treats/shots/username]
-    !test: !test (this is a test command)
+    !llama: !llama ['treats'/'shots'/username/'list']
+    !release: !release [party_position_number_to_be_released] [your_username]
     !commands: !commands
     !arbitrary: !arbitrary ['number'/'emote']
     !addquote: !addquote [quote]
@@ -135,7 +135,6 @@ An asterisk (*) marks a moderator-only command
     !define: !define [insert_word_here]
     !tallgrass: !tallgrass [number_of_treats_to_sacrifice]
     !nickname: !nickname [position_to_update] [nickname(must not contain spaces)]
-    !winner: !winner
     !help: !help
     !popularity: !popularity [name_of_game]
     !followers: !followers
@@ -145,13 +144,13 @@ An asterisk (*) marks a moderator-only command
     !buy: !buy [item_number]
     !edit: !edit [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}")]
     !uptime: !uptime
-    !release: !release [party_position_number_to_be_released] [your_username]
+    !winner: !winner
     !add: !add [!command_name] [user_level (reg/mod)] [response (to add a custom user, use "{}") (to include message count, use "[]")]
     !donation: !donation [username] [dollar_amount]
     !party: !party [position_to_check(1-6)/'members'/username]
     !battle: !battle [position_to_battle_with] [opponent_username]
     !gift: !gift [username] [Pokemon_name/'item'] [starting_level/'item_number']
-    !rem: !rem [!command_name]]
+    !rem: !rem [!command_name]
     !leaderboard: !leaderboard
     !weather: !weather [units (metric/imperial)] [location (any format)]
     !treats: !treats [add/remove/set] [username] [number]
@@ -162,6 +161,7 @@ An asterisk (*) marks a moderator-only command
     !highlight: !highlight
     !redeem: !redeem [party_position_to_trade] [username_to_trade] [party_position_to_redeem_from_user]
     !loyalty: !loyalty [username]
+
 
 ## Make It Do
 
@@ -214,6 +214,7 @@ Built in are several work-in-progress functions for returning "random battles" o
 
     !catch
     !tallgrass [amount] (!tallgrass 1000)
+    !party
     !party ['members'/ username] (!party singlerider)
     !battle [party position] (!battle 1 lorenzotherobot)
     !leaderboard
@@ -222,6 +223,15 @@ Built in are several work-in-progress functions for returning "random battles" o
     !trade [party position] [desired pokemon] [desired level] (!trade 1 Bulbasaur 5)
     !redeem [party_position_to_trade] [username_to_trade] [party_position_to_redeem_from_user] (!redeem 2 singlerider 6)
 
+### Whispers
+
+If a user tries to type a message that is currently on a cooldown, the bot will whisper the user directly.
+It will inform them that they need to chill and how much more time they have until they can use it again.
+It will also let them know that they can just try to use the command in the whisper message itself.
+Users can type whatever they want to the bot and it will reply with quite a few responses defined in the
+`brain` directory using a language called `RiveScript` https://www.rivescript.com/ .
+There is also an API for quotes that the bot hits when it gets stumped so it sounds smart.
+The API is provided by http://forismatic.com/en/api/ .
 
 ### Llama
 

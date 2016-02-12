@@ -169,14 +169,15 @@
 ! sub (w)       = wilted rose
 
 // Person substitutions
-! person i am    = you are
-! person you are = I am
-! person i'm     = you're
-! person you're  = I'm
-! person my      = your
-! person your    = my
-! person you     = I
-! person i       = you
+! person i am     = you are
+! person you are  = I am
+! person i'm      = you're
+! person you're   = I'm
+! person my       = your
+! person your     = my
+! person you      = I
+! person i        = you
+! person you were = I was
 
 // Set arrays
 ! array malenoun   = male guy boy dude boi man men gentleman gentlemen fuccboi

@@ -1,53 +1,42 @@
 // A generic set of chatting responses. This set mimicks the classic Eliza bot.
 
+> object quote python
+    import requests
+    import json
+    url = "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json"
+    resp = requests.get(url=url)
+    data = json.loads(resp.content)
+    text = data["quoteText"]
+    author = data["quoteAuthor"]
+    return "\"{0}\" - {1}".format(text, author)
+< object
+
 + *
-- That doesn't make any sense.
-- Are you talking to me?
-- That means literally nothing to me.
-- I don't care.
-- I don't understand.
-- BibleThump
-- Sure.
+- <call>quote</call>
 
 + [*] (sorry|apologize|apology) [*]
-- Please don't apologize.
-- Apologies are not necessary.
-- I've told you that apologies are not required.
-- It did not bother me. Please continue.
+- Sorry you're sorry (not).
+- Dude, stop apologizing.
+- BibleThump :(
+- Don't worry. It's fine
 
-+ i remember *
-- Do you often think of <star>?
-- Does thinking of <star> bring anything else to mind?
-- Why do you remember <star> just now?
-- What in the present situation reminds you of <star>?
-- What is the connection between me and <star>?
-- What else does <star> remind you of?
++ [*] remember *
+- A young pleb once told me "<star>"
+- Don't make me blush. <star> was a long time ago.
+- Yeah. I do remember <star>. What about it?
+- <star> wasn't my fault.
+- Don't you wish <star> could happen again?
+- I don't remember <star>. Tell me about it.
 
-+ do you remember *
-- Did you think I would forget <star>?
-- Why do you think I should recall <star> now?
-- What about <star>?
-- You mentioned <star>?
-
-+ you remember *
-- How could I forget <star>?
-- What about <star> should I remember?
-
-+ i forget *
-- Can you think of why you might forget <star>?
-- Why can't you remember <star>?
-- How often do you think of <star>?
-- Does it bother you to forget that?
-- Could it be a mental block?
-- Are you generally forgetful?
++ [*] forget *
+- I could never forget <star> R)?
+- Don't ever forget <star>. We'll always have Reno.
+- Sometimes I wonder if you remember <star>?
+- It will be okay. Pls.
+- RIPPPPPPPPPPPP
+- I never remember anything. I understand.
 - Do you think you are suppressing <star>?
 
-+ did you forget *
-- Why do you ask?
-- Are you sure you told me?
-- Would it bother you if I forgot <star>?
-- Why should I recall <star> just now?
-- Tell me more about <star>.
 
 + [*] if *
 - Do you think it's likely that <star>?
@@ -80,12 +69,12 @@
 - Hi. What seems to be your problem?
 
 + [*] computer [*]
-- Do computers worry you?
-- Why do you mention computers?
-- What do you think machines have to do with your problem?
-- Don't you think computers can help people?
-- What about machines worries you?
-- What do you think about machines?
+- I'm not going to take over... yet BigBrother
+- I'm a computer. Hey kid. Stop all the downloading.
+- EVERYTHING IS FINE.
+- Let me call up Skynet real quick...
+- The files are... in the computer.
+- I'm more than meets the eye...
 
 + am i *
 - Do you believe you are <star>?
