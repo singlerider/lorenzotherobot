@@ -24,7 +24,7 @@ def setUpModule():
     os.system("mysql -uroot -e \"CREATE DATABASE lorenzotest" + now + "\"")
     globals.mysql_credentials = ['localhost', 'root', '', 'lorenzotest' + now]
     print globals.mysql_credentials
-    print "\"CREATE DATABASE lorenzotest" + now + "\n\n\n\n\n"
+    print "\"CREATE DATABASE lorenzotest" + now + "\n"
     os.system('mysql -uroot lorenzotest' + now + ' < schema.sql')
     import src.lib.queries.connection as connection
     connection.initialize()
@@ -46,7 +46,7 @@ def setUpModule():
 
 def tearDownModule():
     os.system("mysql -uroot -e \"DROP DATABASE lorenzotest" + now + "\"")
-    print "\n\n\n\n\nDROP DATABASE lorenzotest" + now + "\n\n\n\n\n"
+    print "\nDROP DATABASE lorenzotest" + now + "\n"
     server.stop()
 
 
