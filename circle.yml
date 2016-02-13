@@ -1,9 +1,10 @@
 machine:
   python:
     version: 2.7.10
-branches:
-  only:
-    - master
+general:
+  branches:
+    only:
+      - master
 dependencies:
   pre:
     - pip install -r requirements.txt

@@ -111,7 +111,7 @@ class Bot(irc.IRCClient):
                 channel == "#" + SUPERUSER or
                 channel == "#" + TEST_USER):
             if username == "twitchnotify":
-                check_for_sub(channel, username, message)
+                self.check_for_sub(channel, username, message)
             # TODO add spam detector here
         chan = channel.lstrip("#")
         if message[0] == "!":
