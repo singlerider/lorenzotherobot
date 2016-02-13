@@ -2,12 +2,14 @@
 
 Try it out! The Code is live at http://www.twitch.tv/curvyllama
 ===============================
-You can send a whisper by typing `/w Lorenzotherobot hi` into the chat!
+You can send a whisper by typing `/w Lorenzotherobot hi` into the chat (from any channel)!
 
 
 # Lorenzotherobot
 
-Introducing Lorenzo - a Twitch chat/irc bot written in Python (2.6 / 2.7) with **FULL WHISPER SUPPORT** and more features than I care to count at this point. This implementation relies on the wonderful `twisted` (https://twistedmatrix.com/) package that allows for hot event-driven bot action over multiple sockets at once.
+**_A bot with personality_**
+
+Introducing Lorenzo - a Twitch chat/irc bot written in `Python` (2.6 / 2.7) with **FULL WHISPER SUPPORT** and more features than I care to count at this point. This implementation relies on the wonderful `twisted` (https://twistedmatrix.com/) package that allows for hot event-driven bot action over multiple sockets at once.
 
 ## Installation
 
@@ -16,71 +18,100 @@ Introducing Lorenzo - a Twitch chat/irc bot written in Python (2.6 / 2.7) with *
 I would recommend running this in a virtual environment to keep your
 dependencies in check. If you'd like to do that, run:
 
-`sudo pip install virtualenv`
+```shell
+sudo pip install virtualenv
+```
 
 Followed by:
 
-`virtualenv venv`
+```shell
+virtualenv venv
+```
 
 This will create an empty virtualenv in your project directory in a folder
 called "venv." To enable it, run:
 
-`source venv/bin/activate`
+```shell
+source venv/bin/activate
+```
 
 and your console window will be in that virtualenv state. To deactivate, run:
 
-`deactivate`
+```shell
+deactivate
+```
 
 ### Dependencies
 
 To install all dependencies locally (preferably inside your activated
 virtualenv), run:
 
-`pip install -r requirements.txt`
+```shell
+pip install -r requirements.txt
+```
 
 ### Further Steps
 
 Make a copy of the example config file:
 
-`cp src/config/config_example.py src/config/config.py`
+```shell
+cp src/config/config_example.py src/config/config.py
+```
 
 Make a copy of the example globals file:
 
-`cp globals_example.py globals.py`
+```shell
+cp globals_example.py globals.py
+```
 
 #### MySQL Installation
 
 Depending on your distribution, starting the server will be different, on a mac, this is accomplished by doing
 
-`brew install mysql`
+```shell
+brew install mysql
+mysql.server start
+```
 
-`mysql.server start`
+##### Database Setup
 
 From here, you need to enter the mysql console as root:
 
-`mysql -u root`
+```shell
+mysql -u root
+```
 
-Create your database and name it whatever you want:
+Create your database and name it whatever you want (from within the `mysql` shell):
 
-`CREATE DATABASE databasename;`
+```sql
+CREATE DATABASE databasename;
+```
 
 Create a user that you will use to connect with the database with (you do not
 want to connect as root for security reasons) - replace "newuser" and
 "password" with whatever you'd like:
 
-`CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';`
+```sql
+CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+```
 
 Grant the appropriate privileges for your databases(s) to your new user:
 
-`GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';`
+```sql
+GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
+```
 
-Exit out of the console with:
+Exit out of the `mysql` shell with:
 
-`\q`
+```sql
+\q
+```
 
 Create your schema from my blank template:
 
-`mysql -u newuser -ppassword databasename < schema.sql`
+```shell
+mysql -u newuser -ppassword databasename < schema.sql
+```
 
 #### Globals and Config Files
 
@@ -92,7 +123,9 @@ you'd like to run, then go into globals.py. Leave `CURRENT_CHANNEL`, `CURRENT_US
 
 ### To run:
 
-`./serve.py`
+```shell
+./serve.py
+```
 
 ## Commands
 
@@ -127,7 +160,7 @@ An asterisk (\*) marks a moderator-only command
     !donation: !donation [username] [dollar_amount]
     !party: !party [position_to_check(1-6)/'members'/username]
     !battle: !battle [position_to_battle_with] [opponent_username]
-    !gift: !gift [username] [Pokemon_name/'item'] [starting_level/'item_number']
+    !gift: !gift [username] [pokemon_name/'item'] [starting_level/'item_number']
     !rem: !rem [!command_name]
     !leaderboard: !leaderboard
     !weather: !weather [units (metric/imperial)] [location (any format)]
@@ -186,9 +219,10 @@ If a command is not intended for use by moderators, there is no need for `'ul'` 
 
 a `'space_case'` is a special scenario where you would like a command to have a single argument, but no limits to the number of separate strings you can input. Normally, arguments are separated by spaces.
 
-### Pokemon
+### Pokémon
 
-Built in are several work-in-progress functions for returning "random battles" of the first generation of Pokemon. The idea, in the end is that a user will have a Pokemon assigned to them that they would catch as one is released randomly in the chat. Users will compete to be the first to catch the Pokemon with a separate command.
+Built in are several functions for battling first generation of Pokémon. Users can compete to be the first to `!catch` the randomly generated Pokémon and `!battle` each other in a social, multi-stream and whisper context.
+Users level up after winning a battle and they can `!evolve`, `!nickname`, `!trade`, and even `!check` their item inventory (inlcuding evolution stones and rare candies). Here are some Pokémon-specific commands:
 
     !catch
     !tallgrass [amount] (!tallgrass 1000)
@@ -213,7 +247,7 @@ The API is provided by http://forismatic.com/en/api/ .
 
 ### Llama
 
-The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a MySQL database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type "!llama <username>". If they would like to see a list of the top ten users in descending order, they would type "!llama list".
+The Llama family of features is associated with tracking user activity and returning it at will. The data is stored in a MySQL database. Every five minutes, if the streamer is currently streaming, points (or "treats") are added incrementally, one every time the function runs as a cron job. For a user to retrieve another user's or their own treats amount, the would type `!llama [username]`. If they would like to see a list of the top ten users in descending order, they would type "!llama list".
 
     !llama
     !llama ['treats'/username/'shots'/'list']
