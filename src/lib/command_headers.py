@@ -43,6 +43,13 @@ commands = {
         'ul': 'mod',
         'usage': '!shots [add/remove/set] [number]'
     },
+    '!wins': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 2,
+        'ul': 'mod',
+        'usage': '!wins [add/remove/set] [number]'
+    },
     '!help': {
         'limit': 15,
         'return': 'There is a super useful README for lorenzo at http://www.twitch.tv/lorenzotherobot',

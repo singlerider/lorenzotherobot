@@ -62,7 +62,7 @@ class Bot(irc.IRCClient):
         src.lib.command_headers.initalizeCommands(config)
 
     def dataReceived(self, data):
-        if data.split()[0] != "PING" or data.split()[1] != "PONG":
+        if data.split()[0] != "PING" and data.split()[1] != "PONG":
             print("->*" + data)
         if data.split()[1] == "WHISPER":
             user = data.split()[0].lstrip(":")
@@ -277,7 +277,7 @@ ask me directly?")
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
                               'welcome', 'rules', 'gt',
                               'llama', 'loyalty', 'uptime', 'highlight',
-                              'weather', 'treats']
+                              'weather', 'treats', 'wins']
             if command.lstrip("!") in prevented_list:
                 return
         result = commands.pass_to_function(command, args)
