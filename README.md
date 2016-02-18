@@ -146,6 +146,7 @@ So, what can the bot do? Here are a list of current commands in no particular or
 !treats: !treats [add/remove/set] [username] [number]
 !use: !use [item_position] [party_position]
 !shots: !shots [add/remove/set] [number]
+!wins: !wins [add/remove/set] [number]
 !evolve: !evolve [position_to_evolve]
 !report: !report [insert bug report text here]
 !highlight: !highlight
@@ -226,5 +227,5 @@ The Llama family of features is associated with tracking user activity and retur
 
 ```
 !llama
-!llama ['treats'/username/'shots'/'list']
+!llama ['treats'/username/'shots'/'list'/'wins']
 ```
