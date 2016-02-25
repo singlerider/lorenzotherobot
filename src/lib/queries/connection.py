@@ -119,5 +119,17 @@ def initialize():
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
                 """)
             cur.close()
+            cur = con.cursor()
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS `auth` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `channel` VARCHAR(50) NOT NULL UNIQUE,
+                    `twitch_oauth` VARCHAR(50),
+                    `twitchalerts_oauth` VARCHAR(50 ),
+                    `streamtip_oauth` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+                """)
+            cur.close()
 
 initialize()

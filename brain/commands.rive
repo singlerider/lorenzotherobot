@@ -43,6 +43,13 @@
     return party([query], username=username).replace("\n", " ")
 < object
 
+> object sub python
+    from src.lib.commands.sub import sub
+    username = rs.current_user()
+    args.append(username)
+    return sub(args).replace("\n", " ")
+< object
+
 + weather *
 - <call>whisper_weather <star1></call>
 
@@ -66,3 +73,6 @@
 
 + party *
 - <call>party_with_args <star1></call>
+
++ sub *
+- <call>sub <star1></call>

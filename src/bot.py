@@ -6,12 +6,14 @@ By Shane Engelman <me@5h4n3.com>
 Contributions from dustinbcox and theepicsnail
 """
 
+import json
 import re
 import sys
 import time
 
 import globals
 import lib.functions_commands as commands
+import requests
 import src.lib.command_headers
 import src.lib.rive as rive
 import src.lib.twitch as twitch
@@ -90,7 +92,15 @@ class Bot(irc.IRCClient):
 
     def clientConnectionLost(self, connector, reason):
         """If we get disconnected, reconnect to server."""
-        connector.connect()
+        if self.kind == "whisper":
+            whisper_url = "http://tmi.twitch.tv/servers?cluster=group"
+            whisper_resp = requests.get(url=whisper_url)
+            whisper_data = json.loads(whisper_resp.content)
+            socket = whisper_data["servers"][0].split(":")
+            WHISPER = [str(socket[0]), int(socket[1])]
+            reactor.connectTCP(WHISPER[0], WHISPER[1], BotFactory("whisper"))
+        else:
+            connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
         print "connection failed:", reason
@@ -134,7 +144,8 @@ class Bot(irc.IRCClient):
         resp = self.handle_command(
             part, channel, username, message)
         if resp:
-            self.msg(channel, resp.replace("\n", "").replace("\r", "") + "\r\n")
+            self.msg(channel, resp.replace(
+                "\n", "").replace("\r", "") + "\r\n")
 
     def whisper(self, user, channel, msg):
         msg = msg.lstrip("!")
@@ -181,14 +192,14 @@ class Bot(irc.IRCClient):
             if message_split[1] == "just" and len(message_split) < 4:
                 modify_user_points(subbed_user, 100)
                 resp = "/me {0} treats for {1} for a first \
-    time subscription!".format(100, subbed_user)
+time subscription!".format(100, subbed_user)
                 self.msg(channel, resp)
                 save_message(BOT_USER, channel, resp)
             elif message_split[1] == "subscribed" and len(message_split) < 9:
                 months_subbed = message_split[3]
                 modify_user_points(subbed_user, int(months_subbed) * 100)
                 resp = "/me {0} has just resubscribed for {1} \
-    months straight and is getting {2} treats for loyalty!".format(
+months straight and is getting {2} treats for loyalty!".format(
                     subbed_user, months_subbed, int(months_subbed) * 100)
                 self.msg(channel, resp)
                 save_message(BOT_USER, channel, resp)
@@ -200,11 +211,13 @@ class Bot(irc.IRCClient):
         if crons:
             for job in crons:
                 if job[1]:
-                    kwargs = {"delay": job[0], "callback": job[2], "channel": channel}
+                    kwargs = {"delay": job[0], "callback": job[
+                        2], "channel": channel}
 
                     def looping_call(kwargs):
                         time.sleep(kwargs["delay"])
-                        task.LoopingCall(self.cron_job, kwargs).start(kwargs["delay"])
+                        task.LoopingCall(self.cron_job, kwargs).start(
+                            kwargs["delay"])
                     threads.deferToThread(looping_call, kwargs)
                     continue
 
@@ -236,8 +249,8 @@ class Bot(irc.IRCClient):
                 " is on cooldown for " + str(
                     commands.get_cooldown_remaining(
                         command, channel)
-                    ) + " more seconds in " + channel.lstrip("#") +
-                        ". Can I help you?")
+                ) + " more seconds in " + channel.lstrip("#") +
+                ". Can I help you?")
             return
         if commands.check_has_user_cooldown(command):
             if commands.is_on_user_cooldown(command, channel, username):
@@ -301,7 +314,15 @@ class BotFactory(ClientFactory):
 
     def clientConnectionLost(self, connector, reason):
         """If we get disconnected, reconnect to server."""
-        connector.connect()
+        if self.kind == "whisper":
+            whisper_url = "http://tmi.twitch.tv/servers?cluster=group"
+            whisper_resp = requests.get(url=whisper_url)
+            whisper_data = json.loads(whisper_resp.content)
+            socket = whisper_data["servers"][0].split(":")
+            WHISPER = [str(socket[0]), int(socket[1])]
+            reactor.connectTCP(WHISPER[0], WHISPER[1], BotFactory("whisper"))
+        else:
+            connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
         print "connection failed:", reason

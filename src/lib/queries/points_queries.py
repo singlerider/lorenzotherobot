@@ -144,7 +144,8 @@ def get_all_user_points(username):  # gets all of a single user's points
                     points, (float(points) / 15)),
                 "You've saved up {0} whole treats. Better spend them before inflation makes them worthless".format(
                     points),
-                "{0} treats, okay? You never loved me, did you?".format(points),
+                "{0} treats, okay? You never loved me, did you?".format(
+                    points),
                 "{0}, but don't let it go to your head".format(points),
                 "You can find the number of treats you have on the back of the CD case. ({0})".format(
                     points),
