@@ -47,7 +47,7 @@ commands = {
         'limit': 0,
         'return': 'command',
         'argc': 2,
-        'ul': 'mod',
+        'optional': True,
         'usage': '!wins [add/remove/set] [number]'
     },
     '!help': {

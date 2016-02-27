@@ -37,6 +37,7 @@ PRIMARY_CHANNEL = "curvyllama"
 BOT_USER = "lorenzotherobot"
 SUPERUSER = "singlerider"
 TEST_USER = "theepicsnail_"
+EXTRA_CHANNEL = "newyork_triforce"
 
 CHANNEL = "#singlerider"
 SERVER = config["server"]
@@ -285,7 +286,8 @@ ask me directly?")
                     error_message = "{0} | {1} : {2}\n{3}\n{4}".format(
                         username, channel, command, user_data, error)
                     f.write(error_message)
-        approved_channels = [PRIMARY_CHANNEL, BOT_USER, SUPERUSER, TEST_USER]
+        approved_channels = [
+            PRIMARY_CHANNEL, BOT_USER, SUPERUSER, TEST_USER, EXTRA_CHANNEL]
         if globals.CURRENT_CHANNEL not in approved_channels:
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
                               'welcome', 'rules', 'gt',
