@@ -19,13 +19,6 @@ def llama(args):
                 " shots left. She's already dru... ResidentSleeper"
         else:
             return "No shots found. Donate before she goes crazy! DansGame"
-    elif grab_user == "wins":
-        wins_count = wins_import.readWins()
-        if wins_count != 0:
-            return str(wins_import.readWins()) + \
-                " total wins! PogChamp //"
-        else:
-            return "No wins. Please don't make fun of her. :("
     elif points_import.get_user_points(grab_user) is not None:
         rank_data = points_import.get_points_rank(grab_user)
         if rank_data is not None:

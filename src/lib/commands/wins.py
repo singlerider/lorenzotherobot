@@ -28,7 +28,7 @@ def wins(args):
     username = globals.CURRENT_USER
     channel = globals.CURRENT_CHANNEL
     if len(args) < 1:
-        return readWins(channel)[channel]
+        return "{0} has {1} BR wins now! curvyMLG".format(channel, readWins(channel)[channel])
     moderator = get_moderator(username, channel)
     if not moderator:
         return "You must be a moderator to do that."
@@ -53,4 +53,4 @@ def wins(args):
         return "Action must be \"add\" \"edit\" or \"set\""
     with open("wins.json", "w") as f:  # read changes.json
         f.write(json.dumps(current))
-    return "{0} total wins now!".format(current[channel])
+    return "{0} has {1} BR wins now! curvyMLG".format(channel, current[channel])
