@@ -181,10 +181,12 @@ class Bot(irc.IRCClient):
                 self.msg(channel, resp)
                 increment_command_counter(chan, message[0])
                 save_message(BOT_USER, channel, resp)
+                print("!->" + resp)
         elif elements[0] == "reg":
             self.msg(channel, resp)
             increment_command_counter(chan, message[0])
             save_message(BOT_USER, channel, resp)
+            print("!->" + resp)
 
     def check_for_sub(self, channel, username, message):
         try:

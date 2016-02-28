@@ -23,7 +23,7 @@ def llama(args):
         rank_data = points_import.get_points_rank(grab_user)
         if rank_data is not None:
             username, points, dense, rank = rank_data
-            return "With {points} donation treats, {username} is  #{rank}!".format(
+            return "With {points} treats, {username} is  #{rank}!".format(
                 username=username, points=points, rank=rank)
         else:
             return "User not found. That makes them the biggest loser!"
