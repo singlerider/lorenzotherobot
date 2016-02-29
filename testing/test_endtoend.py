@@ -2,16 +2,19 @@ import os
 import random
 import string
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from unittest import TestCase
 
 import globals
+import src
 import src.bot as bot_import
-import src.lib.functions_commands
+import src.config.config as config
+import src.lib.queries.connection as connection
 from mock import Mock, patch
 from src.bot import BotFactory
-from testing.TwitchIrc import (ALT_USER, MOD_USER, REG_USER, TEST_CHAN,
-                               TEST_CHANNEL, USERS)
+from src.lib.queries.moderator_queries import add_moderator, get_moderator
+from testing.TwitchIrc import (ALT_USER, CHANNELINFO, MOD_USER, REG_USER,
+                               TEST_CHAN, TEST_CHANNEL)
 from twisted.test import proto_helpers
 
 mock_time = Mock()
@@ -21,7 +24,7 @@ def add_time():
     if type(mock_time.return_value) != float:
         mock_time.return_value = time.mktime(datetime.now().timetuple())
     else:
-        mock_time.return_value = time.time() + 600
+        mock_time.return_value = time.time() + 1000
 
 
 API = False
@@ -32,8 +35,6 @@ server, client = None, None
 now = str(time.time()).replace(".", "")
 
 _channel = TEST_CHANNEL
-_username = MOD_USER
-_us = 'tbb'
 
 
 @patch('time.time', mock_time)
@@ -46,17 +47,18 @@ def setUpModule():
     fake_transport = proto_helpers.StringTransport()
     bot.makeConnection(fake_transport)
     bot.signedOn()
-    bot.joined(_channel)
+    bot.joined(TEST_CHANNEL)
     fake_transport.clear()
     os.system("mysql -uroot -e \"CREATE DATABASE lorenzotest\"")
     globals.mysql_credentials = ['localhost', 'root', '', 'lorenzotest']
     print globals.mysql_credentials
     print "\"CREATE DATABASE lorenzotest"
     os.system('mysql -uroot lorenzotest < schema.sql')
-    import src.lib.queries.connection as connection
     connection.initialize()
     bot_import.ECHOERS = {"whisper": whisper, "chat": bot}
-    globals.CHANNEL_INFO[MOD_USER]['viewers'] = USERS
+    globals.CHANNEL_INFO = CHANNELINFO
+    add_moderator(MOD_USER, MOD_USER)
+    config.channels_to_join.append("#" + MOD_USER)
     add_time()
 
 
@@ -92,18 +94,6 @@ def get_specific_output(user, cmd):
     return data
 
 
-def get_whisper_output(cmd):
-    whisper.whisper(MOD_USER, "#" + MOD_USER, cmd)
-    #sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
-    #line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
-    all_data = fake_transport.value()
-    data = all_data.lstrip(':{0}!{0}@{0}.tmi.twitch.tv PRIVMSG {1} :'.format(MOD_USER, MOD_USER))
-    print data
-    fake_transport.clear()
-    add_time()
-    return data
-
-
 def tearDownModule():
     os.system("mysql -uroot -e \"DROP DATABASE lorenzotest\"")
     print "\nDROP DATABASE lorenzotest"
@@ -130,7 +120,7 @@ class TestTreats(TestCase):
         get_mod_output("!treats add {reg_user} 1000".format(
             reg_user=REG_USER))  # ignore the bot response
 
-        after = get_whisper_output("!llama treats")
+        after = get_output("!llama treats")
         self.assertNotEqual(before, after)
 
     def test_treats_list(self):
@@ -139,9 +129,6 @@ class TestTreats(TestCase):
 
         get_mod_output("!treats add {reg_user} 1000".format(
             reg_user=REG_USER))  # ignore the bot response
-
-        treats_list = get_output("!llama list")
-        self.assertIn("|", treats_list)
 
 
 class TestShots(TestCase):
@@ -328,7 +315,7 @@ class TestCustomCommands(TestCase):
         message = get_mod_output("!testcommand1")
         self.assertIn(test_message, message)
 
-        added = get_mod_output("!add !test reg {test_message}".format(
+        added = get_mod_output("!add !help reg {test_message}".format(
             test_message=test_message))
         self.assertIn("already built in", added)
 

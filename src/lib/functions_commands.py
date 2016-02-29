@@ -43,8 +43,8 @@ def is_on_user_cooldown(command, channel, username):
     if username not in user_cooldowns["channels"][channel]["commands"][
             command]["users"]:
         return False
-    elif time.time() - user_cooldowns["channels"][channel]["commands"][
-            command]["users"][username] < commands[command]["user_limit"]:
+    elif abs(time.time() - user_cooldowns["channels"][channel]["commands"][
+            command]["users"][username]) < commands[command]["user_limit"]:
         return True
     return False
 

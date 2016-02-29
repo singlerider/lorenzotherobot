@@ -145,7 +145,7 @@ class Bot(irc.IRCClient):
         resp = self.handle_command(
             part, channel, username, message)
         if resp:
-            self.msg(channel, resp.replace(
+            self.msg(channel, str(resp).replace(
                 "\n", "").replace("\r", "") + "\r\n")
 
     def whisper(self, user, channel, msg):
@@ -164,6 +164,7 @@ class Bot(irc.IRCClient):
             line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
             echoer = ECHOERS["whisper"]
             echoer.sendLine(line)
+            return line
 
     def return_custom_command(self, channel, message, username):
         chan = channel.lstrip("#")
@@ -182,11 +183,13 @@ class Bot(irc.IRCClient):
                 increment_command_counter(chan, message[0])
                 save_message(BOT_USER, channel, resp)
                 print("!->" + resp)
+                return
         elif elements[0] == "reg":
             self.msg(channel, resp)
             increment_command_counter(chan, message[0])
             save_message(BOT_USER, channel, resp)
             print("!->" + resp)
+            return
 
     def check_for_sub(self, channel, username, message):
         try:

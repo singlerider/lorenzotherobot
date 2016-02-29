@@ -1,17 +1,10 @@
 global config
 
 import globals
-import src.lib.commands.advertisement as advertisement
-import src.lib.commands.party as party
 import src.lib.commands.pokemon as pokemon
-import src.lib.commands.poll as poll
-import src.lib.commands.trade as trade
 import src.lib.commands.treats as treats
-import src.lib.save_to_drive as save_to_drive
 
-save_to_drive.get_credentials()
-
-channels_to_join = ['#acarlton5']
+channels_to_join = ['#singlerider']
 
 for channel in channels_to_join:
     channel = channel.lstrip('#')
@@ -33,7 +26,7 @@ config = {
     # Cron jobs.
     'cron': {
         '#acarlton5': [
-            #time, run, callback
+            # time, run, callback
             (60, True, pokemon.cron),  # pokemon released every 20 minutes
             (600, True, treats.cron),  # treat handed out every 10 minutes
         ],
