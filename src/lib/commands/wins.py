@@ -12,12 +12,12 @@ def readWins(channel):
         with open("wins.json", "r+") as f:  # read changes.json
             previous = json.loads(f.read())
         count = previous.get(channel, None)
-        if count is None:
+        if count is None:  # pragma: no cover
             previous[channel] = 0
             with open("wins.json", "w") as f:  # read changes.json
                 f.write(json.dumps(previous))
         return previous
-    except Exception as error:
+    except Exception as error:  # pragma: no cover
         print error
         with open("wins.json", "w") as f:
             f.write("{}")
@@ -28,7 +28,8 @@ def wins(args):
     username = globals.CURRENT_USER
     channel = globals.CURRENT_CHANNEL
     if len(args) < 1:
-        return "{0} has {1} BR wins now! curvyMLG".format(channel, readWins(channel)[channel])
+        return "{0} has {1} BR wins now! curvyMLG".format(channel, readWins(
+            channel)[channel])
     moderator = get_moderator(username, channel)
     if not moderator:
         return "You must be a moderator to do that."
@@ -40,7 +41,7 @@ def wins(args):
         return "The amount to change must be a number!"
     current = readWins(channel)
     exists = current.get(channel, None)
-    if not exists:
+    if not exists:  # pragma: no cover
         current[channel] = 0
     if action == "add":
         print type(current[channel]), current[channel], type(delta), delta
@@ -53,4 +54,5 @@ def wins(args):
         return "Action must be \"add\" \"edit\" or \"set\""
     with open("wins.json", "w") as f:  # read changes.json
         f.write(json.dumps(current))
-    return "{0} has {1} BR wins now! curvyMLG".format(channel, current[channel])
+    return "{0} has {1} BR wins now! curvyMLG".format(
+        channel, current[channel])

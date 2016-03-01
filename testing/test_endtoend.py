@@ -1,5 +1,6 @@
 import os
 import random
+import re
 import string
 import time
 from datetime import datetime
@@ -9,6 +10,7 @@ import globals
 import src
 import src.bot as bot_import
 import src.config.config as config
+import src.lib.command_headers as cmds
 import src.lib.queries.connection as connection
 from mock import Mock, patch
 from src.bot import BotFactory
@@ -62,11 +64,18 @@ def setUpModule():
     add_time()
 
 
+def strip_data(user, all_data):
+    data = all_data.replace(
+        'PRIVMSG #{1} :({0}) : '.format(
+            user, MOD_USER), '').rstrip("\r\n")
+    return data
+
+
 @patch('time.time', mock_time)
 def get_output(cmd):
     str(bot.privmsg(REG_USER, "#" + MOD_USER, str(cmd)))
     all_data = str(fake_transport.value())
-    data = all_data.lstrip(':{0}!{0}@{0}.tmi.twitch.tv PRIVMSG {1} :'.format(REG_USER, MOD_USER))
+    data = strip_data(REG_USER, all_data)
     print data
     fake_transport.clear()
     add_time()
@@ -77,7 +86,7 @@ def get_output(cmd):
 def get_mod_output(cmd):
     bot.privmsg(MOD_USER, "#" + MOD_USER, cmd)
     all_data = fake_transport.value()
-    data = all_data.lstrip(':{0}!{0}@{0}.tmi.twitch.tv PRIVMSG {1} :'.format(MOD_USER, MOD_USER))
+    data = strip_data(MOD_USER, all_data)
     print data
     fake_transport.clear()
     add_time()
@@ -87,7 +96,7 @@ def get_mod_output(cmd):
 def get_specific_output(user, cmd):
     bot.privmsg(user, "#" + MOD_USER, cmd)
     all_data = fake_transport.value()
-    data = all_data.lstrip(':{0}!{0}@{0}.tmi.twitch.tv PRIVMSG {1} :'.format(user, MOD_USER))
+    data = strip_data(user, all_data)
     print data
     fake_transport.clear()
     add_time()
@@ -101,9 +110,18 @@ def tearDownModule():
 
 class TestCommands(TestCase):
 
-    def test_help_command(self):
-        commands = get_output('!help')
-        self.assertIn("useful", commands)
+    def test_simple_commands(self):
+        for cmd, desc in cmds.commands.items():
+            if desc['return'] != 'command':
+                out = get_output(cmd)
+                expected = " {msg}".format(
+                    chan=TEST_CHANNEL, user=REG_USER,
+                    msg=desc['return'].encode('utf-8'))
+                self.assertIn(out, expected)
+
+    def test_winner_command(self):
+        winner = get_output('!winner')
+        self.assertTrue(re.match(r'^[a-zA-Z0-9_]', winner))
 
 
 class TestTreats(TestCase):
@@ -145,6 +163,36 @@ class TestShots(TestCase):
         after = get_output("!llama shots")
 
         get_mod_output("!shots set 0")
+        self.assertNotEqual(before, after)
+
+
+class TestWins(TestCase):
+
+    def test_add_wins_normal_user(self):
+        resp = get_output("!wins set 10000")
+        self.assertIn("moderator", resp)
+
+    def test_wins_amount_must_be_a_number(self):
+        resp = get_mod_output("!wins set abcdefg")
+        self.assertIn("The amount to change must be a number!", resp)
+
+    def test_wins_action(self):
+        resp = get_mod_output("!wins abcdefg 5")
+        self.assertIn("Action must be \"add\" \"edit\" or \"set\"", resp)
+
+    def test_add_wins_mod(self):
+        before = get_output("!wins")
+
+        get_mod_output("!wins set 1")
+
+        get_mod_output("!wins add 3")
+
+        get_mod_output("!wins remove 1")
+
+        after = get_output("!wins")
+
+        get_mod_output("!wins set 0")
+
         self.assertNotEqual(before, after)
 
 
@@ -309,7 +357,16 @@ class TestCustomCommands(TestCase):
             test_message=test_message))
         self.assertIn("successfully added", added)
 
+        get_mod_output("!add !testcommand1 mod {test_message} []{{}}".format(
+            test_message=test_message))
+
+        get_mod_output("!add testcommand1 mod {test_message} []{{}}".format(
+            test_message=test_message))
+
         get_mod_output("!add !testcommand2 reg {test_message}".format(
+            test_message=test_message))
+
+        get_mod_output("!add !testcommand2 abcdefg {test_message}".format(
             test_message=test_message))
 
         message = get_mod_output("!testcommand1")
