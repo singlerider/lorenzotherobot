@@ -235,6 +235,11 @@ class TestPokemon(TestCase):
             reg_user=REG_USER))
         self.assertIn("Released", released)
 
+    def test_user_release_pokemon_verification(self):
+        status = get_output("!release 1 {mod_user}".format(
+            mod_user=MOD_USER))
+        self.assertIn("How to use", status)
+
     def test_party_full(self):
         for i in range(6):
             get_mod_output("!gift {reg_user} Bulbasaur 10".format(
@@ -249,8 +254,26 @@ class TestPokemon(TestCase):
                 position=i + 1, reg_user=REG_USER))
 
     def test_tallgrass(self):
+        result = get_mod_output("!tallgrass 1")
+        self.assertIn("need more treats", result)
+
         get_mod_output("!treats set {reg_user} 1000".format(
             reg_user=REG_USER))
+
+        get_mod_output("!treats set {mod_user} 1000".format(
+            mod_user=MOD_USER))
+
+        result = get_mod_output("!tallgrass 1")
+        self.assertIn("Dude, don't be cheap. Spare 5 treats.", result)
+
+        result = get_mod_output("!tallgrass 5")
+        self.assertIn("wild", result)
+
+        result = get_mod_output("!tallgrass 100")
+        self.assertIn("wild", result)
+
+        result = get_mod_output("!tallgrass 500")
+        self.assertIn("wild", result)
 
         treats = get_output("!llama {reg_user}".format(
             reg_user=REG_USER))
@@ -267,6 +290,15 @@ class TestPokemon(TestCase):
         released = get_output("!tallgrass 1000".format(
             reg_user=REG_USER))
         self.assertIn("need more treats", released)
+
+        released = get_output("!tallgrass 500".format(
+            reg_user=REG_USER))
+        self.assertIn("need more treats", released)
+
+        released = get_output("!tallgrass 99".format(
+            reg_user=REG_USER))
+        self.assertIn("need more treats", released)
+
 
     def test_battle(self):
         get_mod_output("!treats add {reg_user} 0".format(

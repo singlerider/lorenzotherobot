@@ -20,7 +20,6 @@ def user_is_moderator(username):
 def tallgrass(args):
     points_to_sacrifice = abs(int(args[0])) * -1
     username = globals.CURRENT_USER
-    weighted_choices = [(0, 1), (1, 20), (2, 50), (3, 100)]
     points = get_user_points(username)
     if type(points) != str:
         treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
