@@ -279,6 +279,9 @@ class TestPokemon(TestCase):
             reg_user=REG_USER))
         self.assertIn(" 1000", treats)
 
+        released = get_output("!tallgrass 501")
+        self.assertIn("You're in an open field", released)
+
         released = get_output("!tallgrass 1000".format(
             reg_user=REG_USER))
         self.assertIn("appeared", released)

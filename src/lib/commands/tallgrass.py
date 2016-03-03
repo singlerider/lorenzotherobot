@@ -69,6 +69,4 @@ def tallgrass(args):
                     return "Sorry, but you need more treats to do that."
             else:
                 return "Dude, don't be cheap. Spare 5 treats."
-        else:
-            return "Treats to sacrifice must be a number higher than 5."
     return "Sorry. That won't work. You need more treats! Stay tuned!"
