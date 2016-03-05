@@ -1,7 +1,6 @@
 import datetime
 from datetime import timedelta
 
-import globals
 from src.lib.queries.pokemon_queries import *
 
 
@@ -15,7 +14,8 @@ def cron(a=None):
     reset_timestamp()
 
 
-def trade(args):
+def trade(args, **kwargs):
+    username = kwargs.get("username", "testuser")
     trade_set_time = str(datetime.datetime.utcnow())
     party_position = args[0]
     pokemon_to_trade = args[1]
@@ -32,7 +32,7 @@ def trade(args):
                                 trade_set_time,
                                 asking_pokemon_id,
                                 asking_level,
-                                globals.CURRENT_USER,
+                                username,
                                 party_position)
                             return "Success. Your Pokemon has been set to 'tradable' for the next 24 hours. Use !check [username] to view your listing!"
                         else:

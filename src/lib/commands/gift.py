@@ -3,7 +3,7 @@ from src.lib.queries.points_queries import *
 from src.lib.queries.pokemon_queries import *
 
 
-def gift(args):
+def gift(args, **kwargs):
     username = str(args[0].lower())
     open_position, occupied_positions = find_open_party_positions(username)
     name = args[1]

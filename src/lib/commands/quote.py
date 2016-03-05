@@ -1,10 +1,9 @@
-import globals
 from src.lib.queries.quotes_queries import *
 
 
-def quote():
+def quote(**kwargs):
     q = Quotes()
-    channel = globals.CURRENT_CHANNEL
+    channel = kwargs.get("channel", "testchannel")
     # (1, u'testchannel', u'testuser', u'quote', 1, u'testgame')
     quote_data = q.get_quote(channel)
     if quote_data == 0:

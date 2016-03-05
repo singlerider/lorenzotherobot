@@ -1,17 +1,17 @@
-import globals
 import src.lib.command_headers as command_headers
-from src.lib.queries.command_queries import *
+from src.lib.queries.command_queries import edit_command
 
 
-def edit(args):
+def edit(args, **kwargs):
     command = args[0].lower()
     user_level = args[1]
     response = " ".join(args[2:])
-    creator = globals.CURRENT_USER
+    creator = kwargs.get("username", "testuser")
+    channel = kwargs.get("channel", "testchannel")
     if command[0] is "!":
         if command not in command_headers.commands:
             if user_level == "reg" or user_level == "mod":
-                return edit_command(command, creator, user_level, response)
+                return edit_command(command, creator, user_level, response, channel)
             else:
                 return "User level must be 'reg' or 'mod'"
         else:

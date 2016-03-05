@@ -1,11 +1,10 @@
-import globals
 from src.lib.twitch import *
 
 
-def highlight():
+def highlight(**kwargs):
     uptime = get_stream_uptime()
     form_url = "http://goo.gl/UyWYKg"
-    channel = globals.CURRENT_CHANNEL
+    channel = kwargs.get("channel", "testchannel")
     if get_stream_status():
         return "The current !uptime is '" + \
             str(uptime) + "'. Head to " + form_url + \

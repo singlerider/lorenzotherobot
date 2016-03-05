@@ -1,7 +1,6 @@
-import globals
 from src.lib.queries.pokemon_queries import *
 
 
-def buy(args):
+def buy(args, **kwargs):
     id = args[0]
-    return buy_items(id, globals.CURRENT_USER)
+    return buy_items(id, kwargs.get("username", "testuser"))

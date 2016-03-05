@@ -29,7 +29,7 @@ def treatsForAllTimer(channel, delta):
             return "Twitch's backend is down. Treats can't be added in this state. Moderators should monitor http://twitchstatus.com/ for updates."
 
 
-def treats(args):
+def treats(args, **kwargs):
     add_remove = args[0]
     delta_user = args[1].lower()
     try:

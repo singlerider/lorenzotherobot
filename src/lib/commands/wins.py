@@ -3,7 +3,6 @@ Developed Shane Engelman <me@5h4n3.com>
 """
 import json
 
-import globals
 from src.lib.queries.moderator_queries import get_moderator
 
 
@@ -24,9 +23,9 @@ def readWins(channel):
         return {}
 
 
-def wins(args):
-    username = globals.CURRENT_USER
-    channel = globals.CURRENT_CHANNEL
+def wins(args, **kwargs):
+    username = kwargs.get("username", "testuser")
+    channel = kwargs.get("channel", "testchannel")
     if len(args) < 1:
         return "{0} has {1} BR wins now! curvyMLG".format(channel, readWins(
             channel)[channel])

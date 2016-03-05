@@ -5,7 +5,7 @@ import requests
 from globals import weather_key
 
 
-def weather(args):
+def weather(args, **kwargs):
     remarks = ["That's pretty neat!", "How neat is that?"]
     units = args[0].lower()
     query = " ".join(args[1:]).lower()

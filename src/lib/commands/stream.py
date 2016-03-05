@@ -1,12 +1,12 @@
 import json
 
-import globals
 import requests
 
 
-def stream():
+def stream(**kwargs):
+    channel = kwargs.get("channel", "testchannel")
     get_offline_status_url = 'https://api.twitch.tv/kraken/channels/' + \
-        globals.CURRENT_CHANNEL
+        channel
     get_offline_status_resp = requests.get(url=get_offline_status_url)
     offline_data = json.loads(get_offline_status_resp.content)
 

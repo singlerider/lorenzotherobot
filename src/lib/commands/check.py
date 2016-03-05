@@ -1,8 +1,8 @@
-import globals
 from src.lib.queries.pokemon_queries import *
 
 
-def check(args):
+def check(args, **kwargs):
+    inquirer = kwargs.get("username", "testuser")
     if args[0] == 'trades':
         all_tradable_pokemon = show_all_tradable_pokemon()
         all_tradable_pokemon_comprehension = [
@@ -11,10 +11,8 @@ def check(args):
             pos,
             askingpoke,
             askinglevel in all_tradable_pokemon]
-        all_tradable_pokemon_set = set(
-            [x for x in all_tradable_pokemon_comprehension])
         return " | ".join(all_tradable_pokemon_comprehension)
-        #('singlerider', 'Vaporeon', 1, 'Psyduck', 14L)
+        # ('singlerider', 'Vaporeon', 1, 'Psyduck', 14L)
     elif args[0] == 'market':
         return show_all_pokemon_for_sale()
     elif args[0] == 'items':
@@ -23,7 +21,7 @@ def check(args):
             int(x), y, int(z)) for x, y, z in for_sale]
         return " | ".join(for_sale_comprehension)
     elif args[0] == 'inventory':
-        inventory = check_inventory(globals.CURRENT_USER)
+        inventory = check_inventory(inquirer)
         if len(inventory) > 0:
             inventory_comprehension = ["({}) {}, {}".format(
                 int(x), y, int(z)) for x, y, z in inventory]

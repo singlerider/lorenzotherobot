@@ -399,7 +399,7 @@ def show_all_pokemon_for_sale():
         cur.close()
 
 
-def show_user_pokemon_for_sale():
+def show_user_pokemon_for_sale(username):
     con = get_connection()
     with con:
         cur = con.cursor()
@@ -408,7 +408,7 @@ def show_user_pokemon_for_sale():
                 FROM userpokemon
                 INNER JOIN pokemon ON pokemon.id = userpokemon.pokemon_id
                 WHERE for_sale = 1 AND username = %s""", [
-                    globals.CURRENT_USER])
+                    username])
         cur.close()
 
 
@@ -424,7 +424,7 @@ def check_for_pokemon_for_sale():
         cur.close()
 
 
-def set_pokemon_as_for_sale():
+def set_pokemon_as_for_sale(username):
     con = get_connection()
     for_sale = 1
     asking_price = 5000
@@ -434,11 +434,11 @@ def set_pokemon_as_for_sale():
         UPDATE userpokemon
         SET for_sale = %s, asking_price = %s
         WHERE username = %s AND position = %s""", [
-            for_sale, asking_price, globals.CURRENT_USER, party_position])
+            for_sale, asking_price, username, party_position])
         cur.close()
 
 
-def update_asking_price():
+def update_asking_price(username):
     con = get_connection()
     asking_price = 4000
     with con:
@@ -446,14 +446,14 @@ def update_asking_price():
         cur.execute("""
             UPDATE userpokemon SET asking_price = %s
                 WHERE username = %s AND position = %s""", [
-                    asking_price, globals.CURRENT_USER, party_position])
+                    asking_price, username, party_position])
         cur.close()
 
 
-def sell_transaction():
+def sell_transaction(username):
     con = get_connection()
     seller = 'lorenzotherobot'
-    buyer = globals.CURRENT_USER
+    buyer = username
     open_position = 5
     with con:
         cur = con.cursor()

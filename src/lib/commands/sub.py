@@ -4,7 +4,7 @@ from src.lib.queries.moderator_queries import get_moderator
 import requests
 
 
-def sub(args):
+def sub(args, **kwargs):
     """
     Handled via whispers. Moderator status and usage must be handled here
     """

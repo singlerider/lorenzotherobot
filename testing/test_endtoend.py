@@ -325,13 +325,13 @@ class TestPokemon(TestCase):
         get_mod_output("!gift {test_chan} Charmander 10".format(
             test_chan=TEST_CHAN))
 
-        results = get_mod_output("!battle 1 {mod_user}".format(
-            mod_user=MOD_USER))
-        self.assertIn("You can't battle yourself", results)
-
         results = get_output("!battle 1 {alt_user}".format(
             alt_user=ALT_USER))
         self.assertIn("Your opponent must be in this channel", results)
+
+        results = get_mod_output("!battle 1 {mod_user}".format(
+            mod_user=MOD_USER))
+        self.assertIn("You can't battle yourself", results)
 
         results = get_mod_output("!battle 1 {reg_user}".format(
             reg_user=REG_USER))

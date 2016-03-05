@@ -27,7 +27,7 @@
     position = args[0]
     opponent = args[1]
     username = rs.current_user()
-    return battle([position, opponent], username=username).replace("\n", " ")
+    return battle([position, opponent], username=username, WHISPER=True).replace("\n", " ")
 < object
 
 > object party_no_args python

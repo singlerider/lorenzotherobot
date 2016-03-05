@@ -1,9 +1,8 @@
-import globals
 import src.lib.twitch as twitch
 from src.lib.queries.points_queries import *
 
 
-def donation(args):
+def donation(args, **kwargs):
     user = args[0].lower().lstrip("@")
     amount = args[1]
     try:

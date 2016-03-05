@@ -1,9 +1,7 @@
 import random
 
 
-def opinion():
-    usage = '!opinion'
-    '''Return a random entry from the shuffled list'''
+def opinion(**kwargs):
     answers = [
         'It is certain',
         'It is decidedly so',

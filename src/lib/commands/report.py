@@ -4,12 +4,12 @@ import globals
 import requests
 
 
-def report(args):  # pragma: no cover
+def report(args, **kwargs):  # pragma: no cover
     username = globals.GITHUB_AUTH[0]
     bot_repo = globals.GITHUB_AUTH[1]
     github_token = globals.GITHUB_AUTH[2]
-    reporter = globals.CURRENT_USER
-    channel = globals.CURRENT_CHANNEL
+    reporter = kwargs.get("username", "testuser")
+    channel = kwargs.get("channel", "testchannel")
     description = unicode(args[0])
     with requests.Session() as session:
         session.auth = (username, github_token)

@@ -3,7 +3,7 @@ import json
 import requests
 
 
-def define(args):
+def define(args, **kwargs):
     word = args[0].replace(' ', '%20')
     word_url = 'http://api.urbandictionary.com/v0/define?term=' + word
     word_resp = requests.get(url=word_url)

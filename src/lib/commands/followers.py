@@ -1,8 +1,8 @@
-import globals
 from src.lib.twitch import *
 
 
 def followers():
+    username = kwargs.get("username", "testuser")
     stream_followers = get_stream_followers()
     follower_list = str(
         stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(
@@ -18,7 +18,7 @@ def followers():
         "% of the last 100 followers have opted for notifications."
     follower_return = "Most recent followers: " + follower_list + ". "
     user_dict, all_users = get_dict_for_users()
-    if globals.CURRENT_USER in user_dict['chatters']['moderators']:
+    if username in user_dict['chatters']['moderators']:
         return follower_return + mod_return
     else:
         return follower_return

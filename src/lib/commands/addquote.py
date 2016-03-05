@@ -1,12 +1,11 @@
-import globals
 from src.lib.queries.quotes_queries import *
 from src.lib.twitch import *
 
 
-def addquote(args):
+def addquote(args, **kwargs):
     q = Quotes()
-    user = globals.CURRENT_USER
-    channel = globals.CURRENT_CHANNEL
+    user = kwargs.get("username", "testuser")
+    channel = kwargs.get("channel", "testchannel")
     quote = unicode(args[0].strip().strip("\"").strip("\'"), 'utf-8')
     if len(quote) > 200:
         return "Let's keep it below 200 characters?"

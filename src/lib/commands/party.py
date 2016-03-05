@@ -1,4 +1,3 @@
-import globals
 from src.lib.queries.pokemon_queries import *
 
 
@@ -7,9 +6,8 @@ def cron(a=None):
         str(get_user_party_info("lorenzotherobot"))
 
 
-def party(args, username=None):
-    if not username:
-        username = globals.CURRENT_USER
+def party(args, **kwargs):
+    username = kwargs.get("username", "testuser")
     if len(args) < 1:
         party_members = get_user_party_info(username)
         return party_members

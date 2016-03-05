@@ -4,9 +4,9 @@ from src.lib.queries.pokemon_queries import *
 from src.lib.twitch import get_dict_for_users
 
 
-def tallgrass_release(generated_pokemon):
-    globals.CHANNEL_INFO[globals.CURRENT_CHANNEL]['caught'] = False
-    globals.CHANNEL_INFO[globals.CURRENT_CHANNEL]['pokemon'] = generated_pokemon
+def tallgrass_release(generated_pokemon, channel):
+    globals.CHANNEL_INFO[channel]['caught'] = False
+    globals.CHANNEL_INFO[channel]['pokemon'] = generated_pokemon
     return "A wild " + generated_pokemon + " appeared!"
 
 
@@ -17,9 +17,10 @@ def user_is_moderator(username):
         return False
 
 
-def tallgrass(args):
+def tallgrass(args, **kwargs):
+    username = kwargs.get("username", "testuser")
+    channel = kwargs.get("channel", "testchannel")
     points_to_sacrifice = abs(int(args[0])) * -1
-    username = globals.CURRENT_USER
     points = get_user_points(username)
     if type(points) != str:
         treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
@@ -31,7 +32,8 @@ def tallgrass(args):
                 generated_pokemon = spawn_tallgrass(0)
                 if user_is_moderator(username) is False:
                     modify_user_points(username, points_to_sacrifice)
-                return tallgrass_release(generated_pokemon) + treats_removed
+                return tallgrass_release(
+                    generated_pokemon, channel) + treats_removed
             else:
                 return "Sorry, but you need more treats to do that."
         elif abs(points_to_sacrifice) >= 100:
@@ -41,7 +43,7 @@ def tallgrass(args):
                     if user_is_moderator(username) is False:
                         modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
-                        generated_pokemon) + treats_removed
+                        generated_pokemon, channel) + treats_removed
                 else:
                     return "Sorry, but you need more treats to do that."
             else:
@@ -54,7 +56,7 @@ def tallgrass(args):
                     if user_is_moderator(username) is False:
                         modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
-                        generated_pokemon) + treats_removed
+                        generated_pokemon, channel) + treats_removed
                 else:
                     return "Sorry, but you need more treats to do that."
             elif abs(points_to_sacrifice) > 4:
@@ -64,7 +66,7 @@ def tallgrass(args):
                     if user_is_moderator(username) is False:
                         modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
-                        generated_pokemon) + treats_removed
+                        generated_pokemon, channel) + treats_removed
                 else:
                     return "Sorry, but you need more treats to do that."
             else:

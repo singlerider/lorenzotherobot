@@ -91,16 +91,13 @@ class Bot(irc.IRCClient):
         if self.factory.kind == "chat":
             self.cron_initialize(BOT_USER, channel)
 
-
     def action(self, user, channel, data):
         pass
 
     def privmsg(self, user, channel, message):
         """Called when the bot receives a message."""
         username = user.split("!")[0].lstrip(":")
-        globals.CURRENT_USER = username
         chan = channel.lstrip("#")
-        globals.CURRENT_CHANNEL = chan
         if message == "shutdown":
             reactor.stop()
         print username, channel, message
@@ -280,14 +277,15 @@ ask me directly?")
                     f.write(error_message)
         approved_channels = [
             PRIMARY_CHANNEL, BOT_USER, SUPERUSER, TEST_USER, EXTRA_CHANNEL]
-        if globals.CURRENT_CHANNEL not in approved_channels:
+        if channel.lstrip("#") not in approved_channels:
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
                               'welcome', 'rules', 'gt',
                               'llama', 'loyalty', 'uptime', 'highlight',
                               'weather', 'treats', 'wins']
             if command.lstrip("!") in prevented_list:
                 return
-        result = commands.pass_to_function(command, args)
+        result = commands.pass_to_function(
+            command, args, username=username, channel=channel.lstrip("#"))
         commands.update_last_used(command, channel)
         if result:
             resp = '(%s) : %s' % (username, result)
@@ -308,7 +306,7 @@ class BotFactory(ClientFactory):
 
     def clientConnectionLost(self, connector, reason):
         """If we get disconnected, reconnect to server."""
-        print "EPIC DISCONNECTION"
+        print "disconnected:", reason
         if self.kind == "whisper":
             whisper_url = "http://tmi.twitch.tv/servers?cluster=group"
             whisper_resp = requests.get(url=whisper_url)

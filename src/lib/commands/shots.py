@@ -25,7 +25,7 @@ def writeShots(count):
         f.write(count)
 
 
-def shots(args):
+def shots(args, **kwargs):
     action = args[0]
     shots_count = readShots()
     try:

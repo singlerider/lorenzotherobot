@@ -24,7 +24,7 @@ def number():
     return num[random.randint(0, len(num) - 1)]
 
 
-def arbitrary(args):
+def arbitrary(args, **kwargs):
 
     if args[0] == "emote":
         return emote()

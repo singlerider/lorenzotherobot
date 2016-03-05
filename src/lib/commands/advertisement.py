@@ -6,7 +6,7 @@ def cron2(a=None):  # pragma: no cover
     return updates()
 
 
-def advertisement():  # pragma: no cover
+def advertisement(**kwargs):  # pragma: no cover
     return "If you like the designs and layouts, check out Nerdettedesigns's work at http://nerdettedesigns.com/"
 
 

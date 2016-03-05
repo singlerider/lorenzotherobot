@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import globals
 from src.lib.queries.connection import get_connection
 
 
@@ -43,14 +42,14 @@ def increment_command_counter(channel, command):
         return elements
 
 
-def save_command(command, creator, user_level, response):
+def save_command(command, creator, user_level, response, channel):
     con = get_connection()
-    command_fetch = get_custom_command(globals.CURRENT_CHANNEL, command)
+    command_fetch = get_custom_command(channel, command)
     if len(command_fetch) > 0:
-        if command_fetch[0][0] == globals.CURRENT_CHANNEL and command_fetch[
+        if command_fetch[0][0] == channel and command_fetch[
                 0][1] == command:
             return "{0} already exists in {1}'s channel!".format(
-                command, globals.CURRENT_CHANNEL)
+                command, channel)
     else:
         with con:
             cur = con.cursor()
@@ -58,17 +57,17 @@ def save_command(command, creator, user_level, response):
                 INSERT INTO custom_commands (
                     channel, command, creator, user_level, time, response, times_used
                     ) VALUES (%s, %s, %s, %s, %s, %s, 0)
-                    """, [globals.CURRENT_CHANNEL, command, creator, user_level,
+                    """, [channel, command, creator, user_level,
                           str(datetime.now()), response])
             cur.close()
             return "{0} successfully added".format(command)
 
 
-def edit_command(command, creator, user_level, response):
+def edit_command(command, creator, user_level, response, channel):
     con = get_connection()
-    command_fetch = get_custom_command(globals.CURRENT_CHANNEL, command)
+    command_fetch = get_custom_command(channel, command)
     if len(command_fetch) > 0:
-        if command_fetch[0][0] == globals.CURRENT_CHANNEL and command_fetch[
+        if command_fetch[0][0] == channel and command_fetch[
                 0][1] == command:
             with con:
                 cur = con.cursor()
@@ -77,31 +76,31 @@ def edit_command(command, creator, user_level, response):
                         SET response = %s, user_level = %s
                         WHERE command = %s AND channel = %s
                     """, [
-                    response, user_level, command, globals.CURRENT_CHANNEL])
+                    response, user_level, command, channel])
                 cur.close()
                 return "{0} successfully changed".format(command)
     else:
         return "{0} already exists in {1}'s channel!".format(
-            command, globals.CURRENT_CHANNEL)
+            command, channel)
 
 
-def delete_command(command):
+def delete_command(command, channel):
     con = get_connection()
-    command_fetch = get_custom_command(globals.CURRENT_CHANNEL, command)
+    command_fetch = get_custom_command(channel, command)
     if len(command_fetch) > 0:
-        if command_fetch[0][0] != globals.CURRENT_CHANNEL and command_fetch[
+        if command_fetch[0][0] != channel and command_fetch[
                 0][1] != command:
             return "{0} not found as a unique command in {1}'s channel!".format(
-                command, globals.CURRENT_CHANNEL)
+                command, channel)
         else:
             with con:
                 cur = con.cursor()
                 cur.execute(
                     """DELETE FROM custom_commands
                         WHERE command = %s AND channel = %s""", [
-                        command, globals.CURRENT_CHANNEL])
+                        command, channel])
                 cur.close()
                 return "{0} successfully removed".format(command)
     else:
         return "{0} not found as a command in {1}'s channel!".format(
-            command, globals.CURRENT_CHANNEL)
+            command, channel)

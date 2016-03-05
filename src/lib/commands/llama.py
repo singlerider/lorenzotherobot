@@ -1,17 +1,17 @@
 import src.lib.commands.shots as shots_import
-import src.lib.commands.wins as wins_import
 import src.lib.queries.points_queries as points_import
 from src.lib.twitch import *
 
 
-def llama(args):
+def llama(args, **kwargs):
+    username = kwargs.get("username", "testuser")
     if len(args) < 1:
-        return points_import.get_all_user_points(globals.CURRENT_USER)
+        return points_import.get_all_user_points(username)
     grab_user = args[0].lower()
     if grab_user == "list":
         return points_import.get_points_list()
     elif grab_user == "treats":
-        return points_import.get_all_user_points(globals.CURRENT_USER)
+        return points_import.get_all_user_points(username)
     elif grab_user == "shots":
         shot_count = shots_import.readShots()
         if shot_count != 0:
