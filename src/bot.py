@@ -314,8 +314,10 @@ class BotFactory(ClientFactory):
             socket = whisper_data["servers"][0].split(":")
             WHISPER = [str(socket[0]), int(socket[1])]
             reactor.connectTCP(WHISPER[0], WHISPER[1], BotFactory("whisper"))
+            self.clientConnection.disconnect()
             connector.connect()
         else:
+            self.clientConnection.disconnect()
             connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
