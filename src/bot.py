@@ -109,23 +109,17 @@ class Bot(object):
             part, channel, username, message)
         if resp:
             self.IRC.send_message(channel, resp)
+        return
 
-    def whisper(self, user, channel, msg):
-        msg = msg.lstrip("!")
-        if "!" not in user:
-            channel = user
-            resp = msg
-            username = user
-        else:
-            username = user.split("!")[0].lstrip(":")
-            resp = rive.Conversation(self).run(BOT_USER, username, msg)[:350]
-        save_message(username, "WHISPER", msg)
+    def whisper(self, username, channel, message):
+        message = str(message.lstrip("!"))
+        resp = rive.Conversation(self).run(username, message)[:350]
+        save_message(username, "WHISPER", message)
         if resp:
+            print resp
             save_message(BOT_USER, "WHISPER", resp)
-            sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
-            line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
-            self.IRC.send_whisper(BOT_USER, resp)
-            return line
+            self.IRC.send_whisper(username, str(resp))
+            return
 
     def handle_command(self, command, channel, username, message):
         if command == message:

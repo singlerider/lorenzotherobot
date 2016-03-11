@@ -36,22 +36,14 @@ class IRC:
 
         line, self.ircBuffer[kind] = self.ircBuffer[kind].split("\r\n", 1)
 
-        if line is not None and not self.check_for_userstate(line):
+        if line is not None:
             if line.startswith("PING"):
                 self.sock[kind].send(line.replace("PING", "PONG") + "\r\n")
-            else:
-                print line
             return line
-
-    def check_for_userstate(self, data):
-        # :tmi.twitch.tv USERSTATE #lorenzotherobot
-        if re.match(r'^:+(\.tmi\.twitch\.tv|\.testserver\.local) USERSTATE #[a-zA-Z0-9_].+$', data):
-            return True
 
     def check_for_message(self, data):
         if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
             return True
-        # :singlerider!singlerider@singlerider.tmi.twitch.tv WHISPER duck__butter :hello
 
     def check_for_whisper(self, data):
         if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) WHISPER [a-zA-Z0-9_]+ :.+$', data):
@@ -128,7 +120,7 @@ class IRC:
             return
 
         if isinstance(message, basestring):
-            self.sock["whisper"].send('PRIVMSG %s :%s\r\n' % (recipient, message))
+            self.sock["whisper"].send('PRIVMSG #jtv :/w %s %s\r\n' % (recipient, message))
 
         if type(message) == list:
             for line in message.decode("utf8"):

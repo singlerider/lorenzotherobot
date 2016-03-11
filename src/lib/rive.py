@@ -14,9 +14,7 @@ class Conversation(Thread):
         self.daemon = True
         self.chat = chat
 
-    def run(self, user, username, message):
-        user = "{user}!{user}@{user}.tmi.twitch.tv".format(user=user)
-        line = ":%s PRIVMSG #jtv :/w %s %s" % (user, username, message)
+    def run(self, username, message):
         reply = bot.reply(username, message)
         if reply == "[ERR: No reply matched]":
             return
