@@ -229,13 +229,13 @@ months straight and is getting {2} treats for loyalty!".format(
                 whisper_data = self.IRC.nextMessage("whisper")
                 received_message = self.IRC.check_for_message(chat_data)
                 received_whisper = self.IRC.check_for_whisper(whisper_data)
-                if not received_message or not received_whisper:
+                if not received_message and not received_whisper:
                     continue
                 if received_message:
                     data = chat_data
                 if received_whisper:
                     data = whisper_data
-                message_dict = self.IRC.get_message(data)
+                message_dict = data
                 channel = message_dict.get('channel')
                 message = message_dict.get('message')
                 username = message_dict.get('username')

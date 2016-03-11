@@ -20,7 +20,7 @@ class IRC:
         self.ircBuffer["whisper"] = ""
         self.ircBuffer["chat"] = ""
         self.connect("whisper")
-        # self.connect("chat")
+        self.connect("chat")
 
     def nextMessage(self, kind):
         if "\r\n" not in self.ircBuffer[kind]:
@@ -30,7 +30,7 @@ class IRC:
                 self.sock[kind].shutdown
                 self.sock[kind].close
                 self.connect("whisper")  # Reconnect.
-                # self.connect("chat")
+                self.connect("chat")
             else:
                 self.ircBuffer[kind] += read
 
@@ -184,6 +184,7 @@ class IRC:
             self.sock[kind].send('JOIN %s\r\n' % channels)
         else:
             pp("Joining whisper server")
+            self.sock[kind].send("CAP REQ :twitch.tv/commands\r\n")
         pp('Joined channels.')
 
     def leave_channels(self, channels, kind):
