@@ -82,7 +82,6 @@ class Bot(object):
             return
 
     def privmsg(self, username, channel, message):
-        print username, channel, message
         if (channel == "#" + PRIMARY_CHANNEL or
                 channel == "#" + SUPERUSER or
                 channel == "#" + TEST_USER):
@@ -223,27 +222,34 @@ months straight and is getting {2} treats for loyalty!".format(
 
     def run(self):
 
-        while True:
-            try:
-                chat_data = self.IRC.nextMessage("chat")
-                whisper_data = self.IRC.nextMessage("whisper")
-                received_message = self.IRC.check_for_message(chat_data)
-                received_whisper = self.IRC.check_for_whisper(whisper_data)
-                if not received_message and not received_whisper:
-                    continue
-                if received_message:
-                    data = chat_data
-                if received_whisper:
-                    data = whisper_data
+        def get_incoming_data(kind):
+            data = self.IRC.nextMessage(kind)
+            if kind == "chat":
+                message = self.IRC.check_for_message(data)
+            if kind == "whisper":
+                message = self.IRC.check_for_whisper(data)
+            if not message:
+                return
+            if message:
+                if kind == "chat":
+                    data = self.IRC.get_message(data)
+                if kind == "whisper":
+                    data = self.IRC.get_whisper(data)
                 message_dict = data
                 channel = message_dict.get('channel')
                 message = message_dict.get('message')
                 username = message_dict.get('username')
+                print username, channel, message
                 chan = channel.lstrip("#")
-                if received_message:
+                if message and kind == "chat":
                     self.privmsg(username, channel, message)
-                if received_whisper:
-                    print "WHISPER RECEIVED"
+                if message and kind == "whisper":
                     self.whisper(username, channel, message)
+            return
+
+        while True:
+            try:
+                thread.start_new_thread(get_incoming_data, ("chat", ))
+                thread.start_new_thread(get_incoming_data, ("whisper", ))
             except Exception as error:
                 pass

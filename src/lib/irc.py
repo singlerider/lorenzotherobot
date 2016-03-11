@@ -36,13 +36,17 @@ class IRC:
 
         line, self.ircBuffer[kind] = self.ircBuffer[kind].split("\r\n", 1)
 
-        if line is not None:
-            print line
-
+        if line is not None and not self.check_for_userstate(line):
             if line.startswith("PING"):
                 self.sock[kind].send(line.replace("PING", "PONG") + "\r\n")
-
+            else:
+                print line
             return line
+
+    def check_for_userstate(self, data):
+        # :tmi.twitch.tv USERSTATE #lorenzotherobot
+        if re.match(r'^:+(\.tmi\.twitch\.tv|\.testserver\.local) USERSTATE #[a-zA-Z0-9_].+$', data):
+            return True
 
     def check_for_message(self, data):
         if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
@@ -79,12 +83,16 @@ class IRC:
         last_ping = time.time()
         if data.find('PING') != -1:
             self.sock[kind].send('PONG ' + data.split()[1] + '\r\n')
+            print "PONG"
             last_ping = time.time()
         if (time.time() - last_ping) > threshold:
             sys.exit()
 
     def get_message(self, data):
         return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
+
+    def get_whisper(self, data):
+        return re.match(r'^:(?P<username>.*?)!.*?WHISPER (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
 
     def check_login_status(self, data):
         if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
@@ -137,11 +145,11 @@ class IRC:
             whisper_data = json.loads(whisper_resp.content)
             server = whisper_data["servers"][0].split(":")
             WHISPER = [str(server[0]), int(server[1])]
-            print "Connecting to {}:{}".format(WHISPER[0], WHISPER[1])
+            print "Connecting to {0}:{1}".format(WHISPER[0], WHISPER[1])
             self.connect_phases(sock, WHISPER[0], WHISPER[1], kind)
             self.join_channels([], kind)
         if kind == "chat":
-            print "Connecting to {}:{}".format(self.config['server'], self.config['port'])
+            print "Connecting to {0}:{1}".format(self.config['server'], self.config['port'])
             self.connect_phases(sock, self.config['server'], self.config['port'], kind)
             self.join_channels(self.channels_to_string(self.config['channels']), kind)
         # except Exception as error:
@@ -166,9 +174,9 @@ class IRC:
         #:tmi.twitch.tv NOTICE * :Login unsuccessful
         # or
         # :tmi.twitch.tv 001 theepicsnail :Welcome, GLHF!
-        if "unsuccessful" in loginMsg:
-            print "Failed to login. Check your oath_password and username in src/config/config.py"
-            sys.exit(1)
+        # if "unsuccessful" in loginMsg:
+        #     print "Failed to login. Check your oath_password and username in src/config/config.py"
+        #     sys.exit(1)
 
         # Wait until we're ready before starting stuff.
         if kind == "chat":
@@ -182,7 +190,7 @@ class IRC:
         if kind == "chat":
             pp('Joining channels %s.' % channels)
             self.sock[kind].send('JOIN %s\r\n' % channels)
-        else:
+        if kind == "whisper":
             pp("Joining whisper server")
             self.sock[kind].send("CAP REQ :twitch.tv/commands\r\n")
         pp('Joined channels.')
