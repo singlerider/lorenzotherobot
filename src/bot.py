@@ -9,9 +9,9 @@ Contributions from dustinbcox and theepicsnail
 import json
 import re
 import sys
+import thread
 import time
 
-import globals
 import lib.functions_commands as commands
 import requests
 import src.lib.command_headers
@@ -24,9 +24,7 @@ from src.lib.queries.message_queries import save_message
 from src.lib.queries.moderator_queries import get_moderator
 from src.lib.queries.points_queries import *
 from src.lib.twitch import get_dict_for_users
-from twisted.internet import reactor, task, threads
-from twisted.internet.protocol import ClientFactory
-from twisted.words.protocols import irc
+from src.lib.irc import IRC
 
 pattern = re.compile('[\W_]+')
 
@@ -47,12 +45,17 @@ PASSWORD = config["oauth_password"]
 ECHOERS = {}
 
 
-def ban_for_spam(channel, user):
-    ban = "/ban {0}".format(user)
-    unban = "/unban {0}".format(user)
-    self.msg(channel, ban)
-    self.msg(channel, unban)
-    save_message(BOT_USER, channel, message)
+class Bot(object):
+
+    def __init__(self, config, kind):
+        self.kind = kind
+        self.IRC = IRC(config, self.kind)
+        self.nickname = NICKNAME
+        self.password = PASSWORD
+        self.config = config
+        self.crons = self.config.get("cron", {})
+        src.lib.command_headers.initalizeCommands(config)
+        ECHOERS[self.kind] = self.IRC
 
 
 class Bot(irc.IRCClient):
@@ -71,8 +74,8 @@ class Bot(irc.IRCClient):
             user = data.split()[0].lstrip(":")
             channel = user.split("!")[0]
             msg = " ".join(data.split()[3:]).lstrip(":")
-            self.whisper(user, channel, msg)
-        irc.IRCClient.dataReceived(self, data)
+            thread.start_new_thread(self.whisper, (user, channel, msg))
+        thread.start_new_thread(irc.IRCClient.dataReceived, (self, data))
 
     def signedOn(self):
         print("\033[91mYOLO, I was signed on to the server!!!\033[0m")
@@ -308,16 +311,11 @@ class BotFactory(ClientFactory):
         """If we get disconnected, reconnect to server."""
         print "disconnected:", reason
         if self.kind == "whisper":
-            whisper_url = "http://tmi.twitch.tv/servers?cluster=group"
-            whisper_resp = requests.get(url=whisper_url)
-            whisper_data = json.loads(whisper_resp.content)
-            socket = whisper_data["servers"][0].split(":")
-            WHISPER = [str(socket[0]), int(socket[1])]
+            reactor.stop()
             reactor.connectTCP(WHISPER[0], WHISPER[1], BotFactory("whisper"))
-            self.clientConnection.disconnect()
             connector.connect()
         else:
-            self.clientConnection.disconnect()
+            connector.disconnect()
             connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
