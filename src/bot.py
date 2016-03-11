@@ -6,25 +6,24 @@ By Shane Engelman <me@5h4n3.com>
 Contributions from dustinbcox and theepicsnail
 """
 
-import json
 import re
 import sys
 import thread
 import time
 
 import lib.functions_commands as commands
-import requests
 import src.lib.command_headers
+import src.lib.cron as cron
 import src.lib.rive as rive
 import src.lib.twitch as twitch
 from lib.functions_general import *
 from src.config.config import channels_to_join, config
+from src.lib.irc import IRC
 from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.moderator_queries import get_moderator
 from src.lib.queries.points_queries import *
 from src.lib.twitch import get_dict_for_users
-from src.lib.irc import IRC
 
 pattern = re.compile('[\W_]+')
 
@@ -47,18 +46,15 @@ ECHOERS = {}
 
 class Bot(object):
 
-    def __init__(self, kind):
-        self.kind = kind
-        self.IRC = IRC(config, self.kind)
+    def __init__(self):
+        self.IRC = IRC(config)
         self.nickname = NICKNAME
         self.password = PASSWORD
-        if self.kind == "chat":
-            self.config = config
-            self.crons = self.config.get("cron", {})
-            src.lib.command_headers.initalizeCommands(config)
-        ECHOERS[self.kind] = self.IRC
-        print "DONE A THING"
-        thread.start_new_thread(self.run(), ())
+        self.config = config
+        self.crons = self.config.get("cron", {})
+        cron.initialize(self.IRC, self.crons)
+        src.lib.command_headers.initalizeCommands(config)
+        self.run()
 
     def return_custom_command(self, channel, message, username):
         chan = channel.lstrip("#")
@@ -129,8 +125,7 @@ class Bot(object):
             save_message(BOT_USER, "WHISPER", resp)
             sender = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
             line = ":%s PRIVMSG #jtv :/w %s %s" % (sender, channel, resp)
-            echoer = ECHOERS["whisper"]
-            echoer.sendLine(line)
+            self.IRC.send_whisper(BOT_USER, resp)
             return line
 
     def handle_command(self, command, channel, username, message):
@@ -205,70 +200,6 @@ ask me directly?")
             return resp[:350]
             save_message(BOT_USER, channel, resp)  # pragma: no cover
 
-    def run(self):
-
-        while True:
-            try:
-                data = self.IRC.nextMessage()
-                if not self.IRC.check_for_message(data):
-                    continue
-                message_dict = self.IRC.get_message(data)
-                channel = message_dict.get('channel')
-                message = message_dict.get('message')
-                username = message_dict.get('username')
-                chan = channel.lstrip("#")
-                if self.kind == "chat":
-                    self.privmsg(username, channel, message)
-            except Exception as error:
-                print error
-
-
-
-
-class Fart:
-
-    def __init__(self):
-        self.nickname = NICKNAME
-        self.password = PASSWORD
-        self.config = config
-        self.crons = self.config.get("cron", {})
-        src.lib.command_headers.initalizeCommands(config)
-
-    def dataReceived(self, data):
-        if data.split()[0] != "PING" and data.split()[1] != "PONG":
-            print("->*" + data)
-        if data.split()[1] == "WHISPER":
-            user = data.split()[0].lstrip(":")
-            channel = user.split("!")[0]
-            msg = " ".join(data.split()[3:]).lstrip(":")
-            thread.start_new_thread(self.whisper, (user, channel, msg))
-        thread.start_new_thread(irc.IRCClient.dataReceived, (self, data))
-
-    def signedOn(self):
-        print("\033[91mYOLO, I was signed on to the server!!!\033[0m")
-        if self.factory.kind == "whisper":
-            self.sendLine("CAP REQ :twitch.tv/commands")
-        if self.factory.kind == "chat":
-            for channel in channels_to_join:
-                self.joinChannel(channel)
-        ECHOERS[self.factory.kind] = self
-
-    def joinChannel(self, channel):
-        self.join(channel)
-        return
-
-    def joined(self, channel):
-        if self.factory.kind == "chat":
-            self.cron_initialize(BOT_USER, channel)
-
-    def action(self, user, channel, data):
-        pass
-
-    def privmsg(self, user, channel, message):
-        """Called when the bot receives a message."""
-
-
-
     def check_for_sub(self, channel, username, message):
         try:
             message_split = message.rstrip("!").split()
@@ -290,27 +221,29 @@ months straight and is getting {2} treats for loyalty!".format(
         except Exception as error:  # pragma: no cover
             print error
 
-    def cron_initialize(self, user, channel):
-        crons = self.crons.get(channel, None)
-        if crons:
-            for job in crons:
-                if job[1]:
-                    kwargs = {"delay": job[0], "callback": job[
-                        2], "channel": channel}
+    def run(self):
 
-                    def looping_call(kwargs):
-                        time.sleep(kwargs["delay"])
-                        task.LoopingCall(self.cron_job, kwargs).start(
-                            kwargs["delay"])
-                    threads.deferToThread(looping_call, kwargs)
+        while True:
+            try:
+                chat_data = self.IRC.nextMessage("chat")
+                whisper_data = self.IRC.nextMessage("whisper")
+                received_message = self.IRC.check_for_message(chat_data)
+                received_whisper = self.IRC.check_for_whisper(whisper_data)
+                if not received_message or not received_whisper:
                     continue
-
-    def cron_job(self, kwargs):
-        channel = kwargs["channel"]
-        resp = kwargs["callback"](kwargs["channel"])
-        if resp:
-            user = "{user}!{user}@{user}.tmi.twitch.tv".format(user=BOT_USER)
-            line = ":{user} PRIVMSG {channel} :{message}".format(
-                user=user, channel=channel, message=resp)
-            print "<*>" + line
-            self.transport.write(line + "\r\n")
+                if received_message:
+                    data = chat_data
+                if received_whisper:
+                    data = whisper_data
+                message_dict = self.IRC.get_message(data)
+                channel = message_dict.get('channel')
+                message = message_dict.get('message')
+                username = message_dict.get('username')
+                chan = channel.lstrip("#")
+                if received_message:
+                    self.privmsg(username, channel, message)
+                if received_whisper:
+                    print "WHISPER RECEIVED"
+                    self.whisper(username, channel, message)
+            except Exception as error:
+                pass
