@@ -1,10 +1,12 @@
 # encoding=utf8
-import socket
+import json
 import re
-import time
+import socket
 import sys
-from functions_general import *
+import time
+
 import requests
+from functions_general import *
 
 threshold = 5 * 60  # five minutes, make this whatever you want
 
@@ -29,7 +31,6 @@ class IRC:
 
         line, self.ircBuffer = self.ircBuffer.split("\r\n", 1)
 
-        print ">>", line
         if line.startswith("PING"):
             self.sock.send(line.replace("PING", "PONG") + "\r\n")
 
@@ -103,16 +104,17 @@ class IRC:
                 whisper_url = "http://tmi.twitch.tv/servers?cluster=group"
                 whisper_resp = requests.get(url=whisper_url)
                 whisper_data = json.loads(whisper_resp.content)
-                socket = whisper_data["servers"][0].split(":")
-                WHISPER = [str(socket[0]), int(socket[1])]
+                server = whisper_data["servers"][0].split(":")
+                WHISPER = [str(server[0]), int(server[1])]
                 print "Connecting to {}:{}".format(WHISPER[0], WHISPER[1])
                 sock.connect((WHISPER[0], WHISPER[1]))
             else:
                 print "Connecting to {}:{}".format(self.config['server'], self.config['port'])
                 sock.connect((self.config['server'], self.config['port']))
-        except:
-            pp('Cannot connect to server (%s:%s).' %
-               (self.config['server'], self.config['port']), 'error')
+        except Exception as error:
+            pp(
+                'Cannot connect to server (%s:%s).' %
+                (self.config['server'], self.config['port']), error)
             sys.exit()
 
         sock.settimeout(None)
@@ -141,10 +143,14 @@ class IRC:
 
     def join_channels(self, channels):
         pp('Joining channels %s.' % channels)
-        self.sock.send('JOIN %s\r\n' % channels)
+        if self.kind == "chat":
+            self.sock.send('JOIN %s\r\n' % channels)
+        else:
+            self.sock.send("CAP REQ :twitch.tv/commands")
         pp('Joined channels.')
 
     def leave_channels(self, channels):
         pp('Leaving channels %s,' % channels)
-        self.sock.send('PART %s\r\n' % channels)
+        if self.kind == "chat":
+            self.sock.send('PART %s\r\n' % channels)
         pp('Left channels.')
