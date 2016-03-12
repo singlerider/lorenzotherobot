@@ -10,7 +10,7 @@ import re
 import sys
 import thread
 import time
-
+from multiprocessing import Process
 import lib.functions_commands as commands
 import src.lib.command_headers
 import src.lib.cron as cron
@@ -134,8 +134,8 @@ class Bot(object):
             pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
                 command, username, commands.get_cooldown_remaining(
                     command, channel)), channel)
-            self.whisper(
-                username, channel,  "Sorry! " + command +
+            self.IRC.send_whisper(
+                username, "Sorry! " + command +
                 " is on cooldown for " + str(
                     commands.get_cooldown_remaining(
                         command, channel)
@@ -144,8 +144,8 @@ class Bot(object):
             return
         if commands.check_has_user_cooldown(command):
             if commands.is_on_user_cooldown(command, channel, username):
-                self.whisper(
-                    username, channel, "Slow down! Try " + command +
+                self.IRC.send_whisper(
+                    username, "Slow down! Try " + command +
                     " in " + channel.lstrip("#") + " in another " + str(
                         commands.get_user_cooldown_remaining(
                             command, channel, username)) + " seconds or just \
@@ -168,7 +168,7 @@ ask me directly?")
                     resp = '(%s) : %s' % (
                         username, "This is a moderator-only command!")
                     pbot(resp, channel)
-                    self.IRC.send_message(channel, resp)
+                    self.IRC.send_whisper(username, resp)
                     return
             except Exception as error:  # pragma: no cover
                 with open("errors.txt", "a") as f:
@@ -217,33 +217,41 @@ months straight and is getting {2} treats for loyalty!".format(
     def run(self):
 
         def get_incoming_data(kind):
-            data = self.IRC.nextMessage(kind)
-            if kind == "chat":
-                message = self.IRC.check_for_message(data)
-            if kind == "whisper":
-                message = self.IRC.check_for_whisper(data)
-            if not message:
-                return
-            if message:
+            while True:
+                data = self.IRC.nextMessage(kind)
                 if kind == "chat":
-                    data = self.IRC.get_message(data)
+                    message = self.IRC.check_for_message(data)
                 if kind == "whisper":
-                    data = self.IRC.get_whisper(data)
-                message_dict = data
-                channel = message_dict.get('channel')
-                message = message_dict.get('message')
-                username = message_dict.get('username')
-                print username, channel, message
-                chan = channel.lstrip("#")
-                if message and kind == "chat":
-                    self.privmsg(username, channel, message)
-                if message and kind == "whisper":
-                    self.whisper(username, channel, message)
-            return
+                    message = self.IRC.check_for_whisper(data)
+                if not message:
+                    continue
+                if message:
+                    if kind == "chat":
+                        data = self.IRC.get_message(data)
+                    if kind == "whisper":
+                        data = self.IRC.get_whisper(data)
+                    message_dict = data
+                    channel = message_dict.get('channel')
+                    message = message_dict.get('message')
+                    username = message_dict.get('username')
+                    print username, channel, message
+                    chan = channel.lstrip("#")
+                    if message and kind == "chat":
+                        self.privmsg(username, channel, message)
+                    if message and kind == "whisper":
+                        self.whisper(username, channel, message)
+                continue
 
-        while True:
-            try:
-                thread.start_new_thread(get_incoming_data, ("chat", ))
-                thread.start_new_thread(get_incoming_data, ("whisper", ))
-            except Exception as error:
-                pass
+        chat = Process(target=get_incoming_data, args=("chat", ))
+        whisper = Process(target=get_incoming_data, args=("whisper", ))
+        chat.start()
+        whisper.start()
+        chat.join()
+        whisper.join()
+
+        # while True:
+        #     try:
+        #
+        #
+        #     except Exception as error:
+        #         pass
