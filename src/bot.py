@@ -96,7 +96,7 @@ class Bot(object):
                 if message_split[0] == fetch_command[0][1]:
                     self.return_custom_command(
                         channel, message_split, username)
-        # save_message(username, channel, message)
+        save_message(username, channel, message)
         part = message.split(' ')[0]
         valid = False
         if commands.is_valid_command(message):
@@ -109,6 +109,36 @@ class Bot(object):
             part, channel, username, message)
         if resp:
             self.IRC.send_message(channel, resp)
+        return
+
+    def alt_privmsg(self, username, channel, message):
+        if (channel == "#" + PRIMARY_CHANNEL or
+                channel == "#" + SUPERUSER or
+                channel == "#" + TEST_USER):
+            if username == "twitchnotify":
+                self.check_for_sub(channel, username, message)
+            # TODO add spam detector here
+        chan = channel.lstrip("#")
+        if message[0] == "!":
+            message_split = message.split()
+            fetch_command = get_custom_command(chan, message_split[0])
+            if len(fetch_command) > 0:
+                if message_split[0] == fetch_command[0][1]:
+                    self.return_custom_command(
+                        channel, message_split, username)
+        save_message(username, channel, message)
+        part = message.split(' ')[0]
+        valid = False
+        if commands.is_valid_command(message):
+            valid = True
+        if commands.is_valid_command(part):
+            valid = True
+        if not valid:
+            return
+        resp = self.handle_command(
+            part, channel, username, message)
+        if resp:
+            self.IRC.send_alt_message(channel, resp)
         return
 
     def whisper(self, username, channel, message):
@@ -218,34 +248,38 @@ months straight and is getting {2} treats for loyalty!".format(
 
         def get_incoming_data(kind):
             while True:
-                data = self.IRC.nextMessage(kind)
-                if kind == "chat":
-                    message = self.IRC.check_for_message(data)
-                if kind == "whisper":
-                    message = self.IRC.check_for_whisper(data)
-                if not message:
-                    continue
-                if message:
+                try:
+                    data = self.IRC.nextMessage(kind)
                     if kind == "chat":
-                        data = self.IRC.get_message(data)
+                        message = self.IRC.check_for_message(data)
                     if kind == "whisper":
-                        data = self.IRC.get_whisper(data)
-                    message_dict = data
-                    channel = message_dict.get('channel')
-                    message = message_dict.get('message')
-                    username = message_dict.get('username')
-                    print username, channel, message
-                    chan = channel.lstrip("#")
-                    if message and kind == "chat":
-                        self.privmsg(username, channel, message)
-                    if message and kind == "whisper":
-                        self.whisper(username, channel, message)
-                continue
-
-
-
-        # ThreadedEventLoop("whisper").start()
-        # ThreadedEventLoop("chat").start()
+                        message = self.IRC.check_for_whisper(data)
+                    if kind == "alt":
+                        message = self.IRC.check_for_message(data)
+                    if not message:
+                        continue
+                    if message:
+                        if kind == "chat":
+                            data = self.IRC.get_message(data)
+                        if kind == "whisper":
+                            data = self.IRC.get_whisper(data)
+                        if kind == "alt":
+                            data = self.IRC.get_alt_message(data)
+                        message_dict = data
+                        channel = message_dict.get('channel')
+                        message = message_dict.get('message')
+                        username = message_dict.get('username')
+                        print username, channel, message
+                        if message and kind == "chat":
+                            self.privmsg(username, channel, message)
+                        if message and kind == "whisper":
+                            self.whisper(username, channel, message)
+                        if message and kind == "alt":
+                            self.alt_privmsg(username, channel, message)
+                    continue
+                except Exception as error:
+                    print error
 
         Thread(target=get_incoming_data, args=("whisper",)).start()
         Thread(target=get_incoming_data, args=("chat",)).start()
+        Thread(target=get_incoming_data, args=("alt",)).start()

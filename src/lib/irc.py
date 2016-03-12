@@ -19,8 +19,10 @@ class IRC:
         self.ircBuffer = {}
         self.ircBuffer["whisper"] = ""
         self.ircBuffer["chat"] = ""
+        self.ircBuffer["alt"] = ""
         self.connect("whisper")
         self.connect("chat")
+        self.connect("alt")
 
     def nextMessage(self, kind):
         if "\r\n" not in self.ircBuffer[kind]:
@@ -31,10 +33,12 @@ class IRC:
                 self.sock[kind].close
                 self.connect("whisper")  # Reconnect.
                 self.connect("chat")
+                self.connect("alt")
             else:
                 self.ircBuffer[kind] += read
 
         line, self.ircBuffer[kind] = self.ircBuffer[kind].split("\r\n", 1)
+        print kind, line
 
         if line is not None:
             if line.startswith("PING"):
@@ -86,6 +90,9 @@ class IRC:
     def get_whisper(self, data):
         return re.match(r'^:(?P<username>.*?)!.*?WHISPER (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
 
+    def get_alt_message(self, data):
+        return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
+
     def check_login_status(self, data):
         if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
             return False
@@ -93,12 +100,6 @@ class IRC:
             return True
 
     def send_message(self, channel, message):
-        # message can be any of the formats:
-        # None - sends nothing
-        # String - sends this line as a message
-        # List - sends each line individually.
-        #  -- technically since this is recursive you can have a tree of messages
-        #  -- [["1", ["2", "3"]], "4"] will send "1", "2", "3", "4".
         if not message:
             return
 
@@ -110,12 +111,6 @@ class IRC:
                 self.send_message(channel, line)
 
     def send_whisper(self, recipient, message):
-        # message can be any of the formats:
-        # None - sends nothing
-        # String - sends this line as a message
-        # List - sends each line individually.
-        #  -- technically since this is recursive you can have a tree of messages
-        #  -- [["1", ["2", "3"]], "4"] will send "1", "2", "3", "4".
         if not message:
             return
 
@@ -126,11 +121,21 @@ class IRC:
             for line in message.decode("utf8"):
                 self.send_message(recipient, str(time.time()))
 
+    def send_alt_message(self, channel, message):
+        if not message:
+            return
+
+        if isinstance(message, basestring):
+            self.sock["alt"].send('PRIVMSG %s :%s\r\n' % (channel, message))
+
+        if type(message) == list:
+            for line in message.decode("utf8"):
+                self.send_message(channel, line)
+
     def connect(self, kind):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setblocking(0)
         sock.settimeout(10)
-        # try:
         if kind == "whisper":
             whisper_url = "http://tmi.twitch.tv/servers?cluster=group"
             whisper_resp = requests.get(url=whisper_url)
@@ -141,15 +146,13 @@ class IRC:
             self.connect_phases(sock, WHISPER[0], WHISPER[1], kind)
             self.join_channels([], kind)
         if kind == "chat":
-            alt_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print "Connecting to {0}:{1}".format(self.config['server'], self.config['port'])
             self.connect_phases(sock, self.config['server'], self.config['port'], kind)
             self.join_channels(self.channels_to_string(self.config['channels']), kind)
-        # except Exception as error:
-        #     pp('Cannot connect to server ({0}:{1}).'.format(
-        #         self.config['server'], self.config['port']), "error")
-        #     print error
-        #     sys.exit()
+        if kind == "alt":
+            print "Connecting to {0}:{1}".format(self.config['server'], self.config['port'])
+            self.connect_phases(sock, "irc.chat.twitch.tv", 80, kind)
+            self.join_channels(self.channels_to_string(self.config['channels']), kind)
 
         sock.settimeout(None)
 
@@ -180,7 +183,7 @@ class IRC:
         return ','.join(channel_list)
 
     def join_channels(self, channels, kind):
-        if kind == "chat":
+        if kind == "chat" or kind == "alt":
             pp('Joining channels %s.' % channels)
             self.sock[kind].send('JOIN %s\r\n' % channels)
         if kind == "whisper":
@@ -190,6 +193,6 @@ class IRC:
 
     def leave_channels(self, channels, kind):
         pp('Leaving channels %s,' % channels)
-        if kind == "chat":
+        if kind == "chat" or kind == "alt":
             self.sock[kind].send('PART %s\r\n' % channels)
         pp('Left channels.')
