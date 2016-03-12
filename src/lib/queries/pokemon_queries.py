@@ -12,11 +12,12 @@ def get_pokemon_id_from_name(pokemon_name):
             """SELECT pokemon.id FROM pokemon WHERE pokemon.name = %s""", [
                 pokemon_name])
         pokemon_id = cur.fetchone()
+        print pokemon_id
         cur.close()
-        if int(pokemon_id[0]) != 0:
+        if pokemon_id is not None:
             return pokemon_id[0]
         else:
-            raise ValueError
+            return None
 
 
 def find_open_party_positions(username):

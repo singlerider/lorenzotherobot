@@ -15,6 +15,8 @@ def catch(**kwargs):
         desired_level = 5
         pokemon_id = get_pokemon_id_from_name(
             globals.CHANNEL_INFO[channel]['pokemon'])
+        if pokemon_id is None:
+            return "Pokemon not found! Check your spelling"
         if len(open_position) > 0:
             globals.CHANNEL_INFO[channel]['caught'] = True
             return insert_user_pokemon(
