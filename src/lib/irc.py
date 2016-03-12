@@ -88,9 +88,6 @@ class IRC:
     def get_whisper(self, data):
         return re.match(r'^:(?P<username>.*?)!.*?WHISPER (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
 
-    def get_alt_message(self, data):
-        return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
-
     def check_login_status(self, data):
         if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
             return False
@@ -113,7 +110,8 @@ class IRC:
             return
 
         if isinstance(message, basestring):
-            self.sock["whisper"].send('PRIVMSG #jtv :/w %s %s\r\n' % (recipient, message))
+            self.sock["whisper"].send(
+                'PRIVMSG #jtv :/w %s %s\r\n' % (recipient, message))
 
         if type(message) == list:
             for line in message.decode("utf8"):
@@ -145,12 +143,15 @@ class IRC:
             self.join_channels([], kind)
         if kind == "chat":
             print "Connecting to {0}:{1}".format(self.config['server'], self.config['port'])
-            self.connect_phases(sock, self.config['server'], self.config['port'], kind)
-            self.join_channels(self.channels_to_string(self.config['channels']), kind)
+            self.connect_phases(
+                sock, self.config['server'], self.config['port'], kind)
+            self.join_channels(self.channels_to_string(
+                self.config['channels']), kind)
         if kind == "alt":
             print "Connecting to {0}:{1}".format(self.config['server'], self.config['port'])
             self.connect_phases(sock, "irc.chat.twitch.tv", 80, kind)
-            self.join_channels(self.channels_to_string(self.config['channels']), kind)
+            self.join_channels(self.channels_to_string(
+                self.config['channels']), kind)
 
         sock.settimeout(None)
 

@@ -2,6 +2,7 @@ import globals
 from src.lib.queries.points_queries import *
 from src.lib.queries.pokemon_queries import *
 from src.lib.twitch import get_dict_for_users
+from src.lib.queries.moderator_queries import get_moderator
 
 
 def tallgrass_release(generated_pokemon, channel):
@@ -22,15 +23,18 @@ def tallgrass(args, **kwargs):
     channel = kwargs.get("channel", "testchannel")
     points_to_sacrifice = abs(int(args[0])) * -1
     points = get_user_points(username)
-    if type(points) != str:
-        treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
-    else:
-        points = ""
+    moderator = get_moderator(username, channel)
+    treats_removed = ""
+    if not moderator:
+        if type(points) != str:
+            treats_removed = " " + str(points_to_sacrifice) + " treats from " + str(username) + "!"
+        else:
+            points = ""
     if isinstance(points, long):
         if abs(points_to_sacrifice) >= 1000:
             if points >= abs(points_to_sacrifice):
                 generated_pokemon = spawn_tallgrass(0)
-                if user_is_moderator(username) is False:
+                if not moderator:
                     modify_user_points(username, points_to_sacrifice)
                 return tallgrass_release(
                     generated_pokemon, channel) + treats_removed
@@ -40,7 +44,7 @@ def tallgrass(args, **kwargs):
             if abs(points_to_sacrifice) <= 500:
                 if points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(1)
-                    if user_is_moderator(username) is False:
+                    if not moderator:
                         modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
                         generated_pokemon, channel) + treats_removed
@@ -53,7 +57,7 @@ def tallgrass(args, **kwargs):
                 "abs(points_to_sacrifice) >= 25:", abs(points_to_sacrifice)
                 if points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(2)
-                    if user_is_moderator(username) is False:
+                    if not moderator:
                         modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
                         generated_pokemon, channel) + treats_removed
@@ -63,7 +67,7 @@ def tallgrass(args, **kwargs):
                 "abs(points_to_sacrifice) > 4:", abs(points_to_sacrifice)
                 if points >= abs(points_to_sacrifice):
                     generated_pokemon = spawn_tallgrass(3)
-                    if user_is_moderator(username) is False:
+                    if not moderator:
                         modify_user_points(username, points_to_sacrifice)
                     return tallgrass_release(
                         generated_pokemon, channel) + treats_removed

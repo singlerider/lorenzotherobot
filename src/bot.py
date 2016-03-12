@@ -6,26 +6,22 @@ By Shane Engelman <me@5h4n3.com>
 Contributions from dustinbcox and theepicsnail
 """
 
-from threading import Thread
-import re
 import sys
-import time
-from multiprocessing import Process
+from threading import Thread
+
 import lib.functions_commands as commands
 import src.lib.command_headers
 import src.lib.cron as cron
 import src.lib.rive as rive
 import src.lib.twitch as twitch
 from lib.functions_general import *
-from src.config.config import channels_to_join, config
+from src.config.config import config
 from src.lib.irc import IRC
 from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.moderator_queries import get_moderator
 from src.lib.queries.points_queries import *
 from src.lib.twitch import get_dict_for_users
-
-pattern = re.compile('[\W_]+')
 
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -264,7 +260,7 @@ months straight and is getting {2} treats for loyalty!".format(
                         if kind == "whisper":
                             data = self.IRC.get_whisper(data)
                         if kind == "alt":
-                            data = self.IRC.get_alt_message(data)
+                            data = self.IRC.get_message(data)
                         message_dict = data
                         channel = message_dict.get('channel')
                         message = message_dict.get('message')
