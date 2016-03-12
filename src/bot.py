@@ -6,9 +6,9 @@ By Shane Engelman <me@5h4n3.com>
 Contributions from dustinbcox and theepicsnail
 """
 
+from threading import Thread
 import re
 import sys
-import thread
 import time
 from multiprocessing import Process
 import lib.functions_commands as commands
@@ -242,16 +242,10 @@ months straight and is getting {2} treats for loyalty!".format(
                         self.whisper(username, channel, message)
                 continue
 
-        chat = Process(target=get_incoming_data, args=("chat", ))
-        whisper = Process(target=get_incoming_data, args=("whisper", ))
-        chat.start()
-        whisper.start()
-        chat.join()
-        whisper.join()
 
-        # while True:
-        #     try:
-        #
-        #
-        #     except Exception as error:
-        #         pass
+
+        # ThreadedEventLoop("whisper").start()
+        # ThreadedEventLoop("chat").start()
+
+        Thread(target=get_incoming_data, args=("whisper",)).start()
+        Thread(target=get_incoming_data, args=("chat",)).start()

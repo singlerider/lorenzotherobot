@@ -4,7 +4,7 @@ from src.lib.queries.pokemon_queries import *
 
 
 def catch(**kwargs):
-    channel = kwargs.get("channel", "testchannel")
+    channel = kwargs.get("channel", "testchannel").lstrip("#")
     if globals.CHANNEL_INFO[channel]['caught'] is False:
         pokemon_trainer = kwargs.get("username", "testuser")
         # This is here for if the user is brand new. This creates an entry in

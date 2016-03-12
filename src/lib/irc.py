@@ -141,6 +141,7 @@ class IRC:
             self.connect_phases(sock, WHISPER[0], WHISPER[1], kind)
             self.join_channels([], kind)
         if kind == "chat":
+            alt_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print "Connecting to {0}:{1}".format(self.config['server'], self.config['port'])
             self.connect_phases(sock, self.config['server'], self.config['port'], kind)
             self.join_channels(self.channels_to_string(self.config['channels']), kind)
