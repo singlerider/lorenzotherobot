@@ -31,9 +31,7 @@ class IRC:
                 print "Connection was lost"
                 self.sock[kind].shutdown
                 self.sock[kind].close
-                self.connect("whisper")  # Reconnect.
-                self.connect("chat")
-                self.connect("alt")
+                self.connect(kind)
             else:
                 self.ircBuffer[kind] += read
 

@@ -5,7 +5,7 @@ Try it out! The Code is live at [http://www.twitch.tv/curvyllama](http://www.twi
 # Lorenzotherobot
 A bot with personality
 
-Introducing Lorenzo - a Twitch chat/irc bot written in `Python` (2.6 / 2.7) with **FULL WHISPER SUPPORT** and more features than I care to count at this point. This implementation relies on the wonderful `twisted` ([https://twistedmatrix.com/](https://twistedmatrix.com/)) package that allows for hot event-driven bot action over multiple sockets at once.
+Introducing Lorenzo - a Twitch chat/irc bot written in `Python` (2.6 / 2.7) with **FULL WHISPER SUPPORT** and more features than I care to count at this point. This implementation relies on a highly customized IRC connection library that allows for hot event-driven bot action over multiple sockets at once.
 
 ## Installation
 ### Virtual Environment
