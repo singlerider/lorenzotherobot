@@ -9,6 +9,7 @@ import globals
 
 def get_dict_for_users(channel="testchannel"):
     n = 0
+    channel="curvyllama"
     channel = channel.lstrip("#")
     dummy = {  # in case the endpoint fails (can be as often as 1:8)
         "_links": {}, "chatters_count": 0, "chatters": {
@@ -39,7 +40,8 @@ def get_dict_for_users(channel="testchannel"):
     return dummy, []  # will only happen after three ValueErrors in a row
 
 
-def user_cron(channel):
+def user_cron(channel="curvyllama"):
+    channel="curvyllama"
     import requests
     import json
     import globals
@@ -58,7 +60,7 @@ def get_stream_status(channel="testchannel"):
     get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + channel
     get_stream_status_resp = requests.get(url=get_stream_status_url)
     online_data = json.loads(get_stream_status_resp.content)
-    if "stream" in online_data:
+    if "stream" in online_data and online_data["stream"] is not None:
         return True
     else:
         return False

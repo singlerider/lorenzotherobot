@@ -252,18 +252,6 @@ def modify_points_all_users_timer(all_users, points_to_increment=1):
         return "Error incrementing points:" + str(error)
 
 
-def modify_points_all_users_hack(points_to_increment=1):
-    con = get_connection()
-    with con:
-        cur = con.cursor()
-        cur.execute("""
-            INSERT INTO users (username, points) VALUES (%s, %s)
-                ON DUPLICATE KEY UPDATE points = points + """ +
-                    str(points_to_increment), user)
-        cur.close()
-        return "success"
-
-
 def get_time_in_chat(user):
     con = get_connection()
     with con:
