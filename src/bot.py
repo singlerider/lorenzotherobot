@@ -207,7 +207,7 @@ ask me directly?")
             prevented_list = ['songrequest', 'request', 'shots', 'donation',
                               'welcome', 'rules', 'gt',
                               'llama', 'loyalty', 'uptime', 'highlight',
-                              'weather', 'treats', 'wins']
+                              'weather', 'treats', 'wins', 'subcount']
             if command.lstrip("!") in prevented_list:
                 return
         result = commands.pass_to_function(

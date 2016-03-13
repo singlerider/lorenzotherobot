@@ -272,6 +272,13 @@ commands = {
         'return': 'command',
         'usage': '!quote'
     },
+    '!subcount': {
+        'limit': 0,
+        'argc': 0,
+        'ul': 'mod',
+        'return': 'command',
+        'usage': '!subcount'
+    },
 }
 
 user_cooldowns = {"channels": {}}

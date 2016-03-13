@@ -1,7 +1,8 @@
 import json
-from src.lib.queries.sub_queries import get_oauth
-from src.lib.queries.moderator_queries import get_moderator
+
 import requests
+from src.lib.queries.moderator_queries import get_moderator
+from src.lib.queries.sub_queries import get_oauth
 
 
 def sub(args, **kwargs):
