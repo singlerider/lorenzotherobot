@@ -9,7 +9,6 @@ import globals
 
 def get_dict_for_users(channel="testchannel"):
     n = 0
-    channel="curvyllama"
     channel = channel.lstrip("#")
     dummy = {  # in case the endpoint fails (can be as often as 1:8)
         "_links": {}, "chatters_count": 0, "chatters": {

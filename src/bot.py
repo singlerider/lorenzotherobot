@@ -265,7 +265,7 @@ months straight and is getting {2} treats for loyalty!".format(
                         channel = message_dict.get('channel')
                         message = message_dict.get('message')
                         username = message_dict.get('username')
-                        print username, channel, message
+                        print "->*", username, channel, message
                         if message and kind == "chat":
                             Thread(target=self.privmsg, args=(
                                 username, channel, message)).start()

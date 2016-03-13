@@ -36,7 +36,6 @@ class IRC:
                 self.ircBuffer[kind] += read
 
         line, self.ircBuffer[kind] = self.ircBuffer[kind].split("\r\n", 1)
-        print kind, line
 
         if line is not None:
             if line.startswith("PING"):
@@ -77,7 +76,6 @@ class IRC:
         last_ping = time.time()
         if data.find('PING') != -1:
             self.sock[kind].send('PONG ' + data.split()[1] + '\r\n')
-            print "PONG"
             last_ping = time.time()
         if (time.time() - last_ping) > threshold:
             sys.exit()

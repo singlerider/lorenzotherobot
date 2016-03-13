@@ -84,11 +84,10 @@ commands = {
         'user_limit': 30,
     },
     '!stream': {
-        'limit': 10,
+        'limit': 0,
         'return': 'command',
         'argc': 0,
-        'usage': '!stream',
-        'user_limit': 30,
+        'usage': '!stream'
     },
     '!winner': {
         'limit': 0,
