@@ -267,11 +267,14 @@ months straight and is getting {2} treats for loyalty!".format(
                         username = message_dict.get('username')
                         print username, channel, message
                         if message and kind == "chat":
-                            self.privmsg(username, channel, message)
+                            Thread(target=self.privmsg, args=(
+                                username, channel, message)).start()
                         if message and kind == "whisper":
-                            self.whisper(username, channel, message)
+                            Thread(target=self.whisper, args=(
+                                username, channel, message)).start()
                         if message and kind == "alt":
-                            self.alt_privmsg(username, channel, message)
+                            Thread(target=self.alt_privmsg, args=(
+                                username, channel, message)).start()
                     continue
                 except Exception as error:
                     print error
