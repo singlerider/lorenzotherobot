@@ -21,7 +21,6 @@ from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.moderator_queries import get_moderator
 from src.lib.queries.points_queries import *
-from src.lib.twitch import get_dict_for_users
 
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -62,20 +61,17 @@ class Bot(object):
         resp = elements[1].replace(
             "{}", replacement_user).replace("[]", str(elements[2] + 1))
         if elements[0] == "mod":
-            user_dict, __ = get_dict_for_users()
             moderator = get_moderator(username, chan)
             if moderator:
-                self.IRC.send_message(channel, resp)
                 increment_command_counter(chan, message[0])
                 save_message(BOT_USER, channel, resp)
-                print("!->" + resp)
-                return
+                print("!-> " + resp)
+                return resp
         elif elements[0] == "reg":
-            self.IRC.send_message(channel, resp)
             increment_command_counter(chan, message[0])
             save_message(BOT_USER, channel, resp)
-            print("!->" + resp)
-            return
+            print("!-> " + resp)
+            return resp
 
     def privmsg(self, username, channel, message):
         if (channel == "#" + PRIMARY_CHANNEL or
@@ -90,8 +86,10 @@ class Bot(object):
             fetch_command = get_custom_command(chan, message_split[0])
             if len(fetch_command) > 0:
                 if message_split[0] == fetch_command[0][1]:
-                    self.return_custom_command(
+                    resp = self.return_custom_command(
                         channel, message_split, username)
+                    if resp:
+                        self.IRC.send_message(channel, resp)
         save_message(username, channel, message)
         part = message.split(' ')[0]
         valid = False
@@ -120,8 +118,10 @@ class Bot(object):
             fetch_command = get_custom_command(chan, message_split[0])
             if len(fetch_command) > 0:
                 if message_split[0] == fetch_command[0][1]:
-                    self.return_custom_command(
+                    resp = self.return_custom_command(
                         channel, message_split, username)
+                    if resp:
+                        self.IRC.send_alt_message(channel, resp)
         save_message(username, channel, message)
         part = message.split(' ')[0]
         valid = False

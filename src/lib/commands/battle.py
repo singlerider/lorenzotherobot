@@ -13,7 +13,6 @@ def battle(args, **kwargs):
     username = kwargs.get("username", "testuser")
     channel = kwargs.get("channel", "testchannel")
     user_dict, all_users = get_dict_for_users(channel)
-    print position, opponent, username, all_users
     now = datetime.datetime.utcnow()
     cooldown_time = 3
     last_battle_time = get_last_battle(username)
