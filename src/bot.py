@@ -228,6 +228,7 @@ ask me directly?")
                 resp = "/me {0} treats for {1} for a first \
 time subscription!".format(100, subbed_user)
                 self.IRC.send_message(channel, resp)
+                self.IRC.send_alt_message(channel, resp)
                 save_message(BOT_USER, channel, resp)
             elif message_split[1] == "subscribed" and len(message_split) < 9:
                 months_subbed = message_split[3]
@@ -236,6 +237,7 @@ time subscription!".format(100, subbed_user)
 months straight and is getting {2} treats for loyalty!".format(
                     subbed_user, months_subbed, int(months_subbed) * 100)
                 self.IRC.send_message(channel, resp)
+                self.IRC.send_alt_message(channel, resp)
                 save_message(BOT_USER, channel, resp)
         except Exception as error:  # pragma: no cover
             print error
