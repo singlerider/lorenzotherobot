@@ -24,55 +24,6 @@ globals.CHANNEL_INFO[TEST_CHAN] = {
 }
 
 
-CHANNELINFO = {
-  TEST_CHAN: {
-    'caught': False,
-    'pokemon': 'Bulbasaur',
-    'viewers': {
-      'chatters': {
-        'moderators': [
-          TEST_CHAN,
-          MOD_USER
-        ],
-        'global_mods': [
-        ],
-        'admins': [
-        ],
-        'viewers': [
-          'randomuser'
-        ],
-        'staff': [
-        ]
-      },
-      '_links': {
-      },
-      'chatter_count': 3
-    }
-  },
-  MOD_USER: {
-    'viewers': {
-      'chatters': {
-        'moderators': [
-          TEST_CHAN,
-          MOD_USER
-        ],
-        'global_mods': [
-        ],
-        'admins': [
-        ],
-        'viewers': [
-          'randomuser'
-        ],
-        'staff': [
-        ]
-      },
-      '_links': {
-      },
-      'chatter_count': 3
-    }
-  }
-}
-
 class TwitchIrc:
 
     def __init__(self):

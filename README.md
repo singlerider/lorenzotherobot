@@ -74,28 +74,18 @@ Create your database and name it whatever you want (from within the `mysql` shel
 CREATE DATABASE databasename;
 ```
 
-Create a user that you will use to connect with the database with (you do not want to connect as root for security reasons) - replace "newuser" and "password" with whatever you'd like:
-
-```sql
-CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
-```
-
-Grant the appropriate privileges for your databases(s) to your new user:
-
-```sql
-GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
-```
-
-Exit out of the `mysql` shell with:
+Then quit out of the shell:
 
 ```sql
 \q
 ```
 
+Create a user that you will use to connect with the database with (you do not want to connect as root for security reasons) - replace "newuser" and "password" with whatever you'd like:
+
 Create your schema from my blank template:
 
 ```shell
-mysql -u newuser -ppassword databasename < schema.sql
+mysql -u root DATABASENAME < schema.sql
 ```
 
 #### Globals and Config Files
