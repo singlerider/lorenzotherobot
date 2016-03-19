@@ -173,13 +173,13 @@ def get_last_battle(username):
         return last_battle[0]
 
 
-def set_battle_timestamp(username, current_datetime):
+def set_battle_timestamp(username):
     con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute(
             """UPDATE users SET lastbattle = %s WHERE username = %s""", [
-                current_datetime, username])
+                datetime.now(), username])
         cur.close()
 
 

@@ -1,6 +1,5 @@
-import datetime
 import random
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from src.lib.queries.pokemon_queries import *
 from src.lib.twitch import get_dict_for_users
@@ -13,7 +12,7 @@ def battle(args, **kwargs):
     username = kwargs.get("username", "testuser")
     channel = kwargs.get("channel", "testchannel")
     user_dict, all_users = get_dict_for_users(channel)
-    now = datetime.datetime.utcnow()
+    now = datetime.now()
     cooldown_time = 3
     last_battle_time = get_last_battle(username)
     WHISPER = kwargs.get("WHISPER", False)
@@ -67,7 +66,7 @@ def battle(args, **kwargs):
                         attacker_stats[2:7]) * attacker_multiplier
                     total_defender = sum(
                         defender_stats[2:7]) * defender_multiplier
-                    set_battle_timestamp(username, now)
+                    set_battle_timestamp(username)
                     if total_attacker == total_defender:
                         return username + "'s " + nickname_1 + \
                             " and " + opponent + "'s " + nickname_2 + " had a draw."
