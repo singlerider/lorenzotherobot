@@ -1,9 +1,10 @@
 from src.lib.twitch import *
 
 
-def followers():
+def followers(**kwargs):
     username = kwargs.get("username", "testuser")
-    stream_followers = get_stream_followers()
+    channel = kwargs.get("channel", "testchannel")
+    stream_followers = get_stream_followers(channel=channel)
     follower_list = str(
         stream_followers["follows"][0]["user"]["display_name"]) + ", " + str(
         stream_followers["follows"][1]["user"]["display_name"]) + ", " + str(
