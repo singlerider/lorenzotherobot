@@ -15,10 +15,24 @@ def get_pokemon_id_from_name(pokemon_name):
             """SELECT pokemon.id FROM pokemon WHERE pokemon.name = %s""", [
                 pokemon_name])
         pokemon_id = cur.fetchone()
-        print pokemon_id
         cur.close()
         if pokemon_id is not None:
             return pokemon_id[0]
+        else:
+            return None
+
+
+def get_pokemon_name_from_id(pokemon_id):
+    con = get_connection()
+    with con:
+        cur = con.cursor()
+        cur.execute(
+            """SELECT pokemon.name FROM pokemon WHERE pokemon.id = %s""", [
+                pokemon_id])
+        pokemon_name = cur.fetchone()
+        cur.close()
+        if pokemon_name is not None:
+            return pokemon_name[0]
         else:
             return None
 
@@ -159,13 +173,13 @@ def get_last_battle(username):
         return last_battle[0]
 
 
-def set_battle_timestamp(username, datetime):
+def set_battle_timestamp(username, current_datetime):
     con = get_connection()
     with con:
         cur = con.cursor()
         cur.execute(
             """UPDATE users SET lastbattle = %s WHERE username = %s""", [
-                datetime, username])
+                current_datetime, username])
         cur.close()
 
 
@@ -656,6 +670,48 @@ def buy_items(id, username):
             return "item ID must be a number"
 
 
+def buy_pokemon(position, username):
+    con = get_connection()
+    with con:
+        try:
+            id = int(position)
+            print id
+            if id - 1 in range(5):
+                open_position, occupied_positions = find_open_party_positions(
+                    username)
+                print open_position
+                if len(open_position) < 1:
+                    return "You don't have any empty slots"
+                points = int(get_user_points(username))
+                print points
+                cur = con.cursor()
+                cur.execute("""
+                    SELECT pokemon_id, price FROM market WHERE id = %s
+                """, [id])
+                pokemon_data = cur.fetchone()
+                cur.close()
+                pokemon_id = pokemon_data[0]
+                value = pokemon_data[1]
+                if points >= value:
+                    insert_user_pokemon(
+                            username, username, open_position[0], pokemon_id, 5,
+                            get_pokemon_name_from_id(pokemon_id),
+                            0, 0)
+                    cur = con.cursor()
+                    cur.execute("""
+                        UPDATE users SET points = points - %s
+                            WHERE username = %s""", [value, username])
+                    cur.close()
+                    return "Transaction successful."
+                else:
+                    return "You need more points for that!"
+            else:
+                return "You must choose a number between 1 and 5!"
+        except Exception as error:
+            print error
+            return "Position must be a number between 1 and 5!"
+
+
 def gift_items(id, username):
     con = get_connection()
     try:
@@ -782,23 +838,44 @@ def pokemon_market_set():
     with con:
         base_price = 500
         cur = con.cursor()
-        cur.execute("""
-            DELETE FROM market
-        """)
+        cur.execute("""DELETE FROM market""")
+        cur.execute("""ALTER TABLE market AUTO_INCREMENT=1""")
         cur.close()
         cur = con.cursor()
-        cur.execute("""
-            SELECT id, rarity FROM pokemon
-        """)
-        pokemon = cur.fetchall()
+        cur.execute("""SELECT id, rarity FROM pokemon""")
+        pokemon = cur.fetchall()[0:151]
         cur.close()
-        for i in range(5):
+        selected_pokemon = []
+        rarity_index = {"0": 4, "1": 3, "2": 2, "3": 1}
+
+        def get_random_pokemon():
             random_pokemon = random.choice(pokemon)
+            if random_pokemon[0] in selected_pokemon:
+                get_random_pokemon()
+            else:
+                selected_pokemon.append(random_pokemon[0])
+                return random_pokemon
+        for i in range(5):
+            random_pokemon = get_random_pokemon()
             cur = con.cursor()
             cur.execute("""
-                INSERT INTO market(pokemon_id, price, time)
+                INSERT INTO market(pokemon_id, price, time) VALUES(%s, %s, %s)
             """, [
-                random_pokemon[0], (random_pokemon[1] + 1) * base_price,
+                random_pokemon[0], rarity_index[str(random_pokemon[1])] * base_price,
                 datetime.now()
             ])
             cur.close()
+
+
+def get_market_listings():
+    con = get_connection()
+    cur = con.cursor()
+    cur.execute("""
+        SELECT pokemon_id, price FROM market
+    """)
+    listings = cur.fetchall()
+    resp = " | ".join(
+        [str(x + 1) + ") " + ", ".join(
+            [get_pokemon_name_from_id(listings[x][0]), str(
+                listings[x][1])]) for x in range(len(listings))])
+    return resp

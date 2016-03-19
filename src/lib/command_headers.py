@@ -182,9 +182,9 @@ commands = {
     },
     '!buy': {
         'limit': 0,
-        'argc': 1,
+        'argc': 2,
         'return': 'command',
-        'usage': "!buy [item_number]"
+        'usage': "!buy [\"pokemon\"/\"item\"] [item_number/pokemon_position]"
     },
     '!use': {
         'limit': 0,
@@ -278,6 +278,13 @@ commands = {
         'return': 'command',
         'usage': '!subcount'
     },
+    '!testcommand': {
+        'limit': 0,
+        'argc': 0,
+        'ul': 'mod',
+        'return': 'command',
+        'usage': '!testcommand'
+    }
 }
 
 user_cooldowns = {"channels": {}}

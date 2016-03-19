@@ -14,7 +14,7 @@ def check(args, **kwargs):
         return " | ".join(all_tradable_pokemon_comprehension)
         # ('singlerider', 'Vaporeon', 1, 'Psyduck', 14L)
     elif args[0] == 'market':
-        return show_all_pokemon_for_sale()
+        return get_market_listings()
     elif args[0] == 'items':
         for_sale = check_items()
         for_sale_comprehension = ["({}) {}, {}".format(
