@@ -131,5 +131,16 @@ def initialize():
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
                 """)
             cur.close()
+            cur = con.cursor()
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS `market` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `pokemon_id` INT(11) NOT NULL,
+                    `price` INT(11) NOT NULL,
+                    `time` datetime DEFAULT NULL,
+                    PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+                """)
+            cur.close()
 
 initialize()

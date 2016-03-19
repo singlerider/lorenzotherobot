@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import random
+from datetime import datetime
+
 from src.lib.queries.connection import get_connection
 from src.lib.queries.points_queries import *
 
@@ -471,10 +474,10 @@ def sell_transaction(username):
                 position = @position_free WHERE username = @seller
                     AND position = @position""")
         cur.execute("""
-            UPDATE users SET donation_points = donation_points + @price
+            UPDATE users SET points = points + @price
                 WHERE username = @seller""")
         cur.execute("""
-            UPDATE users SET donation_points = donation_points - @price
+            UPDATE users SET points = points - @price
                 WHERE username = @buyer""")
         cur.execute("""COMMIT""")
         cur.close()
@@ -640,7 +643,7 @@ def buy_items(id, username):
                                 UPDATE quantity = quantity + 1""", [
                         username, id])
                     cur.execute("""
-                        UPDATE users SET donation_points = donation_points - %s
+                        UPDATE users SET points = points - %s
                             WHERE username = %s""", [value, username])
                     cur.close()
                     return "Transaction successful."
@@ -772,3 +775,30 @@ def get_leaderboard():
         cur.close()
         return "The top 10 trainers are " + \
             str(" | ".join(user_data_comprehension[0:9]))
+
+
+def pokemon_market_set():
+    con = get_connection()
+    with con:
+        base_price = 500
+        cur = con.cursor()
+        cur.execute("""
+            DELETE FROM market
+        """)
+        cur.close()
+        cur = con.cursor()
+        cur.execute("""
+            SELECT id, rarity FROM pokemon
+        """)
+        pokemon = cur.fetchall()
+        cur.close()
+        for i in range(5):
+            random_pokemon = random.choice(pokemon)
+            cur = con.cursor()
+            cur.execute("""
+                INSERT INTO market(pokemon_id, price, time)
+            """, [
+                random_pokemon[0], (random_pokemon[1] + 1) * base_price,
+                datetime.now()
+            ])
+            cur.close()
