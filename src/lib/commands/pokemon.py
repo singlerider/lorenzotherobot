@@ -19,3 +19,10 @@ def cron(channel):  # todo remove this arg requirement.
     pocket_monster = random.choice(random_pokemon())
     globals.CHANNEL_INFO[channel]['pokemon'] = pocket_monster
     return "A wild " + pocket_monster + " appeared!"
+
+
+def market_cron(channel):
+    try:
+        pokemon_market_set()
+    except:
+        pass
