@@ -1,5 +1,4 @@
-import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from src.lib.queries.pokemon_queries import *
 
@@ -16,7 +15,7 @@ def cron(a=None):
 
 def trade(args, **kwargs):
     username = kwargs.get("username", "testuser")
-    trade_set_time = str(datetime.datetime.utcnow())
+    trade_set_time = str(datetime.now())
     party_position = args[0]
     pokemon_to_trade = args[1]
     asking_level = args[2]
