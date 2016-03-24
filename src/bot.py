@@ -105,37 +105,6 @@ class Bot(object):
             self.IRC.send_message(channel, resp)
         return
 
-    def alt_privmsg(self, username, channel, message):
-        if (channel == "#" + PRIMARY_CHANNEL or
-                channel == "#" + SUPERUSER or
-                channel == "#" + TEST_USER):
-            if username == "twitchnotify":
-                self.check_for_sub(channel, username, message)
-            # TODO add spam detector here
-        chan = channel.lstrip("#")
-        if message[0] == "!":
-            message_split = message.split()
-            fetch_command = get_custom_command(chan, message_split[0])
-            if len(fetch_command) > 0:
-                if message_split[0] == fetch_command[0][1]:
-                    resp = self.return_custom_command(
-                        channel, message_split, username)
-                    if resp:
-                        self.IRC.send_alt_message(channel, resp)
-        save_message(username, channel, message)
-        part = message.split(' ')[0]
-        valid = False
-        if commands.is_valid_command(message):
-            valid = True
-        if commands.is_valid_command(part):
-            valid = True
-        if not valid:
-            return
-        resp = self.handle_command(
-            part, channel, username, message)
-        if resp:
-            self.IRC.send_alt_message(channel, resp)
-        return
 
     def whisper(self, username, channel, message):
         message = str(message.lstrip("!"))
@@ -228,7 +197,6 @@ ask me directly?")
                 resp = "/me {0} treats for {1} for a first \
 time subscription!".format(100, subbed_user)
                 self.IRC.send_message(channel, resp)
-                self.IRC.send_alt_message(channel, resp)
                 save_message(BOT_USER, channel, resp)
             elif message_split[1] == "subscribed" and len(message_split) < 9:
                 months_subbed = message_split[3]
@@ -237,7 +205,6 @@ time subscription!".format(100, subbed_user)
 months straight and is getting {2} treats for loyalty!".format(
                     subbed_user, months_subbed, int(months_subbed) * 100)
                 self.IRC.send_message(channel, resp)
-                self.IRC.send_alt_message(channel, resp)
                 save_message(BOT_USER, channel, resp)
         except Exception as error:  # pragma: no cover
             print error
@@ -252,8 +219,6 @@ months straight and is getting {2} treats for loyalty!".format(
                         message = self.IRC.check_for_message(data)
                     if kind == "whisper":
                         message = self.IRC.check_for_whisper(data)
-                    if kind == "alt":
-                        message = self.IRC.check_for_message(data)
                     if not message:
                         continue
                     if message:
@@ -261,8 +226,6 @@ months straight and is getting {2} treats for loyalty!".format(
                             data = self.IRC.get_message(data)
                         if kind == "whisper":
                             data = self.IRC.get_whisper(data)
-                        if kind == "alt":
-                            data = self.IRC.get_message(data)
                         message_dict = data
                         channel = message_dict.get('channel')
                         message = message_dict.get('message')
@@ -274,13 +237,9 @@ months straight and is getting {2} treats for loyalty!".format(
                         if message and kind == "whisper":
                             Thread(target=self.whisper, args=(
                                 username, channel, message)).start()
-                        if message and kind == "alt":
-                            Thread(target=self.alt_privmsg, args=(
-                                username, channel, message)).start()
                     continue
                 except Exception as error:
                     print error
 
         Thread(target=get_incoming_data, args=("whisper",)).start()
         Thread(target=get_incoming_data, args=("chat",)).start()
-        Thread(target=get_incoming_data, args=("alt",)).start()

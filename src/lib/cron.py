@@ -36,4 +36,3 @@ class CronJob(Thread):
             time.sleep(self.delay)
             resp = self.callback(self.channel)
             self.IRC.send_message(self.channel, resp)
-            self.IRC.send_alt_message(self.channel, resp)
