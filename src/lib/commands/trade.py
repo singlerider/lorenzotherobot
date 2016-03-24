@@ -4,7 +4,7 @@ from src.lib.queries.pokemon_queries import *
 
 
 def reset_timestamp():
-    now = datetime.datetime.utcnow()
+    now = datetime.now()
     reset_countdown = now - timedelta(minutes=1440)
     reset_trade_timestamp(reset_countdown)
 

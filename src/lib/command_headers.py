@@ -284,6 +284,25 @@ commands = {
         'ul': 'mod',
         'return': 'command',
         'usage': '!testcommand'
+    },
+    '!join': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command',
+        'usage': '!join'
+    },
+    '!leave': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command',
+        'usage': '!leave'
+    },
+    '!blacklist': {
+        'limit': 0,
+        'argc': 0,
+        'ul': 'superuser',
+        'return': 'command',
+        'usage': '!blacklist ["add"/"remove"] [username]'
     }
 }
 

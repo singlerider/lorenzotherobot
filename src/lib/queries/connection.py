@@ -142,5 +142,14 @@ def initialize():
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
                 """)
             cur.close()
+            cur = con.cursor()
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS `blacklist` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `username` VARCHAR(50) NOT NULL,
+                    PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+                """)
+            cur.close()
 
 initialize()

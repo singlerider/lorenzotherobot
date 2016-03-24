@@ -104,6 +104,8 @@ def check_has_ul(username, command):
     if "ul" in commands[command]:
         if "mod" in commands[command]["ul"]:
             return True
+        if "superuser" in commands[command]["ul"]:
+            return "superuser"
     return False
 
 

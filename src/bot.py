@@ -21,6 +21,7 @@ from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.moderator_queries import get_moderator
 from src.lib.queries.points_queries import *
+from src.lib.queries.blacklist_queries import check_for_blacklist
 
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -105,8 +106,9 @@ class Bot(object):
             self.IRC.send_message(channel, resp)
         return
 
-
     def whisper(self, username, channel, message):
+        if check_for_blacklist(username):
+            return
         message = str(message.lstrip("!"))
         resp = rive.Conversation(self).run(username, message)[:350]
         save_message(username, "WHISPER", message)
@@ -115,6 +117,14 @@ class Bot(object):
             save_message(BOT_USER, "WHISPER", resp)
             self.IRC.send_whisper(username, str(resp))
             return
+
+    def join_part(self, action, channel):
+        if action == "join":
+            self.IRC.join_channels([channel], "chat")
+            print "JOINING", channel
+        if action == "leave":
+            self.IRC.leave_channels([channel], "chat")
+            print "LEAVING", channel
 
     def handle_command(self, command, channel, username, message):
         if command == message:
@@ -125,6 +135,8 @@ class Bot(object):
             args = [message[len(command) + 1:]]
         if not commands.check_is_space_case(command) and args:
             args = args[0].split(" ")
+        if (command == "!join" or command == "!leave") and channel == "#" + BOT_USER:
+            self.join_part(command.lstrip("!"), "#" + username)
         if commands.is_on_cooldown(command, channel):
             pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
                 command, username, commands.get_cooldown_remaining(
@@ -147,6 +159,8 @@ class Bot(object):
 ask me directly?")
                 return
             commands.update_user_last_used(command, channel, username)
+        if check_for_blacklist(username):
+            return
         pbot('Command is valid and not on cooldown. (%s) (%s)' %
              (command, username), channel)
         cmd_return = commands.get_return(command)
@@ -155,8 +169,16 @@ ask me directly?")
             commands.update_last_used(command, channel)
             self.IRC.send_message(channel, resp)
             return
-        if commands.check_has_ul(username, command):
+        command_has_ul = commands.check_has_ul(username, command)
+        if command_has_ul:
             user_data, __ = twitch.get_dict_for_users(channel)
+            if command_has_ul == "superuser":
+                if username == SUPERUSER:
+                    return commands.pass_to_function(
+                        command, args, username=username,
+                        channel=channel.lstrip("#"))
+                else:
+                    return
             try:
                 moderator = get_moderator(username, channel.lstrip("#"))
                 if not moderator and username != SUPERUSER:
@@ -185,8 +207,8 @@ ask me directly?")
         if result:
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
-            return resp[:350]
             save_message(BOT_USER, channel, resp)  # pragma: no cover
+            return resp[:350]
 
     def check_for_sub(self, channel, username, message):
         try:
