@@ -4,7 +4,7 @@ from src.lib.queries.blacklist_queries import (
 
 def blacklist(args, **kwargs):
     action = args[0]
-    user_to_block = args[1]
+    user_to_block = args[1].lower()
 
     if action == "add" or action == "remove":
         if kwargs.get("username") == user_to_block:

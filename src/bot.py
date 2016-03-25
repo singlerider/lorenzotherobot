@@ -33,7 +33,6 @@ TEST_USER = "theepicsnail_"
 EXTRA_CHANNEL = "newyork_triforce"
 
 CHANNEL = "#singlerider"
-SERVER = config["server"]
 NICKNAME = config["username"]
 PASSWORD = config["oauth_password"]
 
