@@ -70,7 +70,6 @@ class IRC:
             return True
 
     def check_for_ping(self, data, kind):
-
         last_ping = time.time()
         if data.find('PING') != -1:
             self.sock[kind].send('PONG ' + data.split()[1] + '\r\n')
@@ -141,16 +140,7 @@ class IRC:
         pp("Sending Nick " + self.config["username"])
         sock.send('NICK %s\r\n' % self.config['username'])
         self.sock[kind] = sock
-
         loginMsg = self.nextMessage(kind)
-        #:tmi.twitch.tv NOTICE * :Login unsuccessful
-        # or
-        # :tmi.twitch.tv 001 theepicsnail :Welcome, GLHF!
-        # if "unsuccessful" in loginMsg:
-        #     print "Failed to login. Check your oath_password and username in src/config/config.py"
-        #     sys.exit(1)
-
-        # Wait until we're ready before starting stuff.
         if kind == "chat":
             if "376" not in self.nextMessage(kind):
                 pass

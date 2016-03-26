@@ -1,3 +1,5 @@
+import globals
+
 commands = {
     '!report': {
         'limit': 200,
@@ -307,6 +309,32 @@ commands = {
 }
 
 user_cooldowns = {"channels": {}}
+
+
+def initalizeCommandsAfterRuntime(channel):
+    if channel not in user_cooldowns["channels"]:
+        user_cooldowns["channels"][channel] = {"commands": {}}
+        for command in commands:
+            commands[command][channel] = {}
+            commands[command][channel]['last_used'] = 0
+            if "user_limit" in commands[command]:
+                user_cooldowns["channels"][channel]["commands"][command] = {
+                    "users": {}}
+        channel = channel.lstrip('#')
+        globals.CHANNEL_INFO[channel] = {'caught': True, 'pokemon': ""}
+
+
+def deinitializeCommandsAfterRuntime(channel):
+    if channel in user_cooldowns["channels"]:
+        for command in commands:
+            commands[command][channel] = {}
+            commands[command][channel]['last_used'] = 0
+            if "user_limit" in commands[command]:
+                user_cooldowns["channels"][channel]["commands"][command] = {
+                    "users": {}}
+        del user_cooldowns["channels"][channel]
+        channel = channel.lstrip('#')
+        del globals.CHANNEL_INFO[channel]
 
 
 def initalizeCommands(config):

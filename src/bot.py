@@ -10,29 +10,28 @@ import sys
 from threading import Thread
 
 import lib.functions_commands as commands
-import src.lib.command_headers
+import src.lib.command_headers as command_headers
 import src.lib.cron as cron
 import src.lib.rive as rive
 import src.lib.twitch as twitch
 from lib.functions_general import *
 from src.config.config import config
 from src.lib.irc import IRC
+from src.lib.queries.blacklist_queries import check_for_blacklist
 from src.lib.queries.command_queries import *
 from src.lib.queries.message_queries import save_message
 from src.lib.queries.moderator_queries import get_moderator
 from src.lib.queries.points_queries import *
-from src.lib.queries.blacklist_queries import check_for_blacklist
 
 reload(sys)
 sys.setdefaultencoding("utf8")
 
 PRIMARY_CHANNEL = "curvyllama"
-BOT_USER = "lorenzotherobot"
+BOT_USER = "duck__butter"
 SUPERUSER = "singlerider"
 TEST_USER = "theepicsnail_"
 EXTRA_CHANNEL = "newyork_triforce"
 
-CHANNEL = "#singlerider"
 NICKNAME = config["username"]
 PASSWORD = config["oauth_password"]
 
@@ -48,7 +47,7 @@ class Bot(object):
         self.config = config
         self.crons = self.config.get("cron", {})
         cron.initialize(self.IRC, self.crons)
-        src.lib.command_headers.initalizeCommands(config)
+        command_headers.initalizeCommands(config)
         self.run()
 
     def return_custom_command(self, channel, message, username):
@@ -119,10 +118,16 @@ class Bot(object):
 
     def join_part(self, action, channel):
         if action == "join":
-            self.IRC.join_channels([channel], "chat")
+            self.IRC.join_channels(
+                self.IRC.channels_to_string([channel]), "chat")
+            command_headers.initalizeCommandsAfterRuntime(channel)
+            self.IRC.send_message(channel, "Hi HeyGuys")
             print "JOINING", channel
         if action == "leave":
-            self.IRC.leave_channels([channel], "chat")
+            self.IRC.send_message(channel, "Bye HeyGuys")
+            self.IRC.leave_channels(
+                self.IRC.channels_to_string([channel]), "chat")
+            command_headers.deinitializeCommandsAfterRuntime(channel)
             print "LEAVING", channel
 
     def handle_command(self, command, channel, username, message):
