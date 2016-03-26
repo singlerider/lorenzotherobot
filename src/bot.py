@@ -27,7 +27,7 @@ reload(sys)
 sys.setdefaultencoding("utf8")
 
 PRIMARY_CHANNEL = "curvyllama"
-BOT_USER = "duck__butter"
+BOT_USER = config["username"]
 SUPERUSER = "singlerider"
 TEST_USER = "theepicsnail_"
 EXTRA_CHANNEL = "newyork_triforce"

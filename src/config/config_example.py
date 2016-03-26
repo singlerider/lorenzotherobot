@@ -25,6 +25,7 @@ config = {
     'cron': {
         '#singlerider': [
             # time, run, callback
+            (86400, True, pokemon.market_cron),  # reset market every 24 hours
             (60, True, pokemon.cron),  # pokemon released every 20 minutes
             (600, True, treats.cron),  # treat handed out every 10 minutes
         ],
