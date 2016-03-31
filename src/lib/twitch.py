@@ -10,10 +10,17 @@ import globals
 def get_dict_for_users(channel="testchannel"):
     n = 0
     channel = channel.lstrip("#")
-    dummy = {  # in case the endpoint fails (can be as often as 1:8)
-        "_links": {}, "chatters_count": 0, "chatters": {
-            "staff": [], "admin": [], "global_mods": [],
-            "viewers": [], "moderators": []}}
+    try:
+        dummy_dict = globals.CHANNEL_INFO[channel]['viewers']
+    except:
+        dummy_dict = {  # in case the endpoint fails (can be as often as 1:8)
+            "_links": {}, "chatters_count": 0, "chatters": {
+                "staff": [], "admin": [], "global_mods": [],
+                "viewers": [], "moderators": []}}
+    dummy_users = []
+    for user_type in dummy_dict['chatters']:
+        [dummy_users.append(str(user)) for user in dummy_dict[
+            "chatters"][user_type]]
     while n < 3:
         try:
             if "viewers" in globals.CHANNEL_INFO[channel]:
@@ -35,12 +42,11 @@ def get_dict_for_users(channel="testchannel"):
                 continue  # go back to the beginning of the loop
         except Exception as error:  # in case of an unexpected error
             print error
-            return dummy, []
-    return dummy, []  # will only happen after three ValueErrors in a row
+            return dummy_dict, dummy_users
+    return dummy_dict, dummy_users  # will only happen after three ValueErrors in a row
 
 
-def user_cron(channel="curvyllama"):
-    channel="curvyllama"
+def user_cron(channel=None):
     import requests
     import json
     import globals

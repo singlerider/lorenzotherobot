@@ -12,7 +12,8 @@ def party(args, **kwargs):
         party_members = get_user_party_info(username)
         return party_members
     position = args[0].lstrip("@")
-    if position in ['1', '2', '3', '4', '5', '6']:
+    party_size = 6
+    if position in [str(n + 1) for n in range(party_size)]:
         nickname, pokemon_type1_id, pokemon_type2_id, pokemon_name, pokemon_type1, pokemon_type2 = user_pokemon_types_summary(
             username, position)
         level, nickname, hp, speed, attack, defense, special_attack, special_defense = get_battle_stats(
