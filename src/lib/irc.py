@@ -118,7 +118,7 @@ class IRC:
         sock.settimeout(10)
         port = 6667
         if kind == "whisper":
-            server = "group.tmi.twitch.tv"
+            server = "irc.chat.twitch.tv"
             print "Connecting to {0}:{1}".format(server, port)
             self.connect_phases(sock, server, port, kind)
             self.join_channels([], kind)
