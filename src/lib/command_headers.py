@@ -201,6 +201,13 @@ commands = {
         'usage': '!leaderboard',
         'user_limit': 300,
     },
+    '!stats': {
+        'limit': 0,
+        'argc': 0,
+        'return': 'command',
+        'usage': '!stats',
+        'user_limit': 1000,
+    },
     '!define': {
         'limit': 30,
         'user_limit': 300,

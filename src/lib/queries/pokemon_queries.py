@@ -833,6 +833,33 @@ def get_leaderboard():
             str(" | ".join(user_data_comprehension[0:9]))
 
 
+def get_user_stats(username):
+    con = get_connection()
+    with con:
+        cur = con.cursor()
+        cur.execute("""
+            SELECT wins, losses FROM users WHERE username = %s
+            """, [username])
+        user_data = cur.fetchone()
+        print "USER DATA", user_data
+        if len(user_data) > 0:
+            y = user_data[0]
+            z = user_data[1]
+            try:
+                ratio = int((float(y) / ((float(y) + float(z)))) * 100)
+            except:
+                if y > 0:
+                    ratio = 100
+                else:
+                    ratio = 0
+            response = "W{0}, L{1}, {2}%".format(
+                y, z, ratio)
+        else:
+            response = "You've got to actually battle first!"
+        cur.close()
+        return response
+
+
 def pokemon_market_set():
     con = get_connection()
     with con:
