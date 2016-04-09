@@ -3,9 +3,10 @@ from src.lib.twitch import *
 
 def highlight(**kwargs):
     uptime = get_stream_uptime()
+    channel = kwargs.get("channel", "testchannel")
     form_url = "http://goo.gl/UyWYKg"
     channel = kwargs.get("channel", "testchannel")
-    if get_stream_status():
+    if get_stream_status(channel):
         return "The current !uptime is '" + \
             str(uptime) + "'. Head to " + form_url + \
             " and input the current !uptime result in the form for " + channel + "!"
