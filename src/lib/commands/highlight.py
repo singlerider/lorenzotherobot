@@ -2,8 +2,8 @@ from src.lib.twitch import *
 
 
 def highlight(**kwargs):
-    uptime = get_stream_uptime()
     channel = kwargs.get("channel", "testchannel")
+    uptime = get_stream_uptime(channel)
     form_url = "http://goo.gl/UyWYKg"
     channel = kwargs.get("channel", "testchannel")
     if get_stream_status(channel):
