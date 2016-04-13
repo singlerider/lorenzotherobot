@@ -3,6 +3,7 @@ global config
 import globals
 import src.lib.commands.pokemon as pokemon
 import src.lib.commands.treats as treats
+import src.lib.twitch as twitch
 
 channels_to_join = ['#singlerider']
 
@@ -28,6 +29,7 @@ config = {
             (86400, True, pokemon.market_cron),  # reset market every 24 hours
             (60, True, pokemon.cron),  # pokemon released every 20 minutes
             (600, True, treats.cron),  # treat handed out every 10 minutes
+            (300, True, twitch.user_cron),  # update user list every 3 minutes
         ],
     },
 }
