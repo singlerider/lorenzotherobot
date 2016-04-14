@@ -128,8 +128,7 @@ commands = {
         'limit': 0,
         'argc': 2,
         'return': 'command',
-        'usage': "!battle [position_to_battle_with] [opponent_username]",
-        'user_limit': 180,
+        'usage': "!battle [position_to_battle_with] [opponent_username]"
     },
     '!tallgrass': {
         'limit': 0,
