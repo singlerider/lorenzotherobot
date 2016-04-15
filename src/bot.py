@@ -15,6 +15,7 @@ import src.lib.cron as cron
 import src.lib.rive as rive
 import src.lib.twitch as twitch
 from lib.functions_general import *
+from src.lib.spam_detector import spam_detector
 from src.config.config import config
 from src.lib.irc import IRC
 from src.lib.queries.blacklist_queries import check_for_blacklist
@@ -72,13 +73,19 @@ class Bot(object):
             print("!-> " + resp)
             return resp
 
+    def ban_for_spam(self, channel, user, message):
+	timeout = "/timeout {0} 1".format(user)
+	self.IRC.send_message(channel, timeout)
+	save_message(BOT_USER, channel, message)
+
     def privmsg(self, username, channel, message):
         if (channel == "#" + PRIMARY_CHANNEL or
                 channel == "#" + SUPERUSER or
                 channel == "#" + TEST_USER):
             if username == "twitchnotify":
                 self.check_for_sub(channel, username, message)
-            # TODO add spam detector here
+        if spam_detector(username, message) is True:
+            self.ban_for_spam(channel, username, message)
         chan = channel.lstrip("#")
         if message[0] == "!":
             message_split = message.split()
