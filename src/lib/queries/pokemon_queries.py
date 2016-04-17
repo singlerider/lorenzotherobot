@@ -676,7 +676,7 @@ def buy_pokemon(position, username):
         try:
             id = int(position)
             print id
-            if id - 1 in range(5):
+            if id - 1 in range(6):
                 open_position, occupied_positions = find_open_party_positions(
                     username)
                 print open_position
@@ -882,7 +882,7 @@ def pokemon_market_set():
             else:
                 selected_pokemon.append(random_pokemon[0])
                 return random_pokemon
-        for i in range(5):
+        for i in range(6):
             random_pokemon = get_random_pokemon()
             cur = con.cursor()
             cur.execute("""
