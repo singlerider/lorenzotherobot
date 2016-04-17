@@ -2077,12 +2077,12 @@ master_pokemon_dict = {
         'rarity': 1,
         'time': 3,
         'evolution_level': 'trade',
-        'attack': 134,
-        'sp_atk': 100,
-        'defense': 95,
-        'sp_def': 100,
-        'hp': 91,
-        'speed': 80
+        'attack': 84,
+        'sp_atk': 70,
+        'defense': 65,
+        'sp_def': 70,
+        'hp': 61,
+        'speed': 70
     },
     'Dragonite': {
         'type1': "Dragon",
@@ -2092,12 +2092,12 @@ master_pokemon_dict = {
         'rarity': 0,
         'time': 3,
         'evolution_level': 'trade',
-        'attack': 40,
-        'sp_atk': 20,
-        'defense': 10,
-        'sp_def': 5,
-        'hp': 30,
-        'speed': 15
+        'attack': 134,
+        'sp_atk': 100,
+        'defense': 95,
+        'sp_def': 100,
+        'hp': 91,
+        'speed': 80
     },
     'Mewtwo': {
         'type1': "Psychic",
