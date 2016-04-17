@@ -74,9 +74,9 @@ class Bot(object):
             return resp
 
     def ban_for_spam(self, channel, user, message):
-	timeout = "/timeout {0} 1".format(user)
-	self.IRC.send_message(channel, timeout)
-	save_message(BOT_USER, channel, message)
+        timeout = "/timeout {0} 1".format(user)
+        self.IRC.send_message(channel, timeout)
+        save_message(BOT_USER, channel, message)
 
     def privmsg(self, username, channel, message):
         if (channel == "#" + PRIMARY_CHANNEL or
@@ -85,7 +85,9 @@ class Bot(object):
             if username == "twitchnotify":
                 self.check_for_sub(channel, username, message)
         if spam_detector(username, message) is True:
-            self.ban_for_spam(channel, username, message)
+            #  # uncomment the line below to enable spam_detector
+            # self.ban_for_spam(channel, username, message)
+            pass
         chan = channel.lstrip("#")
         if message[0] == "!":
             message_split = message.split()
