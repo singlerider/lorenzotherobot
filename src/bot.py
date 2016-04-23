@@ -118,6 +118,8 @@ class Bot(object):
             return
         message = str(message.lstrip("!"))
         resp = rive.Conversation(self).run(username, message)[:350]
+        if resp[0] == "[":
+            resp = "DansGame"
         save_message(username, "WHISPER", message)
         if resp:
             print resp
