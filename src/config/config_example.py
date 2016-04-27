@@ -15,7 +15,7 @@ config = {
     # details required to login to twitch IRC server
     'username': 'Pikachu__bot',
     # get this from http://twitchapps.com/tmi/
-    'oauth_password': 'oauth:6yc3lsd1ho0jmw52vr58udcy2mqe32',
+    'oauth_password': 'oauth:6yc3lsd1ho0jmw52vrsdkfnksjdnkf2',
 
     'debug': True,
     'log_messages': True,

@@ -80,8 +80,6 @@ Then quit out of the shell:
 \q
 ```
 
-Create a user that you will use to connect with the database with (you do not want to connect as root for security reasons) - replace "newuser" and "password" with whatever you'd like:
-
 Create your schema from my blank template:
 
 ```shell
