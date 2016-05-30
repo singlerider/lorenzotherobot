@@ -208,7 +208,7 @@ commands = {
         'user_limit': 1000,
     },
     '!define': {
-        'limit': 30,
+        'limit': 6,
         'user_limit': 300,
         'argc': 1,
         'space_case': True,
