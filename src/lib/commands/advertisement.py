@@ -13,5 +13,6 @@ def advertisement(a=None):  # pragma: no cover
 def updates():  # pragma: no cover
     return "New features and updates for me will be available in mid May. Next up: all bugs fixed."
 
+
 def custom_sounds(a=None):
     return "Donate to trigger some sounds! http://bit.ly/1Tv1L0J | http://bit.ly/24vwPst"
