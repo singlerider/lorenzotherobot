@@ -79,11 +79,6 @@ class Bot(object):
         save_message(BOT_USER, channel, message)
 
     def privmsg(self, username, channel, message):
-        if (channel == "#" + PRIMARY_CHANNEL or
-                channel == "#" + SUPERUSER or
-                channel == "#" + TEST_USER):
-            if username == "twitchnotify":
-                self.check_for_sub(channel, username, message)
         if spam_detector(username, message) is True:
             #  # uncomment the line below to enable spam_detector
             # self.ban_for_spam(channel, username, message)
@@ -224,27 +219,6 @@ ask me directly?")
             pbot(resp, channel)
             save_message(BOT_USER, channel, resp)  # pragma: no cover
             return resp[:350]
-
-    def check_for_sub(self, channel, username, message):
-        try:
-            message_split = message.rstrip("!").split()
-            subbed_user = message_split[0]
-            if message_split[1] == "just" and len(message_split) < 4:
-                modify_user_points(subbed_user, 100)
-                resp = "/me {0} treats for {1} for a first \
-time subscription!".format(100, subbed_user)
-                self.IRC.send_message(channel, resp)
-                save_message(BOT_USER, channel, resp)
-            elif message_split[1] == "subscribed" and len(message_split) < 9:
-                months_subbed = message_split[3]
-                modify_user_points(subbed_user, int(months_subbed) * 100)
-                resp = "/me {0} has just resubscribed for {1} \
-months straight and is getting {2} treats for loyalty!".format(
-                    subbed_user, months_subbed, int(months_subbed) * 100)
-                self.IRC.send_message(channel, resp)
-                save_message(BOT_USER, channel, resp)
-        except Exception as error:  # pragma: no cover
-            print error
 
     def run(self):
 

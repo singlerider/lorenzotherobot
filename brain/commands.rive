@@ -6,14 +6,6 @@
     return weather(["imperial", query]).replace("\n", " ")
 < object
 
-> object treats python
-    from src.lib.commands.llama import whisper_llama
-    username = rs.current_user()
-    if len(args) > 0:
-        username = args[0]
-    return whisper_llama([username]).replace("\n", " ")
-< object
-
 > object whisper_define python
     from src.lib.commands.define import define
     query = "".join(args[0:])
@@ -55,12 +47,6 @@
 
 + [*] treats [*]
 - <call>treats</call>
-
-+ llama
-- <call>treats</call>
-
-+ llama *
-- <call>treats <star></call>
 
 + define *
 - <call>whisper_define <star1></call>

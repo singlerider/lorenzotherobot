@@ -23,21 +23,6 @@ commands = {
         'usage': '!opinion',
         'user_limit': 30
     },
-    '!llama': {
-        'limit': 0,
-        'argc': 1,
-        'return': 'command',
-        'usage': "!llama ['treats'/'shots'/username/'list']",
-        'optional': True,
-        'user_limit': 30
-    },
-    '!treats': {
-        'limit': 0,
-        'return': 'command',
-        'argc': 3,
-        'ul': 'mod',
-        'usage': '!treats [add/remove/set] [username] [number]'
-    },
     '!shots': {
         'limit': 0,
         'return': 'command',
@@ -222,13 +207,6 @@ commands = {
         'usage': '!caster [streamer_username]',
         'ul': 'mod'
     },
-    '!donation': {
-        'limit': 0,
-        'argc': 2,
-        'return': 'command',
-        'usage': '!donation [username] [dollar_amount]',
-        'ul': 'mod'
-    },
     '!add': {
         'limit': 0,
         'argc': 4,
@@ -255,13 +233,6 @@ commands = {
         'argc': 2,
         'return': 'command',
         'usage': '!weather [units (metric/imperial)] [location (any format)]',
-        'ul': 'mod'
-    },
-    '!loyalty': {
-        'limit': 0,
-        'argc': 1,
-        'return': 'command',
-        'usage': '!loyalty [username]',
         'ul': 'mod'
     },
     '!addquote': {
