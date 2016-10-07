@@ -27,7 +27,7 @@ def get_dict_for_users(channel="testchannel"):
                 data = globals.CHANNEL_INFO[channel]['viewers']
             else:
                 url = "http://tmi.twitch.tv/group/user/" + channel \
-                    + "/chatters"
+                    + "/chatters" + "?client_id=" + globals.CLIENT_ID
                 resp = requests.get(url=url)
                 data = json.loads(resp.content)
                 globals.CHANNEL_INFO[channel]['viewers'] = data
@@ -51,8 +51,8 @@ def user_cron(channel=None):
     import json
     import globals
     channel = channel.lstrip("#")
-    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/{0}/chatters'.format(
-        channel)
+    get_dict_for_users_url = 'http://tmi.twitch.tv/group/user/{0}/chatters{1}'.format(
+        channel, "?client_id=" + globals.CLIENT_ID)
     get_dict_for_users_resp = requests.get(url=get_dict_for_users_url)
     try:
         users = json.loads(get_dict_for_users_resp.content)
@@ -62,7 +62,8 @@ def user_cron(channel=None):
 
 
 def get_stream_status(channel="testchannel"):
-    get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + channel
+    get_stream_status_url = 'https://api.twitch.tv/kraken/streams/' + \
+        channel + "?client_id=" + globals.CLIENT_ID
     get_stream_status_resp = requests.get(url=get_stream_status_url)
     online_data = json.loads(get_stream_status_resp.content)
     if "stream" in online_data and online_data["stream"] is not None:
@@ -72,7 +73,8 @@ def get_stream_status(channel="testchannel"):
 
 
 def get_stream_id(channel):
-    url = 'https://api.twitch.tv/kraken/streams/' + channel
+    url = 'https://api.twitch.tv/kraken/streams/' + \
+        channel + "?client_id=" + globals.CLIENT_ID
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     if data["stream"] is not None:
@@ -83,7 +85,8 @@ def get_stream_id(channel):
 
 
 def get_channel_game(channel):
-    url = "https://api.twitch.tv/kraken/channels/" + channel
+    url = "https://api.twitch.tv/kraken/channels/" + \
+        channel + "?client_id=" + globals.CLIENT_ID
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     game = data["game"]
@@ -91,7 +94,8 @@ def get_channel_game(channel):
 
 
 def get_stream_game(channel):
-    url = 'https://api.twitch.tv/kraken/streams/' + channel
+    url = 'https://api.twitch.tv/kraken/streams/' + \
+        channel + "?client_id=" + globals.CLIENT_ID
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     if data["stream"] is not None:
@@ -101,7 +105,8 @@ def get_stream_game(channel):
 
 
 def get_channel_id(channel):
-    url = "https://api.twitch.tv/kraken/channels/" + channel
+    url = "https://api.twitch.tv/kraken/channels/" + \
+        channel + "?client_id=" + globals.CLIENT_ID
     try:
         resp = requests.get(url=url)
         data = json.loads(resp.content)
@@ -114,7 +119,7 @@ def get_channel_id(channel):
 def get_stream_uptime(channel="testchannel"):
     format = "%Y-%m-%d %H:%M:%S"
     get_stream_uptime_url = 'https://api.twitch.tv/kraken/streams/' + \
-        channel
+        channel + "?client_id=" + globals.CLIENT_ID
     get_stream_uptime_resp = requests.get(url=get_stream_uptime_url)
     uptime_data = json.loads(get_stream_uptime_resp.content)
     if uptime_data['stream'] is not None:
@@ -129,7 +134,7 @@ def get_stream_uptime(channel="testchannel"):
 
 def get_offline_status(channel="testchannel"):
     get_offline_status_url = 'https://api.twitch.tv/kraken/streams/' + \
-        channel
+        channel + "?client_id=" + globals.CLIENT_ID
     get_offline_status_resp = requests.get(url=get_offline_status_url)
     offline_data = json.loads(get_offline_status_resp.content)
     if offline_data["stream"] is not None:
@@ -138,14 +143,15 @@ def get_offline_status(channel="testchannel"):
 
 def get_stream_followers(channel="testchannel"):
     url = 'https://api.twitch.tv/kraken/channels/' + \
-        channel + '/follows?limit=100'
+        channel + '/follows?limit=100' + "&client_id=" + globals.CLIENT_ID
     resp = requests.get(url=url)
     data = json.loads(resp.content)
     return data
 
 
 def get_hosts(channel_id):
-    url = "https://tmi.twitch.tv/hosts?include_logins=1&target=" + str(channel_id)
+    url = "https://tmi.twitch.tv/hosts?include_logins=1&target=" + \
+        str(channel_id)
     resp = requests.get(url)
     data = json.loads(resp.content)
     hosts = data["hosts"]
@@ -156,7 +162,7 @@ def get_game_popularity(game):
     try:
         game_http_request = game.replace(' ', '%20')
         url = 'https://api.twitch.tv/kraken/search/streams?q=' + \
-            game_http_request + '&limit=100'
+            game_http_request + '&limit=100' + "&client_id=" + globals.CLIENT_ID
         resp = requests.get(url=url)
         data = json.loads(resp.content)
         first_streamer = str(data["streams"][0]["channel"]["display_name"])
@@ -165,8 +171,10 @@ def get_game_popularity(game):
         first_viewers = str(data["streams"][0]["viewers"])
         second_viewers = str(data["streams"][1]["viewers"])
         third_viewers = str(data["streams"][2]["viewers"])
-        top_three = first_streamer + ": " + first_viewers + ", " + second_streamer + \
-            ": " + second_viewers + ", " + third_streamer + ": " + third_viewers
+        top_three = first_streamer + ": " + first_viewers + \
+            ", " + second_streamer + \
+            ": " + second_viewers + ", " + \
+            third_streamer + ": " + third_viewers
         return "The top three streamers playing " + game + " are: " + top_three
     except Exception as error:
         print error
@@ -175,12 +183,15 @@ def get_game_popularity(game):
 
 def get_follower_status(username="testuser", channel="testchannel"):
     try:
-        url = "https://api.twitch.tv/kraken/users/{}/follows/channels/{}".format(username.lower().lstrip("@"), channel)
+        url = "https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}{2}".format(
+            username.lower().lstrip("@"), channel,
+            "?client_id=" + globals.CLIENT_ID
+        )
         resp = requests.get(url=url)
         data = json.loads(resp.content)
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
                   "Sep", "Oct", "Nov", "Dec"]
-        suffixes = ["st", "nd", "rd", "th",]
+        suffixes = ["st", "nd", "rd", "th", ]
         date_split = data["created_at"][:10].split("-")
         year = date_split[0]
         month = months[int(date_split[1]) - 1]

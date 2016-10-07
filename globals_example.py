@@ -3,3 +3,4 @@ mysql_credentials = ['localhost', 'root', '', 'twitch']
 weather_key = ""  # from http://home.openweathermap.org/myservices
 VARIABLE = ""
 CHANNEL_INFO = {}
+CLIENT_ID = ""
