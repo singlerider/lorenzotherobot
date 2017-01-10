@@ -9,6 +9,13 @@ commands = {
         'optional': True,
         'user_limit': 30
     },
+    '!treats': {
+        'limit': 0,
+        'return': 'command',
+        'argc': 3,
+        'ul': 'mod',
+        'usage': '!treats [add/remove/set] [username] [number]'
+    },
     '!report': {
         'limit': 200,
         'argc': 1,
