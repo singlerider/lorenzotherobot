@@ -1,6 +1,14 @@
 import globals
 
 commands = {
+    '!llama': {
+        'limit': 0,
+        'argc': 1,
+        'return': 'command',
+        'usage': "!llama ['treats'/'shots'/username/'list']",
+        'optional': True,
+        'user_limit': 30
+    },
     '!report': {
         'limit': 200,
         'argc': 1,
