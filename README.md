@@ -34,6 +34,16 @@ deactivate
 ```
 
 ### Dependencies
+
+#### MySQL Installation
+Depending on your distribution, starting the server will be different, on a mac, this is accomplished by doing
+
+```shell
+brew install mysql
+mysql.server start
+```
+
+#### Python Packages
 To install all dependencies locally (preferably inside your activated virtualenv), run:
 
 ```shell
@@ -51,14 +61,6 @@ Make a copy of the example globals file:
 
 ```shell
 cp globals_example.py globals.py
-```
-
-#### MySQL Installation
-Depending on your distribution, starting the server will be different, on a mac, this is accomplished by doing
-
-```shell
-brew install mysql
-mysql.server start
 ```
 
 ##### Database Setup
