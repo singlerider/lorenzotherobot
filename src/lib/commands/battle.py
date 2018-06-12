@@ -12,7 +12,8 @@ def battle(args, **kwargs):
     now = datetime.now()
     cooldown_time = 3
     last_battle_time = get_last_battle(username)
-    if last_battle_time < now - timedelta(minutes=cooldown_time):
+    if not last_battle_time or (last_battle_time < now -
+                                timedelta(minutes=cooldown_time)):
         if opponent != username:
             available_positions, occupied_positions = find_open_party_positions(
                 opponent)
