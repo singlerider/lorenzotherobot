@@ -41,19 +41,24 @@ class IRC:
             return line
 
     def check_for_message(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
+        if re.match(r"^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$", data):
             return True
 
+    def check_for_chatroom_message(self, data):
+        if re.match(r"^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #chatrooms:([a-zA-Z0-9_]+):([a-zA-Z0-9\-]+) :.+$", data):
+            return True
+        # :singlerider!singlerider@singlerider.tmi.twitch.tv PRIVMSG #chatrooms:54411072:d7b8f612-f2ed-4c7f-815f-095989a05fde :Lorenzo is in the buiding
+
     def check_for_whisper(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) WHISPER [a-zA-Z0-9_]+ :.+$', data):
+        if re.match(r"^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) WHISPER [a-zA-Z0-9_]+ :.+$", data):
             return True
 
     def check_for_join(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
+        if re.match(r"^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]", data):
             return True
 
     def check_for_part(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
+        if re.match(r"^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PART #[a-zA-Z0-9_]", data):
             return True
 
     def check_is_command(self, message, valid_commands):
@@ -62,29 +67,32 @@ class IRC:
                 return True
 
     def check_for_connected(self, data):
-        if re.match(r'^:.+ 001 .+ :connected to TMI$', data):
+        if re.match(r"^:.+ 001 .+ :connected to TMI$", data):
             return True
 
     def get_logged_in_users(self, data):
-        if data.find('353'):
+        if data.find("353"):
             return True
 
     def check_for_ping(self, data, kind):
         last_ping = time.time()
-        if data.find('PING') != -1:
-            self.sock[kind].send('PONG ' + data.split()[1] + '\r\n')
+        if data.find("PING") != -1:
+            self.sock[kind].send("PONG " + data.split()[1] + "\r\n")
             last_ping = time.time()
         if (time.time() - last_ping) > threshold:
             sys.exit()
 
     def get_message(self, data):
-        return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
+        return re.match(r"^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)", data).groupdict()
+
+    def get_chatroom_message(self, data):
+        return re.match(r"^:(?P<username>.*?)!.*?PRIVMSG #chatrooms:(?P<channel_id>.*?):(?P<chatroom_uid>.*?) :(?P<message>.*)", data).groupdict()
 
     def get_whisper(self, data):
-        return re.match(r'^:(?P<username>.*?)!.*?WHISPER (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
+        return re.match(r"^:(?P<username>.*?)!.*?WHISPER (?P<channel>.*?) :(?P<message>.*)", data).groupdict()
 
     def check_login_status(self, data):
-        if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
+        if re.match(r"^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$", data):
             return False
         else:
             return True
@@ -94,11 +102,23 @@ class IRC:
             return
 
         if isinstance(message, basestring):
-            self.sock["chat"].send('PRIVMSG %s :%s\r\n' % (channel, message))
+            self.sock["chat"].send("PRIVMSG %s :%s\r\n" % (channel, message))
 
         if type(message) == list:
             for line in message.decode("utf8"):
                 self.send_message(channel, line)
+
+    def send_chatroom_message(self, channel_id, chatroom_uid, message):
+        if not message:
+            return
+
+        if isinstance(message, basestring):
+            self.sock["chat"].send(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #chatrooms:{1}:{2} :{3}\r\n".format(
+                self.config["username"], channel_id, chatroom_uid, message))
+
+        if type(message) == list:
+            for line in message.decode("utf8"):
+                self.send_message(channel_id, chatroom_uid, line)
 
     def send_whisper(self, recipient, message):
         if not message:
@@ -106,7 +126,7 @@ class IRC:
 
         if isinstance(message, basestring):
             self.sock["whisper"].send(
-                'PRIVMSG #jtv :/w %s %s\r\n' % (recipient, message))
+                "PRIVMSG #jtv :/w %s %s\r\n" % (recipient, message))
 
         if type(message) == list:
             for line in message.decode("utf8"):
@@ -122,43 +142,53 @@ class IRC:
             print "Connecting to {0}:{1}".format(server, port)
             self.connect_phases(sock, server, port, kind)
             self.join_channels([], kind)
-        if kind == "chat":
+        elif kind == "chat":
             server = "irc.chat.twitch.tv"
             print "Connecting to {0}:{1}".format(server, port)
             self.connect_phases(sock, server, port, kind)
-            self.join_channels(self.channels_to_string(
-                self.config['channels']), kind)
+            self.join_channels(self.config["channels"], kind)
 
         sock.settimeout(None)
 
     def connect_phases(self, sock, server, port, kind):
         sock.connect((server, port))
         pp("Sending Username " + self.config["username"])
-        sock.send('USER %s\r\n' % self.config['username'])
+        sock.send("USER %s\r\n" % self.config["username"])
         pp("Sending Password " + self.config["oauth_password"])
-        sock.send('PASS %s\r\n' % self.config['oauth_password'])
+        sock.send("PASS %s\r\n" % self.config["oauth_password"])
         pp("Sending Nick " + self.config["username"])
-        sock.send('NICK %s\r\n' % self.config['username'])
+        sock.send("NICK %s\r\n" % self.config["username"])
         self.sock[kind] = sock
-        loginMsg = self.nextMessage(kind)
+        self.nextMessage(kind)  # login message
         if kind == "chat":
             if "376" not in self.nextMessage(kind):
                 pass
 
     def channels_to_string(self, channel_list):
-        return ','.join(channel_list)
+        return ",".join(channel_list)
+
+    def join_chatroom(self, channel, room):
+        join_str = "{0}:{1}".format(room[0], room[1])
+        self.sock["chat"].send("JOIN #chatrooms:{0}\r\n".format(join_str))
+        pp("Joined chatroom: {0}:{1}".format(channel, join_str))
 
     def join_channels(self, channels, kind):
         if kind == "chat":
-            pp('Joining channels %s.' % channels)
-            self.sock[kind].send('JOIN %s\r\n' % channels)
-        if kind == "whisper":
+            channels_str = self.channels_to_string(channels)
+            pp("Joining channels %s." % channels_str)
+            self.sock[kind].send("JOIN {0}\r\n".format(channels_str))
+            for channel in channels:
+                if "rooms" in self.config:
+                    if "#{0}".format(channel.lstrip("#")) in self.config["rooms"]:
+                        for room in self.config["rooms"][channel]:
+                            self.join_chatroom(channel, room)
+        elif kind == "whisper":
             pp("Joining whisper server")
             self.sock[kind].send("CAP REQ :twitch.tv/commands\r\n")
-        pp('Joined channels.')
+        pp("Joined channels.")
 
     def leave_channels(self, channels, kind):
-        pp('Leaving channels %s,' % channels)
+        pp("Leaving channels %s," % channels)
         if kind == "chat":
-            self.sock[kind].send('PART %s\r\n' % channels)
-        pp('Left channels.')
+            self.sock[kind].send("PART %s\r\n" % channels)
+        pp("Left channels.")

@@ -67,7 +67,18 @@ cp globals_example.py globals.py
 From here, you need to enter the mysql console as root:
 
 ```shell
-mysql -u root
+mysql -u root  # may require sudo
+```
+
+```shell
+mysql> USE mysql;
+mysql> CREATE USER 'YOUR_SYSTEM_USER'@'localhost' IDENTIFIED BY '';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'YOUR_SYSTEM_USER'@'localhost';
+mysql> UPDATE user SET plugin='auth_socket' WHERE User='YOUR_SYSTEM_USER';
+mysql> FLUSH PRIVILEGES;
+mysql> exit;
+
+$ service mysql restart
 ```
 
 Create your database and name it whatever you want (from within the `mysql` shell):

@@ -5,26 +5,26 @@ import src.lib.commands.pokemon as pokemon
 import src.lib.commands.treats as treats
 import src.lib.twitch as twitch
 
-channels_to_join = ['#singlerider']
+channels_to_join = ["#singlerider"]
 
 for channel in channels_to_join:
-    channel = channel.lstrip('#')
-    globals.CHANNEL_INFO[channel] = {'caught': True, 'pokemon': ''}
+    channel = channel.lstrip("#")
+    globals.CHANNEL_INFO[channel] = {"caught": True, "pokemon": ""}
 
 config = {
     # details required to login to twitch IRC server
-    'username': 'Pikachu__bot',
+    "username": "Pikachu__bot",
     # get this from http://twitchapps.com/tmi/
-    'oauth_password': 'oauth:6yc3lsd1ho0jmw52vrsdkfnksjdnkf2',
+    "oauth_password": "oauth:6yc3lsd1ho0jmw52vrsdkfnksjdnkf2",
 
-    'debug': True,
-    'log_messages': True,
+    "debug": True,
+    "log_messages": True,
 
-    'channels': channels_to_join,
+    "channels": channels_to_join,
 
     # Cron jobs.
-    'cron': {
-        '#singlerider': [
+    "cron": {
+        "#singlerider": [
             # time, run, callback
             (86400, True, pokemon.market_cron),  # reset market every 24 hours
             (60, True, pokemon.cron),  # pokemon released every 20 minutes
@@ -32,4 +32,13 @@ config = {
             (300, True, twitch.user_cron),  # update user list every 3 minutes
         ],
     },
+    "rooms": {
+        "#curvyllama": [
+            ("54411072", "d7b8f612-f2ed-4c7f-815f-095989a05fde")
+        ]
+    },
+    "user_id_map": {
+        "54411072": "#curvyllama",
+        "#curvyllama": "54411072"
+    }
 }

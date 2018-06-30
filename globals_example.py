@@ -4,3 +4,4 @@ weather_key = ""  # from http://home.openweathermap.org/myservices
 VARIABLE = ""
 CHANNEL_INFO = {}
 CLIENT_ID = ""
+CHAT_ROOMS = {}  # room_id: channel_name

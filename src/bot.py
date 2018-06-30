@@ -48,7 +48,7 @@ class Bot(object):
         self.config = config
         self.crons = self.config.get("cron", {})
         cron.initialize(self.IRC, self.crons)
-        command_headers.initalizeCommands(config)
+        command_headers.initalize_commands(config)
         self.run()
 
     def return_custom_command(self, channel, message, username):
@@ -108,6 +108,33 @@ class Bot(object):
             self.IRC.send_message(channel, resp)
         return
 
+    def privmsg_chatroom(
+            self, username, channel, channel_id, chatroom_uid, message):
+        chan = channel.lstrip("#")
+        if message[0] == "!":
+            message_split = message.split()
+            fetch_command = get_custom_command(chan, message_split[0])
+            if len(fetch_command) > 0:
+                if message_split[0] == fetch_command[0][1]:
+                    resp = self.return_custom_command(
+                        channel, message_split, username)
+                    if resp:
+                        self.IRC.send_message(channel, resp)
+        save_message(username, channel, message)
+        part = message.split(' ')[0]
+        valid = False
+        if commands.is_valid_command(message):
+            valid = True
+        if commands.is_valid_command(part):
+            valid = True
+        if not valid:
+            return
+        resp = self.handle_command(
+            part, channel, username, message)
+        if resp:
+            self.IRC.send_chatroom_message(channel_id, chatroom_uid, resp)
+        return
+
     def whisper(self, username, channel, message):
         if check_for_blacklist(username):
             return
@@ -126,14 +153,14 @@ class Bot(object):
         if action == "join":
             self.IRC.join_channels(
                 self.IRC.channels_to_string([channel]), "chat")
-            command_headers.initalizeCommandsAfterRuntime(channel)
+            command_headers.initalize_commands_after_runtime(channel)
             self.IRC.send_message(channel, "Hi HeyGuys")
             print "JOINING", channel
         if action == "leave":
             self.IRC.send_message(channel, "Bye HeyGuys")
             self.IRC.leave_channels(
                 self.IRC.channels_to_string([channel]), "chat")
-            command_headers.deinitializeCommandsAfterRuntime(channel)
+            command_headers.deinitialize_commands_after_runtime(channel)
             print "LEAVING", channel
 
     def handle_command(self, command, channel, username, message):
@@ -226,28 +253,54 @@ ask me directly?")
             while True:
                 try:
                     data = self.IRC.nextMessage(kind)
+                    message = ""
+                    chatroom_message = False
+                    message_received = False
                     if kind == "chat":
-                        message = self.IRC.check_for_message(data)
-                    if kind == "whisper":
-                        message = self.IRC.check_for_whisper(data)
-                    if not message:
+                        if self.IRC.check_for_message(data):
+                            message_received = True
+                        elif self.IRC.check_for_chatroom_message(data):
+                            message_received = True
+                            chatroom_message = True
+                    elif kind == "whisper":
+                        message_received = self.IRC.check_for_whisper(data)
+                    if not message_received:
                         continue
-                    if message:
-                        if kind == "chat":
-                            data = self.IRC.get_message(data)
-                        if kind == "whisper":
-                            data = self.IRC.get_whisper(data)
-                        message_dict = data
-                        channel = message_dict.get('channel')
-                        message = message_dict.get('message')
-                        username = message_dict.get('username')
-                        print "->*", username, channel, message
-                        if message and kind == "chat":
-                            Thread(target=self.privmsg, args=(
-                                username, channel, message)).start()
-                        if message and kind == "whisper":
-                            Thread(target=self.whisper, args=(
-                                username, channel, message)).start()
+                    else:
+                        if not chatroom_message:
+                            if kind == "chat":
+                                data = self.IRC.get_message(data)
+                            elif kind == "whisper":
+                                data = self.IRC.get_whisper(data)
+                            message_dict = data
+                            channel = message_dict.get('channel')
+                            message = message_dict.get('message')
+                            username = message_dict.get('username')
+                            print("->*", username, channel, message)
+                            if message and kind == "chat":
+                                Thread(target=self.privmsg, args=(
+                                    username, channel, message)).start()
+                            elif message and kind == "whisper":
+                                Thread(target=self.whisper, args=(
+                                    username, channel, message)).start()
+                        else:  # This is a chatroom message
+                            data = self.IRC.get_chatroom_message(data)
+                            message_dict = data
+                            channel_id = message_dict.get('channel_id')
+                            channel = self.config.get(
+                                "user_id_map", {}).get(channel_id)
+                            chatroom_uid = message_dict.get('chatroom_uid')
+                            message = message_dict.get('message')
+                            username = message_dict.get('username')
+                            print(
+                                "->*", username, channel, channel_id,
+                                chatroom_uid, message
+                            )
+                            if message:
+                                Thread(target=self.privmsg_chatroom, args=(
+                                    username, channel, channel_id,
+                                    chatroom_uid, message
+                                )).start()
                     continue
                 except Exception as error:
                     print error

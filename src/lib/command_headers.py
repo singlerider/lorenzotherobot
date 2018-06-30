@@ -303,7 +303,7 @@ commands = {
 user_cooldowns = {"channels": {}}
 
 
-def initalizeCommandsAfterRuntime(channel):
+def initalize_commands_after_runtime(channel):
     if channel not in user_cooldowns["channels"]:
         user_cooldowns["channels"][channel] = {"commands": {}}
         for command in commands:
@@ -313,10 +313,14 @@ def initalizeCommandsAfterRuntime(channel):
                 user_cooldowns["channels"][channel]["commands"][command] = {
                     "users": {}}
         channel = channel.lstrip('#')
-        globals.CHANNEL_INFO[channel] = {'caught': True, 'pokemon': ""}
+        pokemon_init_dict = {'caught': True, 'pokemon': ""}
+        if channel not in globals.CHANNEL_INFO:
+            globals.CHANNEL_INFO[channel] = pokemon_init_dict
+        else:
+            globals.CHANNEL_INFO[channel].update(pokemon_init_dict)
 
 
-def deinitializeCommandsAfterRuntime(channel):
+def deinitialize_commands_after_runtime(channel):
     if channel in user_cooldowns["channels"]:
         for command in commands:
             commands[command][channel] = {}
@@ -329,16 +333,19 @@ def deinitializeCommandsAfterRuntime(channel):
         del globals.CHANNEL_INFO[channel]
 
 
-def initalizeCommands(config):
+def initalize_commands(config):
     for channel in config['channels']:
         user_cooldowns["channels"][channel] = {"commands": {}}
+        if "rooms" in config:
+            if channel in config["rooms"]:
+                globals.CHANNEL_INFO[channel.lstrip("#")] = {
+                    "rooms": config["rooms"][channel]
+                }
+                for room in config["rooms"]:
+                    globals.CHAT_ROOMS[room[1]] = channel
         for command in commands:
             commands[command][channel] = {}
             commands[command][channel]['last_used'] = 0
             if "user_limit" in commands[command]:
                 user_cooldowns["channels"][channel]["commands"][command] = {
                     "users": {}}
-
-if __name__ == "__main__":  # pragma: no cover
-    print "\n".join(["    " + key + ": " + commands[key][
-        "usage"] for key in commands])
