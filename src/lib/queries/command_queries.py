@@ -80,8 +80,9 @@ def edit_command(command, creator, user_level, response, channel):
                 cur.close()
                 return "{0} successfully changed".format(command)
     else:
-        return "{0} already exists in {1}'s channel!".format(
-            command, channel)
+        return (
+            "{0} does not exist in {1}'s channel! Make sure to '!add'"
+        ).format(command, channel)
 
 
 def delete_command(command, channel):
